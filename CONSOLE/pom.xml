@@ -2,14 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
         <artifactId>Car_Service</artifactId>
         <groupId>com.netcracker.car.service</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <packaging>jar</packaging>
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>CONSOLE</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>com.netcracker.car.service</groupId>
@@ -30,6 +34,24 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
-
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>
+                    org.apache.maven.plugins
+                </groupId>
+                <artifactId>
+                    maven-jar-plugin
+                </artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <outputDirectory>
+                        ${basedir}/../CONSOLE
+                    </outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
