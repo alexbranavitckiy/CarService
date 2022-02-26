@@ -1,12 +1,13 @@
 package date.outfit;
 
 import date.order.Order;
-import date.time.Day;
+import date.time.Entry;
 import date.user.Employer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,7 +23,9 @@ public class Outfit {
 
     private List<Employer> employers;
 
-    private List<Day> days;
+    private Date dateStart;
+
+    private Date dateEnt;
 
     private double price;
 

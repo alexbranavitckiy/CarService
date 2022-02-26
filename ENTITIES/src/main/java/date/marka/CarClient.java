@@ -23,7 +23,4 @@ public class CarClient  extends Marka{
 
     private List<CarBreakdown> carBreakdownList;
 
-
-
-
 }

@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 public class TypeCarBreakdown {
 
 
+    private String slug;
+
     private String name;
 
-    private double priceDo;
+    private String locationInCar;
 
 }
