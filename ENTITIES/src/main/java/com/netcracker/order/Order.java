@@ -18,13 +18,21 @@ import java.util.UUID;
 public class Order {
 
     private UUID id= UUID.randomUUID();
+
     private String descriptions;
+
     private List<Outfit> outfits;
+
     private double priceSum;
+
     private Client client;
-    private StateOrder stateOrder;
+
+    private State stateOrder;
+
     private List<Entry> entry;
+
     private Date dateCreat;
+
     private Date dateUpdate;
 
 

@@ -31,7 +31,7 @@ public class Employer   {
 
     private String homeAddress;
 
-    private QualificationEnum qualificationEnum;
+    private Qualification qualificationEnum;
 
     private String education;
 

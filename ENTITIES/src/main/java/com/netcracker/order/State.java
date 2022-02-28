@@ -1,6 +1,6 @@
 package com.netcracker.order;
 
-public enum StateOrder {
+public enum State {
     TEMPLATE,
     RECORDED,
     IN_WORK,

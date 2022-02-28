@@ -22,6 +22,5 @@ public class Entry implements Serializable {
 
     private String descriptions;
 
-
     private Order order;
 }

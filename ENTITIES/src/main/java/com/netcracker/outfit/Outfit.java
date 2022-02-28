@@ -31,6 +31,6 @@ public class Outfit {
 
     private double price;
 
-    private  StateOutfit stateOutfit;
+    private State stateOutfit;
 
 }

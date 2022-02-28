@@ -1,7 +1,7 @@
 package com.netcracker.outfit;
 
 
-public enum StateOutfit {
+public enum State {
     WORK,
     END
 }

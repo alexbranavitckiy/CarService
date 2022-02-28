@@ -1,6 +1,6 @@
 package com.netcracker.user;
 
-public enum QualificationEnum {
+public enum Qualification {
     ELECTRICIAN,
     DISC_EDITING
 }
