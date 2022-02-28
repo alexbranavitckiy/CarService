@@ -3,20 +3,21 @@ package com.netcracker.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonIgnoreProperties
+@JsonRootName(value = "user")
+@JsonIgnoreProperties(value = { "user" })
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public class User implements Serializable {
 
     private UUID id;
