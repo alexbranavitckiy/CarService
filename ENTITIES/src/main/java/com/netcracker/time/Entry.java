@@ -16,7 +16,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Entry implements Serializable {
 
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     private Date date;
 

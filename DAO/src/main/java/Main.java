@@ -22,18 +22,15 @@ import java.util.List;
 public class Main {
 
 
-    public static void main(String[] arg)  {
+    public static void main(String[] arg) throws IOException {
 
-       // ObjectMapper objectMapper = new ObjectMapper();
-        //        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-        //
-        //
-        //        UserServices userServices = new UserServicesImpl(new File("src/main/resources/entry.json"));
-        //
-        //        System.out.println(  userServices.getUserByName("Zulauf, Stracke and Zboncak",objectMapper));
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
 
 
-        //        JsonNode jsonNode=objectMapper.readTree(new File("src/main/resources/entry.json"));
+        UserServices userServices = new UserServicesImpl();
+
+        System.out.println(userServices.getUserByName("Zulauf, Stracke and Zboncak", objectMapper, new File("src/main/resources/entry.json")));
 
 
 //        System.out.println(jsonNode);

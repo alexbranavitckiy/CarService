@@ -17,7 +17,7 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class Client extends User{
 
-    private UUID id= UUID.randomUUID();
+    private UUID id;
 
     private List<Order> orders;
 

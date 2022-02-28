@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Employer   {
 
-    private UUID id= UUID.randomUUID();
+    private UUID id;
 
     private String name;
 

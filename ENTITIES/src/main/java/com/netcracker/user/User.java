@@ -19,7 +19,7 @@ import java.util.UUID;
 @JsonIgnoreProperties
 public class User implements Serializable {
 
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     private String name;
 

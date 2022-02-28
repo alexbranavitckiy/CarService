@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Marka {
 
-    private UUID id= UUID.randomUUID();
+    private UUID id;
 
     private String generation;
 

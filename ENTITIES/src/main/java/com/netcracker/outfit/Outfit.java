@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Outfit {
 
-    private UUID id= UUID.randomUUID();
+    private UUID id;
 
     private String name;
 
