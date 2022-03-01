@@ -20,7 +20,9 @@ public interface UserServices {
 
     boolean deleteUserById(String id, ObjectMapper objectMapper, File file);
 
-    List<JsonNode> getAllUserList(ObjectMapper objectMapper, File file) throws IOException;
+    ArrayNode getAllUserArrayNode(ObjectMapper objectMapper, File file) throws IOException;
+
+    List<User> getAllUserByListUsers(ObjectMapper objectMapper, File file) throws IOException;
 
 
 }

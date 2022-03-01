@@ -1,9 +1,11 @@
 package servisec.Impl;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.netcracker.user.User;
 import servisec.UserServices;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -21,7 +23,7 @@ public class UserServicesImpl implements UserServices {
         try {
             if (file != null && file.exists()) {
                 ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-                return Optional.of(arrayNode.findParents("user")
+                return Optional.of(arrayNode.findParents("name")
                         .stream()
                         .filter(x -> x.findValue("name").asText().equalsIgnoreCase(name))
                         .collect(Collectors.toList()));
@@ -49,12 +51,9 @@ public class UserServicesImpl implements UserServices {
     public boolean deleteUserById(String id, ObjectMapper objectMapper, File file) {
         try {
             ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-            objectMapper.writeValue(file, arrayNode.findParents("user")
+            objectMapper.writeValue(file, arrayNode.findParents("id")
                     .stream()
-                    .filter(x -> {
-                                System.out.println(!x.findValue("id").asText().equalsIgnoreCase(id));
-                                return !x.findValue("id").asText().equalsIgnoreCase(id);
-                            }
+                    .filter(x -> !x.findValue("id").asText().equalsIgnoreCase(id)
                     )
                     .collect(Collectors.toList()));
             return true;
@@ -65,10 +64,13 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public List<JsonNode> getAllUserList(ObjectMapper objectMapper, File file) throws IOException {
-        ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-        return arrayNode.findParents("user");
+    public ArrayNode getAllUserArrayNode(ObjectMapper objectMapper, File file) throws IOException {
+        return (ArrayNode) objectMapper.readTree(file);
     }
 
+    @Override
+    public List<User> getAllUserByListUsers(ObjectMapper objectMapper, File file) throws IOException {
+        return List.of(objectMapper.readValue(new File("src/main/resources/entry.json"), User[].class));
+    }
 
 }

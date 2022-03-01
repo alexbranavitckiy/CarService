@@ -36,5 +36,4 @@ public class Employer   {
     private String education;
 
 
-
 }
