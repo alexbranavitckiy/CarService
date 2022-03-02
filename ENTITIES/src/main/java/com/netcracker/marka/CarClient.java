@@ -13,13 +13,13 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarClient   {
+public class CarClient {
 
     private UUID id;
 
     private String summer;
 
-    private Date ear;
+    private String ear;
 
     private Double run;
 
@@ -27,4 +27,4 @@ public class CarClient   {
 
     private Marka marka;
 
-   }
+}

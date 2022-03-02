@@ -1,17 +1,28 @@
 package com.netcracker.user;
 
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@ToString
 @AllArgsConstructor
-public class Employer   {
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.NAME,
+//        include = JsonTypeInfo.As.PROPERTY,
+//        property = "type")
+//@JsonSubTypes({
+//        @JsonSubTypes.Type(value = MasterReceiver.class, name = "masterReceiver")
+//})
+public class Employer {
 
     private UUID id;
 
@@ -21,7 +32,7 @@ public class Employer   {
 
     private String mail;
 
-    private String descriptions;
+    private String description;
 
     private Role role;
 

@@ -1,10 +1,10 @@
-package servisec.Impl;
+package com.netcracker.servisec.Impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.netcracker.servisec.CRUDServices;
 import com.netcracker.user.User;
-import servisec.UserServices;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,17 +15,17 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
-public class UserServicesImpl implements UserServices {
+public class CRUDServicesImpl implements CRUDServices {
 
 
     @Override
-    public Optional<List<JsonNode>> getUserByName(String name, ObjectMapper objectMapper, File file) throws IOException {
+    public Optional<List<JsonNode>> getByName(String name, String fild, ObjectMapper objectMapper, File file) throws IOException {
         try {
             if (file != null && file.exists()) {
                 ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-                return Optional.of(arrayNode.findParents("name")
+                return Optional.of(arrayNode.findParents(fild)
                         .stream()
-                        .filter(x -> x.findValue("name").asText().equalsIgnoreCase(name))
+                        .filter(x -> x.findValue(fild).asText().equalsIgnoreCase(name))
                         .collect(Collectors.toList()));
             }
         } catch (IOException exception) {
@@ -35,20 +35,24 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public boolean addUser(User user, ObjectMapper objectMapper, File file) {
+    public boolean addObject(Object o, ObjectMapper objectMapper, File file) {
         try {
-            ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-            arrayNode.insertPOJO(arrayNode.size() + 1, user);
-            objectMapper.writeValue(file, arrayNode);
-            return true;
+            if (file != null && file.exists()) {
+                ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
+                arrayNode.insertPOJO(arrayNode.size() + 1, o);
+                objectMapper.writeValue(file, arrayNode);
+                return true;
+            } else {
+                objectMapper.writeValue(file, o);
+            }
         } catch (IOException ex) {
-            Logger.getLogger(UserServicesImpl.class.getSimpleName()).warning("Error in add User:" + ex);
+            Logger.getLogger(CRUDServicesImpl.class.getSimpleName()).warning("Error in add User:" + ex);
         }
         return false;
     }
 
     @Override
-    public boolean deleteUserById(String id, ObjectMapper objectMapper, File file) {
+    public boolean deleteById(String id, ObjectMapper objectMapper, File file) {
         try {
             ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
             objectMapper.writeValue(file, arrayNode.findParents("id")
@@ -58,19 +62,20 @@ public class UserServicesImpl implements UserServices {
                     .collect(Collectors.toList()));
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(UserServicesImpl.class.getSimpleName()).warning("Error in  delete User:" + ex);
+            Logger.getLogger(CRUDServicesImpl.class.getSimpleName()).warning("Error in  delete User:" + ex);
         }
         return false;
     }
 
     @Override
-    public ArrayNode getAllUserArrayNode(ObjectMapper objectMapper, File file) throws IOException {
+    public ArrayNode getAllArrayNode(ObjectMapper objectMapper, File file) throws IOException {
         return (ArrayNode) objectMapper.readTree(file);
     }
 
-    @Override
-    public List<User> getAllUserByListUsers(ObjectMapper objectMapper, File file) throws IOException {
-        return List.of(objectMapper.readValue(new File("src/main/resources/entry.json"), User[].class));
+
+    public List<Object> getAllByListUser(ObjectMapper objectMapper, File file) throws IOException {
+        return List.of(objectMapper.readValue(file, User[].class));
     }
+
 
 }

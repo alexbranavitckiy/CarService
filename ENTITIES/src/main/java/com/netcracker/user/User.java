@@ -5,10 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -33,7 +31,6 @@ public class User implements Serializable {
 
     private String password;
 
-    @JsonProperty("roleuser")
     private RoleUser roleuser;
 
 
