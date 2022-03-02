@@ -2,12 +2,8 @@ package com.netcracker.menu.login;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.login.registration.RegistrationClient;
-import com.netcracker.servisec.CRUDServices;
-import com.netcracker.servisec.Impl.CRUDServicesImpl;
 import com.netcracker.servisec.LoginServices;
-import com.netcracker.user.Client;
 import com.netcracker.user.Role;
-import com.netcracker.user.RoleUser;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -38,7 +34,11 @@ public class LoginMenu implements Menu {
                     String login = in.next();
                     System.out.println("Enter password");
                     String password = in.next();
-                    loginServices.searchByUserLoginAndPassword(login, password);
+                    try {
+                     loginServices.searchByUserLoginAndPassword(login, password);
+                    } catch (Exception e) {
+                        System.out.println("User is not found");
+                    }
                     new EnterLogin(Role.RECEPTIONIST.toString()).run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;

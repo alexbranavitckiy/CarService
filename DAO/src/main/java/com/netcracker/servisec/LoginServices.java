@@ -1,6 +1,7 @@
 package com.netcracker.servisec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netcracker.errors.EmptySearchException;
 import com.netcracker.user.*;
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,11 +11,9 @@ public class LoginServices {
 
 
     private final FileService fileService = new FileService();
-    private  Client client;
-    private  Master master;
-    private MasterReceiver masterReceiver;
 
-    public void searchByUserLoginAndPassword(String login, String password) {
+
+    public Object searchByUserLoginAndPassword(String login, String password) throws EmptySearchException {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             switch ("diamond") {
@@ -24,8 +23,7 @@ public class LoginServices {
                                 x.getLogin().equalsIgnoreCase(login) && x.getPassword().equalsIgnoreCase(password)
                         )).findFirst();
                         if (client.isPresent()) {
-                            this.client=client.get();
-                            break;
+                            return client.get();
                         }
                     }
                 }
@@ -35,8 +33,7 @@ public class LoginServices {
                                 x.getLogin().equalsIgnoreCase(login) && x.getPassword().equalsIgnoreCase(password)
                         ).findFirst());
                         if (master.isPresent()) {
-                            this.master=master.get();
-                            break;
+                            return master.get();
                         }
                     }
                 }
@@ -46,42 +43,19 @@ public class LoginServices {
                                 x.getLogin().equalsIgnoreCase(login) && x.getPassword().equalsIgnoreCase(password)
                         ).findFirst());
                         if (masterReceiver.isPresent()) {
-                            this.masterReceiver=masterReceiver.get();
-                            break;
+                            return masterReceiver.get();
                         }
                     }
                 }
                 case "3": {
+
                     break;
                 }
             }
         } catch (IOException e) {
             System.out.println("An input error occurred please try again later. We are already working on it");
         }
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public Master getMaster() {
-        return master;
-    }
-
-    public void setMaster(Master master) {
-        this.master = master;
-    }
-
-    public MasterReceiver getMasterReceiver() {
-        return masterReceiver;
-    }
-
-    public void setMasterReceiver(MasterReceiver masterReceiver) {
-        this.masterReceiver = masterReceiver;
+        throw new EmptySearchException("User is not found");
     }
 }
 
