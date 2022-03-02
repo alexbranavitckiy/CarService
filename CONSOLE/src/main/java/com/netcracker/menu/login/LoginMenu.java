@@ -4,8 +4,12 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.login.registration.RegistrationClient;
 import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.Impl.CRUDServicesImpl;
+import com.netcracker.servisec.LoginServices;
 import com.netcracker.user.Client;
+import com.netcracker.user.Role;
+import com.netcracker.user.RoleUser;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 
@@ -13,7 +17,9 @@ public class LoginMenu implements Menu {
 
     private final String FILE = "src/main/resources/client.json";
     private boolean flag = true;
-    private final String NAME_MENU="Login menu";
+    private final String NAME_MENU = "Login menu";
+
+    private final LoginServices loginServices = new LoginServices();
 
     @Override
     public void preMessage(String parentsName) {
@@ -23,17 +29,23 @@ public class LoginMenu implements Menu {
     }
 
     @Override
-    public void run(Scanner in, String parentsName) {
+    public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
         while (flag) {
             switch (in.next()) {
                 case "2": {
-                    new EnterLogin().run(in, NAME_MENU);
+                    System.out.println("Enter login.");
+                    String login = in.next();
+                    System.out.println("Enter password");
+                    String password = in.next();
+                    loginServices.searchByUserLoginAndPassword(login, password);
+                    new EnterLogin(Role.RECEPTIONIST.toString()).run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;
                 }
                 case "3": {
-                    new RegistrationClient().run(in,NAME_MENU);
+                    new RegistrationClient().run(in, NAME_MENU);
+                    this.preMessage(parentsName);
                     break;
                 }
                 case "1": {

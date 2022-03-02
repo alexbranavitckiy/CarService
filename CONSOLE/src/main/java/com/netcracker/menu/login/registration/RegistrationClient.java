@@ -23,9 +23,9 @@ public class RegistrationClient implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "2": {
-                    break;
-                }
-                case "3": {
+
+
+
 
                     break;
                 }

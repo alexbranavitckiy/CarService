@@ -2,6 +2,7 @@ package com.netcracker.menu.startMenu;
 
 import com.netcracker.menu.login.LoginMenu;
 import com.netcracker.menu.Menu;
+import com.netcracker.menu.userMenu.InfoMenu;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -11,7 +12,7 @@ public class StartMenu implements Menu {
 
     private final String FILE = "src/main/resources/order.json";
     private boolean flag = true;
-    private final String NAME_MENU="Back to main menu";
+    private final String NAME_MENU = "Back to main menu";
 
     @Override
     public void preMessage(String parentsName) {
@@ -26,7 +27,8 @@ public class StartMenu implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "4": {
-                    System.out.println("Information.");
+                    new InfoMenu().run(in, NAME_MENU);
+                    this.preMessage(parentsName);
                     break;
                 }
                 case "2": {
@@ -45,8 +47,4 @@ public class StartMenu implements Menu {
             }
         }
     }
-
-
-
-
 }
