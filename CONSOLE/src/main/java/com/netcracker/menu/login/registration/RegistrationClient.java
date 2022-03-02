@@ -25,8 +25,6 @@ public class RegistrationClient implements Menu {
                 case "2": {
 
 
-
-
                     break;
                 }
                 case "1": {

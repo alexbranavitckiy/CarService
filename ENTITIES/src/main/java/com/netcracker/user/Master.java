@@ -19,6 +19,12 @@ public class Master extends Employer  {
 
     private List<Outfit> outfits;
 
+    @Builder
+    public Master(UUID id, String name, String phone, String mail, String description, Role role, String login, String password, String homeAddress, Qualification qualificationEnum, String education, List<Outfit> outfits) {
+        super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum, education);
+        this.outfits = outfits;
+    }
+
     @Override
     public String toString() {
         return "Master{" +
