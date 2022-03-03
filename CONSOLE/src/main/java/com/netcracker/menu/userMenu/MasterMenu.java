@@ -15,5 +15,7 @@ public class MasterMenu  implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
 
+        System.out.println("MasterMenu");
+
     }
 }

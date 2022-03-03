@@ -13,11 +13,10 @@ public class Validator {
             "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                     + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
-
     private final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
     public boolean inEmail(String email) throws InvalidValuesException {
-        if (email != null && email.isBlank()) {
+        if (email != null && !email.isBlank()) {
             Matcher matcher = pattern.matcher(email);
             return matcher.matches();
         } else throw new InvalidValuesException("Invalid values, please try again");

@@ -14,6 +14,6 @@ public class MasterReceiverMenu implements Menu {
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
-
+        System.out.println("MasterReceiverMenu");
     }
 }

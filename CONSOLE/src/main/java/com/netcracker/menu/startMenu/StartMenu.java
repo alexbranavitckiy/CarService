@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 public class StartMenu implements Menu {
 
-    private final String FILE = "src/main/resources/order.json";
     private boolean flag = true;
     private final String NAME_MENU = "Back to main menu";
 

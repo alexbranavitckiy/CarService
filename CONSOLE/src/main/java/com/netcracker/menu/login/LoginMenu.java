@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class LoginMenu implements Menu {
 
-    private final String FILE = "src/main/resources/client.json";
     private boolean flag = true;
     private final String NAME_MENU = "Login menu";
 
@@ -34,12 +33,8 @@ public class LoginMenu implements Menu {
                     String login = in.next();
                     System.out.println("Enter password");
                     String password = in.next();
-                    try {
-                     loginServices.searchByUserLoginAndPassword(login, password);
-                    } catch (Exception e) {
-                        System.out.println("User is not found");
-                    }
-                    new EnterLogin(Role.RECEPTIONIST.toString()).run(in, NAME_MENU);
+                    System.out.println(loginServices.searchByUserLoginAndPassword(login, password));
+                    new EnterLogin().run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;
                 }

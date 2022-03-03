@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class RegistrationClient implements Menu {
 
-    private final String FILE = "src/main/resources/client.json";
     private boolean flag = true;
 
 
@@ -23,8 +22,6 @@ public class RegistrationClient implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "2": {
-
-
                     break;
                 }
                 case "1": {
