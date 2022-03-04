@@ -5,7 +5,6 @@ import com.netcracker.menu.userMenu.ClientMenu;
 import com.netcracker.menu.userMenu.MasterMenu;
 import com.netcracker.menu.userMenu.MasterReceiverMenu;
 import com.netcracker.servisec.UserSession;
-import com.netcracker.user.Role;
 
 import java.io.IOException;
 import java.util.Scanner;

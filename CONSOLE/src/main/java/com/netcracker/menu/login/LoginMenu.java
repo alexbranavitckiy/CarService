@@ -2,8 +2,9 @@ package com.netcracker.menu.login;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.login.registration.RegistrationClient;
-import com.netcracker.servisec.LoginServices;
-import com.netcracker.user.Role;
+import com.netcracker.servisec.Impl.LoginServicesImpl;
+import com.netcracker.servisec.LoginService;
+
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -14,7 +15,7 @@ public class LoginMenu implements Menu {
     private boolean flag = true;
     private final String NAME_MENU = "Login menu";
 
-    private final LoginServices loginServices = new LoginServices();
+    private final LoginService loginServices = new LoginServicesImpl();
 
     @Override
     public void preMessage(String parentsName) {

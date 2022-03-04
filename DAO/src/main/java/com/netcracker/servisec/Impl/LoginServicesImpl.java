@@ -1,15 +1,15 @@
-package com.netcracker.servisec;
+package com.netcracker.servisec.Impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netcracker.errors.EmptySearchException;
+import com.netcracker.servisec.FileService;
+import com.netcracker.servisec.LoginService;
+import com.netcracker.servisec.UserSession;
 import com.netcracker.user.*;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class LoginServices {
-
+public class LoginServicesImpl implements LoginService {
 
     private final FileService fileService = new FileService();
 
