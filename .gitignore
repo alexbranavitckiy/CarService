@@ -9,6 +9,7 @@ HELP.md
 *.ear
 *.nar
 *.json
+*.err
 hs_err_pid*
 ##############################
 ## Maven

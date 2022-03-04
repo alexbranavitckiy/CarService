@@ -19,9 +19,9 @@ public class LoginMenu implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Press 1:" + parentsName);
-        System.out.println("Enter 2 to login :");
-        System.out.println("Enter 3 to registration :");
+        System.out.println("Enter 1:" + parentsName);
+        System.out.println("Enter 2 to login.");
+        System.out.println("Enter 3 to registration.");
     }
 
     @Override

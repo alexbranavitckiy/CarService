@@ -37,6 +37,10 @@ public class UserSession {
         Arrays.stream(o).forEach(x -> x = null);
     }
 
+    public static void closeSession() {
+      closeSession(masterReceiverSession,masterSession,clientSession);
+    }
+
     public static Optional<MasterReceiver> getMasterReceiverSession() {//return immutable object
         return Optional.ofNullable(masterReceiverSession);
     }

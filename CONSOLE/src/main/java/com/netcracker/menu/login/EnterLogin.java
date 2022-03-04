@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class EnterLogin implements Menu {
 
-    private boolean flag = true;
 
     EnterLogin() {
 
@@ -26,13 +25,13 @@ public class EnterLogin implements Menu {
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
         if (UserSession.getMasterSession().isPresent()) {
-            new MasterMenu().run(in, "");
+            new MasterMenu().run(in, "Go out");
         }
         if (UserSession.getMasterReceiverSession().isPresent()) {
-            new MasterReceiverMenu().run(in, "");
+            new MasterReceiverMenu().run(in, "Go out");
         }
         if (UserSession.getClientSession().isPresent()) {
-            new ClientMenu().run(in, "");
+            new ClientMenu().run(in, "Go out");
         }
     }
 }

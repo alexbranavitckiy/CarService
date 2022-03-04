@@ -15,6 +15,7 @@ public class FileService {
     private final String PATH_USER = "src/main/resources/user.json";
     private final String PATH_MASTER = "src/main/resources/master.json";
     private final String PATH_RECEIVER = "src/main/resources/receiver.json";
+    private final String NOT_FOUND="User is not found";
     private final File user = new File(PATH_USER);
     private final File master = new File(PATH_MASTER);
     private final File receiver = new File(PATH_RECEIVER);
@@ -56,6 +57,9 @@ public class FileService {
         return Files.exists(receiver.toPath());
     }
 
+    public String getNOT_FOUND() {
+        return NOT_FOUND;
+    }
 
     public void initMethod() throws IOException {//Data for the first launch of the application
         String test = "test";
@@ -64,7 +68,7 @@ public class FileService {
         Client client = Client.builder()
                 .password(test)
                 .description(test)
-                .id(new UUID(12, 21))
+                .id(UUID.randomUUID())
                 .email(test)
                 .login(test+"1")
                 .name(test).roleuser(RoleUser.REGISTERED).build();
@@ -73,7 +77,7 @@ public class FileService {
         Master master = Master.builder()
                 .mail(test)
                 .description(test)
-                .id(new UUID(134, 124))
+                .id(UUID.randomUUID())
                 .description(test)
                 .password(test)
                 .name(test)
@@ -85,7 +89,7 @@ public class FileService {
                 .mail(test)
                 .password(test)
                 .description(test)
-                .id(new UUID(134, 124))
+                .id(UUID.randomUUID())
                 .name(test)
                 .login(test+"3")
                 .build();

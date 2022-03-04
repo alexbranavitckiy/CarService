@@ -21,10 +21,37 @@ public class CarClient {
 
     private String ear;
 
+    private String metadataCar;
+
     private Double run;
 
     private List<CarBreakdown> carBreakdownList;
 
     private Marka marka;
 
+
+    public String toStringClientWithoutMark() {
+        return "Summer='" + summer + '\'' +
+                ", ear='" + ear + '\'' +
+                ", metadataCar='" + metadataCar + '\'' +
+                ", run=" + run;
+    }
+
+
+    public String toStringCarBreakdownList() {
+        return " Summer='" + summer + '\'' +
+                ", ear='" + ear + '\'' +
+                ", metadataCar='" + metadataCar + '\'' +
+                ", run=" + run +
+                ", carBreakdownList=" + carBreakdownList +
+                ", marka=" + marka;
+    }
+
+    public String toStringClient() {
+        return "Summer='" + summer + '\'' +
+                ", ear='" + ear + '\'' +
+                ", metadataCar='" + metadataCar + '\'' +
+                ", run=" + run +
+                ", marka=" + marka;
+    }
 }

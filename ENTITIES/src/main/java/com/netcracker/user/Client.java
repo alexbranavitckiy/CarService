@@ -30,7 +30,7 @@ public class Client extends User {
     @Override
     public String toString() {
         return "Client{" +
-                ", orders=" + orders +
+                " orders=" + orders +
                 ", carClients=" + carClients +
                 "} " + super.toString();
     }

@@ -13,7 +13,10 @@ public class LoginServicesImpl implements LoginService {
 
     private final FileService fileService = new FileService();
 
+
+
     public String searchByUserLoginAndPassword(String login, String password) throws IOException {
+        UserSession.closeSession();
         ObjectMapper objectMapper = new ObjectMapper();
         switch ("diamond") {//all cases are executed until the user is found
             case "diamond": {
@@ -65,8 +68,7 @@ public class LoginServicesImpl implements LoginService {
                 }
             }
         }
-        System.out.println("User is not found");
-        return "User is not found";
+        return fileService.getNOT_FOUND();
     }
 }
 

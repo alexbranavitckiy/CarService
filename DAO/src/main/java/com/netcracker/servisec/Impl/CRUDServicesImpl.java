@@ -4,28 +4,31 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.netcracker.servisec.CRUDServices;
+import com.netcracker.servisec.SearchServices;
 import com.netcracker.user.User;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 public class CRUDServicesImpl implements CRUDServices {
 
 
     @Override
-    public Optional<List<JsonNode>> getByName(String name, String fild, ObjectMapper objectMapper, File file) throws IOException {
+    public Optional<List<JsonNode>> getByName(String name, String field, ObjectMapper objectMapper, File file) throws IOException {
         try {
             if (file != null && file.exists()) {
                 ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(file);
-                return Optional.of(arrayNode.findParents(fild)
+                return Optional.of(arrayNode.findParents(field)
                         .stream()
-                        .filter(x -> x.findValue(fild).asText().equalsIgnoreCase(name))
+                        .filter(x -> x.findValue(field).asText().equalsIgnoreCase(name))
                         .collect(Collectors.toList()));
             }
         } catch (IOException exception) {
@@ -66,6 +69,17 @@ public class CRUDServicesImpl implements CRUDServices {
         }
         return false;
     }
+
+    @Override
+    public boolean updateObject(Object o, String id, ObjectMapper objectMapper, File file) {
+        if (this.deleteById(id, objectMapper, file) &&
+                this.addObject(o, objectMapper, file)) {
+            return true;
+        }
+        log.error("Error deleting and adding user!!!");
+        return false;
+    }
+
 
     @Override
     public ArrayNode getAllArrayNode(ObjectMapper objectMapper, File file) throws IOException {

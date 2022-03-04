@@ -21,5 +21,5 @@ public interface CRUDServices {
 
     ArrayNode getAllArrayNode(ObjectMapper objectMapper, File file) throws IOException;
 
-
+    boolean updateObject(Object o, String id, ObjectMapper objectMapper, File file);
 }
