@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor

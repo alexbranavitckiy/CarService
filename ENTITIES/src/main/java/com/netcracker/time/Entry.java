@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)

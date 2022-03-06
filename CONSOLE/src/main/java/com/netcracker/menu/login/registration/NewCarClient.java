@@ -2,7 +2,6 @@ package com.netcracker.menu.login.registration;
 
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
-import com.netcracker.servisec.Impl.CRUDServicesImpl;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -20,7 +19,7 @@ public class NewCarClient implements Menu {
         carClient.setSummer(in.next());
         carClient.setId(UUID.randomUUID());
         System.out.println("Enter vehicle mileage");
-        carClient.setRun(in.nextDouble());
+        carClient.setRun(in.next());
         System.out.println("Enter year of car");
         carClient.setEar(in.next());
         System.out.println("Enter number of the car");

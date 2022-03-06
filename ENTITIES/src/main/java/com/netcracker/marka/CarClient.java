@@ -23,7 +23,7 @@ public class CarClient {
 
     private String metadataCar;
 
-    private Double run;
+    private String run;
 
     private List<CarBreakdown> carBreakdownList;
 

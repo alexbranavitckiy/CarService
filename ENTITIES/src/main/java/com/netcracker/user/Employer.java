@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 //@JsonTypeInfo(
 //        use = JsonTypeInfo.Id.NAME,

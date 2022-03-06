@@ -12,26 +12,13 @@ import java.util.UUID;
 
 public class FileService {
 
-    private final String PATH_USER = "src/main/resources/user.json";
-    private final String PATH_MASTER = "src/main/resources/master.json";
-    private final String PATH_RECEIVER = "src/main/resources/receiver.json";
-    private final String NOT_FOUND="User is not found";
-    private final File user = new File(PATH_USER);
-    private final File master = new File(PATH_MASTER);
-    private final File receiver = new File(PATH_RECEIVER);
-
-
-    public String getPATH_USER() {
-        return PATH_USER;
-    }
-
-    public String getPATH_MASTER() {
-        return PATH_MASTER;
-    }
-
-    public String getPATH_RECEIVER() {
-        return PATH_RECEIVER;
-    }
+    public static final String USER_PATH = "src/main/resources/user.json";
+    public static final String MASTER_PATH = "src/main/resources/master.json";
+    public static final String RECEIVER_PATH = "src/main/resources/receiver.json";
+    public static final String NOT_FOUND = "User is not found";
+    private final File user = new File(USER_PATH);
+    private final File master = new File(MASTER_PATH);
+    private final File receiver = new File(RECEIVER_PATH);
 
     public File getUserFile() {
         return user;
@@ -57,9 +44,7 @@ public class FileService {
         return Files.exists(receiver.toPath());
     }
 
-    public String getNOT_FOUND() {
-        return NOT_FOUND;
-    }
+
 
     public void initMethod() throws IOException {//Data for the first launch of the application
         String test = "test";
@@ -70,7 +55,7 @@ public class FileService {
                 .description(test)
                 .id(UUID.randomUUID())
                 .email(test)
-                .login(test+"1")
+                .login(test + "1")
                 .name(test).roleuser(RoleUser.REGISTERED).build();
         objectMapper.writeValue(getUserFile(), List.of(client, client));
 
@@ -81,7 +66,7 @@ public class FileService {
                 .description(test)
                 .password(test)
                 .name(test)
-                .login(test+"2")
+                .login(test + "2")
                 .build();
         objectMapper.writeValue(getMasterFile(), List.of(master, master));
 
@@ -91,7 +76,7 @@ public class FileService {
                 .description(test)
                 .id(UUID.randomUUID())
                 .name(test)
-                .login(test+"3")
+                .login(test + "3")
                 .build();
         objectMapper.writeValue(getReceiverFile(), List.of(masterReceiver, masterReceiver));
     }

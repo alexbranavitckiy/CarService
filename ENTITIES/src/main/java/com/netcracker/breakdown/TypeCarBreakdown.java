@@ -11,7 +11,6 @@ import lombok.ToString;
 import java.util.UUID;
 
 @Data
-@ToString
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor

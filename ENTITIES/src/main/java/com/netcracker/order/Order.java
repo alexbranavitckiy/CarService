@@ -14,7 +14,6 @@ import java.util.UUID;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
 @Builder
 public class Order {

@@ -68,7 +68,7 @@ public class LoginServicesImpl implements LoginService {
                 }
             }
         }
-        return fileService.getNOT_FOUND();
+        return FileService.NOT_FOUND;
     }
 }
 

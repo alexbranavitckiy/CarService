@@ -1,34 +1,30 @@
 package com.netcracker.menu.car;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
+import com.netcracker.menu.login.registration.EditCar;
 import com.netcracker.menu.login.registration.NewCarClient;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.FileService;
-import com.netcracker.servisec.Impl.CRUDServicesImpl;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;
-import com.netcracker.user.Client;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 
 public class CarMenu implements Menu {
 
     private boolean flag = true;
-    private ClientServices clientServices = new ClientServicesImpl();
+    private final ClientServices clientServices = new ClientServicesImpl();
 
     @Override
     public void preMessage(String nameMenu) {
         System.out.println("Enter 1." + nameMenu);
         System.out.println("Enter 2. Display a list of cars");
         System.out.println("Enter 5. Select a car to edit");
+        System.out.println("Enter 6 to add car data");
     }
 
     @Override
@@ -60,34 +56,41 @@ public class CarMenu implements Menu {
                         if (x.getCarClients() != null) {
                             x.getCarClients().forEach(CarClient::toStringClientWithoutMark);
                             System.out.println(x.getCarClients());
-                        } else {
-                            System.out.println("No car data found");
                         }
                     });
-                    System.out.println("Enter car number(metadata car)");
-                    String metadataCar = in.next();
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients() != null) {
+                            System.out.println("Enter car number(metadata car)");
+                            String metadataCar = in.next();
                             x.getCarClients()
                                     .stream().filter(Objects::nonNull)
                                     .filter(z -> z.getMetadataCar().equalsIgnoreCase(metadataCar)
                                     ).forEach(System.out::println);
+                            System.out.println("Edit selected car?");
+                            System.out.println("Enter 1 to continue editing");
+                            System.out.println("Enter 2 to edit");
+                            if (in.next().equalsIgnoreCase("2")) {
+                                this.preMessage(parentsName);
+                            } else {
+                                EditCar editCar = new EditCar("Edit menu");
+                                try {
+                                    editCar.run(in, "Car menu");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                if (clientServices.updateClientCar(editCar.getCarClient()))
+                                    System.out.println("Data entered successfully");
+                                else
+                                    System.out.println("An input error occurred while entering data. Retry data change");
+                                this.preMessage(parentsName);
+                            }
                         } else {
-                            System.out.println("Vehicle number not found");
+                            System.out.println("No car data found.");
                             System.out.println("Enter 2. Display a list of cars");
                             System.out.println("Enter 6 to add car data");
                         }
                     });
-                    this.preMessage(parentsName);
-                    System.out.println("Edit selected car?");
-                    System.out.println("Enter 1 to edit");
-                    System.out.println("Enter 2 to exit the editor");
-                    if (in.next().equalsIgnoreCase("2")) {
-                        this.preMessage(parentsName);
-                        break;
-                    } else {
-                        // add!!!
-                    }
+
                     break;
 
                 }
@@ -112,9 +115,6 @@ public class CarMenu implements Menu {
             }
         }
     }
-
-
-
 
 
 }
