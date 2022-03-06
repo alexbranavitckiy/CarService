@@ -18,7 +18,7 @@ public class UserSession {
     private UserSession() {
     }
 
-    public static void openSession(Object object) {
+    public static void   openSession(Object object) {
         if (clientSession == null && object instanceof Client) {
             clientSession = (Client) object;
             closeSession(masterSession, masterReceiverSession);
@@ -32,6 +32,26 @@ public class UserSession {
             closeSession(clientSession, masterSession);
         }
     }
+
+    public static boolean updateSession(Object object) {
+        if (object instanceof Client) {
+            clientSession = (Client) object;
+            closeSession(masterSession, masterReceiverSession);
+            return true;
+        }
+        if (object instanceof Master) {
+            masterSession = (Master) object;
+            closeSession(clientSession, masterReceiverSession);
+            return true;
+        }
+        if (object instanceof MasterReceiver) {
+            masterReceiverSession = (MasterReceiver) object;
+            closeSession(clientSession, masterSession);
+            return true;
+        }
+        return false;
+    }
+
 
     public static void closeSession(Object... o) {
         Arrays.stream(o).forEach(x -> x = null);

@@ -11,10 +11,11 @@ import java.util.Scanner;
 @Slf4j
 public class Main {
     public static void main(String[] arg) throws IOException {
-        Scanner in = new Scanner(System.in);
-        new FileService().initMethod();//method of entering init data
-        new StartMenu().run(in, "");
-        in.close();
+        try (Scanner in = new Scanner(System.in);) {
+            new FileService().initMethod();//method of entering init data
+            new StartMenu().run(in, "");
+        }
+
     }
 }
 

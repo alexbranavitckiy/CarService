@@ -6,6 +6,7 @@ import lombok.*;
 
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -16,12 +17,12 @@ import java.util.UUID;
 public class Client extends User {
 
 
-    private List<Order> orders;
+    private Set<Order> orders;
 
-    private List<CarClient> carClients;
+    private Set<CarClient> carClients;
 
     @Builder
-    public Client(UUID id, String name, String phone, String email, String description, String login, String password, RoleUser roleuser, List<Order> orders, List<CarClient> carClients) {
+    public Client(UUID id, String name, String phone, String email, String description, String login, String password, RoleUser roleuser, Set<Order> orders, Set<CarClient> carClients) {
         super(id, name, phone, email, description, login, password, roleuser);
         this.orders = orders;
         this.carClients = carClients;

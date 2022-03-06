@@ -16,7 +16,7 @@ public class ClientMenu implements Menu {
         System.out.println("Enter 2 for contact information");
         System.out.println("Enter 3 to open recording menu/Sign up for repairs./View machine status.");//-
         System.out.println("Enter 4 to get information about the car/View the list of cars./Edit information on car");
-        System.out.println("Enter 5 to edit information about the client");//-
+        System.out.println("Enter 5 to edit information about the client");
     }
 
     @Override

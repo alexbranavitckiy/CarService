@@ -15,9 +15,9 @@ public class StartMenu implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 4, for information.");
-        System.out.println("Enter 2, to login as a registered user. ");
         System.out.println("Enter 1,to exit the application. ");
+        System.out.println("Enter 2, to login as a registered user. ");
+        System.out.println("Enter 3, for information.");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class StartMenu implements Menu {
         this.preMessage(parentsName);
         while (flag) {
             switch (in.next()) {
-                case "4": {
+                case "3": {
                     new InfoMenu().run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;

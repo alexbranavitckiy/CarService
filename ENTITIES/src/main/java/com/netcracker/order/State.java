@@ -6,6 +6,6 @@ public enum State {
     IN_WORK,
     CAR_GIVEN,
     CAR_ACCEPTED,
-    WAITE_CLIENT,
+    WAIT_CLIENT,
     BID
 }

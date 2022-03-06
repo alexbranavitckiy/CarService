@@ -1,5 +1,6 @@
 package com.netcracker.menu.login.registration;
 
+import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
@@ -7,8 +8,10 @@ import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class RegistrationClient implements Menu {
 
@@ -35,10 +38,12 @@ public class RegistrationClient implements Menu {
                     System.out.println("Enter phone");
                     client.setPhone(in.next());
                     System.out.println("Filling in car details");
+                    Set<CarClient> carClientSet = new HashSet<>();
                     NewCarClient carClient = new NewCarClient();
                     carClient.run(in, "");
                     if (carClient.getCarClient().isPresent()) {
-                        client.setCarClients(List.of(carClient.getCarClient().get()));
+                        client.setCarClients(new HashSet<>());
+                        client.getCarClients().add((carClient.getCarClient().get()));
                     } else {
                         System.out.println("Try again to enter information");
                         this.preMessage(parentsName);

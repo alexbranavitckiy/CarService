@@ -1,13 +1,12 @@
 package com.netcracker.marka;
 
 import com.netcracker.breakdown.CarBreakdown;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -30,28 +29,26 @@ public class CarClient {
     private Marka marka;
 
 
-    public String toStringClientWithoutMark() {
-        return "Summer='" + summer + '\'' +
+    @Override
+    public String toString() {
+        return "Your cars: summer='" + summer + '\'' +
                 ", ear='" + ear + '\'' +
                 ", metadataCar='" + metadataCar + '\'' +
-                ", run=" + run;
+                ", run='" + run + '\'' +
+                '}';
     }
 
 
-    public String toStringCarBreakdownList() {
-        return " Summer='" + summer + '\'' +
-                ", ear='" + ear + '\'' +
-                ", metadataCar='" + metadataCar + '\'' +
-                ", run=" + run +
-                ", carBreakdownList=" + carBreakdownList +
-                ", marka=" + marka;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarClient carClient = (CarClient) o;
+        return Objects.equals(id, carClient.id) && Objects.equals(summer, carClient.summer) && Objects.equals(ear, carClient.ear) && Objects.equals(metadataCar, carClient.metadataCar) && Objects.equals(run, carClient.run) && Objects.equals(carBreakdownList, carClient.carBreakdownList) && Objects.equals(marka, carClient.marka);
     }
 
-    public String toStringClient() {
-        return "Summer='" + summer + '\'' +
-                ", ear='" + ear + '\'' +
-                ", metadataCar='" + metadataCar + '\'' +
-                ", run=" + run +
-                ", marka=" + marka;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, summer, ear, metadataCar, run, carBreakdownList, marka);
     }
 }

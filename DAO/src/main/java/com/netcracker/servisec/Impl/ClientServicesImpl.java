@@ -15,6 +15,7 @@ public class ClientServicesImpl implements ClientServices {
     private final FileService fileService = new FileService();
     private final LoginService loginService = new LoginServicesImpl();
 
+
     public boolean addObjectInClient(Client o) throws IOException {
         if (loginService.searchByUserLoginAndPassword(o.getLogin(), o.getPassword()).equalsIgnoreCase(FileService.NOT_FOUND))
             return this.crudServices.addObject(o, objectMapper, fileService.getUserFile());
@@ -23,14 +24,15 @@ public class ClientServicesImpl implements ClientServices {
 
     @Override
     public boolean updateClient(Client client) {
-        return crudServices.updateObject(client, client.getId().toString(), new ObjectMapper(), fileService.getUserFile());
+        if (crudServices.updateObject(client, client.getId().toString(), new ObjectMapper(), fileService.getUserFile()))
+            return UserSession.updateSession(client);
+        return false;
     }
 
     @Override
     public boolean updateClientCar(CarClient carClient) {
         UserSession.getClientSession().get().getCarClients().stream().forEach(x -> {
             if (x.getId().equals(carClient.getId())) {
-                x = carClient;
             }
         });
         return this.updateClient(UserSession.getClientSession().get());

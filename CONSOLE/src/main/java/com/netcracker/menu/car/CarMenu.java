@@ -7,11 +7,13 @@ import com.netcracker.menu.login.registration.NewCarClient;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;
+import com.netcracker.user.Client;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 
 public class CarMenu implements Menu {
@@ -38,8 +40,8 @@ public class CarMenu implements Menu {
                 }
                 case "2": {
                     UserSession.getClientSession().ifPresent(x -> {
-                        if (x.getCarClients() != null) {
-                            x.getCarClients().forEach(CarClient::toStringClientWithoutMark);
+                        if (x.getCarClients().size() > 0) {
+                            // x.getCarClients().forEach(CarClient::toStringClientWithoutMark);
                             System.out.println(x.getCarClients());
                             System.out.println("Enter 5 to go to a specific car");
                             System.out.println("Enter 1.Close selection and editor menu");
@@ -52,14 +54,10 @@ public class CarMenu implements Menu {
                     break;
                 }
                 case "5": {
+                    Set<CarClient> carClientSet = UserSession.getClientSession().get().getCarClients();
                     UserSession.getClientSession().ifPresent(x -> {
-                        if (x.getCarClients() != null) {
-                            x.getCarClients().forEach(CarClient::toStringClientWithoutMark);
-                            System.out.println(x.getCarClients());
-                        }
-                    });
-                    UserSession.getClientSession().ifPresent(x -> {
-                        if (x.getCarClients() != null) {
+                        if (x.getCarClients().size()>0) {
+                            System.out.println(carClientSet);
                             System.out.println("Enter car number(metadata car)");
                             String metadataCar = in.next();
                             x.getCarClients()
@@ -72,7 +70,7 @@ public class CarMenu implements Menu {
                             if (in.next().equalsIgnoreCase("2")) {
                                 this.preMessage(parentsName);
                             } else {
-                                EditCar editCar = new EditCar("Edit menu");
+                                EditCar editCar = new EditCar(metadataCar);
                                 try {
                                     editCar.run(in, "Car menu");
                                 } catch (IOException e) {
@@ -86,23 +84,20 @@ public class CarMenu implements Menu {
                             }
                         } else {
                             System.out.println("No car data found.");
-                            System.out.println("Enter 2. Display a list of cars");
+                            System.out.println("Enter 1.Close selection and editor menu");
                             System.out.println("Enter 6 to add car data");
                         }
                     });
-
                     break;
-
                 }
                 case "6": {
-                    NewCarClient carClient = new NewCarClient();
-                    carClient.run(in, "");
-                    if (UserSession.getClientSession().isPresent() && UserSession.getClientSession().get().getCarClients() != null) {
-                        UserSession.getClientSession().get().getCarClients().add(carClient.getCarClient().get());
-                    } else {
-                        UserSession.getClientSession().get().setCarClients(List.of(carClient.getCarClient().get()));
+                    NewCarClient newCarClient = new NewCarClient();
+                    newCarClient.run(in, "");
+                    Client client = UserSession.getClientSession().get();
+                    if (client.getCarClients() != null) {
+                        client.getCarClients().add(newCarClient.getCarClient().get());
                     }
-                    if (clientServices.updateClient(UserSession.getClientSession().get())) {
+                    if (clientServices.updateClient(client)) {
                         System.out.println("Data added successfully");
                     } else System.out.println("An error occurred while entering data, please try again");
                     this.preMessage(parentsName);
