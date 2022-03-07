@@ -18,7 +18,7 @@ public class UserSession {
     private UserSession() {
     }
 
-    public static void   openSession(Object object) {
+    public static void openSession(Object object) {
         if (clientSession == null && object instanceof Client) {
             clientSession = (Client) object;
             closeSession(masterSession, masterReceiverSession);
@@ -58,7 +58,7 @@ public class UserSession {
     }
 
     public static void closeSession() {
-      closeSession(masterReceiverSession,masterSession,clientSession);
+        closeSession(masterReceiverSession, masterSession, clientSession);
     }
 
     public static Optional<MasterReceiver> getMasterReceiverSession() {//return immutable object
@@ -67,6 +67,21 @@ public class UserSession {
 
     public static Optional<Master> getMasterSession() {//return immutable object
         return Optional.ofNullable(masterSession);
+    }
+
+    public static Client getCloneClientSession() {
+        return Client.builder()
+                .carClients(clientSession.getCarClients())
+                .description(clientSession.getDescription())
+                .id(clientSession.getId())
+                .email(clientSession.getEmail())
+                .name(clientSession.getName())
+                .password(clientSession.getPassword())
+                .roleuser(clientSession.getRoleuser())
+                .phone(clientSession.getPhone())
+                .login(clientSession.getLogin())
+                .carClients(clientSession.getCarClients())
+                .build();
     }
 
     public static Optional<Client> getClientSession() {//return immutable object

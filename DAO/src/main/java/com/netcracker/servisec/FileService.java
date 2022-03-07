@@ -47,6 +47,8 @@ public class FileService {
 
 
     public void initMethod() throws IOException {//Data for the first launch of the application
+
+
         String test = "test";
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -60,7 +62,7 @@ public class FileService {
                 .email(test)
                 .login(test + "1")
                 .name(test).roleuser(RoleUser.REGISTERED).build();
-        objectMapper.writeValue(getUserFile(), List.of(client, client));
+        objectMapper.writeValue(getUserFile(), List.of(client));
 
         Master master = Master.builder()
                 .mail(test)
@@ -71,7 +73,7 @@ public class FileService {
                 .name(test)
                 .login(test + "2")
                 .build();
-        objectMapper.writeValue(getMasterFile(), List.of(master, master));
+        objectMapper.writeValue(getMasterFile(), List.of(master));
 
         MasterReceiver masterReceiver = MasterReceiver.builder()
                 .mail(test)
@@ -81,7 +83,7 @@ public class FileService {
                 .name(test)
                 .login(test + "3")
                 .build();
-        objectMapper.writeValue(getReceiverFile(), List.of(masterReceiver, masterReceiver));
+        objectMapper.writeValue(getReceiverFile(), List.of(masterReceiver));
     }
 
 

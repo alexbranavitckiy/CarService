@@ -1,4 +1,4 @@
-package com.netcracker.menu.login.registration;
+package com.netcracker.menu.edit;
 
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class EditCar implements Menu {
 
     private CarClient carClient;
-    private final CarClient oldCarClient;
     private final StringBuilder stringNew = new StringBuilder(20);
 
 
@@ -23,7 +22,6 @@ public class EditCar implements Menu {
 
     public EditCar(String numberCar) {
         this.carClient = UserSession.getClientSession().get().getCarClients().stream().filter(x -> x.getMetadataCar().equalsIgnoreCase(numberCar)).findFirst().get();
-        this.oldCarClient = this.carClient;
     }
 
 
@@ -44,17 +42,6 @@ public class EditCar implements Menu {
         System.out.println("Enter number of the car");
         if (this.edit(this.carClient.getMetadataCar(), in)) {
             this.carClient.setSummer(stringNew.toString());
-        }
-        System.out.println("New car");
-        System.out.println(carClient);
-        System.out.println("Old car");
-        System.out.println(oldCarClient);
-        System.out.println("Save Changes? Enter 1-yes 2-no 3-go back to the old car");
-        if (in.next().equalsIgnoreCase("2")) {
-            this.run(in, parentsName);
-        }
-        if (in.next().equalsIgnoreCase("3")) {
-            carClient = oldCarClient;
         }
     }
 

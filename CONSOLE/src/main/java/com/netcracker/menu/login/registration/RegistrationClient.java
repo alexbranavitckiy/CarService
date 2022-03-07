@@ -8,15 +8,14 @@ import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class RegistrationClient implements Menu {
 
     private boolean flag = true;
     private final ClientServices clientServices = new ClientServicesImpl();
+
+
 
     @Override
     public void preMessage(String parentsName) {
@@ -49,6 +48,7 @@ public class RegistrationClient implements Menu {
                         this.preMessage(parentsName);
                         break;
                     }
+                    client.setId(UUID.randomUUID());
                     client.setRoleuser(RoleUser.REGISTERED);
                     if (clientServices.addObjectInClient(client)) {
                         System.out.println("User created successfully");

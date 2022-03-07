@@ -1,6 +1,7 @@
 package com.netcracker.marka;
 
 import com.netcracker.breakdown.CarBreakdown;
+import com.netcracker.user.Client;
 import lombok.*;
 
 
@@ -44,11 +45,14 @@ public class CarClient {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CarClient carClient = (CarClient) o;
-        return Objects.equals(id, carClient.id) && Objects.equals(summer, carClient.summer) && Objects.equals(ear, carClient.ear) && Objects.equals(metadataCar, carClient.metadataCar) && Objects.equals(run, carClient.run) && Objects.equals(carBreakdownList, carClient.carBreakdownList) && Objects.equals(marka, carClient.marka);
+        return Objects.equals(id, carClient.id);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, summer, ear, metadataCar, run, carBreakdownList, marka);
     }
+
+
+
 }

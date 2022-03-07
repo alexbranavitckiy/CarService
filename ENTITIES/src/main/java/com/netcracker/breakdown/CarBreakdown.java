@@ -28,6 +28,6 @@ public class CarBreakdown {
 
     private Double runCarSize;
 
-    private State stateCarBreakdown;
+    private State state;
 
     }

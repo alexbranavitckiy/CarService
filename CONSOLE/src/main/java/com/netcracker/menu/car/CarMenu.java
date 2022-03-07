@@ -2,7 +2,7 @@ package com.netcracker.menu.car;
 
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.login.registration.EditCar;
+import com.netcracker.menu.edit.EditCar;
 import com.netcracker.menu.login.registration.NewCarClient;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
@@ -10,7 +10,6 @@ import com.netcracker.servisec.UserSession;
 import com.netcracker.user.Client;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
@@ -41,7 +40,6 @@ public class CarMenu implements Menu {
                 case "2": {
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients().size() > 0) {
-                            // x.getCarClients().forEach(CarClient::toStringClientWithoutMark);
                             System.out.println(x.getCarClients());
                             System.out.println("Enter 5 to go to a specific car");
                             System.out.println("Enter 1.Close selection and editor menu");
@@ -56,7 +54,7 @@ public class CarMenu implements Menu {
                 case "5": {
                     Set<CarClient> carClientSet = UserSession.getClientSession().get().getCarClients();
                     UserSession.getClientSession().ifPresent(x -> {
-                        if (x.getCarClients().size()>0) {
+                        if (x.getCarClients().size() > 0) {
                             System.out.println(carClientSet);
                             System.out.println("Enter car number(metadata car)");
                             String metadataCar = in.next();
@@ -98,6 +96,7 @@ public class CarMenu implements Menu {
                         client.getCarClients().add(newCarClient.getCarClient().get());
                     }
                     if (clientServices.updateClient(client)) {
+                        System.out.println(client);
                         System.out.println("Data added successfully");
                     } else System.out.println("An error occurred while entering data, please try again");
                     this.preMessage(parentsName);
