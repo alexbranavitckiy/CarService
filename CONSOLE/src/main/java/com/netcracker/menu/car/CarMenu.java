@@ -3,7 +3,6 @@ package com.netcracker.menu.car;
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.edit.EditCar;
-import com.netcracker.menu.login.registration.NewCarClient;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;

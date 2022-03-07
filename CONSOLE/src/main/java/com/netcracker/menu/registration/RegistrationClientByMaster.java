@@ -1,26 +1,28 @@
-package com.netcracker.menu.login.registration;
+package com.netcracker.menu.registration;
 
-import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
+import com.netcracker.menu.car.NewCarClient;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.UUID;
 
-public class RegistrationClient implements Menu {
+public class RegistrationClientByMaster implements Menu {
 
     private boolean flag = true;
     private final ClientServices clientServices = new ClientServicesImpl();
-
-
+    private Client client;
 
     @Override
     public void preMessage(String parentsName) {
         System.out.println("Enter 1 " + parentsName);
-        System.out.println("Enter 2 to continue registration");
+        System.out.println("Enter 2 to continue");
+        System.out.println("Enter 3 to Create an order with these customers");
     }
 
     @Override
@@ -30,14 +32,7 @@ public class RegistrationClient implements Menu {
             switch (in.next()) {
                 case "2": {
                     Client client = new Client();
-                    System.out.println("Enter login");
-                    client.setLogin(in.next());
-                    System.out.println("Enter password");
-                    client.setPassword(in.next());
-                    System.out.println("Enter phone");
-                    client.setPhone(in.next());
                     System.out.println("Filling in car details");
-                    Set<CarClient> carClientSet = new HashSet<>();
                     NewCarClient carClient = new NewCarClient();
                     carClient.run(in, "");
                     if (carClient.getCarClient().isPresent()) {
@@ -47,10 +42,15 @@ public class RegistrationClient implements Menu {
                         System.out.println("Try again to enter information");
                         this.preMessage(parentsName);
                         break;
-                    }
+                    } // if the user is created by the master, the password and login is written as the car number
+                    client.setLogin(carClient.getCarClient().get().getMetadataCar());
+                    client.setPassword(carClient.getCarClient().get().getMetadataCar());
+                    System.out.println("Enter phone");
+                    client.setPhone(in.next());
                     client.setId(UUID.randomUUID());
-                    client.setRoleuser(RoleUser.REGISTERED);
-                    if (clientServices.addObjectInClient(client)) {
+                    client.setRoleuser(RoleUser.UNREGISTERED);
+                    this.client = client;
+                    if (clientServices.addObjectInClientNotOnline(client)) {
                         System.out.println("User created successfully");
                         this.flag = false;
                     } else {
@@ -63,12 +63,15 @@ public class RegistrationClient implements Menu {
                     this.flag = false;
                     break;
                 }
+                case "3": {
+
+                    break;
+                }
                 default: {
                     this.preMessage(parentsName);
                     break;
                 }
             }
-
         }
     }
 

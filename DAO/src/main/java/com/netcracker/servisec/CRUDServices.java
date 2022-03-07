@@ -1,5 +1,6 @@
 package com.netcracker.servisec;
 
+import com.netcracker.errors.WritingException;
 import com.netcracker.user.Client;
 
 import java.io.File;
@@ -10,9 +11,9 @@ import java.util.stream.Collectors;
 
 public interface CRUDServices {
 
-    void FindObjectBy(Client o, File file);
 
-    boolean addObject(Object o, File file);
+
+    boolean addObject(Object o, File file) throws WritingException;
 
     boolean deleteObjectById(String id, File file);
 

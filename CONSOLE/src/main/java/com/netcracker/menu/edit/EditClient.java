@@ -13,7 +13,6 @@ public class EditClient implements Menu {
     private Client client;
     private final StringBuilder stringNew = new StringBuilder(20);
 
-
     @Override
     public void preMessage(String parentsName) {
         System.out.println("Enter 1 " + parentsName);

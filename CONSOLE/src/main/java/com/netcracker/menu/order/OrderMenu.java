@@ -13,10 +13,9 @@ public class OrderMenu implements Menu {
     @Override
     public void preMessage(String parentsName) {
         System.out.println("You have entered the order menu");
-        System.out.println("Press 1:" + parentsName);
-        System.out.println("Press 3, to get a list of orders");
-        System.out.println("Press 2, to create order");
-
+        System.out.println("Enter 1 " + parentsName);
+        System.out.println("Enter 2 to create order");
+        System.out.println("Enter 3 to search and modify orders");
     }
 
     @Override
@@ -29,7 +28,9 @@ public class OrderMenu implements Menu {
                     break;
                 }
                 case "2": {
-                    System.out.println("Create order");
+                    new NewOrder().run(in, "Order menu");
+
+                    this.preMessage(parentsName);
                     break;
                 }
                 case "1": {

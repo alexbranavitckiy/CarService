@@ -1,38 +1,32 @@
 package com.netcracker.servisec.Impl;
 
-import com.netcracker.errors.EmptySearchException;
 import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.FileService;
 import com.netcracker.servisec.ObjectMapperServices;
-import com.netcracker.servisec.SearchServices;
 import com.netcracker.user.Client;
+import com.netcracker.user.MasterReceiver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
-public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Client> {
 
-    @Override
-    public List<Client> getAll(File file) throws EmptySearchException {
-        try {
-            return new ArrayList<>(List.of(ObjectMapperServices.getObjectMapper().readValue(new File(FileService.USER_PATH), Client[].class)));
-        } catch (IOException e) {
-            System.out.println("Output error, please try again");
-        }
-        throw new EmptySearchException("No orders available");
-    }
+@Slf4j
+public class CRUDServicesMasterReceiverImpl implements CRUDServices {
+
+
+    private final FileService fileService=new FileService();
+
+
 
     @Override
     public boolean addObject(Object o, File file) {
-        Client client = (Client) o;
+        MasterReceiver client = (MasterReceiver) o;
         try {
-            List<Client> list = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, Client[].class)));
+            List<MasterReceiver> list = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, MasterReceiver[].class)));
             list.add(client);
             ObjectMapperServices.getObjectMapper().writeValue(file, list);
             return true;
@@ -42,10 +36,11 @@ public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Clie
         return false;
     }
 
+
     @Override
     public boolean deleteObjectById(String id, File file) {
         try {
-            List<Client> clients = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, Client[].class)));
+            List<MasterReceiver> clients = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, MasterReceiver[].class)));
             ObjectMapperServices.getObjectMapper().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
@@ -56,7 +51,7 @@ public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Clie
 
     @Override
     public boolean updateObject(Object o, String id, File file) {
-        if (this.deleteObjectById(id, new File(FileService.USER_PATH)) && this.addObject(o, new File(FileService.USER_PATH))) {
+        if (this.deleteObjectById(id, fileService.getReceiverFile()) && this.addObject(o,fileService.getReceiverFile())) {
             return true;
         }
         log.error("Error deleting and adding user!!!");

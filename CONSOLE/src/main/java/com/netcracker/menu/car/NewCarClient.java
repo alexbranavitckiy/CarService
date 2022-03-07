@@ -1,4 +1,4 @@
-package com.netcracker.menu.login.registration;
+package com.netcracker.menu.car;
 
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
