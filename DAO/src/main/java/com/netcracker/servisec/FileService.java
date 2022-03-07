@@ -57,7 +57,6 @@ public class FileService {
 
         String test = "test";
         ObjectMapper objectMapper = new ObjectMapper();
-
         Set<CarClient> carClients = new HashSet<>();
 
         Client client = Client.builder()
