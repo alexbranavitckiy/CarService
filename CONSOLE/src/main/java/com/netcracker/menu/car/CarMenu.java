@@ -41,9 +41,9 @@ public class CarMenu implements Menu {
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients().size() > 0) {
                             log.info(x.getCarClients().toString());
-                            log.info("Enter 5 to go to a specific car");
                             log.info("Enter 1.Close selection and editor menu");
                             log.info("Enter 2. Display a list of cars");
+                            log.info("Enter 5 to go to a specific car");
                         } else {
                             log.info("No car data found");
                             log.info("Enter 6 to add car data");
@@ -52,7 +52,7 @@ public class CarMenu implements Menu {
                     break;
                 }
                 case "5": {
-                    Set<CarClient> carClientSet = UserSession.getClientSession().get().getCarClients();
+                    Set<CarClient> carClientSet = UserSession.getCloneClientSession().getCarClients();
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients().size() > 0) {
                             log.info(carClientSet.toString());
@@ -91,7 +91,7 @@ public class CarMenu implements Menu {
                 case "6": {
                     NewCarClient newCarClient = new NewCarClient();
                     newCarClient.run(in, "");
-                    Client client = UserSession.getClientSession().get();
+                    Client client = UserSession.getCloneClientSession();
                     if (client.getCarClients() != null) {
                         client.getCarClients().add(newCarClient.getCarClient().get());
                     }

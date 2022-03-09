@@ -110,5 +110,4 @@ public class FileService {
                 .build();
         ObjectMapperServices.getObjectMapper().writeValue(getReceiverFile(), List.of(masterReceiver));
     }
-
 }

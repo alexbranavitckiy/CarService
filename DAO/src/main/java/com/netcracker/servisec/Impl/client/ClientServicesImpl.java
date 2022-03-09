@@ -28,7 +28,7 @@ public class ClientServicesImpl implements ClientServices {
 
     public boolean addObjectInClient(Client o) throws IOException {
         try {
-            if (loginService.searchByUserLoginAndPassword(o.getLogin(), o.getPassword()).equalsIgnoreCase(FileService.NOT_FOUND))
+            if (loginService.searchByUserLoginAndPassword(o.getLogin(), o.getPassword()))
                 return this.crudServices.addObject(o, fileService.getUserFile());
         } catch (WritingException w) {
             log.error("Save error, please try again");

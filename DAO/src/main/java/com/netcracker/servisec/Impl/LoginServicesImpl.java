@@ -17,9 +17,9 @@ public class LoginServicesImpl implements LoginService {
 
 
     @Override
-    public String searchByUserLoginAndPassword(String login, String password) throws IOException {
-        UserSession.closeSession();
+    public boolean searchByUserLoginAndPassword(String login, String password) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        UserSession.closeSession();
         try {
             switch ("diamond") {//all cases are executed until the user is found
                 case "diamond": {
@@ -34,7 +34,7 @@ public class LoginServicesImpl implements LoginService {
                         )).findFirst();
                         if (client.isPresent()) {
                             client.ifPresent(UserSession::openSession);
-                            return "Login Successful";
+                            return true;
                         }
                     }
                 }
@@ -49,7 +49,7 @@ public class LoginServicesImpl implements LoginService {
                         ).findFirst());
                         if (master.isPresent()) {
                             master.ifPresent(UserSession::openSession);
-                            return "Login Successful";
+                            return true;
                         }
                     }
                 }
@@ -64,16 +64,18 @@ public class LoginServicesImpl implements LoginService {
                         ).findFirst());
                         if (masterReceiver.isPresent()) {
                             masterReceiver.ifPresent(UserSession::openSession);
-                            return "Login Successful";
+                            return true;
                         }
                     }
                 }
+
             }
         } catch (MismatchedInputException e) {
             new FileService().init();
             this.searchByUserLoginAndPassword(login, password);
         }
-        return FileService.NOT_FOUND;
+        System.out.println(FileService.NOT_FOUND);
+        return false;
     }
 }
 

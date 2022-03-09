@@ -49,7 +49,14 @@ public class RegistrationMaster implements Menu {
                     log.info("Mail");
                     master.setOutfits(new ArrayList<>());
                     master.setRole(Role.MASTER);
-                    master.setId(UUID.randomUUID());
+                    //  master.setId(UUID.randomUUID())
+                   //  if (clientServices.addObjectInClient(client)) {
+                 //    System.out.println("User created successfully");
+                 //    this.flag = false;
+                //     } else {
+                //     System.out.println("Invalid data. Repeat registration");
+                //     this.preMessage(parentsName);
+               //      }
                     break;
                 }
                 case "1": {

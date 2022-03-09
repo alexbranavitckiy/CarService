@@ -10,7 +10,6 @@ public class OrderMenu implements Menu {
 
     private boolean flag = true;
 
-
     @Override
     public void preMessage(String parentsName) {
         log.info("You have entered the order menu");

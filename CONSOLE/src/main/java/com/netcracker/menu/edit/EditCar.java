@@ -21,7 +21,7 @@ public class EditCar implements Menu {
     }
 
     public EditCar(String numberCar) {
-        this.carClient = UserSession.getClientSession().get().getCarClients().stream().filter(x -> x.getMetadataCar().equalsIgnoreCase(numberCar)).findFirst().get();
+        this.carClient = UserSession.getCloneClientSession().getCarClients().stream().filter(x -> x.getMetadataCar().equalsIgnoreCase(numberCar)).findFirst().get();
     }
 
 

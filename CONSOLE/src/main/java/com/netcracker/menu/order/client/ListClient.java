@@ -21,7 +21,6 @@ public class ListClient implements Menu {
 
     private boolean flag = true;
 
-    private final LoginService loginServices = new LoginServicesImpl();
     private final ClientServices searchServices = new ClientServicesImpl();
 
     @Override

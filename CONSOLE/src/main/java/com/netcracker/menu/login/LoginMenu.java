@@ -34,8 +34,8 @@ public class LoginMenu implements Menu {
                     String login = in.next();
                     log.info("Enter password");
                     String password = in.next();
-                    log.info(loginServices.searchByUserLoginAndPassword(login, password));
-                    new EnterLogin().run(in, NAME_MENU);
+                    if (loginServices.searchByUserLoginAndPassword(login, password))
+                        new EnterLogin().run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;
                 }
@@ -55,6 +55,5 @@ public class LoginMenu implements Menu {
             }
         }
     }
-
 
 }

@@ -5,10 +5,14 @@ import com.netcracker.menu.car.CarMenu;
 import com.netcracker.menu.edit.EditClient;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import com.netcracker.servisec.UserSession;
+import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
+
 @Slf4j
 public class ClientMenu implements Menu {
 
@@ -17,7 +21,7 @@ public class ClientMenu implements Menu {
 
     @Override
     public void preMessage(String nameMenu) {
-        log.info("Enter 1 {}" , nameMenu);
+        log.info("Enter 1 {}", nameMenu);
         log.info("Enter 2 for contact information");
         log.info("Enter 3 to open recording menu/Sign up for repairs./View machine status."); // TODO add here code!!!
         log.info("Enter 4 to get information about the car/View the list of cars./Edit information on car");

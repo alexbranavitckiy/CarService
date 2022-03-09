@@ -1,13 +1,10 @@
 package com.netcracker.servisec;
 
 import com.netcracker.user.Client;
-import com.netcracker.user.Employer;
 import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 
-import javax.swing.text.html.Option;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 public class UserSession {
 
@@ -19,24 +16,28 @@ public class UserSession {
     private UserSession() {
     }
 
-    public static void openSession(Object object) {
+    public static boolean openSession(Object object) {
         if (clientSession == null && object instanceof Client) {
-            clientSession = (Client) object;
-            closeSession(masterSession, masterReceiverSession);
+            clientSession =(Client) object;
+            closeSession( masterSession, masterReceiverSession);
+            return true;
         }
         if (masterSession == null && object instanceof Master) {
             masterSession = (Master) object;
             closeSession(clientSession, masterReceiverSession);
+            return true;
         }
         if (masterReceiverSession == null && object instanceof MasterReceiver) {
             masterReceiverSession = (MasterReceiver) object;
             closeSession(clientSession, masterSession);
+            return true;
         }
+        return  false;
     }
 
     public static boolean updateSession(Object object) {
         if (object instanceof Client) {
-            clientSession = (Client) object;
+            clientSession = UserSession.getCloneClient((Client) object);
             closeSession(masterSession, masterReceiverSession);
             return true;
         }
@@ -55,12 +56,31 @@ public class UserSession {
 
 
     public static void closeSession(Object... o) {
-        Arrays.stream(o).forEach(x -> x = null);
+        Arrays.stream(o).forEach(x -> {
+            if (x instanceof Client) {
+                clientSession = (Client) x;
+                masterSession = null;
+                masterReceiverSession = null;
+            }
+            if (x instanceof Master) {
+                masterSession = (Master) x;
+                clientSession =null;
+                masterReceiverSession = null;
+            }
+            if (x instanceof MasterReceiver) {
+                masterReceiverSession = (MasterReceiver) x;
+                clientSession = null;
+                masterSession = null;
+            }
+        });
     }
 
     public static void closeSession() {
-        closeSession(masterReceiverSession, masterSession, clientSession);
+        masterSession = null;
+        masterReceiverSession = null;
+        clientSession = null;
     }
+
 
     public static Optional<MasterReceiver> getMasterReceiverSession() {//return immutable object
         return Optional.ofNullable(masterReceiverSession);
@@ -84,7 +104,7 @@ public class UserSession {
                 .homeAddress(masterReceiverSession.getHomeAddress())
                 .password(masterReceiverSession.getPassword())
                 .name(masterReceiverSession.getName())
-                .orders(masterReceiverSession.getOrders()).build();
+                .orders(new ArrayList<>(masterReceiverSession.getOrders())).build();
     }
 
 
@@ -99,7 +119,7 @@ public class UserSession {
                 .roleuser(client.getRoleuser())
                 .phone(client.getPhone())
                 .login(client.getLogin())
-                .carClients(client.getCarClients())
+                .carClients(new HashSet<>(client.getCarClients()))
                 .build();
     }
 
@@ -115,12 +135,14 @@ public class UserSession {
                 .roleuser(clientSession.getRoleuser())
                 .phone(clientSession.getPhone())
                 .login(clientSession.getLogin())
-                .carClients(clientSession.getCarClients())
+                .carClients(new HashSet<>(clientSession.getCarClients()))
                 .build();
     }
 
-    public static Optional<Client> getClientSession() {//return immutable object
-        return Optional.ofNullable(clientSession);
+    public static Optional<Client> getClientSession() {
+        if (clientSession != null)
+            return Optional.ofNullable(getCloneClient(clientSession));
+        return Optional.empty();
     }
 }
 
