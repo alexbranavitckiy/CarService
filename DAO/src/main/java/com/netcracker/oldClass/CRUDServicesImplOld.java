@@ -46,7 +46,7 @@ public class CRUDServicesImplOld implements CRUDServicesOld {//deprecated method
                 ObjectMapperServices.getObjectMapper().writeValue(file, o);
             }
         } catch (IOException ex) {
-            Logger.getLogger(CRUDServicesImplOld.class.getSimpleName()).warning("Error in add User:" + ex);
+            log.warn("Error in add User:" + ex);
         }
         return false;
     }
@@ -64,7 +64,7 @@ public class CRUDServicesImplOld implements CRUDServicesOld {//deprecated method
             ObjectMapperServices.getObjectMapper().writeValue(file, clients);
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(CRUDServicesImplOld.class.getSimpleName()).warning("Error in  delete User:" + ex);
+            log.warn("Error in  delete User:" , ex);
         }
         return false;
     }

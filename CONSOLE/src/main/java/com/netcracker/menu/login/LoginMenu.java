@@ -4,10 +4,12 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.registration.RegistrationClient;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.servisec.LoginService;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.Scanner;
 
-
+@Slf4j
 public class LoginMenu implements Menu {
 
     private boolean flag = true;
@@ -17,9 +19,9 @@ public class LoginMenu implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1:" + parentsName);
-        System.out.println("Enter 2 to login.");
-        System.out.println("Enter 3 to registration.");
+        log.info("Enter 1:{}", parentsName);
+        log.info("Enter 2 to login.");
+        log.info("Enter 3 to registration.");
     }
 
     @Override
@@ -28,11 +30,11 @@ public class LoginMenu implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "2": {
-                    System.out.println("Enter login.");
+                    log.info("Enter login.");
                     String login = in.next();
-                    System.out.println("Enter password");
+                    log.info("Enter password");
                     String password = in.next();
-                    System.out.println(loginServices.searchByUserLoginAndPassword(login, password));
+                    log.info(loginServices.searchByUserLoginAndPassword(login, password));
                     new EnterLogin().run(in, NAME_MENU);
                     this.preMessage(parentsName);
                     break;

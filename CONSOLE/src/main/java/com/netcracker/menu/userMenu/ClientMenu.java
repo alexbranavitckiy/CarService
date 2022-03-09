@@ -4,11 +4,12 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarMenu;
 import com.netcracker.menu.edit.EditClient;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.ClientServicesImpl;
+import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
-
+@Slf4j
 public class ClientMenu implements Menu {
 
     private boolean flag = true;
@@ -16,11 +17,11 @@ public class ClientMenu implements Menu {
 
     @Override
     public void preMessage(String nameMenu) {
-        System.out.println("Enter 1 " + nameMenu);
-        System.out.println("Enter 2 for contact information");
-        System.out.println("Enter 3 to open recording menu/Sign up for repairs./View machine status."); // TODO add here code!!!
-        System.out.println("Enter 4 to get information about the car/View the list of cars./Edit information on car");
-        System.out.println("Enter 5 to edit information about the client");
+        log.info("Enter 1 {}" , nameMenu);
+        log.info("Enter 2 for contact information");
+        log.info("Enter 3 to open recording menu/Sign up for repairs./View machine status."); // TODO add here code!!!
+        log.info("Enter 4 to get information about the car/View the list of cars./Edit information on car");
+        log.info("Enter 5 to edit information about the client");
     }
 
     @Override
@@ -46,9 +47,9 @@ public class ClientMenu implements Menu {
                     EditClient editClient = new EditClient();
                     editClient.run(in, "Main menu");
                     if (clientServices.updateClient(editClient.getClient()))
-                        System.out.println("Data entered successfully");
+                        log.info("Data entered successfully");
                     else
-                        System.out.println("An input error occurred while entering data. Retry data change");
+                        log.info("An input error occurred while entering data. Retry data change");
                     this.preMessage(parentsName);
                     break;
                 }

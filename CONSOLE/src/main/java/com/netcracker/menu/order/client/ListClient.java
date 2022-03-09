@@ -4,7 +4,7 @@ import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.edit.EditClient;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.ClientServicesImpl;
+import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.servisec.LoginService;
 import com.netcracker.user.Client;
@@ -26,9 +26,9 @@ public class ListClient implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1:" + parentsName);
-        System.out.println("Enter 2 Display a list of clients.");//+
-        System.out.println("Enter 3 Search for a client by keyword.");
+        log.info("Enter 1: {}" , parentsName);
+        log.info("Enter 2 Display a list of clients.");//+
+        log.info("Enter 3 Search for a client by keyword.");
     }
 
     @Override
@@ -41,22 +41,22 @@ public class ListClient implements Menu {
                         List<Client> clientList = searchServices.getAllClient();
                         if (clientList.size() > 0) {
                             for (int x = 1; x < clientList.size() + 1; x++)
-                                System.out.println("Id:" + x + " " + clientList.get(x - 1));
-                            System.out.println("Edit client? 1-yeas. 2-no");
+                                log.info("Id:{} {} ",x, clientList.get(x - 1));
+                            log.info("Edit client? 1-yeas. 2-no");
                             if (in.next().equalsIgnoreCase("1")) {
-                                System.out.println("Enter client id");
+                                log.info("Enter client id");
                                 EditClient editClient = new EditClient(clientList.get(in.nextInt() - 1));
                                 editClient.run(in, "Edit Client");
                                 if (searchServices.updateClient(editClient.getClient())) {
-                                    System.out.println("Data entered successfully");
+                                    log.info("Data entered successfully");
                                 } else
-                                    System.out.println("An input error occurred while entering data. Retry data change");
+                                    log.info("An input error occurred while entering data. Retry data change");
                             }
                         }
                     } catch (EmptySearchException e) {
-                        System.out.println("The search has not given any results");
+                        log.info("The search has not given any results");
                     } catch (InputMismatchException e) {
-                        System.out.println("Invalid data entered please try again");
+                        log.info("Invalid data entered please try again");
                     }
                     this.preMessage(parentsName);
                     break;

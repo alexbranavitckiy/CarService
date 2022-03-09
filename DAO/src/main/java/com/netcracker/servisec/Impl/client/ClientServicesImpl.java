@@ -1,9 +1,10 @@
-package com.netcracker.servisec.Impl;
+package com.netcracker.servisec.Impl.client;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.errors.WritingException;
 import com.netcracker.marka.CarClient;
 import com.netcracker.servisec.*;
+import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +51,7 @@ public class ClientServicesImpl implements ClientServices {
     }
 
     @Override
-    public boolean addObjectInClientNotOnline(Client client) throws IOException {
+    public boolean addObjectInClientNotOnline(Client client) {
         try {
             return this.crudServices.addObject(client, fileService.getUserFile());
         } catch (WritingException w) {

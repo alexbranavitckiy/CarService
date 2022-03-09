@@ -2,29 +2,33 @@ package com.netcracker.menu.car;
 
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 
+@Slf4j
 public class NewCarClient implements Menu {
 
-    private Optional<CarClient> carClient;
+    private CarClient carClient;
+    private StringBuilder stringBuilder = new StringBuilder();
+
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         CarClient carClient = new CarClient();
-        System.out.println("Enter descriptions or skip");
+        log.info("Enter descriptions or skip");
         carClient.setSummer(in.next());
         carClient.setId(UUID.randomUUID());
-        System.out.println("Enter vehicle mileage");
+        log.info("Enter vehicle mileage");
         carClient.setRun(in.next());
-        System.out.println("Enter year of car");
+        log.info("Enter year of car");
         carClient.setEar(in.next());
-        System.out.println("Enter number of the car");
+        log.info("Enter number of the car");
         carClient.setMetadataCar(in.next());
-        this.carClient = Optional.of(carClient);
+        this.carClient = carClient;
     }
 
     @Override
@@ -33,10 +37,13 @@ public class NewCarClient implements Menu {
     }
 
     public Optional<CarClient> getCarClient() {
-        return carClient;
+        return Optional.of(carClient);
     }
 
-    public void setCarClient(CarClient carClient) {
-        this.carClient = Optional.of(carClient);
+    private void checkStr(Scanner in, int minStr, int maxStr) {
+        stringBuilder.append(in.next());
+        if (stringBuilder.length() < maxStr && stringBuilder.length() > minStr) {
+            System.out.println("Car number from 4 to 40 characters");
+        }
     }
 }

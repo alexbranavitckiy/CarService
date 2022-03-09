@@ -73,7 +73,7 @@ public class FileService {
     }
 
 
-    private void init() throws IOException {
+    public void init() throws IOException {
         
         ObjectMapperServices.getObjectMapper().writeValue(orders, "");
         ObjectMapperServices.getObjectMapper().writeValue(outfit, "");

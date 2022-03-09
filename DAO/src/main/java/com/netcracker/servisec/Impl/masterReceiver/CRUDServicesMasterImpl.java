@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-public class CRUDServicesMasterReceiverImpl implements CRUDServices {
+public class CRUDServicesMasterImpl implements CRUDServices {
 
 
     private final FileService fileService=new FileService();
@@ -30,7 +30,7 @@ public class CRUDServicesMasterReceiverImpl implements CRUDServices {
             objectMapperServices.getObjectMapperWrite().writeValue(file, list);
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Error adding object", e);
         }
         return false;
     }
@@ -43,7 +43,7 @@ public class CRUDServicesMasterReceiverImpl implements CRUDServices {
             objectMapperServices.getObjectMapperWrite().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Object deletion error", e);
         }
         return false;
     }

@@ -1,0 +1,145 @@
+2022-03-09 17:09:29,440 - Enter 1,to exit the application.
+2022-03-09 17:09:29,440 - Enter 2, to login as a registered user.
+2022-03-09 17:09:29,440 - Enter 3, for information.
+2022-03-09 17:09:37,363 - Enter 1:Back to main menu
+2022-03-09 17:09:37,364 - Enter 2 to login.
+2022-03-09 17:09:37,364 - Enter 3 to registration.
+2022-03-09 17:09:39,303 - Enter login.
+2022-03-09 17:09:41,151 - Enter password
+2022-03-09 17:09:43,640 - User is not found
+2022-03-09 17:09:43,640 - Enter 1:Back to main menu
+2022-03-09 17:09:43,640 - Enter 2 to login.
+2022-03-09 17:09:43,640 - Enter 3 to registration.
+2022-03-09 17:09:55,336 - Enter login.
+2022-03-09 17:09:58,230 - Enter password
+2022-03-09 17:09:59,946 - Login Successful
+2022-03-09 17:09:59,947 - Enter 1 Go out
+2022-03-09 17:09:59,947 - Enter 2 to show contact information
+2022-03-09 17:09:59,947 - Enter 3 to go to the order menu. Search/Modify/Appoint
+2022-03-09 17:09:59,947 - Enter 4 to create a client.
+2022-03-09 17:09:59,947 - Enter 5 to create/edit master.
+2022-03-09 17:09:59,947 - Enter 6 to edit personal information
+2022-03-09 17:09:59,947 - Enter 7 to add receiver master
+2022-03-09 17:09:59,947 - Enter 8 to search and modify a client
+2022-03-09 17:10:10,178 - Enter 1: Main menu
+2022-03-09 17:10:10,178 - Enter 2 Display a list of clients.
+2022-03-09 17:10:10,178 - Enter 3 Search for a client by keyword.
+2022-03-09 17:10:12,624 - Id:1 Your data, name='test', phone='null', email='test', description='test', login='test1', password='test 
+2022-03-09 17:10:12,625 - Id:2 Your data, name='null', phone='12', email='null', description='null', login='12', password='12 
+2022-03-09 17:10:12,625 - Id:3 Your data, name='null', phone='r', email='null', description='null', login='rr', password='rr 
+2022-03-09 17:10:12,626 - Id:4 Your data, name='null', phone='q', email='null', description='null', login='qq', password='q 
+2022-03-09 17:10:12,626 - Edit client? 1-yeas. 2-no
+2022-03-09 17:10:18,427 - Enter client id
+2022-03-09 17:10:21,009 - Descriptions
+2022-03-09 17:10:21,009 - 
+2022-03-09 17:10:21,009 - Enter 1 to skip
+2022-03-09 17:10:21,009 - Enter 2 to edit
+2022-03-09 17:10:23,493 - Name
+2022-03-09 17:10:23,493 - 
+2022-03-09 17:10:23,493 - Enter 1 to skip
+2022-03-09 17:10:23,493 - Enter 2 to edit
+2022-03-09 17:10:24,029 - Login
+2022-03-09 17:10:24,029 - 12
+2022-03-09 17:10:24,029 - Enter 1 to skip
+2022-03-09 17:10:24,029 - Enter 2 to edit
+2022-03-09 17:10:24,530 - Password
+2022-03-09 17:10:24,531 - 12
+2022-03-09 17:10:24,531 - Enter 1 to skip
+2022-03-09 17:10:24,531 - Enter 2 to edit
+2022-03-09 17:10:25,095 - Phone
+2022-03-09 17:10:25,095 - 12
+2022-03-09 17:10:25,095 - Enter 1 to skip
+2022-03-09 17:10:25,095 - Enter 2 to edit
+2022-03-09 17:10:25,866 - Email
+2022-03-09 17:10:25,866 - 
+2022-03-09 17:10:25,866 - Enter 1 to skip
+2022-03-09 17:10:25,866 - Enter 2 to edit
+2022-03-09 17:10:26,733 - Data entered successfully
+2022-03-09 17:10:26,733 - Enter 1: Main menu
+2022-03-09 17:10:26,733 - Enter 2 Display a list of clients.
+2022-03-09 17:10:26,733 - Enter 3 Search for a client by keyword.
+2022-03-09 17:42:57,894 - Enter 1,to exit the application.
+2022-03-09 17:42:57,894 - Enter 2, to login as a registered user.
+2022-03-09 17:42:57,894 - Enter 3, for information.
+2022-03-09 17:43:11,118 - Enter 1,to exit the application.
+2022-03-09 17:43:11,118 - Enter 2, to login as a registered user.
+2022-03-09 17:43:11,118 - Enter 3, for information.
+2022-03-09 17:43:13,144 - Enter 1:Back to main menu
+2022-03-09 17:43:13,144 - Enter 2 to login.
+2022-03-09 17:43:13,144 - Enter 3 to registration.
+2022-03-09 17:43:14,905 - Enter login.
+2022-03-09 17:43:16,226 - Enter password
+2022-03-09 17:43:18,172 - User is not found
+2022-03-09 17:43:18,175 - Enter 1 Go out
+2022-03-09 17:43:18,175 - Enter 2 for contact information
+2022-03-09 17:43:18,175 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 17:43:18,175 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 17:43:18,175 - Enter 5 to edit information about the client
+2022-03-09 17:43:20,573 - Enter 1:Back to main menu
+2022-03-09 17:43:20,573 - Enter 2 to login.
+2022-03-09 17:43:20,573 - Enter 3 to registration.
+2022-03-09 17:43:21,675 - Enter login.
+2022-03-09 17:43:24,460 - Enter password
+2022-03-09 17:43:25,544 - Login Successful
+2022-03-09 17:43:25,544 - Enter 1 Go out
+2022-03-09 17:43:25,544 - Enter 2 for contact information
+2022-03-09 17:43:25,544 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 17:43:25,544 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 17:43:25,544 - Enter 5 to edit information about the client
+2022-03-09 17:43:27,281 - Enter 1:Back to main menu
+2022-03-09 17:43:27,282 - Enter 2 to login.
+2022-03-09 17:43:27,282 - Enter 3 to registration.
+2022-03-09 17:43:28,501 - Enter 1 Login menu
+2022-03-09 17:43:28,501 - Enter 2 to continue registration
+2022-03-09 17:43:30,238 - Enter login
+2022-03-09 17:43:32,909 - Enter password
+2022-03-09 17:43:34,218 - Enter phone
+2022-03-09 17:43:34,983 - Filling in car details
+2022-03-09 17:43:34,984 - Enter descriptions or skip
+2022-03-09 17:43:35,480 - Enter vehicle mileage
+2022-03-09 17:43:36,059 - Enter year of car
+2022-03-09 17:43:36,879 - Enter number of the car
+2022-03-09 17:43:37,562 - User created successfully
+2022-03-09 17:43:37,563 - Enter 1:Back to main menu
+2022-03-09 17:43:37,563 - Enter 2 to login.
+2022-03-09 17:43:37,563 - Enter 3 to registration.
+2022-03-09 17:43:41,085 - Enter 1 Login menu
+2022-03-09 17:43:41,085 - Enter 2 to continue registration
+2022-03-09 17:43:42,249 - Enter 1 Login menu
+2022-03-09 17:43:42,250 - Enter 2 to continue registration
+2022-03-09 17:43:43,512 - Enter login
+2022-03-09 17:43:44,324 - Enter password
+2022-03-09 17:43:44,841 - Enter phone
+2022-03-09 17:43:45,319 - Filling in car details
+2022-03-09 17:43:45,319 - Enter descriptions or skip
+2022-03-09 17:43:45,838 - Enter vehicle mileage
+2022-03-09 17:43:46,409 - Enter year of car
+2022-03-09 17:43:47,016 - Enter number of the car
+2022-03-09 17:43:47,654 - User created successfully
+2022-03-09 17:43:47,654 - Enter 1:Back to main menu
+2022-03-09 17:43:47,654 - Enter 2 to login.
+2022-03-09 17:43:47,655 - Enter 3 to registration.
+2022-03-09 17:43:51,405 - Enter login.
+2022-03-09 17:43:53,503 - Enter password
+2022-03-09 17:43:54,230 - Login Successful
+2022-03-09 17:43:54,230 - Enter 1 Go out
+2022-03-09 17:43:54,230 - Enter 2 for contact information
+2022-03-09 17:43:54,230 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 17:43:54,231 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 17:43:54,231 - Enter 5 to edit information about the client
+2022-03-09 17:43:58,997 - Enter 1.Main menu
+2022-03-09 17:43:58,997 - Enter 2. Display a list of cars
+2022-03-09 17:43:58,997 - Enter 5. Select a car to edit
+2022-03-09 17:43:58,997 - Enter 6 to add car data
+2022-03-09 17:44:00,512 - No car data found
+2022-03-09 17:44:00,512 - Enter 6 to add car data
+2022-03-09 17:44:03,003 - Enter descriptions or skip
+2022-03-09 17:44:04,570 - Enter vehicle mileage
+2022-03-09 17:44:05,110 - Enter year of car
+2022-03-09 17:44:05,708 - Enter number of the car
+2022-03-09 17:44:06,759 - Your data, name='test', phone='null', email='test', description='test', login='test1', password='test
+2022-03-09 17:44:06,759 - Data added successfully
+2022-03-09 17:44:06,760 - Enter 1.Main menu
+2022-03-09 17:44:06,760 - Enter 2. Display a list of cars
+2022-03-09 17:44:06,760 - Enter 5. Select a car to edit
+2022-03-09 17:44:06,760 - Enter 6 to add car data

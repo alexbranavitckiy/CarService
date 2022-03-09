@@ -5,10 +5,12 @@ import com.netcracker.servisec.Impl.masterReceiver.MasterReceiverServicesImpl;
 import com.netcracker.servisec.MasterReceiverServices;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.MasterReceiver;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+@Slf4j
 public class EditMasterReceiver implements Menu {
 
     private MasterReceiver masterReceiver;
@@ -17,7 +19,7 @@ public class EditMasterReceiver implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1 " + parentsName);
+        log.info("Enter 1 {}", parentsName);
 
     }
 
@@ -28,57 +30,57 @@ public class EditMasterReceiver implements Menu {
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
-        System.out.println("Name");
+        log.info("Name");
         if (this.edit(this.masterReceiver.getName(), in)) {
             this.masterReceiver.setName(stringNew.toString());
         }
-        System.out.println("Descriptions");
+        log.info("Descriptions");
         if (this.edit(this.masterReceiver.getDescription(), in)) {
             this.masterReceiver.setDescription(stringNew.toString());
         }
-        System.out.println("Login");
+        log.info("Login");
         if (this.edit(this.masterReceiver.getLogin(), in)) {
             this.masterReceiver.setLogin(stringNew.toString());
         }
-        System.out.println("Password");
+        log.info("Password");
         if (this.edit(this.masterReceiver.getPassword(), in)) {
             this.masterReceiver.setPassword(stringNew.toString());
         }
-        System.out.println("Education");
+        log.info("Education");
         if (this.edit(this.masterReceiver.getEducation(), in)) {
             this.masterReceiver.setPassword(stringNew.toString());
         }
-        System.out.println("HomeAddress");
+        log.info("HomeAddress");
         if (this.edit(this.masterReceiver.getHomeAddress(), in)) {
             this.masterReceiver.setHomeAddress(stringNew.toString());
         }
-        System.out.println("Mail");
+        log.info("Mail");
         if (this.edit(this.masterReceiver.getMail(), in)) {
             this.masterReceiver.setMail(stringNew.toString());
         }
-        System.out.println("Phone");
+        log.info("Phone");
         if (this.edit(this.masterReceiver.getPhone(), in)) {
             this.masterReceiver.setPhone(stringNew.toString());
         }
         if (masterReceiverServices.updateMaster(masterReceiver)) {
-            System.out.println("Data entered successfully");
+            log.info("Data entered successfully");
         } else
-            System.out.println("An input error occurred while entering data. Retry data change");
+            log.info("An input error occurred while entering data. Retry data change");
     }
 
 
     public void changeMessage() {
-        System.out.println("Enter 1 to skip");
-        System.out.println("Enter 2 to edit");
+        log.info("Enter 1 to skip");
+        log.info("Enter 2 to edit");
     }
 
 
     public boolean edit(String fieldName, Scanner in) {
-        System.out.println(fieldName);
+        log.info(fieldName);
         this.changeMessage();
         stringNew.delete(0, stringNew.length());
         if (in.next().equalsIgnoreCase("2")) {
-            System.out.println("Enter values");
+            log.info("Enter values");
             stringNew.append(in.next());
             return true;
         }

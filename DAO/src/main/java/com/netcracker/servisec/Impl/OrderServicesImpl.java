@@ -26,7 +26,7 @@ public class OrderServicesImpl implements CRUDServices, SearchServices<Order> {
         try {
             return new ArrayList<>(List.of(ObjectMapperServices.getObjectMapper().readValue(new File(FileService.ORDERS_PATH), Order[].class)));
         } catch (IOException e) {
-            System.out.println("Output error, please try again");
+          log.error("Output error, please try again",e);
         }
         throw new EmptySearchException("No orders available");
     }
@@ -52,7 +52,7 @@ public class OrderServicesImpl implements CRUDServices, SearchServices<Order> {
             ObjectMapperServices.getObjectMapper().writeValue(file, orders.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Delete error",e);
         }
         return false;
     }

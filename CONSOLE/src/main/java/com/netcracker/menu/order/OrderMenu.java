@@ -1,10 +1,11 @@
 package com.netcracker.menu.order;
 
 import com.netcracker.menu.Menu;
-
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Scanner;
 
+@Slf4j
 public class OrderMenu implements Menu {
 
     private boolean flag = true;
@@ -12,10 +13,10 @@ public class OrderMenu implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("You have entered the order menu");
-        System.out.println("Enter 1 " + parentsName);
-        System.out.println("Enter 2 to create order");
-        System.out.println("Enter 3 to search and modify orders");
+        log.info("You have entered the order menu");
+        log.info("Enter 1 " + parentsName);
+        log.info("Enter 2 to create order");
+        log.info("Enter 3 to search and modify orders");
     }
 
     @Override
@@ -24,12 +25,11 @@ public class OrderMenu implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "3": {
-                    System.out.println("List of orders");
+                    log.info("List of orders");
                     break;
                 }
                 case "2": {
                     new NewOrder().run(in, "Order menu");
-
                     this.preMessage(parentsName);
                     break;
                 }
@@ -38,7 +38,7 @@ public class OrderMenu implements Menu {
                     break;
                 }
                 default: {
-                    System.out.println("default");
+                    log.info("default");
                     break;
                 }
             }

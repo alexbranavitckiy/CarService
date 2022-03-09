@@ -4,16 +4,17 @@ import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.edit.EditCar;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.ClientServicesImpl;
+import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.Client;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
-
+@Slf4j
 public class CarMenu implements Menu {
 
     private boolean flag = true;
@@ -21,10 +22,10 @@ public class CarMenu implements Menu {
 
     @Override
     public void preMessage(String nameMenu) {
-        System.out.println("Enter 1." + nameMenu);
-        System.out.println("Enter 2. Display a list of cars");
-        System.out.println("Enter 5. Select a car to edit");
-        System.out.println("Enter 6 to add car data");
+        log.info("Enter 1.{}" , nameMenu);
+        log.info("Enter 2. Display a list of cars");
+        log.info("Enter 5. Select a car to edit");
+        log.info("Enter 6 to add car data");
     }
 
     @Override
@@ -39,13 +40,13 @@ public class CarMenu implements Menu {
                 case "2": {
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients().size() > 0) {
-                            System.out.println(x.getCarClients());
-                            System.out.println("Enter 5 to go to a specific car");
-                            System.out.println("Enter 1.Close selection and editor menu");
-                            System.out.println("Enter 2. Display a list of cars");
+                            log.info(x.getCarClients().toString());
+                            log.info("Enter 5 to go to a specific car");
+                            log.info("Enter 1.Close selection and editor menu");
+                            log.info("Enter 2. Display a list of cars");
                         } else {
-                            System.out.println("No car data found");
-                            System.out.println("Enter 6 to add car data");
+                            log.info("No car data found");
+                            log.info("Enter 6 to add car data");
                         }
                     });
                     break;
@@ -54,16 +55,16 @@ public class CarMenu implements Menu {
                     Set<CarClient> carClientSet = UserSession.getClientSession().get().getCarClients();
                     UserSession.getClientSession().ifPresent(x -> {
                         if (x.getCarClients().size() > 0) {
-                            System.out.println(carClientSet);
-                            System.out.println("Enter car number(metadata car)");
+                            log.info(carClientSet.toString());
+                            log.info("Enter car number(metadata car)");
                             String metadataCar = in.next();
                             x.getCarClients()
                                     .stream().filter(Objects::nonNull)
                                     .filter(z -> z.getMetadataCar().equalsIgnoreCase(metadataCar)
                                     ).forEach(System.out::println);
-                            System.out.println("Edit selected car?");
-                            System.out.println("Enter 1 to continue editing");
-                            System.out.println("Enter 2 to edit");
+                            log.info("Edit selected car?");
+                            log.info("Enter 1 to continue editing");
+                            log.info("Enter 2 to edit");
                             if (in.next().equalsIgnoreCase("2")) {
                                 this.preMessage(parentsName);
                             } else {
@@ -74,15 +75,15 @@ public class CarMenu implements Menu {
                                     e.printStackTrace();
                                 }
                                 if (clientServices.updateClientCar(editCar.getCarClient()))
-                                    System.out.println("Data entered successfully");
+                                    log.info("Data entered successfully");
                                 else
-                                    System.out.println("An input error occurred while entering data. Retry data change");
+                                    log.info("An input error occurred while entering data. Retry data change");
                                 this.preMessage(parentsName);
                             }
                         } else {
-                            System.out.println("No car data found.");
-                            System.out.println("Enter 1.Close selection and editor menu");
-                            System.out.println("Enter 6 to add car data");
+                            log.info("No car data found.");
+                            log.info("Enter 1.Close selection and editor menu");
+                            log.info("Enter 6 to add car data");
                         }
                     });
                     break;
@@ -95,8 +96,8 @@ public class CarMenu implements Menu {
                         client.getCarClients().add(newCarClient.getCarClient().get());
                     }
                     if (clientServices.updateClient(client)) {
-                        System.out.println(client);
-                        System.out.println("Data added successfully");
+                        log.info(client.toString());
+                        log.info("Data added successfully");
                     } else System.out.println("An error occurred while entering data, please try again");
                     this.preMessage(parentsName);
                     break;

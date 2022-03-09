@@ -11,8 +11,6 @@ import java.util.stream.Collectors;
 
 public interface CRUDServices {
 
-
-
     boolean addObject(Object o, File file) throws WritingException;
 
     boolean deleteObjectById(String id, File file);

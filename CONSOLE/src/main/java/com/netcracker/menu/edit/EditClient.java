@@ -1,13 +1,15 @@
 package com.netcracker.menu.edit;
 
-import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.Client;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+
+@Slf4j
 public class EditClient implements Menu {
 
     private Client client;
@@ -15,7 +17,7 @@ public class EditClient implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1 " + parentsName);
+        log.info("Enter 1 {}" , parentsName);
 
     }
 
@@ -30,27 +32,27 @@ public class EditClient implements Menu {
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
-        System.out.println("Descriptions");
+        log.info("Descriptions");
         if (this.edit(this.client.getDescription(), in)) {
             this.client.setDescription(stringNew.toString());
         }
-        System.out.println("Name");
+        log.info("Name");
         if (this.edit(this.client.getName(), in)) {
             this.client.setName(stringNew.toString());
         }
-        System.out.println("Login");
+        log.info("Login");
         if (this.edit(this.client.getLogin(), in)) {
             this.client.setLogin(stringNew.toString());
         }
-        System.out.println("Password");
+        log.info("Password");
         if (this.edit(this.client.getPassword(), in)) {
             this.client.setPassword(stringNew.toString());
         }
-        System.out.println("Phone");
+        log.info("Phone");
         if (this.edit(this.client.getPhone(), in)) {
             this.client.setPhone(stringNew.toString());
         }
-        System.out.println("Email");
+        log.info("Email");
         if (this.edit(this.client.getEmail(), in)) {
             this.client.setPassword(stringNew.toString());
         }
@@ -62,17 +64,17 @@ public class EditClient implements Menu {
 
 
     public void changeMessage() {
-        System.out.println("Enter 1 to skip");
-        System.out.println("Enter 2 to edit");
+        log.info("Enter 1 to skip");
+        log.info("Enter 2 to edit");
     }
 
 
     public boolean edit(String fieldName, Scanner in) {
-        System.out.println(fieldName);
+        log.info(fieldName);
         this.changeMessage();
         stringNew.delete(0, stringNew.length());
         if (in.next().equalsIgnoreCase("2")) {
-            System.out.println("Enter values");
+            log.info("Enter values");
             stringNew.append(in.next());
             return true;
         }

@@ -1,4 +1,4 @@
-package com.netcracker.servisec.Impl;
+package com.netcracker.servisec.Impl.client;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.servisec.CRUDServices;
@@ -25,7 +25,7 @@ public class CRUDServicesClientImpl implements CRUDServices, SearchServices<Clie
         try {
             return new ArrayList<>(List.of(ObjectMapperServices.getObjectMapper().readValue(new File(FileService.USER_PATH), Client[].class)));
         } catch (IOException e) {
-            System.out.println("Output error, please try again");
+            log.warn("Output error");
         }
         throw new EmptySearchException("No orders available");
     }
@@ -39,7 +39,7 @@ public class CRUDServicesClientImpl implements CRUDServices, SearchServices<Clie
             objectMapperServices.getObjectMapperWrite().writeValue(file, list);
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Error adding object", e);
         }
         return false;
     }
@@ -51,7 +51,7 @@ public class CRUDServicesClientImpl implements CRUDServices, SearchServices<Clie
             objectMapperServices.getObjectMapperWrite().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Object deletion error", e);
         }
         return false;
     }

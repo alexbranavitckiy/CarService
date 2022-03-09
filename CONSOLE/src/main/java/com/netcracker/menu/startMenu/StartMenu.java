@@ -3,11 +3,13 @@ package com.netcracker.menu.startMenu;
 import com.netcracker.menu.login.LoginMenu;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.userMenu.InfoMenu;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 
+@Slf4j
 public class StartMenu implements Menu {
 
     private boolean flag = true;
@@ -15,9 +17,9 @@ public class StartMenu implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1,to exit the application. ");
-        System.out.println("Enter 2, to login as a registered user. ");
-        System.out.println("Enter 3, for information.");
+        log.info("Enter 1,to exit the application.");
+        log.info("Enter 2, to login as a registered user.");
+        log.info("Enter 3, for information.");
     }
 
     @Override

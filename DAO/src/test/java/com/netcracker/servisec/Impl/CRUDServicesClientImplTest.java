@@ -1,6 +1,7 @@
 package com.netcracker.servisec.Impl;
 
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.servisec.Impl.client.CRUDServicesClientImpl;
 import junit.framework.TestCase;
 
 import java.io.File;

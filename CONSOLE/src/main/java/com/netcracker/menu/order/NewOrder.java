@@ -2,14 +2,14 @@ package com.netcracker.menu.order;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.order.Order;
-import com.netcracker.servisec.Impl.LoginServicesImpl;
-import com.netcracker.servisec.LoginService;
 import com.netcracker.user.Client;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
 
+@Slf4j
 public class NewOrder implements Menu {
 
     private boolean flag = true;
@@ -23,8 +23,8 @@ public class NewOrder implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1 to leave");
-        System.out.println("Enter 2 to create order ");
+        log.info("Enter 1 to leave");
+        log.info("Enter 2 to create order ");
     }
 
     @Override
@@ -39,7 +39,6 @@ public class NewOrder implements Menu {
                 case "2": {
                     Order order = new Order();
                     order.setId(UUID.randomUUID());
-                    System.out.println("");
                     order.setClient(null);
                     break;
                 }

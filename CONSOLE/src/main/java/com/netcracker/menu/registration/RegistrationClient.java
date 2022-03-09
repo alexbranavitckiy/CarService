@@ -3,13 +3,15 @@ package com.netcracker.menu.registration;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.NewCarClient;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.ClientServicesImpl;
+import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j
 public class RegistrationClient implements Menu {
 
     private boolean flag = true;
@@ -18,8 +20,8 @@ public class RegistrationClient implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1 " + parentsName);
-        System.out.println("Enter 2 to continue registration");
+        log.info("Enter 1 {}" , parentsName);
+        log.info("Enter 2 to continue registration");
     }
 
     @Override
@@ -29,30 +31,30 @@ public class RegistrationClient implements Menu {
             switch (in.next()) {
                 case "2": {
                     Client client = new Client();
-                    System.out.println("Enter login");
+                    log.info("Enter login");
                     client.setLogin(in.next());
-                    System.out.println("Enter password");
+                    log.info("Enter password");
                     client.setPassword(in.next());
-                    System.out.println("Enter phone");
+                    log.info("Enter phone");
                     client.setPhone(in.next());
-                    System.out.println("Filling in car details");
+                    log.info("Filling in car details");
                     NewCarClient carClient = new NewCarClient();
                     carClient.run(in, "");
                     if (carClient.getCarClient().isPresent()) {
                         client.setCarClients(new HashSet<>());
                         client.getCarClients().add((carClient.getCarClient().get()));
                     } else {
-                        System.out.println("Try again to enter information");
+                        log.info("Try again to enter information");
                         this.preMessage(parentsName);
                         break;
                     }
                     client.setId(UUID.randomUUID());
                     client.setRoleuser(RoleUser.REGISTERED);
                     if (clientServices.addObjectInClient(client)) {
-                        System.out.println("User created successfully");
+                        log.info("User created successfully");
                         this.flag = false;
                     } else {
-                        System.out.println("Invalid data. Repeat registration");
+                        log.info("Invalid data. Repeat registration");
                         this.preMessage(parentsName);
                     }
                     break;

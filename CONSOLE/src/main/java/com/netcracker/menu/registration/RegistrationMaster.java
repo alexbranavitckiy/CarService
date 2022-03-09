@@ -1,18 +1,19 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.car.NewCarClient;
 import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.ClientServicesImpl;
-import com.netcracker.user.Client;
-import com.netcracker.user.RoleUser;
+import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import com.netcracker.user.Master;
+import com.netcracker.user.Role;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
-public class  RegistrationMaster implements Menu {
+@Slf4j
+public class RegistrationMaster implements Menu {
 
     private boolean flag = true;
     private final ClientServices clientServices = new ClientServicesImpl();
@@ -20,8 +21,8 @@ public class  RegistrationMaster implements Menu {
 
     @Override
     public void preMessage(String parentsName) {
-        System.out.println("Enter 1 " + parentsName);
-        System.out.println("Enter 2 to continue registration");
+        log.info("Enter 1 {}", parentsName);
+        log.info("Enter 2 to continue registration");
     }
 
     @Override
@@ -30,33 +31,25 @@ public class  RegistrationMaster implements Menu {
         while (flag) {
             switch (in.next()) {
                 case "2": {
-                    Client client = new Client();
-                    System.out.println("Enter login");
-                    client.setLogin(in.next());
-                    System.out.println("Enter password");
-                    client.setPassword(in.next());
-                    System.out.println("Enter phone");
-                    client.setPhone(in.next());
-                    System.out.println("Filling in car details");
-                    NewCarClient carClient = new NewCarClient();
-                    carClient.run(in, "");
-                    if (carClient.getCarClient().isPresent()) {
-                        client.setCarClients(new HashSet<>());
-                        client.getCarClients().add((carClient.getCarClient().get()));
-                    } else {
-                        System.out.println("Try again to enter information");
-                        this.preMessage(parentsName);
-                        break;
-                    }
-                    client.setId(UUID.randomUUID());
-                    client.setRoleuser(RoleUser.REGISTERED);
-                    if (clientServices.addObjectInClient(client)) {
-                        System.out.println("User created successfully");
-                        this.flag = false;
-                    } else {
-                        System.out.println("Invalid data. Repeat registration");
-                        this.preMessage(parentsName);
-                    }
+                    Master master = new Master();
+                    log.info("Enter login");
+                    master.setLogin(in.next());
+                    log.info("Enter password");
+                    master.setPassword(in.next());
+                    log.info("Enter phone");
+                    master.setPhone(in.next());
+                    log.info("Name");
+                    master.setName(in.next());
+                    log.info("Description");
+                    master.setDescription(in.next());
+                    log.info("Education");
+                    master.setEducation(in.next());
+                    log.info("Mail");
+                    master.setMail(in.next());
+                    log.info("Mail");
+                    master.setOutfits(new ArrayList<>());
+                    master.setRole(Role.MASTER);
+                    master.setId(UUID.randomUUID());
                     break;
                 }
                 case "1": {

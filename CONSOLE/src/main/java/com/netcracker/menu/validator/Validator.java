@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-    private Scanner in = new Scanner(System.in);
     private final String EMAIL_PATTERN =
             "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
                     + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
