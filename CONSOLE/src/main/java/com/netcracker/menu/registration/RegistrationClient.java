@@ -14,7 +14,6 @@ import java.util.*;
 @Slf4j
 public class RegistrationClient implements Menu {
 
-    private boolean flag = true;
     private final ClientServices clientServices = new ClientServicesImpl();
 
 
@@ -27,7 +26,7 @@ public class RegistrationClient implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+        label: while (true) {
             switch (in.next()) {
                 case "2": {
                     Client client = new Client();
@@ -52,7 +51,7 @@ public class RegistrationClient implements Menu {
                     client.setRoleuser(RoleUser.REGISTERED);
                     if (clientServices.addObjectInClient(client)) {
                         log.info("User created successfully");
-                        this.flag = false;
+                       break label;
                     } else {
                         log.info("Invalid data. Repeat registration");
                         this.preMessage(parentsName);
@@ -60,8 +59,7 @@ public class RegistrationClient implements Menu {
                     break;
                 }
                 case "1": {
-                    this.flag = false;
-                    break;
+                    break label;
                 }
                 default: {
                     this.preMessage(parentsName);

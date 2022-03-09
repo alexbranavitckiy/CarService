@@ -15,7 +15,7 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationMaster implements Menu {
 
-    private boolean flag = true;
+
     private final ClientServices clientServices = new ClientServicesImpl();
 
 
@@ -28,7 +28,7 @@ public class RegistrationMaster implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+      label:  while (true) {
             switch (in.next()) {
                 case "2": {
                     Master master = new Master();
@@ -60,8 +60,7 @@ public class RegistrationMaster implements Menu {
                     break;
                 }
                 case "1": {
-                    this.flag = false;
-                    break;
+                    break label;
                 }
                 default: {
                     this.preMessage(parentsName);

@@ -1024,3 +1024,41 @@ Opening hours:8.00-23.00
 2022-03-09 21:42:24,410 - Enter 1.Close selection and editor menu
 2022-03-09 21:42:24,410 - Enter 2. Display a list of cars
 2022-03-09 21:42:24,410 - Enter 5 to go to a specific car
+2022-03-09 21:54:42,093 - Enter 1,to exit the application.
+2022-03-09 21:54:42,093 - Enter 2, to login as a registered user.
+2022-03-09 21:54:42,093 - Enter 3, for information.
+2022-03-09 22:10:31,142 - Enter 1,to exit the application.
+2022-03-09 22:10:31,143 - Enter 2, to login as a registered user.
+2022-03-09 22:10:31,143 - Enter 3, for information.
+2022-03-09 22:10:33,589 - Enter 1:Back to main menu
+2022-03-09 22:10:33,589 - Enter 2 to login.
+2022-03-09 22:10:33,589 - Enter 3 to registration.
+2022-03-09 22:10:34,932 - Enter login.
+2022-03-09 22:10:37,468 - Enter password
+2022-03-09 22:10:39,453 - Enter 1 Go out
+2022-03-09 22:10:39,453 - Enter 2 for contact information
+2022-03-09 22:10:39,453 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 22:10:39,453 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 22:10:39,454 - Enter 5 to edit information about the client
+2022-03-09 22:10:47,074 - Enter 1.Main menu
+2022-03-09 22:10:47,075 - Enter 2. Display a list of cars
+2022-03-09 22:10:47,075 - Enter 5. Select a car to edit
+2022-03-09 22:10:47,075 - Enter 6 to add car data
+2022-03-09 22:10:49,914 - [Your cars: summer='9877om', ear='1', metadataCar='1', run='1'}]
+2022-03-09 22:10:49,914 - Enter 1.Close selection and editor menu
+2022-03-09 22:10:49,914 - Enter 2. Display a list of cars
+2022-03-09 22:10:49,914 - Enter 5 to go to a specific car
+2022-03-09 22:11:07,192 - Enter 1 Go out
+2022-03-09 22:11:07,192 - Enter 2 for contact information
+2022-03-09 22:11:07,192 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 22:11:07,192 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 22:11:07,192 - Enter 5 to edit information about the client
+2022-03-09 22:11:14,110 - Enter 1.Main menu
+2022-03-09 22:11:14,111 - Enter 2. Display a list of cars
+2022-03-09 22:11:14,111 - Enter 5. Select a car to edit
+2022-03-09 22:11:14,111 - Enter 6 to add car data
+2022-03-09 22:11:15,319 - Enter 1 Go out
+2022-03-09 22:11:15,319 - Enter 2 for contact information
+2022-03-09 22:11:15,320 - Enter 3 to open recording menu/Sign up for repairs./View machine status.
+2022-03-09 22:11:15,320 - Enter 4 to get information about the car/View the list of cars./Edit information on car
+2022-03-09 22:11:15,320 - Enter 5 to edit information about the client

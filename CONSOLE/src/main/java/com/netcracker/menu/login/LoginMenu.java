@@ -12,7 +12,7 @@ import java.util.Scanner;
 @Slf4j
 public class LoginMenu implements Menu {
 
-    private boolean flag = true;
+
     private final String NAME_MENU = "Login menu";
 
     private final LoginService loginServices = new LoginServicesImpl();
@@ -27,7 +27,7 @@ public class LoginMenu implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+        label:   while (true) {
             switch (in.next()) {
                 case "2": {
                     log.info("Enter login.");
@@ -45,8 +45,7 @@ public class LoginMenu implements Menu {
                     break;
                 }
                 case "1": {
-                    this.flag = false;
-                    break;
+                    break label;
                 }
                 default: {
                     this.preMessage(parentsName);

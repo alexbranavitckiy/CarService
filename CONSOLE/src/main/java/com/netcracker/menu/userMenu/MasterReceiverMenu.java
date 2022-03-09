@@ -13,7 +13,6 @@ import java.util.Scanner;
 @Slf4j
 public class MasterReceiverMenu implements Menu {
 
-    private boolean flag = true;
 
     @Override
     public void preMessage(String nameMenu) {
@@ -30,11 +29,10 @@ public class MasterReceiverMenu implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+        label: while (true) {
             switch (in.next()) {
                 case "1": {
-                    this.flag = false;
-                    break;
+                    break label;
                 }
                 case "2": {
                     new InfoMenu().run(in, "");

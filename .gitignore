@@ -5,6 +5,7 @@ HELP.md
 .mtj.tmp/
 *.class
 *.jar
+*.log
 *.war
 *.ear
 *.nar

@@ -19,8 +19,6 @@ import java.util.Scanner;
 @Slf4j
 public class ListClient implements Menu {
 
-    private boolean flag = true;
-
     private final ClientServices searchServices = new ClientServicesImpl();
 
     @Override
@@ -33,7 +31,7 @@ public class ListClient implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+        label:   while (true) {
             switch (in.next()) {
                 case "2": {
                     try {
@@ -61,8 +59,7 @@ public class ListClient implements Menu {
                     break;
                 }
                 case "1": {
-                    this.flag = false;
-                    break;
+                    break label;
                 }
 
                 default: {

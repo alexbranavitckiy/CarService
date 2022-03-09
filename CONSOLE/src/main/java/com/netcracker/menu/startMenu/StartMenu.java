@@ -15,7 +15,6 @@ import java.util.Scanner;
 @Slf4j
 public class StartMenu implements Menu {
 
-    private boolean flag = true;
     private final String NAME_MENU = "Back to main menu";
 
     @Override
@@ -28,7 +27,7 @@ public class StartMenu implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        while (flag) {
+    label:    while (true) {
             switch (in.next()) {
                 case "3": {
                     new InfoMenu().run(in, NAME_MENU);
@@ -41,8 +40,7 @@ public class StartMenu implements Menu {
                     break;
                 }
                 case "1": {
-                    flag = false;
-                    break;
+                    break label;
                 }
                 default: {
                     this.preMessage(parentsName);
