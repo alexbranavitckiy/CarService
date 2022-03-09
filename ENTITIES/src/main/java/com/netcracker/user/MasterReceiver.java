@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MasterReceiver extends Employer {
+public class MasterReceiver extends Employer  {
 
 
     private List<Order> orders;
@@ -32,5 +32,7 @@ public class MasterReceiver extends Employer {
                 "orders=" + orders +
                 "} " + super.toString();
     }
+
+
 }
 

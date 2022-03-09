@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Client> {
+public class CRUDServicesClientImpl implements CRUDServices, SearchServices<Client> {
+
+    private final ObjectMapperServices objectMapperServices = new ObjectMapperServices();
 
     @Override
     public List<Client> getAll(File file) throws EmptySearchException {
@@ -34,7 +36,7 @@ public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Clie
         try {
             List<Client> list = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, Client[].class)));
             list.add(client);
-            ObjectMapperServices.getObjectMapper().writeValue(file, list);
+            objectMapperServices.getObjectMapperWrite().writeValue(file, list);
             return true;
         } catch (Exception e) {
             System.out.println(e);
@@ -46,7 +48,7 @@ public class CRUDServicesClientImpl implements CRUDServices ,SearchServices<Clie
     public boolean deleteObjectById(String id, File file) {
         try {
             List<Client> clients = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, Client[].class)));
-            ObjectMapperServices.getObjectMapper().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
+            objectMapperServices.getObjectMapperWrite().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
             System.out.println(e);

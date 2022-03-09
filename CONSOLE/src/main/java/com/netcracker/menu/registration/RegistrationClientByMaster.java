@@ -2,6 +2,7 @@ package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.NewCarClient;
+import com.netcracker.menu.order.NewOrder;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.ClientServicesImpl;
 import com.netcracker.user.Client;
@@ -21,8 +22,7 @@ public class RegistrationClientByMaster implements Menu {
     @Override
     public void preMessage(String parentsName) {
         System.out.println("Enter 1 " + parentsName);
-        System.out.println("Enter 2 to continue");
-        System.out.println("Enter 3 to Create an order with these customers");
+        System.out.println("Enter 2 create a client");
     }
 
     @Override
@@ -49,15 +49,24 @@ public class RegistrationClientByMaster implements Menu {
                     client.setPhone(in.next());
                     client.setId(UUID.randomUUID());
                     client.setRoleuser(RoleUser.UNREGISTERED);
-                    this.client = client;
                     if (clientServices.addObjectInClientNotOnline(client)) {
                         System.out.println("User created successfully");
+                        this.client = client;
                         this.flag = false;
                     } else {
                         System.out.println("Invalid data. Repeat registration");
                         this.preMessage(parentsName);
+                        break;
                     }
-                    break;
+                    System.out.println("Enter 3 to Create an order with these customers");
+                    System.out.println("Enter 1 " + parentsName);
+                    if (in.next().equalsIgnoreCase("3")) {
+                        NewOrder newOrder = new NewOrder(client);
+                        newOrder.run(in, "");
+                    } else {
+                        this.flag = false;
+                        break;
+                    }
                 }
                 case "1": {
                     this.flag = false;
@@ -75,5 +84,7 @@ public class RegistrationClientByMaster implements Menu {
         }
     }
 
-
+    public Client getClient() {
+        return client;
+    }
 }

@@ -17,7 +17,7 @@ public interface CRUDServices {
 
     boolean deleteObjectById(String id, File file);
 
-    boolean updateObject(Object o, String id, File file);
+    boolean updateObject(Object o, String id, File file) ;
 
 
 }

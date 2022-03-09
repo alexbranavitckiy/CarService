@@ -1,4 +1,4 @@
-package com.netcracker.servisec.Impl;
+package com.netcracker.servisec.Impl.masterReceiver;
 
 import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.FileService;
@@ -19,8 +19,7 @@ public class CRUDServicesMasterReceiverImpl implements CRUDServices {
 
 
     private final FileService fileService=new FileService();
-
-
+    private final ObjectMapperServices objectMapperServices=new ObjectMapperServices();
 
     @Override
     public boolean addObject(Object o, File file) {
@@ -28,7 +27,7 @@ public class CRUDServicesMasterReceiverImpl implements CRUDServices {
         try {
             List<MasterReceiver> list = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, MasterReceiver[].class)));
             list.add(client);
-            ObjectMapperServices.getObjectMapper().writeValue(file, list);
+            objectMapperServices.getObjectMapperWrite().writeValue(file, list);
             return true;
         } catch (Exception e) {
             System.out.println(e);
@@ -41,7 +40,7 @@ public class CRUDServicesMasterReceiverImpl implements CRUDServices {
     public boolean deleteObjectById(String id, File file) {
         try {
             List<MasterReceiver> clients = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, MasterReceiver[].class)));
-            ObjectMapperServices.getObjectMapper().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
+            objectMapperServices.getObjectMapperWrite().writeValue(file, clients.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
             return true;
         } catch (Exception e) {
             System.out.println(e);

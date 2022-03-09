@@ -23,6 +23,10 @@ public class EditClient implements Menu {
         this.client = UserSession.getCloneClientSession();
     }
 
+    public EditClient(Client client) {
+        this.client = UserSession.getCloneClient(client);
+    }
+
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {

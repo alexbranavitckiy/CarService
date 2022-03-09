@@ -4,8 +4,6 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.registration.RegistrationClient;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.servisec.LoginService;
-
-
 import java.io.IOException;
 import java.util.Scanner;
 

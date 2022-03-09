@@ -5,21 +5,13 @@ import com.netcracker.menu.userMenu.ClientMenu;
 import com.netcracker.menu.userMenu.MasterMenu;
 import com.netcracker.menu.userMenu.MasterReceiverMenu;
 import com.netcracker.servisec.UserSession;
-
 import java.io.IOException;
 import java.util.Scanner;
 
 public class EnterLogin implements Menu {
 
-
-    EnterLogin() {
-
-    }
-
     @Override
-    public void preMessage(String parentsName) {
-
-    }
+    public void preMessage(String parentsName) {}
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {

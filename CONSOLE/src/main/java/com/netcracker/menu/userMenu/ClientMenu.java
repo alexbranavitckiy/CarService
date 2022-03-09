@@ -43,7 +43,7 @@ public class ClientMenu implements Menu {
                     break;
                 }
                 case "5": {
-                    EditClient editClient=    new EditClient();
+                    EditClient editClient = new EditClient();
                     editClient.run(in, "Main menu");
                     if (clientServices.updateClient(editClient.getClient()))
                         System.out.println("Data entered successfully");

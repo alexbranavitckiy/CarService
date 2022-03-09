@@ -18,7 +18,7 @@ import java.util.UUID;
 //@JsonSubTypes({
 //        @JsonSubTypes.Type(value = MasterReceiver.class, name = "masterReceiver")
 //})
-public class Employer {
+public class Employer  {
 
     private UUID id;
 

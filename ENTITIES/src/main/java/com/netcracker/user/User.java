@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -15,7 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements Serializable {
+@Slf4j
+public class User implements Serializable{
 
     private UUID id;
 
@@ -32,6 +34,9 @@ public class User implements Serializable {
     private String password;
 
     private RoleUser roleuser;
+
+
+
 
     @Override
     public boolean equals(Object o) {

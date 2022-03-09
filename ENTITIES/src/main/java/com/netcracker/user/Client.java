@@ -49,4 +49,7 @@ public class Client extends User implements Serializable {
     public int hashCode() {
         return Objects.hash(super.hashCode());
     }
+
+
+
 }

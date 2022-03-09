@@ -1,6 +1,7 @@
 package com.netcracker.servisec;
 
 import com.netcracker.user.Client;
+import com.netcracker.user.Employer;
 import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 
@@ -68,6 +69,40 @@ public class UserSession {
     public static Optional<Master> getMasterSession() {//return immutable object
         return Optional.ofNullable(masterSession);
     }
+
+
+    public static MasterReceiver getCloneMasterReceiverSession() {
+        return MasterReceiver.builder()
+                .description(masterReceiverSession.getDescription())
+                .education(masterReceiverSession.getEducation())
+                .homeAddress(masterReceiverSession.getHomeAddress())
+                .id(masterReceiverSession.getId())
+                .login(masterReceiverSession.getLogin())
+                .role(masterReceiverSession.getRole())
+                .qualificationEnum(masterReceiverSession.getQualificationEnum())
+                .mail(masterReceiverSession.getMail())
+                .homeAddress(masterReceiverSession.getHomeAddress())
+                .password(masterReceiverSession.getPassword())
+                .name(masterReceiverSession.getName())
+                .orders(masterReceiverSession.getOrders()).build();
+    }
+
+
+    public static Client getCloneClient(Client client) {
+        return Client.builder()
+                .carClients(client.getCarClients())
+                .description(client.getDescription())
+                .id(client.getId())
+                .email(client.getEmail())
+                .name(client.getName())
+                .password(client.getPassword())
+                .roleuser(client.getRoleuser())
+                .phone(client.getPhone())
+                .login(client.getLogin())
+                .carClients(client.getCarClients())
+                .build();
+    }
+
 
     public static Client getCloneClientSession() {
         return Client.builder()

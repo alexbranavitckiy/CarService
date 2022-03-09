@@ -7,8 +7,6 @@ import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.FileService;
 import com.netcracker.servisec.ObjectMapperServices;
 import com.netcracker.servisec.SearchServices;
-import com.netcracker.user.Client;
-import com.netcracker.user.MasterReceiver;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -16,9 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class OrderServicesImpl implements CRUDServices, SearchServices<Order> {
+
+    private final FileService fileService = new FileService();
 
     @Override
     public List<Order> getAll(File file) throws EmptySearchException {
@@ -46,13 +47,25 @@ public class OrderServicesImpl implements CRUDServices, SearchServices<Order> {
 
     @Override
     public boolean deleteObjectById(String id, File file) {
-        // TODO add here code!!!
+        try {
+            List<Order> orders = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper().readValue(file, Order[].class)));
+            ObjectMapperServices.getObjectMapper().writeValue(file, orders.stream().filter(x -> !x.getId().toString().equals(id)).collect(Collectors.toList()));
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return false;
     }
 
     @Override
     public boolean updateObject(Object o, String id, File file) {
-        // TODO add here code!!!
+        try {
+            if (this.deleteObjectById(id, fileService.getReceiverFile()) && this.addObject(o, fileService.getReceiverFile())) {
+                return true;
+            }
+        } catch (WritingException e) {
+            log.error("Error update user!!!");
+        }
         return false;
     }
 }
