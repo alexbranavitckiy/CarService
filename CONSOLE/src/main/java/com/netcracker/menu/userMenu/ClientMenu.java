@@ -30,6 +30,7 @@ public class ClientMenu implements Menu {
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
+        log.info("You have entered the client menu");
         this.preMessage(parentsName);
      label:   while (true) {
             switch (in.next()) {

@@ -25,7 +25,8 @@ public class RegistrationMaster implements Menu {
     @Override
     public void preMessage(String parentsName) {
         log.info("Enter 1 {}", parentsName);
-        log.info("Enter 2 to continue registration");
+        log.info("Enter 2 to continue create");
+        log.info("Enter 3 to correct");
     }
 
     @Override
@@ -85,6 +86,11 @@ public class RegistrationMaster implements Menu {
                     }
                 }
                 case "1": {
+                    break label;
+                }
+
+                case "3": {
+                    this.preMessage(parentsName);
                     break label;
                 }
                 default: {

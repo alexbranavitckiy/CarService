@@ -13,7 +13,7 @@ import java.util.UUID;
 public class NewCarClient implements Menu {
 
     private CarClient carClient;
-    private StringBuilder stringBuilder = new StringBuilder();
+    private final StringBuilder stringBuilder = new StringBuilder();
 
 
     @Override

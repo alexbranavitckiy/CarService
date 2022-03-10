@@ -16,8 +16,8 @@ public class MasterMenu implements Menu {
 
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
-        // TODO add here code!!!
-        log.info("MasterMenu");
-
+        log.info("You are logged in as a master");
     }
 }
+
+

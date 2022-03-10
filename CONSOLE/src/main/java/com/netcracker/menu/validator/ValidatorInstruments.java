@@ -15,6 +15,8 @@ public interface ValidatorInstruments {
 
      String getPhone(Scanner in);
 
+     String getMileage(Scanner in);
+
      String getNameUser(Scanner in);
 
      String getDescription(Scanner in);
@@ -27,4 +29,9 @@ public interface ValidatorInstruments {
 
      String getPassword(Scanner in);
 
+     String getYear(Scanner in);
+
+     String  getNumberCar(Scanner in);
+
+     boolean edit(String fieldName, Scanner in);
 }
