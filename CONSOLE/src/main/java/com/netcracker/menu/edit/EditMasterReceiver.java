@@ -8,8 +8,6 @@ import com.netcracker.servisec.MasterReceiverServices;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.MasterReceiver;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.xml.validation.Validator;
 import java.io.IOException;
 import java.util.Scanner;
 
