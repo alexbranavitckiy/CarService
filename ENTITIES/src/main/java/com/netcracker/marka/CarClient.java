@@ -13,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = { "id" })
 public class CarClient {
 
     private UUID id;
@@ -38,21 +39,5 @@ public class CarClient {
                 ", run='" + run + '\'' +
                 '}';
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CarClient carClient = (CarClient) o;
-        return Objects.equals(id, carClient.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, summer, ear, metadataCar, run, carBreakdownList, marka);
-    }
-
-
 
 }
