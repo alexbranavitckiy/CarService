@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-public class CRUDServicesMasterImpl implements CRUDServices {
+public class CRUDServicesMasterReceiverImpl implements CRUDServices {
 
     private final FileService fileService=new FileService();
     private final ObjectMapperServices objectMapperServices=new ObjectMapperServices();
@@ -33,7 +33,6 @@ public class CRUDServicesMasterImpl implements CRUDServices {
         }
         return false;
     }
-
 
     @Override
     public boolean deleteObjectById(String id, File file) {

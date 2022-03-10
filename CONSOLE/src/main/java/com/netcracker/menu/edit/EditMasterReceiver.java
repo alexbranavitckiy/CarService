@@ -68,7 +68,6 @@ public class EditMasterReceiver implements Menu {
             log.info("An input error occurred while entering data. Retry data change");
     }
 
-
     public void changeMessage() {
         log.info("Enter 1 to skip");
         log.info("Enter 2 to edit");

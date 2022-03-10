@@ -5,4 +5,6 @@ import com.netcracker.user.MasterReceiver;
 public interface MasterReceiverServices {
 
     boolean updateMaster(MasterReceiver masterReceiver);
+
+    boolean addMaster(MasterReceiver masterReceiver);
 }

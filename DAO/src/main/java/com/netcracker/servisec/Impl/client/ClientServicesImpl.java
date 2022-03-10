@@ -31,7 +31,7 @@ public class ClientServicesImpl implements ClientServices {
             if (loginService.searchByUserLoginAndPassword(o.getLogin(), o.getPassword()))
                 return this.crudServices.addObject(o, fileService.getUserFile());
         } catch (WritingException w) {
-            log.error("Save error, please try again");
+            log.error("Save error, please try again. {}",w.getLocalizedMessage());
         }
         return false;
     }
@@ -55,7 +55,7 @@ public class ClientServicesImpl implements ClientServices {
         try {
             return this.crudServices.addObject(client, fileService.getUserFile());
         } catch (WritingException w) {
-            log.error("Save error, please try again");
+            log.error("Save error, please try again. {}",w.getLocalizedMessage());
         }
         return false;
     }

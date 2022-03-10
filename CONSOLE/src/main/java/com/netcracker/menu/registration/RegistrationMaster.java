@@ -1,12 +1,13 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
-import com.netcracker.user.Master;
-import com.netcracker.user.Role;
+import com.netcracker.menu.validator.ValidatorImpl;
+import com.netcracker.servisec.Impl.master.MasterServicesImpl;
+import com.netcracker.servisec.Impl.masterReceiver.MasterReceiverServicesImpl;
+import com.netcracker.servisec.MasterReceiverServices;
+import com.netcracker.servisec.MasterServices;
+import com.netcracker.user.*;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -16,7 +17,9 @@ import java.util.UUID;
 public class RegistrationMaster implements Menu {
 
 
-    private final ClientServices clientServices = new ClientServicesImpl();
+    private final MasterServices masterServices = new MasterServicesImpl();
+    private final MasterReceiverServices masterReceiverServices = new MasterReceiverServicesImpl();
+    private final ValidatorImpl validator = new ValidatorImpl();
 
 
     @Override
@@ -28,36 +31,58 @@ public class RegistrationMaster implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-      label:  while (true) {
+        label:
+        while (true) {
             switch (in.next()) {
                 case "2": {
-                    Master master = new Master();
-                    log.info("Enter login");
-                    master.setLogin(in.next());
-                    log.info("Enter password");
-                    master.setPassword(in.next());
-                    log.info("Enter phone");
-                    master.setPhone(in.next());
-                    log.info("Name");
-                    master.setName(in.next());
-                    log.info("Description");
-                    master.setDescription(in.next());
-                    log.info("Education");
-                    master.setEducation(in.next());
-                    log.info("Mail");
-                    master.setMail(in.next());
-                    log.info("Mail");
-                    master.setOutfits(new ArrayList<>());
-                    master.setRole(Role.MASTER);
-                    //  master.setId(UUID.randomUUID())
-                   //  if (clientServices.addObjectInClient(client)) {
-                 //    System.out.println("User created successfully");
-                 //    this.flag = false;
-                //     } else {
-                //     System.out.println("Invalid data. Repeat registration");
-                //     this.preMessage(parentsName);
-               //      }
-                    break;
+                    info();
+                    String str=in.next();
+                    if (str.equalsIgnoreCase("1")) {
+                        Master master = Master.builder()
+                                .id(UUID.randomUUID())
+                                .description(validator.getDescription(in))
+                                .homeAddress(validator.getHomeAddress(in))
+                                .education(validator.getEducation(in))
+                                .name(validator.getNameUser(in))
+                                .password(validator.getPassword(in))
+                                .mail(validator.getMail(in))
+                                .phone(validator.getPhone(in))
+                                .login(validator.getLogin(in))
+                                .qualificationEnum(validator.qualificationEnum(in))
+                                .outfits(new ArrayList<>())
+                                .role(Role.MASTER)
+                                .build();
+                        if (this.masterServices.addMaster(master)) {
+                            log.info("Data saved successfully");
+                        } else {
+                            log.info("Data not saved please try again");
+                        }
+                        break label;
+                    }
+                    if (str.equalsIgnoreCase("2")) {
+                        MasterReceiver masterReceiver = MasterReceiver.builder()
+                                .id(UUID.randomUUID())
+                                .education(validator.getEducation(in))
+                                .description(validator.getDescription(in))
+                                .homeAddress(validator.getHomeAddress(in))
+                                .qualificationEnum(validator.qualificationEnum(in))
+                                .mail(validator.getMail(in))
+                                .login(validator.getLogin(in))
+                                .password(validator.getPassword(in))
+                                .role(Role.RECEPTIONIST)
+                                .name(validator.getNameUser(in))
+                                .orders(new ArrayList<>())
+                                .build();
+                        if (this.masterReceiverServices.addMaster(masterReceiver)) {
+                            log.info("Data saved successfully");
+                        } else {
+                            log.info("Data not saved please try again");
+                        }
+                        break label;
+                    } else {
+                        this.preMessage(parentsName);
+                        continue label;
+                    }
                 }
                 case "1": {
                     break label;
@@ -69,4 +94,10 @@ public class RegistrationMaster implements Menu {
             }
         }
     }
+
+    private void info() {
+        log.info("Enter 1 create MASTER");
+        log.info("Enter 2 create RECEPTIONIST");
+    }
+
 }

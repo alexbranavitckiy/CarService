@@ -16,7 +16,6 @@ public class RegistrationClient implements Menu {
 
     private final ClientServices clientServices = new ClientServicesImpl();
 
-
     @Override
     public void preMessage(String parentsName) {
         log.info("Enter 1 {}" , parentsName);
