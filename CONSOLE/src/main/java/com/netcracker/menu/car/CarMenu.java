@@ -21,7 +21,7 @@ public class CarMenu implements Menu {
 
     @Override
     public void preMessage(String nameMenu) {
-        log.info("Enter 1.{}" , nameMenu);
+        log.info("Enter 1.{}", nameMenu);
         log.info("Enter 2. Display a list of cars");
         log.info("Enter 5. Select a car to edit");
         log.info("Enter 6 to add car data");
@@ -30,7 +30,8 @@ public class CarMenu implements Menu {
     @Override
     public void run(Scanner in, String parentsName) throws IOException {
         this.preMessage(parentsName);
-        label:   while (true) {
+        label:
+        while (true) {
             switch (in.next()) {
                 case "1": {
                     break label;
@@ -107,6 +108,4 @@ public class CarMenu implements Menu {
             }
         }
     }
-
-
 }

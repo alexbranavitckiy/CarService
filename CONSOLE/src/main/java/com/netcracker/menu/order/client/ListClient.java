@@ -45,15 +45,15 @@ public class ListClient implements Menu {
                                 EditClient editClient = new EditClient(clientList.get(in.nextInt() - 1));
                                 editClient.run(in, "Edit Client");
                                 if (searchServices.updateClient(editClient.getClient())) {
-                                    log.info("Data entered successfully");
+                                    log.warn("Data entered successfully");
                                 } else
-                                    log.info("An input error occurred while entering data. Retry data change");
+                                    log.warn("An input error occurred while entering data. Retry data change");
                             }
                         }
                     } catch (EmptySearchException e) {
-                        log.info("The search has not given any results");
+                        log.warn("The search has not given any results. {}",e.getMessage());
                     } catch (InputMismatchException e) {
-                        log.info("Invalid data entered please try again");
+                        log.warn("Invalid data:{}. Please try again",e.getMessage());
                     }
                     this.preMessage(parentsName);
                     break;
