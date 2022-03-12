@@ -1,14 +1,12 @@
 package com.netcracker.servisec.Impl.client;
 
 import com.netcracker.errors.EmptySearchException;
-import com.netcracker.errors.WritingException;
 import com.netcracker.marka.CarClient;
 import com.netcracker.servisec.*;
+import com.netcracker.servisec.Impl.CRUDServicesImpl;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.user.Client;
-import com.netcracker.user.MasterReceiver;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -19,29 +17,25 @@ public class ClientServicesImpl implements ClientServices {
 
   private final FileService fileService = new FileService();
   private final LoginService loginService = new LoginServicesImpl();
-  private final CRUDServices crudServices = new CRUDServicesClientImpl();
-  private final SearchServices<Client> searchServices = new CRUDServicesClientImpl();
+  private final CRUDServices<Client> crudServices = new CRUDServicesImpl<>();
+
 
   @Override
   public List<Client> getAllClient() throws EmptySearchException {
-    return searchServices.getAll(new File(FileService.USER_PATH));
+    return crudServices.getAll(new File(FileService.USER_PATH), Client[].class);
   }
 
   public boolean addObjectInClient(Client o) {
-    try {
-      if (this.passwordCheck(o)) {
-        return this.crudServices.addObject(o, fileService.getUserFile());
-      }
-    } catch (WritingException w) {
-      log.error("Save error, please try again. {}", w.getLocalizedMessage());
+    if (this.passwordCheck(o)) {
+      return this.crudServices.addObject(o, fileService.getUserFile(), Client[].class);
     }
     return false;
   }
 
   @Override
   public boolean updateClient(Client client) {
-    if (crudServices.updateObject(client, client.getId().toString(),
-        new File(FileService.USER_PATH))) {
+    if (crudServices.updateObject(client,
+        new File(FileService.USER_PATH), Client[].class)) {
       return UserSession.updateSession(client);
     }
     return false;
@@ -58,12 +52,8 @@ public class ClientServicesImpl implements ClientServices {
 
   @Override
   public boolean addObjectInClientNotOnline(Client client) {
-    try {
-      if (this.passwordCheck(client)) {
-        return this.crudServices.addObject(client, fileService.getUserFile());
-      }
-    } catch (WritingException w) {
-      log.error("Save error, please try again. {}", w.getLocalizedMessage());
+    if (this.passwordCheck(client)) {
+      return this.crudServices.addObject(client, fileService.getUserFile(), Client[].class);
     }
     return false;
   }

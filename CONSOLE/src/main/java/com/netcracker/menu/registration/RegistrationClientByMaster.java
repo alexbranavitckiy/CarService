@@ -38,9 +38,9 @@ public class RegistrationClientByMaster implements Menu {
     while (true) {
       switch (in.next()) {
         case "2": {
-          log.info("Filling in car details");
           NewCarClient carClientMenu = new NewCarClient();
-          carClientMenu.run(in, "");
+          carClientMenu.run(in, "Filling in car details");
+          log.info("Filling in customer data");
           if (carClientMenu.getCarClient().isPresent()) {
             Client client = Client.builder()
                 .id(UUID.randomUUID())

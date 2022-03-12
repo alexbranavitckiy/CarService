@@ -1,6 +1,8 @@
 package com.netcracker.servisec.Impl.masterReceiver;
 
+import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.FileService;
+import com.netcracker.servisec.Impl.CRUDServicesImpl;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.servisec.LoginService;
 import com.netcracker.servisec.MasterReceiverServices;
@@ -14,17 +16,17 @@ import java.io.File;
 @Slf4j
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
 
-  private final CRUDServicesMasterReceiverImpl crudServicesMasterReceiver = new CRUDServicesMasterReceiverImpl();
+
   private final FileService fileService = new FileService();
   private final LoginService loginService = new LoginServicesImpl();
+  private final CRUDServices<MasterReceiver> searchServices = new CRUDServicesImpl<>();
 
 
   @Override
   public boolean updateMaster(MasterReceiver masterReceiver) {
-    if (this.passwordCheck(masterReceiver) && crudServicesMasterReceiver.updateObject(
+    if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
         masterReceiver,
-        masterReceiver.getId().toString(),
-        fileService.getReceiverFile())) {
+        fileService.getReceiverFile(),MasterReceiver[].class)) {
       return UserSession.updateSession(masterReceiver);
     }
     return false;
@@ -33,8 +35,8 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
   @Override
   public boolean addMaster(MasterReceiver masterReceiver) {
     if (this.passwordCheck(masterReceiver)) {
-      return crudServicesMasterReceiver.addObject(masterReceiver,
-          new File(FileService.RECEIVER_PATH));
+      return searchServices.addObject(masterReceiver,
+          new File(FileService.RECEIVER_PATH),MasterReceiver[].class);
     }
     return false;
   }

@@ -16,23 +16,21 @@ public class UserSession {
   private UserSession() {
   }
 
-  public static boolean openSession(Object object) {
+  public static void openSession(Object object) {
     if (clientSession == null && object instanceof Client) {
       clientSession = (Client) object;
       closeSession(masterSession, masterReceiverSession);
-      return true;
+      return;
     }
     if (masterSession == null && object instanceof Master) {
       masterSession = (Master) object;
       closeSession(clientSession, masterReceiverSession);
-      return true;
+      return;
     }
     if (masterReceiverSession == null && object instanceof MasterReceiver) {
       masterReceiverSession = (MasterReceiver) object;
       closeSession(clientSession, masterSession);
-      return true;
     }
-    return false;
   }
 
   public static boolean updateSession(Object object) {

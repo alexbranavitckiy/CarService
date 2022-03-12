@@ -1,21 +1,19 @@
 package com.netcracker.servisec;
 
+import com.netcracker.errors.EmptySearchException;
 import com.netcracker.errors.WritingException;
 import com.netcracker.user.Client;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public interface CRUDServices {
+public interface CRUDServices<T> {
 
-  boolean addObject(Object o, File file) throws WritingException;
+  List<T> getAll(File file, Class<T[]> object) throws EmptySearchException;
 
-  boolean deleteObjectById(String id, File file);
+  boolean addObject(T addObject, File file, Class<T[]> typeObject);
 
-  boolean updateObject(Object o, String id, File file);
+  boolean deleteObjectById(T deleteObject, File file, Class<T[]> typeObject);
 
+  boolean updateObject(T object, File file, Class<T[]> typeObject);
 
 }

@@ -23,8 +23,7 @@ public class ClientMenu implements Menu {
   public void preMessage(String nameMenu) {
     log.info("Enter 1 {}", nameMenu);
     log.info("Enter 2 for contact information");
-    log.info(
-        "Enter 3 to open recording menu/Sign up for repairs./View machine status."); // TODO add here code!!!
+    log.info("Enter 3 to open recording menu/Sign up for repairs./View machine status.");
     log.info(
         "Enter 4 to get information about the car/View the list of cars./Edit information on car");
     log.info("Enter 5 to edit information about the client");
@@ -53,11 +52,11 @@ public class ClientMenu implements Menu {
         case "5": {
           EditClient editClient = new EditClient();
           editClient.run(in, "Main menu");
-            if (clientServices.updateClient(editClient.getClient())) {
-                log.info("Data entered successfully");
-            } else {
-                log.info("An input error occurred while entering data. Retry data change");
-            }
+          if (clientServices.updateClient(editClient.getClient())) {
+            log.info("Data entered successfully");
+          } else {
+            log.info("An input error occurred while entering data. Retry data change");
+          }
           this.preMessage(parentsName);
           break;
         }

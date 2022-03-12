@@ -36,16 +36,7 @@ public class User implements Serializable {
   private RoleUser roleuser;
 
 
-  @Override
-  public String toString() {
-    return "Your data" +
-        ", name='" + name + '\'' +
-        ", phone='" + phone + '\'' +
-        ", email='" + email + '\'' +
-        ", description='" + description + '\'' +
-        ", login='" + login + '\'' +
-        ", password='" + password;
-  }
+
 
 
 }

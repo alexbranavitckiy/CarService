@@ -43,15 +43,15 @@ public class Client extends User implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-      if (this == o) {
-          return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-          return false;
-      }
-      if (!super.equals(o)) {
-          return false;
-      }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    if (!super.equals(o)) {
+      return false;
+    }
     Client client = (Client) o;
     return Objects.equals(orders, client.orders) && Objects.equals(carClients, client.carClients);
   }

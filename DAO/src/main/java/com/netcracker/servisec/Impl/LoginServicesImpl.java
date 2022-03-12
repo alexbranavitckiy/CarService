@@ -1,6 +1,5 @@
 package com.netcracker.servisec.Impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.netcracker.servisec.FileService;
 import com.netcracker.servisec.LoginService;
@@ -24,7 +23,8 @@ public class LoginServicesImpl implements LoginService {
         case "diamond": {
           if (fileService.isExistsUser()) {
             Optional<Client> client = (Arrays.stream(
-                ObjectMapperServices.getObjectMapper().readValue(fileService.getUserFile(), Client[].class)).filter(x ->
+                ObjectMapperServices.getObjectMapper()
+                    .readValue(fileService.getUserFile(), Client[].class)).filter(x ->
                 {
                   if (x != null) {
                     return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
@@ -42,14 +42,15 @@ public class LoginServicesImpl implements LoginService {
         case "1": {
           if (fileService.isExistsMaster()) {
             Optional<Master> master = (Arrays.stream(
-                ObjectMapperServices.getObjectMapper().readValue(fileService.getMasterFile(), Master[].class)).filter(x ->
+                ObjectMapperServices.getObjectMapper()
+                    .readValue(fileService.getMasterFile(), Master[].class)).filter(x ->
                 {
-                    if (x != null) {
-                        return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
-                            .equalsIgnoreCase(password);
-                    } else {
-                        return false;
-                    }
+                  if (x != null) {
+                    return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
+                        .equalsIgnoreCase(password);
+                  } else {
+                    return false;
+                  }
                 }
             ).findFirst());
             if (master.isPresent()) {
@@ -61,15 +62,16 @@ public class LoginServicesImpl implements LoginService {
         case "2": {
           if (fileService.isExistsReceiver()) {
             Optional<MasterReceiver> masterReceiver = (Arrays.stream(
-                    ObjectMapperServices.getObjectMapper().readValue(fileService.getReceiverFile(), MasterReceiver[].class))
+                    ObjectMapperServices.getObjectMapper()
+                        .readValue(fileService.getReceiverFile(), MasterReceiver[].class))
                 .filter(x ->
                     {
-                        if (x != null) {
-                            return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
-                                .equalsIgnoreCase(password);
-                        } else {
-                            return false;
-                        }
+                      if (x != null) {
+                        return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
+                            .equalsIgnoreCase(password);
+                      } else {
+                        return false;
+                      }
                     }
                 ).findFirst());
             if (masterReceiver.isPresent()) {

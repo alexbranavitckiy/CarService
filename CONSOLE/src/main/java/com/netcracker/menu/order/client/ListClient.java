@@ -25,7 +25,6 @@ public class ListClient implements Menu {
   public void preMessage(String parentsName) {
     log.info("Enter 1: {}", parentsName);
     log.info("Enter 2 Display a list of clients.");
-    log.info("Enter 3 Search for a client by keyword.");
   }
 
   @Override
@@ -72,5 +71,4 @@ public class ListClient implements Menu {
       }
     }
   }
-
 }

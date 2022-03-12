@@ -18,12 +18,12 @@ public class MasterReceiverMenu implements Menu {
   @Override
   public void preMessage(String nameMenu) {
     log.info("Enter 1 {}", nameMenu);
-    log.info("Enter 2 to show contact information");
+    log.info("Enter 2 to show contact information");//++
     log.info("Enter 3 to go to the order menu. Search/Modify/Appoint");
-    log.info("Enter 4 to create a client.");
+    log.info("Enter 4 to create a client.");//++
     log.info("Enter 5 to create/edit/Master/Master Receiver");
-    log.info("Enter 6 to edit personal information");
-    log.info("Enter 7 to search and modify a client");
+    log.info("Enter 6 to edit personal information");//++
+    log.info("Enter 7 to search and modify a client");//++
   }
 
   @Override
