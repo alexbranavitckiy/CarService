@@ -18,22 +18,22 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Outfit {
 
-    private UUID id;
+  private UUID id;
 
-    private String name;
+  private String name;
 
-    private String descriptions;
+  private String descriptions;
 
-    private Order order;
+  private Order order;
 
-    private List<MasterReceiver> employers;
+  private List<UUID> employers;
 
-    private Date dateStart;
+  private Date dateStart;
 
-    private Date dateEnt;
+  private Date dateEnt;
 
-    private double price;
+  private double price;
 
-    private State stateOutfit;
+  private State stateOutfit;
 
 }

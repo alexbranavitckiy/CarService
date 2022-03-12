@@ -1,37 +1,42 @@
 package com.netcracker.menu.validator;
 
 import com.netcracker.menu.errors.InvalidValuesException;
+import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 import java.util.Scanner;
 
 
 public interface ValidatorInstruments {
 
-     boolean inEmail(String email) throws InvalidValuesException;
+  boolean inEmail(String email) throws InvalidValuesException;
 
-     Qualification qualificationEnum(Scanner in);
+  Qualification qualificationEnum(Scanner in);
 
-     String getLogin(Scanner in);
+  State orderState(Scanner in);
 
-     String getPhone(Scanner in);
+  String getLogin(Scanner in);
 
-     String getMileage(Scanner in);
+  String getPhone(Scanner in);
 
-     String getNameUser(Scanner in);
+  String getMileage(Scanner in);
 
-     String getDescription(Scanner in);
+  String getNameUser(Scanner in);
 
-     String getEducation(Scanner in);
+  String getDescription(Scanner in);
 
-     String getMail(Scanner in) throws InvalidValuesException;
+  String getEducation(Scanner in);
 
-     String getHomeAddress(Scanner in);
+  String getMail(Scanner in) ;
 
-     String getPassword(Scanner in);
+  String getHomeAddress(Scanner in);
 
-     String getYear(Scanner in);
+  String getPassword(Scanner in);
 
-     String  getNumberCar(Scanner in);
+  String getYear(Scanner in);
 
-     boolean edit(String fieldName, Scanner in);
+  String getNumberCar(Scanner in);
+
+  boolean edit(String fieldName, Scanner in);
+
+  boolean successfullyMessages(boolean flag);
 }

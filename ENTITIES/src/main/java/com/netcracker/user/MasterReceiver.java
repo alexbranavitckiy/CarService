@@ -15,23 +15,26 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MasterReceiver extends Employer  {
+public class MasterReceiver extends Employer {
 
 
-    private List<Order> orders;
+  private List<UUID> orders;
 
-    @Builder
-    public MasterReceiver(UUID id, String name, String phone, String mail, String description, Role role, String login, String password, String homeAddress, Qualification qualificationEnum, String education, List<Order> orders) {
-        super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum, education);
-        this.orders = orders;
-    }
+  @Builder
+  public MasterReceiver(UUID id, String name, String phone, String mail, String description,
+      Role role, String login, String password, String homeAddress, Qualification qualificationEnum,
+      String education, List<UUID> orders) {
+    super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
+        education);
+    this.orders = orders;
+  }
 
-    @Override
-    public String toString() {
-        return "MasterReceiver{" +
-                "orders=" + orders +
-                "} " + super.toString();
-    }
+  @Override
+  public String toString() {
+    return "MasterReceiver{" +
+        "orders=" + orders +
+        "} " + super.toString();
+  }
 
 
 }

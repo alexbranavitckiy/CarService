@@ -18,23 +18,22 @@ import java.util.UUID;
 @Builder
 public class Order {
 
-    private UUID id;
+  private UUID id;
 
-    private String descriptions;
+  private String descriptions;
 
-    private List<Outfit> outfits;
+  private List<UUID> outfits;
 
-    private double priceSum;
+  private double priceSum;
 
-    private Client client;
+  private UUID clientUUID;
 
-    private State stateOrder;
+  private State stateOrder;
 
-    private List<Entry> entry;
+  private List<UUID> entry;
 
-    private Date dateCreat;
+  private Date dateCreat;
 
-    private Date dateUpdate;
-
+  private Date dateUpdate;
 
 }

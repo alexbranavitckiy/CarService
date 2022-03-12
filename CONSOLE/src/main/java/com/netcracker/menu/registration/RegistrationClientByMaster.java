@@ -3,10 +3,13 @@ package com.netcracker.menu.registration;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.NewCarClient;
 import com.netcracker.menu.order.NewOrder;
+import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
+import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
+import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -17,76 +20,72 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationClientByMaster implements Menu {
 
-    private boolean flag = true;
-    private final ClientServices clientServices = new ClientServicesImpl();
-    private Client client;
+  private final ClientServices clientServices = new ClientServicesImpl();
 
-    @Override
-    public void preMessage(String parentsName) {
-        log.info("Enter 1 {}" , parentsName);
-        log.info("Enter 2 create a client");
-    }
+  private Client clientLast;
+  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
-    @Override
-    public void run(Scanner in, String parentsName) throws IOException {
-        this.preMessage(parentsName);
-        while (flag) {
-            switch (in.next()) {
-                case "2": {
-                    Client client = new Client();
-                    log.info("Filling in car details");
-                    NewCarClient carClient = new NewCarClient();
-                    carClient.run(in, "");
-                    if (carClient.getCarClient().isPresent()) {
-                        client.setCarClients(new HashSet<>());
-                        client.getCarClients().add((carClient.getCarClient().get()));
-                    } else {
-                        log.info("Try again to enter information");
-                        this.preMessage(parentsName);
-                        break;
-                    } // if the user is created by the master, the password and login is written as the car number
-                    client.setLogin(carClient.getCarClient().get().getMetadataCar());
-                    client.setPassword(carClient.getCarClient().get().getMetadataCar());
-                    log.info("Enter phone");
-                    client.setPhone(in.next());
-                    client.setId(UUID.randomUUID());
-                    client.setRoleuser(RoleUser.UNREGISTERED);
-                    if (clientServices.addObjectInClientNotOnline(client)) {
-                        log.info("User created successfully");
-                        this.client = client;
-                        this.flag = false;
-                    } else {
-                        log.info("Invalid data. Repeat registration");
-                        this.preMessage(parentsName);
-                        break;
-                    }
-                    log.info("Enter 3 to Create an order with these customers");
-                    log.info("Enter 1 " + parentsName);
-                    if (in.next().equalsIgnoreCase("3")) {
-                        NewOrder newOrder = new NewOrder(client);
-                        newOrder.run(in, "");
-                    } else {
-                        this.flag = false;
-                        break;
-                    }
-                }
-                case "1": {
-                    this.flag = false;
-                    break;
-                }
-                case "3": {
+  @Override
+  public void preMessage(String parentsName) {
+    log.info("Enter 1 {}", parentsName);
+    log.info("Enter 2 create a client");
+  }
 
-                    break;
-                }
-                default: {
-                    this.preMessage(parentsName);
-                    break;
-                }
+  @Override
+  public void run(Scanner in, String parentsName) throws IOException {
+    this.preMessage(parentsName);
+    label:
+    while (true) {
+      switch (in.next()) {
+        case "2": {
+          log.info("Filling in car details");
+          NewCarClient carClientMenu = new NewCarClient();
+          carClientMenu.run(in, "");
+          if (carClientMenu.getCarClient().isPresent()) {
+            Client client = Client.builder()
+                .id(UUID.randomUUID())
+                .description(validator.getDescription(in))
+                .email(validator.getMail(in))
+                .name(validator.getNameUser(in))
+                .roleuser(RoleUser.UNREGISTERED)
+                .orders(new HashSet<>())
+                .carClients(new ArrayList<>())
+                .login(carClientMenu.getCarClient().get().getMetadataCar())
+                .password(carClientMenu.getCarClient().get().getMetadataCar())
+                .build();
+            if (clientServices.addObjectInClientNotOnline(client)) {
+              log.info("User created successfully");
+              this.clientLast = client;
+              log.info("Enter 3 to Create an order with these customers");
+            } else {
+              log.info("Invalid data. Repeat registration");
             }
+          } else {
+            log.info("Try again to enter information");
+          }
+          this.preMessage(parentsName);
+          break;
         }
+        case "1": {
+          break label;
+        }
+        case "3": {
+          if (clientLast != null) {
+            NewOrder newOrder = new NewOrder(clientLast);
+            newOrder.run(in, "Client creation menu");
+          }
+          this.preMessage(parentsName);
+          break;
+        }
+        default: {
+          this.preMessage(parentsName);
+          break;
+        }
+      }
     }
+  }
 
-    public Client getClient() {
-        return client;
-    }
+  public Client getClient() {
+    return clientLast;
+  }
 }

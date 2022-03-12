@@ -18,29 +18,29 @@ import java.util.UUID;
 //@JsonSubTypes({
 //        @JsonSubTypes.Type(value = MasterReceiver.class, name = "masterReceiver")
 //})
-public class Employer  {
+public class Employer {
 
-    private UUID id;
+  private UUID id;
 
-    private String name;
+  private String name;
 
-    private String phone;
+  private String phone;
 
-    private String mail;
+  private String mail;
 
-    private String description;
+  private String description;
 
-    private Role role;
+  private Role role;
 
-    private String login;
+  private String login;
 
-    private String password;
+  private String password;
 
-    private String homeAddress;
+  private String homeAddress;
 
-    private Qualification qualificationEnum;
+  private Qualification qualificationEnum;
 
-    private String education;
+  private String education;
 
 
 }

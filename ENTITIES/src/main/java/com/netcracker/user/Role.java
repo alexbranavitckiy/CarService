@@ -1,6 +1,6 @@
 package com.netcracker.user;
 
 public enum Role {
-    MASTER,
-    RECEPTIONIST
+  MASTER,
+  RECEPTIONIST
 }

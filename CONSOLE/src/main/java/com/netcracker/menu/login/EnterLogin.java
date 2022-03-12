@@ -10,20 +10,21 @@ import java.util.Scanner;
 
 public class EnterLogin implements Menu {
 
-    @Override
-    public void preMessage(String parentsName) {}
+  @Override
+  public void preMessage(String parentsName) {
+  }
 
-    @Override
-    public void run(Scanner in, String parentsName) throws IOException {
-        this.preMessage(parentsName);
-        if (UserSession.getMasterSession().isPresent()) {
-            new MasterMenu().run(in, "Go out");
-        }
-        if (UserSession.getMasterReceiverSession().isPresent()) {
-            new MasterReceiverMenu().run(in, "Go out");
-        }
-        if (UserSession.getClientSession().isPresent()) {
-            new ClientMenu().run(in, "Go out");
-        }
+  @Override
+  public void run(Scanner in, String parentsName) throws IOException {
+    this.preMessage(parentsName);
+    if (UserSession.getMasterSession().isPresent()) {
+      new MasterMenu().run(in, "Go out");
     }
+    if (UserSession.getMasterReceiverSession().isPresent()) {
+      new MasterReceiverMenu().run(in, "Go out");
+    }
+    if (UserSession.getClientSession().isPresent()) {
+      new ClientMenu().run(in, "Go out");
+    }
+  }
 }

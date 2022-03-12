@@ -1,7 +1,6 @@
 package com.netcracker.breakdown;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,10 +15,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TypeCarBreakdown {
 
-    private UUID id;
+  private UUID id;
 
-    private String name;
+  private String name;
 
-    private String location;
+  private String location;
 
-   }
+}

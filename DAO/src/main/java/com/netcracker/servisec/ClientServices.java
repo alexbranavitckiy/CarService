@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface ClientServices {
 
-    List<Client> getAllClient() throws EmptySearchException;
+  List<Client> getAllClient() throws EmptySearchException;
 
-    boolean addObjectInClient(Client client) throws IOException;
+  boolean addObjectInClient(Client client) throws IOException;
 
-    boolean addObjectInClientNotOnline(Client client) throws IOException;
+  boolean addObjectInClientNotOnline(Client client) throws IOException;
 
-    boolean updateClient(Client client)throws IOException;
+  boolean updateClient(Client client) throws IOException;
 
-    boolean updateClientCar(CarClient carClient);
+  boolean updateClientCar(CarClient carClient);
 
 }

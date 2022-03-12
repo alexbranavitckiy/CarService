@@ -1,6 +1,6 @@
 package com.netcracker.breakdown;
 
 public enum State {
-    CORRECTED,
-    NOT_FIXED
+  CORRECTED,
+  NOT_FIXED
 }

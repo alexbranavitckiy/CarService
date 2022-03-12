@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SearchServices<T> {
 
-    List<T> getAll(File file) throws EmptySearchException;
+  List<T> getAll(File file) throws EmptySearchException;
 
 }

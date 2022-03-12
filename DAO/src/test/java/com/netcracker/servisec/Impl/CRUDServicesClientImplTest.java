@@ -2,6 +2,7 @@ package com.netcracker.servisec.Impl;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.servisec.Impl.client.CRUDServicesClientImpl;
+import com.netcracker.servisec.Impl.order.CRUDOrderServicesImpl;
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.io.File;
 public class CRUDServicesClientImplTest extends TestCase {
 
     private final CRUDServicesClientImpl crudServicesClient = new CRUDServicesClientImpl();
-    private final OrderServicesImpl orderServices = new OrderServicesImpl();
+    private final CRUDOrderServicesImpl orderServices = new CRUDOrderServicesImpl();
 
     public void testGetAll() {
         try {

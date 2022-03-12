@@ -18,16 +18,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CarBreakdown {
 
-    private UUID id;
+  private UUID id;
 
-    private CarClient carClient;
+  private CarClient carClient;
 
-    private List<TypeCarBreakdown> typeCarBreakdowns;
+  private List<TypeCarBreakdown> typeCarBreakdowns;
 
-    private String descriptions;
+  private String descriptions;
 
-    private Double runCarSize;
+  private Double runCarSize;
 
-    private State state;
+  private State state;
 
-    }
+}

@@ -5,5 +5,6 @@ import java.io.IOException;
 
 
 public interface LoginService {
-     boolean searchByUserLoginAndPassword(String login, String password) throws IOException ;
+
+  boolean searchByUserLoginAndPassword(String login, String password) throws IOException;
 }

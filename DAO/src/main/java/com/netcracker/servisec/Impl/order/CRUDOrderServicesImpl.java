@@ -1,4 +1,4 @@
-package com.netcracker.servisec.Impl;
+package com.netcracker.servisec.Impl.order;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.errors.WritingException;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class OrderServicesImpl implements CRUDServices, SearchServices<Order> {
+public class CRUDOrderServicesImpl implements CRUDServices, SearchServices<Order> {
 
     private final FileService fileService = new FileService();
 

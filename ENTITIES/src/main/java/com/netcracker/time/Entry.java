@@ -17,11 +17,11 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Entry implements Serializable {
 
-    private UUID id;
+  private UUID id;
 
-    private Date date;
+  private Date date;
 
-    private String descriptions;
+  private String descriptions;
 
-    private Order order;
+  private Order order;
 }

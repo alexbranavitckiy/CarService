@@ -16,36 +16,36 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@EqualsAndHashCode(exclude = { "id" })
-public class User implements Serializable{
+@EqualsAndHashCode(exclude = {"id"})
+public class User implements Serializable {
 
-    private UUID id;
+  private UUID id;
 
-    private String name;
+  private String name;
 
-    private String phone;
+  private String phone;
 
-    private String email;
+  private String email;
 
-    private String description;
+  private String description;
 
-    private String login;
+  private String login;
 
-    private String password;
+  private String password;
 
-    private RoleUser roleuser;
+  private RoleUser roleuser;
 
 
-    @Override
-    public String toString() {
-        return "Your data" +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", description='" + description + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password;
-    }
+  @Override
+  public String toString() {
+    return "Your data" +
+        ", name='" + name + '\'' +
+        ", phone='" + phone + '\'' +
+        ", email='" + email + '\'' +
+        ", description='" + description + '\'' +
+        ", login='" + login + '\'' +
+        ", password='" + password;
+  }
 
 
 }
