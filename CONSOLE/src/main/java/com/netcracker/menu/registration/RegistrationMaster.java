@@ -26,7 +26,6 @@ public class RegistrationMaster implements Menu {
   public void preMessage(String parentsName) {
     log.info("Enter 1 {}", parentsName);
     log.info("Enter 2 to continue create");
-    log.info("Enter 3 to correct");
   }
 
   @Override

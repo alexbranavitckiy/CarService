@@ -2,22 +2,15 @@ package com.netcracker.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.UUID;
+import lombok.*;
+
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@EqualsAndHashCode(exclude = {"id"})
-public class User implements Serializable {
+public class User  {
 
   private UUID id;
 
@@ -34,9 +27,5 @@ public class User implements Serializable {
   private String password;
 
   private RoleUser roleuser;
-
-
-
-
 
 }

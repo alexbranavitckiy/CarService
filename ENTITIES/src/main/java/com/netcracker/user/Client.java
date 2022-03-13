@@ -2,13 +2,10 @@ package com.netcracker.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.marka.CarClient;
-import com.netcracker.order.Order;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
 
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends User implements Serializable {
+public class Client extends User  {
 
   private Set<UUID> orders;
 
@@ -31,7 +28,7 @@ public class Client extends User implements Serializable {
   @Builder
   public Client(UUID id, String name, String phone, String email, String description, String login,
       String password, RoleUser roleuser, Set<UUID> orders, List<CarClient> carClients) {
-    super(id, name, phone, email, description, login, password, roleuser);
+    super(id,name, phone, email, description, login, password, roleuser);
     this.orders = orders;
     this.carClients = carClients;
   }
@@ -41,25 +38,9 @@ public class Client extends User implements Serializable {
     return super.toString();
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    if (!super.equals(o)) {
-      return false;
-    }
-    Client client = (Client) o;
-    return Objects.equals(orders, client.orders) && Objects.equals(carClients, client.carClients);
-  }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode());
+    return Objects.hash(super.hashCode(), getOrders());
   }
-
-
 }

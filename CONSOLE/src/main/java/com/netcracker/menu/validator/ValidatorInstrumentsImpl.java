@@ -3,7 +3,6 @@ package com.netcracker.menu.validator;
 import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
-import java.util.InputMismatchException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
@@ -31,6 +30,32 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
           "Invalid values, please try again. Format: Leha03377@Hotmail.com");
     }
   }
+
+
+  @Override
+  public com.netcracker.outfit.State stateOutfit(Scanner in) {
+    stringBuilder.delete(0, stringBuilder.length());
+    log.info("Outfit status");
+    log.info("Enter 1 create: END");
+    log.info("Enter 2 create: WORK");
+    log.info("Enter 3 create: NO_STATE");
+    stringBuilder.append(in.next());
+    switch (stringBuilder.toString()) {
+      case "1": {
+        return com.netcracker.outfit.State.END;
+      }
+      case "2": {
+        return com.netcracker.outfit.State.WORK;
+      }
+      case "3": {
+        return com.netcracker.outfit.State.NO_STATE;
+      }
+      default: {
+        return stateOutfit(in);
+      }
+    }
+  }
+
 
   @Override
   public State orderState(Scanner in) {
@@ -72,6 +97,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
 
+  @Override
   public boolean successfullyMessages(boolean flag) {//recursion!
     if (flag) {
       log.info("Data saved successfully");
@@ -136,6 +162,12 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
   @Override
+  public double getPrice(Scanner in) {
+    log.info("Enter Price");
+    return in.nextDouble();
+  }
+
+  @Override
   public String getYear(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter year of car");
@@ -160,6 +192,19 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
   @Override
+  public String getNameOutfit(Scanner in) {
+    stringBuilder.delete(0, stringBuilder.length());
+    log.info("Enter Name outfit");
+    stringBuilder.append(in.next());
+    if (stringBuilder.length() > 1 && stringBuilder.length() < 20) {
+      return stringBuilder.toString();
+    }
+    log.info("Name must contain from 1 to 20 characters");
+    return getNameOutfit(in);
+  }
+
+
+  @Override
   public String getNameUser(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter Name");
@@ -176,14 +221,9 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     log.info(fieldName);
     log.info("Enter 1 to skip");
     log.info("Enter 2 to edit");
-    stringBuilder.delete(0, stringBuilder.length());
-    if (in.next().equalsIgnoreCase("2")) {
-      log.info("Enter values");
-      stringBuilder.append(in.next());
-      return true;
-    }
-    return false;
+    return in.next().equalsIgnoreCase("2");
   }
+
 
   @Override
   public String getDescription(Scanner in) {

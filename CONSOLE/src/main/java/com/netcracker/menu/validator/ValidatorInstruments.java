@@ -26,7 +26,11 @@ public interface ValidatorInstruments {
 
   String getEducation(Scanner in);
 
-  String getMail(Scanner in) ;
+  String getMail(Scanner in);
+
+  double getPrice(Scanner in);
+
+  String getNameOutfit(Scanner in);
 
   String getHomeAddress(Scanner in);
 
@@ -37,6 +41,8 @@ public interface ValidatorInstruments {
   String getNumberCar(Scanner in);
 
   boolean edit(String fieldName, Scanner in);
+
+  com.netcracker.outfit.State stateOutfit(Scanner in);
 
   boolean successfullyMessages(boolean flag);
 }

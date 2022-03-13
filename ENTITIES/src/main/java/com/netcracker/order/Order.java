@@ -1,9 +1,6 @@
 package com.netcracker.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.user.Client;
-import com.netcracker.outfit.Outfit;
-import com.netcracker.time.Entry;
 import lombok.*;
 
 

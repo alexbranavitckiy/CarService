@@ -2,11 +2,11 @@ package com.netcracker.outfit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.order.Order;
-import com.netcracker.user.MasterReceiver;
+import com.netcracker.time.Entry;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Outfit {
 
   private UUID id;
@@ -24,9 +25,9 @@ public class Outfit {
 
   private String descriptions;
 
-  private Order order;
+  private UUID order;
 
-  private List<UUID> employers;
+  private UUID employer;
 
   private Date dateStart;
 

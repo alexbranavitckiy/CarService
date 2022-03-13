@@ -1,6 +1,5 @@
 package com.netcracker.servisec;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
@@ -15,11 +14,11 @@ import java.util.*;
 @Slf4j
 public class FileService {
 
-  public static final String USER_PATH = "src/main/resources/user.json";
-  public static final String MASTER_PATH = "src/main/resources/master.json";
-  public static final String RECEIVER_PATH = "src/main/resources/receiver.json";
-  public static final String ORDERS_PATH = "src/main/resources/orders.json";
-  public static final String OUTFIT_PATH = "src/main/resources/outfit.json";
+  public static final String USER_PATH = "user.json";
+  public static final String MASTER_PATH = "master.json";
+  public static final String RECEIVER_PATH = "receiver.json";
+  public static final String ORDERS_PATH = "orders.json";
+  public static final String OUTFIT_PATH = "outfit.json";
   public static final String NOT_FOUND = "User is not found";
   public static final String CONTACT_INFORMATION = "Contact Information:"
       + " Address: Minsk, Gintovta st., 1, 3rd floor"
@@ -101,6 +100,7 @@ public class FileService {
         .description(test)
         .id(UUID.randomUUID())
         .description(test)
+        .outfits(new ArrayList<>())
         .password(test)
         .name(test)
         .login(test + "2")
@@ -113,6 +113,7 @@ public class FileService {
         .description(test)
         .id(UUID.randomUUID())
         .name(test)
+        .orders(new ArrayList<>())
         .login(test + "3")
         .build();
     ObjectMapperServices.getObjectMapper().writeValue(getReceiverFile(), List.of(masterReceiver));
@@ -126,8 +127,13 @@ public class FileService {
         .build();
     ObjectMapperServices.getObjectMapper().writeValue(orders, List.of(order));
 
-    Outfit outfit ;
-
-
+    Outfit outfit = Outfit.builder()
+        .employer(UUID.randomUUID())
+        .dateEnt(new Date())
+        .id(UUID.randomUUID())
+        .descriptions(test)
+        .order(UUID.randomUUID())
+        .build();
+    ObjectMapperServices.getObjectMapper().writeValue(this.outfit, List.of(outfit));
   }
 }

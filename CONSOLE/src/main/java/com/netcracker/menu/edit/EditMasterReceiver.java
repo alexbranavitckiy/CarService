@@ -42,10 +42,8 @@ public class EditMasterReceiver implements Menu {
     if (validator.edit(this.masterReceiver.getLogin(), in)) {
       this.masterReceiver.setLogin(validator.getLogin(in));
     }
-    log.info("Password");
-    if (validator.edit(this.masterReceiver.getPassword(), in)) {
-      this.masterReceiver.setPassword(validator.getPassword(in));
-    }
+    log.info("Enter a new password");
+    this.masterReceiver.setPassword(validator.getPassword(in));
     log.info("Education");
     if (validator.edit(this.masterReceiver.getEducation(), in)) {
       this.masterReceiver.setPassword(validator.getEducation(in));

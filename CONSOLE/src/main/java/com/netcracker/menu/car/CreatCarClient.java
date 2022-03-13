@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 @Slf4j
-public class NewCarClient implements Menu {
+public class CreatCarClient implements Menu {
 
   private CarClient carClient;
   private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();

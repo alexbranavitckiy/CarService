@@ -42,6 +42,13 @@ public class ClientServicesImpl implements ClientServices {
   }
 
   @Override
+  public boolean updateClientNotSession(Client client) {
+    return crudServices.updateObject(client,
+        new File(FileService.USER_PATH), Client[].class);
+  }
+
+
+  @Override
   public boolean updateClientCar(CarClient carClient) {
     Client client = UserSession.getCloneClientSession();
     client.setCarClients(client.getCarClients().stream()

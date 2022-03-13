@@ -1,19 +1,15 @@
 package com.netcracker.menu.car;
 
-import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.edit.EditCar;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.Client;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.Set;
 
 @Slf4j
 public class CarMenu implements Menu {
@@ -66,7 +62,7 @@ public class CarMenu implements Menu {
               if (in.next().equalsIgnoreCase("2")) {
                 this.preMessage(parentsName);
               } else {
-                EditCar editCar = new EditCar(x.getCarClients().get(metadataCar-1));
+                EditCar editCar = new EditCar(x.getCarClients().get(metadataCar - 1));
                 try {
                   editCar.run(in, "Car menu");
                 } catch (IOException e) {
@@ -88,11 +84,11 @@ public class CarMenu implements Menu {
           break;
         }
         case "6": {
-          NewCarClient newCarClient = new NewCarClient();
-          newCarClient.run(in, "");
+          CreatCarClient creatCarClient = new CreatCarClient();
+          creatCarClient.run(in, "");
           Client client = UserSession.getCloneClientSession();
           if (client.getCarClients() != null) {
-            client.getCarClients().add(newCarClient.getCarClient().get());
+            client.getCarClients().add(creatCarClient.getCarClient().get());
           }
           if (clientServices.updateClient(client)) {
             log.info(client.toString());

@@ -1,6 +1,7 @@
 package com.netcracker.menu.order;
 
 import com.netcracker.menu.Menu;
+import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.order.Order;
@@ -19,13 +20,13 @@ import java.util.UUID;
 @Slf4j
 public class NewOrder implements Menu {
 
-
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
   private final Client client;
   private final OrderServices orderServices = new OrderServicesImpl();
-
+  private UUID orderUUID;
 
   public NewOrder(Client client) {
+    this.orderUUID = null;
     this.client = client;
   }
 
@@ -50,8 +51,9 @@ public class NewOrder implements Menu {
                 client.getLogin(), client.getName(), client.getPhone());
             log.info("Enter 1-yes. 2-not ");
             if (in.next().equalsIgnoreCase("1")) {
-              validator.successfullyMessages(orderServices.addOrder(Order.builder()
-                  .id(UUID.randomUUID())
+              orderUUID = UUID.randomUUID();
+              Order order = Order.builder()
+                  .id(orderUUID)
                   .clientUUID(this.client.getId())
                   .stateOrder(validator.orderState(in))
                   .outfits(new ArrayList<>())
@@ -60,7 +62,15 @@ public class NewOrder implements Menu {
                   .entry(new ArrayList<>())
                   .descriptions(validator.getDescription(in))
                   .priceSum(0d)
-                  .build()));
+                  .build();
+
+              log.info("Outfit data:");
+              CreateOutfit createOutfit = new CreateOutfit(orderUUID);
+              createOutfit.run(in,
+                  "");
+              order.setOutfits(new ArrayList<>());
+              order.getOutfits().add(createOutfit.getOrder());
+              validator.successfullyMessages(orderServices.addOrder(order));
             }
           }
           break label;

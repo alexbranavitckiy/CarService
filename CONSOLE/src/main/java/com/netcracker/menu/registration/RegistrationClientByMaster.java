@@ -1,7 +1,7 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.car.NewCarClient;
+import com.netcracker.menu.car.CreatCarClient;
 import com.netcracker.menu.order.NewOrder;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
@@ -38,7 +38,7 @@ public class RegistrationClientByMaster implements Menu {
     while (true) {
       switch (in.next()) {
         case "2": {
-          NewCarClient carClientMenu = new NewCarClient();
+          CreatCarClient carClientMenu = new CreatCarClient();
           carClientMenu.run(in, "Filling in car details");
           log.info("Filling in customer data");
           if (carClientMenu.getCarClient().isPresent()) {

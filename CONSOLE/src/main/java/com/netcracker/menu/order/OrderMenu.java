@@ -14,7 +14,7 @@ public class OrderMenu implements Menu {
   public void preMessage(String parentsName) {
     log.info("You have entered the order menu");
     log.info("Enter 1 " + parentsName);
-    log.info("Enter 2 to create order");
+    log.info("Enter 2 to create an order with new customers");
     log.info("Enter 3 to search and modify orders");
   }
 
@@ -26,7 +26,8 @@ public class OrderMenu implements Menu {
       switch (in.next()) {
         case "3": {
           log.info("List of orders");
-          new ListOrders();
+          new ListOrders().run(in,"Order menu");
+          this.preMessage(parentsName);
           break;
         }
         case "2": {
@@ -38,7 +39,7 @@ public class OrderMenu implements Menu {
           break label;
         }
         default: {
-          log.info("default");
+          this.preMessage(parentsName);
           break;
         }
       }

@@ -26,7 +26,17 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
   public boolean updateMaster(MasterReceiver masterReceiver) {
     if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
         masterReceiver,
-        fileService.getReceiverFile(),MasterReceiver[].class)) {
+        fileService.getReceiverFile(), MasterReceiver[].class)) {
+      return UserSession.updateSession(masterReceiver);
+    }
+    return false;
+  }
+
+  @Override
+  public boolean updateMasterAndSession(MasterReceiver masterReceiver) {
+    if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
+        masterReceiver,
+        fileService.getReceiverFile(), MasterReceiver[].class)) {
       return UserSession.updateSession(masterReceiver);
     }
     return false;
@@ -36,7 +46,7 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
   public boolean addMaster(MasterReceiver masterReceiver) {
     if (this.passwordCheck(masterReceiver)) {
       return searchServices.addObject(masterReceiver,
-          new File(FileService.RECEIVER_PATH),MasterReceiver[].class);
+          new File(FileService.RECEIVER_PATH), MasterReceiver[].class);
     }
     return false;
   }

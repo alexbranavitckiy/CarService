@@ -1,11 +1,18 @@
 package com.netcracker.menu.userMenu;
 
+import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.edit.EditMasterReceiver;
-import com.netcracker.menu.order.OrderMenu;
-import com.netcracker.menu.order.client.ListClient;
-import com.netcracker.menu.registration.RegistrationClientByMaster;
-import com.netcracker.menu.registration.RegistrationMaster;
+import com.netcracker.menu.edit.EditOutfit;
+import com.netcracker.menu.validator.ValidatorInstruments;
+import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
+import com.netcracker.outfit.Outfit;
+import com.netcracker.servisec.Impl.master.MasterServicesImpl;
+import com.netcracker.servisec.Impl.outfit.OutfitsServicesImpl;
+import com.netcracker.servisec.MasterServices;
+import com.netcracker.servisec.OutfitsServices;
+import com.netcracker.servisec.UserSession;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,6 +20,10 @@ import java.util.Scanner;
 
 @Slf4j
 public class MasterMenu implements Menu {
+
+  private final MasterServices masterServices = new MasterServicesImpl();
+  private final OutfitsServices outfitsServices = new OutfitsServicesImpl();
+  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
   @Override
   public void preMessage(String nameMenu) {
@@ -31,9 +42,42 @@ public class MasterMenu implements Menu {
         case "1": {
           break label;
         }
-
         case "2": {
-          new ListClient().run(in, "Main menu");
+          try {
+            List<Outfit> outfitList = outfitsServices.getAllOutfits().stream()
+                .filter(x -> {
+                  if (x != null) {
+                    return x.getEmployer().equals(
+                        UserSession.getMasterSession().get().getId());
+                  }
+                  return false;
+                }).collect(Collectors.toList());
+            if (outfitList.size() > 0) {
+              for (int x = 0; x < outfitList.size(); x++) {
+                log.info(
+                    "id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}/Price:{}. ",
+                    x + 1
+                    , outfitList.get(x).getDateStart()
+                    , outfitList.get(x).getDateEnt()
+                    , outfitList.get(x).getStateOutfit()
+                    , outfitList.get(x).getDescriptions()
+                    , outfitList.get(x).getName()
+                    , outfitList.get(x).getPrice());
+              }
+              log.info("proceed to order? Enter 1-yeas/ 2-no");
+              if (in.next().equalsIgnoreCase("2")) {
+                log.info("Enter Order ID");
+                EditOutfit editOutfit = new EditOutfit(outfitList.get(in.nextInt()));
+                editOutfit.run(in, "");
+                validator.successfullyMessages(
+                    outfitsServices.updateOutfit(editOutfit.getOutfit()));
+              }
+            } else {
+              log.info("No existing orders");
+            }
+          } catch (EmptySearchException e) {
+            log.info("{}", e.getMessage());
+          }
           this.preMessage(parentsName);
           break;
         }
@@ -44,6 +88,7 @@ public class MasterMenu implements Menu {
       }
     }
   }
+
 }
 
 

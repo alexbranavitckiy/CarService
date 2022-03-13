@@ -17,6 +17,9 @@ public interface ClientServices {
 
   boolean updateClient(Client client) throws IOException;
 
+  boolean updateClientNotSession(Client client) throws IOException;
+
+
   boolean updateClientCar(CarClient carClient);
 
 }

@@ -2,15 +2,10 @@ package com.netcracker.menu.order.master;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.edit.EditClient;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.servisec.Impl.master.MasterServicesImpl;
 import com.netcracker.servisec.MasterServices;
-import com.netcracker.user.Client;
 import com.netcracker.user.Master;
 import java.io.IOException;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 public class ListMaster implements Menu {
 
   private final MasterServices masterServices = new MasterServicesImpl();
+
+  private Master master;
+
+  public ListMaster() {
+    this.master = null;
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -37,8 +38,20 @@ public class ListMaster implements Menu {
           break label;
         }
         case "2": {
-          List<Master> masters = masterServices.getAllMaster();
-          log.info(masters.toString());
+          try {
+            List<Master> masters = masterServices.getAllMaster();
+            for (int x = 0; x < masters.size(); x++) {
+              log.info("id[{}] Login:{} Description:{} Mail:{} Phone:{} Qualification:{} Role:{}",
+                  x + 1,
+                  masters.get(x).getLogin(), masters.get(x).getDescription(),
+                  masters.get(x).getMail(), masters.get(x).getPhone(),
+                  masters.get(x).getQualificationEnum(), masters.get(x).getRole());
+            }
+            log.info("Enter Master ID");
+            this.master = masters.get(in.nextInt() - 1);
+          } catch (EmptySearchException e) {
+            log.info("The search has not given any results:{}", e.getMessage());
+          }
           break label;
         }
         default: {
@@ -47,5 +60,14 @@ public class ListMaster implements Menu {
         }
       }
     }
+  }
+
+
+  public Master getMaster() {
+    return master;
+  }
+
+  public void setMaster(Master master) {
+    this.master = master;
   }
 }

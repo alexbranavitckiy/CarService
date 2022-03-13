@@ -1,6 +1,5 @@
 package com.netcracker;
 
-import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.startMenu.StartMenu;
 import com.netcracker.servisec.FileService;
 import lombok.extern.slf4j.Slf4j;

@@ -3,5 +3,6 @@ package com.netcracker.outfit;
 
 public enum State {
   WORK,
-  END
+  END,
+  NO_STATE
 }
