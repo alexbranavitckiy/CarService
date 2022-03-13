@@ -69,7 +69,8 @@ public class MasterReceiverMenu implements Menu {
           break;
         }
         case "8": {
-          new ListOutfit().run(in, "");
+          ListOutfit listOutfits = new ListOutfit();
+          listOutfits.run(in, "");
           this.preMessage(parentsName);
           break;
         }

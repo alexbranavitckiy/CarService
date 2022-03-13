@@ -43,8 +43,6 @@ public class ListOutfit implements Menu {
                   , outfitList.get(x).getDescriptions()
                   , outfitList.get(x).getName());
             }
-
-
           } catch (EmptySearchException e) {
             log.warn("The search has not given any results. {}", e.getMessage());
           } catch (InputMismatchException e) {

@@ -4,11 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
+
   <modules>
     <module>ENTITIES</module>
     <module>DAO</module>
     <module>CONSOLE</module>
   </modules>
+
 
   <groupId>com.netcracker.car.service</groupId>
   <artifactId>Car_Service</artifactId>
@@ -44,6 +46,13 @@
       <version>2.13.0</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <version>3.1.1</version>
+    </dependency>
+
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -59,33 +68,24 @@
 
   </dependencies>
 
+
   <build>
-    <finalName>${project.artifactId}</finalName>
     <plugins>
+
       <plugin>
-        <artifactId>
-          maven-resources-plugin
-        </artifactId>
-        <version>2.6</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
-            <id>copy-resources</id>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
             <configuration>
               <outputDirectory>
-                ${basedir}/target/resources
+                ${project.build.directory}/libs
               </outputDirectory>
-              <resources>
-                <directory>
-                  src/main/resources
-                </directory>
-                <resource>
-                  <includes>
-                    <include>
-                      **/*.properties
-                    </include>
-                  </includes>
-                </resource>
-              </resources>
             </configuration>
           </execution>
         </executions>
@@ -93,15 +93,30 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
-        <configuration>
-          <outputDirectory>
-            ${basedir}/../CarService
-          </outputDirectory>
-        </configuration>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>
+                    com.netcracker.Main
+                  </mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
-
     </plugins>
+
   </build>
+
 </project>
