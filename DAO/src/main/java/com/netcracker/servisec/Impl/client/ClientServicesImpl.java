@@ -6,6 +6,8 @@ import com.netcracker.servisec.*;
 import com.netcracker.servisec.Impl.CRUDServicesImpl;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.user.Client;
+import java.util.UUID;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +26,13 @@ public class ClientServicesImpl implements ClientServices {
   public List<Client> getAllClient() throws EmptySearchException {
     return crudServices.getAll(new File(FileService.USER_PATH), Client[].class);
   }
+
+  @SneakyThrows
+  public List<CarClient> getCarByIdClient(UUID uuidClient) {
+    return crudServices.getAll(new File(FileService.USER_PATH), Client[].class).stream()
+        .filter(x -> x.getId().equals(uuidClient)).findFirst().get().getCarClients();
+  }
+
 
   public boolean addObjectInClient(Client o) {
     if (this.passwordCheck(o)) {

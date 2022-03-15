@@ -52,6 +52,9 @@ public class ListMaster implements Menu {
           } catch (EmptySearchException e) {
             log.info("The search has not given any results:{}", e.getMessage());
           }
+          catch (IndexOutOfBoundsException e) {
+            log.info("Selected master not found");
+          }
           break label;
         }
         default: {
@@ -67,7 +70,4 @@ public class ListMaster implements Menu {
     return master;
   }
 
-  public void setMaster(Master master) {
-    this.master = master;
-  }
 }

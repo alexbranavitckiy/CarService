@@ -6,8 +6,11 @@ import com.netcracker.user.Client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public interface ClientServices {
+
+  List<CarClient> getCarByIdClient(UUID uuidClient) throws EmptySearchException;
 
   List<Client> getAllClient() throws EmptySearchException;
 

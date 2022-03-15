@@ -29,7 +29,6 @@ public class MasterMenu implements Menu {
   public void preMessage(String nameMenu) {
     log.info("Enter 1 {}", nameMenu);
     log.info("Enter 2 list of current outfits");
-
   }
 
   @Override
@@ -64,7 +63,7 @@ public class MasterMenu implements Menu {
                     , outfitList.get(x).getName()
                     , outfitList.get(x).getPrice());
               }
-              log.info("proceed to order? Enter 1-yeas/ 2-no");
+              log.info("Proceed to order? Enter 1-yeas/ 2-no");
               if (in.next().equalsIgnoreCase("2")) {
                 log.info("Enter Order ID");
                 EditOutfit editOutfit = new EditOutfit(outfitList.get(in.nextInt()));
@@ -73,7 +72,8 @@ public class MasterMenu implements Menu {
                     outfitsServices.updateOutfit(editOutfit.getOutfit()));
               }
             } else {
-              log.info("No existing orders");
+              log.info("No existing outfits");
+              break;
             }
           } catch (EmptySearchException e) {
             log.info("{}", e.getMessage());

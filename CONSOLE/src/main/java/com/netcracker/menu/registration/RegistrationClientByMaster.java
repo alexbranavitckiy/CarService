@@ -21,9 +21,12 @@ import java.util.UUID;
 public class RegistrationClientByMaster implements Menu {
 
   private final ClientServices clientServices = new ClientServicesImpl();
-
-  private Client clientLast;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
+  private Client clientLast;
+
+  public RegistrationClientByMaster() {
+    clientLast = null;
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -33,12 +36,12 @@ public class RegistrationClientByMaster implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    CreatCarClient carClientMenu = new CreatCarClient();
     this.preMessage(parentsName);
     label:
     while (true) {
       switch (in.next()) {
         case "2": {
-          CreatCarClient carClientMenu = new CreatCarClient();
           carClientMenu.run(in, "Filling in car details");
           log.info("Filling in customer data");
           if (carClientMenu.getCarClient().isPresent()) {
@@ -71,7 +74,8 @@ public class RegistrationClientByMaster implements Menu {
         }
         case "3": {
           if (clientLast != null) {
-            NewOrder newOrder = new NewOrder(clientLast);
+            NewOrder newOrder = new NewOrder(clientLast,
+                carClientMenu.getCarClient().get().getId());
             newOrder.run(in, "Client creation menu");
           }
           this.preMessage(parentsName);

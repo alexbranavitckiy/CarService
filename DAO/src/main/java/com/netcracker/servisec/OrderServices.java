@@ -11,4 +11,5 @@ public interface OrderServices {
 
   List<Order> getAll() throws EmptySearchException;
 
+  List<Order> getOrderWithRequestState();
 }

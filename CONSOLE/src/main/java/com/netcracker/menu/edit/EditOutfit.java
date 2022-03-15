@@ -1,6 +1,5 @@
 package com.netcracker.menu.edit;
 
-import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
@@ -12,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EditOutfit implements Menu {
 
-  private Outfit outfit;
+  private final Outfit outfit;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
   @Override

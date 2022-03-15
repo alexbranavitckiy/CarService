@@ -31,7 +31,6 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     }
   }
 
-
   @Override
   public com.netcracker.outfit.State stateOutfit(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
@@ -55,7 +54,6 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       }
     }
   }
-
 
   @Override
   public State orderState(Scanner in) {
@@ -98,13 +96,11 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
 
 
   @Override
-  public boolean successfullyMessages(boolean flag) {//recursion!
+  public void successfullyMessages(boolean flag) {//recursion!
     if (flag) {
       log.info("Data saved successfully");
-      return true;
     } else {
       log.info("Data not saved please try again");
-      return false;
     }
   }
 

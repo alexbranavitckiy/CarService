@@ -25,7 +25,7 @@ public class NewOrder implements Menu {
   private final OrderServices orderServices = new OrderServicesImpl();
   private UUID orderUUID;
 
-  public NewOrder(Client client) {
+  public NewOrder(Client client, UUID idCar) {
     this.orderUUID = null;
     this.client = client;
   }
@@ -63,7 +63,6 @@ public class NewOrder implements Menu {
                   .descriptions(validator.getDescription(in))
                   .priceSum(0d)
                   .build();
-
               log.info("Outfit data:");
               CreateOutfit createOutfit = new CreateOutfit(orderUUID);
               createOutfit.run(in,

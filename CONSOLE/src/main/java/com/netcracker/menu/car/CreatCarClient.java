@@ -5,7 +5,6 @@ import com.netcracker.marka.Mark;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Scanner;
@@ -28,7 +27,6 @@ public class CreatCarClient implements Menu {
         .marka(new Mark())
         .ear(validator.getYear(in))
         .build();
-
   }
 
   @Override

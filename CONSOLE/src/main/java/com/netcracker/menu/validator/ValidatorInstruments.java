@@ -44,5 +44,5 @@ public interface ValidatorInstruments {
 
   com.netcracker.outfit.State stateOutfit(Scanner in);
 
-  boolean successfullyMessages(boolean flag);
+  void successfullyMessages(boolean flag);
 }

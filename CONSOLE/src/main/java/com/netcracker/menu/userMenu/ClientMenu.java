@@ -3,14 +3,12 @@ package com.netcracker.menu.userMenu;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarMenu;
 import com.netcracker.menu.edit.EditClient;
+import com.netcracker.menu.order.client.SignMenu;
 import com.netcracker.servisec.ClientServices;
 import com.netcracker.servisec.Impl.client.ClientServicesImpl;
-import com.netcracker.servisec.UserSession;
-import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Scanner;
 
 @Slf4j
@@ -23,9 +21,9 @@ public class ClientMenu implements Menu {
   public void preMessage(String nameMenu) {
     log.info("Enter 1 {}", nameMenu);
     log.info("Enter 2 for contact information");
-    log.info("Enter 3 to open recording menu/Sign up for repairs./View machine status.");
+    log.info("Enter 3 to open recording menu:\n-Sign up for repairs.\n-View car status.");
     log.info(
-        "Enter 4 to get information about the car/View the list of cars./Edit information on car");
+        "Enter 4 to get information about the car:\n-View the list of cars.\n-Edit information on car");
     log.info("Enter 5 to edit information about the client");
   }
 
@@ -41,6 +39,11 @@ public class ClientMenu implements Menu {
         }
         case "2": {
           new InfoMenu().run(in, "Main menu");
+          this.preMessage(parentsName);
+          break;
+        }
+        case "3": {
+          new SignMenu().run(in, "Main menu");
           this.preMessage(parentsName);
           break;
         }

@@ -2,7 +2,6 @@ package com.netcracker;
 
 import com.netcracker.menu.startMenu.StartMenu;
 import com.netcracker.servisec.FileService;
-
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -15,5 +14,6 @@ public class Main {
       new StartMenu().run(in, "");
     }
   }
+
 }
 

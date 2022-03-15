@@ -7,7 +7,6 @@ import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.servisec.UserSession;
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -42,6 +41,7 @@ public class CarMenu implements Menu {
               log.info("Enter 5 to go to a specific car");
             } else {
               log.info("No car data found");
+              log.info("Enter 1.Close selection and editor menu");
               log.info("Enter 6 to add car data");
             }
           });
@@ -50,7 +50,6 @@ public class CarMenu implements Menu {
         case "5": {
           UserSession.getClientSession().ifPresent(x -> {
             if (x.getCarClients().size() > 0) {
-
               for (int z = 0; z < x.getCarClients().size(); z++) {
                 log.info("id:{} Car:{}", z + 1, x.getCarClients());
               }
@@ -58,23 +57,23 @@ public class CarMenu implements Menu {
               int metadataCar = in.nextInt();
               log.info("Edit selected car?");
               log.info("Enter 1 to continue editing");
-              log.info("Enter 2 to edit");
-              if (in.next().equalsIgnoreCase("2")) {
-                this.preMessage(parentsName);
-              } else {
-                EditCar editCar = new EditCar(x.getCarClients().get(metadataCar - 1));
+              log.info("Enter 2 go out");
+              if (!in.next().equalsIgnoreCase("2")) {
                 try {
+                  EditCar editCar = new EditCar(x.getCarClients().get(metadataCar - 1));
                   editCar.run(in, "Car menu");
+                  if (clientServices.updateClientCar(editCar.getCarClient())) {
+                    log.info("Data entered successfully");
+                  } else {
+                    log.info("An input error occurred while entering data. Retry data change");
+                  }
                 } catch (IOException e) {
                   e.printStackTrace();
+                } catch (IndexOutOfBoundsException e) {
+                  log.info("Invalid data entered please try again");
                 }
-                if (clientServices.updateClientCar(editCar.getCarClient())) {
-                  log.info("Data entered successfully");
-                } else {
-                  log.info("An input error occurred while entering data. Retry data change");
-                }
-                this.preMessage(parentsName);
               }
+              this.preMessage(parentsName);
             } else {
               log.info("No car data found.");
               log.info("Enter 1.Close selection and editor menu");
@@ -91,7 +90,6 @@ public class CarMenu implements Menu {
             client.getCarClients().add(creatCarClient.getCarClient().get());
           }
           if (clientServices.updateClient(client)) {
-            log.info(client.toString());
             log.info("Data added successfully");
           } else {
             System.out.println("An error occurred while entering data, please try again");

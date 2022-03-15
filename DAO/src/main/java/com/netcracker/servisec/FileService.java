@@ -22,7 +22,7 @@ public class FileService {
   public static final String NOT_FOUND = "User is not found";
   public static final String CONTACT_INFORMATION = "Contact Information:"
       + " Address: Minsk, Gintovta st., 1, 3rd floor"
-      + "\nPhone:+375(33)330-89-79"
+      + "\nPhone:+375(33)333-83-79"
       + "\nOpening hours:8.00-23.00";
 
   private final File user = new File(USER_PATH);

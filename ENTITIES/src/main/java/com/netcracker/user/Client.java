@@ -38,7 +38,6 @@ public class Client extends User  {
     return super.toString();
   }
 
-
   @Override
   public int hashCode() {
     return Objects.hash(super.hashCode(), getOrders());

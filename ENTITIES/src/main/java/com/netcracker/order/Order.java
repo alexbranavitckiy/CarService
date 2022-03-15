@@ -21,6 +21,8 @@ public class Order {
 
   private List<UUID> outfits;
 
+  private UUID idCar;
+
   private double priceSum;
 
   private UUID clientUUID;
