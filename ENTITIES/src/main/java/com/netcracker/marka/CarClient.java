@@ -24,7 +24,7 @@ public class CarClient {
 
   private String run;
 
-  private List<CarBreakdown> carBreakdownList;
+  private List<CarBreakdown> carBreakdowns;
 
   private Mark marka;
 

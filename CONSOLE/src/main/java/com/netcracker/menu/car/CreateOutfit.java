@@ -27,13 +27,13 @@ public class CreateOutfit implements Menu {
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
     this.outfit = Outfit.builder()
-        .id(UUID.randomUUID())
-        .descriptions(validator.getDescription(in))
-        .stateOutfit(validator.stateOutfit(in))
-        .name(validator.getNameOutfit(in))
-        .price(validator.getPrice(in))
-        .order(this.order)
-        .build();
+      .id(UUID.randomUUID())
+      .descriptions(validator.validateDescription(in))
+      .stateOutfit(validator.stateOutfit(in))
+      .name(validator.validateNameOutfit(in))
+      .price(validator.validatePrice(in))
+      .order(this.order)
+      .build();
 
     log.info("appoint master? 1-yeas,2-no");
     if (in.next().equalsIgnoreCase("1")) {

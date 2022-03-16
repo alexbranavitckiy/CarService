@@ -31,8 +31,8 @@ public class Order {
 
   private List<UUID> entry;
 
-  private Date dateCreat;
+  private Date createdDate;
 
-  private Date dateUpdate;
+  private Date updatedDate;
 
 }

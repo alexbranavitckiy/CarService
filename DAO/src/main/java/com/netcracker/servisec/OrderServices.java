@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface OrderServices {
 
-
   boolean addOrder(Order master);
 
   List<Order> getAll() throws EmptySearchException;

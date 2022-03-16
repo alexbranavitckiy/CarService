@@ -23,11 +23,11 @@ public class NewOrder implements Menu {
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
   private final Client client;
   private final OrderServices orderServices = new OrderServicesImpl();
-  private UUID orderUUID;
+  private final UUID idCar;
 
   public NewOrder(Client client, UUID idCar) {
-    this.orderUUID = null;
     this.client = client;
+    this.idCar = idCar;
   }
 
   @Override
@@ -38,6 +38,7 @@ public class NewOrder implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    UUID orderUUID;
     this.preMessage(parentsName);
     label:
     while (true) {
@@ -48,25 +49,26 @@ public class NewOrder implements Menu {
         case "2": {
           if (this.client != null && client.getId() != null) {
             log.info("Create an order with a customer?:Login {}, name:{}, phone:{}",
-                client.getLogin(), client.getName(), client.getPhone());
+              client.getLogin(), client.getName(), client.getPhone());
             log.info("Enter 1-yes. 2-not ");
             if (in.next().equalsIgnoreCase("1")) {
               orderUUID = UUID.randomUUID();
               Order order = Order.builder()
-                  .id(orderUUID)
-                  .clientUUID(this.client.getId())
-                  .stateOrder(validator.orderState(in))
-                  .outfits(new ArrayList<>())
-                  .dateCreat(new Date())
-                  .dateUpdate(new Date())
-                  .entry(new ArrayList<>())
-                  .descriptions(validator.getDescription(in))
-                  .priceSum(0d)
-                  .build();
+                .id(orderUUID)
+                .clientUUID(this.client.getId())
+                .stateOrder(validator.orderState(in))
+                .outfits(new ArrayList<>())
+                .createdDate(new Date())
+                .idCar(idCar)
+                .updatedDate(new Date())
+                .entry(new ArrayList<>())
+                .descriptions(validator.validateDescription(in))
+                .priceSum(0d)
+                .build();
               log.info("Outfit data:");
               CreateOutfit createOutfit = new CreateOutfit(orderUUID);
               createOutfit.run(in,
-                  "");
+                "");
               order.setOutfits(new ArrayList<>());
               order.getOutfits().add(createOutfit.getOrder());
               validator.successfullyMessages(orderServices.addOrder(order));

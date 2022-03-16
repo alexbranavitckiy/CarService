@@ -24,10 +24,6 @@ public class ListOrders implements Menu {
   private Order order;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
-  public ListOrders() {
-    this.order = null;
-  }
-
   @Override
   public void preMessage(String parentsName) {
     log.info("Enter 1: {}", parentsName);
@@ -75,7 +71,7 @@ public class ListOrders implements Menu {
               log.info("Outfit data:");
               CreateOutfit createOutfit = new CreateOutfit(this.order.getId());
               createOutfit.run(in,
-                  "");
+                "");
               order.setOutfits(new ArrayList<>());
               order.getOutfits().add(createOutfit.getOrder());
               validator.successfullyMessages(orderServices.addOrder(order));

@@ -23,7 +23,6 @@ public class ListCarClient implements Menu {
 
   public ListCarClient(UUID uuid) {
     this.uuid = uuid;
-    this.carClient = null;
   }
 
   @Override

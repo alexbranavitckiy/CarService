@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 @Slf4j
-public class CreatCarClient implements Menu {
+public class CreateCarClient implements Menu {
 
   private CarClient carClient;
   private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
@@ -20,13 +20,13 @@ public class CreatCarClient implements Menu {
   public void run(Scanner in, String parentsName) throws IOException {
     this.preMessage(parentsName);
     this.carClient = CarClient.builder()
-        .id(UUID.randomUUID())
-        .summer(validator.getDescription(in))
-        .metadataCar(validator.getNumberCar(in))
-        .run(validator.getMileage(in))
-        .marka(new Mark())
-        .ear(validator.getYear(in))
-        .build();
+      .id(UUID.randomUUID())
+      .summer(validator.validateDescription(in))
+      .metadataCar(validator.validateNumberCar(in))
+      .run(validator.validateMileage(in))
+      .marka(new Mark())
+      .ear(validator.validateYear(in))
+      .build();
   }
 
   @Override

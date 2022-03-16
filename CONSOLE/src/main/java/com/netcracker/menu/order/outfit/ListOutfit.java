@@ -19,9 +19,6 @@ public class ListOutfit implements Menu {
   private final OutfitsServices outfitsServices = new OutfitsServicesImpl();
   private Outfit outfit;
 
-  public ListOutfit() {
-    this.outfit = null;
-  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -42,13 +39,13 @@ public class ListOutfit implements Menu {
             if (outfitList.size() > 0) {
               for (int x = 0; x < outfitList.size(); x++) {
                 log.info(
-                    "id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}. ",
-                    x + 1
-                    , outfitList.get(x).getDateStart()
-                    , outfitList.get(x).getDateEnt()
-                    , outfitList.get(x).getStateOutfit()
-                    , outfitList.get(x).getDescriptions()
-                    , outfitList.get(x).getName());
+                  "id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
+                  x + 1
+                  , outfitList.get(x).getDateStart()
+                  , outfitList.get(x).getDateEnt()
+                  , outfitList.get(x).getStateOutfit()
+                  , outfitList.get(x).getDescriptions()
+                  , outfitList.get(x).getName());
               }
               log.info("Enter outfit id");
               this.outfit = outfitList.get(in.nextInt() - 1);

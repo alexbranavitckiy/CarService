@@ -12,5 +12,5 @@ public interface MasterServices {
 
   boolean addMaster(Master master);
 
-  Optional<Master> getMasterById(UUID master ) throws EmptySearchException;
+  Optional<Master> getMasterById(UUID master) throws EmptySearchException;
 }

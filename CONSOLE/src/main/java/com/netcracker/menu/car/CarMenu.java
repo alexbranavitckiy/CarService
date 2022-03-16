@@ -83,7 +83,7 @@ public class CarMenu implements Menu {
           break;
         }
         case "6": {
-          CreatCarClient creatCarClient = new CreatCarClient();
+          CreateCarClient creatCarClient = new CreateCarClient();
           creatCarClient.run(in, "");
           Client client = UserSession.getCloneClientSession();
           if (client.getCarClients() != null) {

@@ -14,31 +14,31 @@ public interface ValidatorInstruments {
 
   State orderState(Scanner in);
 
-  String getLogin(Scanner in);
+  String validateLogin(Scanner in);
 
-  String getPhone(Scanner in);
+  String validatePhone(Scanner in);
 
-  String getMileage(Scanner in);
+  String validateMileage(Scanner in);
 
-  String getNameUser(Scanner in);
+  String validateNameUser(Scanner in);
 
-  String getDescription(Scanner in);
+  String validateDescription(Scanner in);
 
-  String getEducation(Scanner in);
+  String validateEducation(Scanner in);
 
-  String getMail(Scanner in);
+  String validateMail(Scanner in);
 
-  double getPrice(Scanner in);
+  double validatePrice(Scanner in);
 
-  String getNameOutfit(Scanner in);
+  String validateNameOutfit(Scanner in);
 
-  String getHomeAddress(Scanner in);
+  String validateHomeAddress(Scanner in);
 
-  String getPassword(Scanner in);
+  String validatePassword(Scanner in);
 
-  String getYear(Scanner in);
+  String validateYear(Scanner in);
 
-  String getNumberCar(Scanner in);
+  String validateNumberCar(Scanner in);
 
   boolean edit(String fieldName, Scanner in);
 

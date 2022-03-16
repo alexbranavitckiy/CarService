@@ -16,11 +16,9 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationMaster implements Menu {
 
-
   private final MasterServices masterServices = new MasterServicesImpl();
   private final MasterReceiverServices masterReceiverServices = new MasterReceiverServicesImpl();
   private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
-
 
   @Override
   public void preMessage(String parentsName) {
@@ -39,19 +37,19 @@ public class RegistrationMaster implements Menu {
           String str = in.next();
           if (str.equalsIgnoreCase("1")) {
             Master master = Master.builder()
-                .id(UUID.randomUUID())
-                .description(validator.getDescription(in))
-                .homeAddress(validator.getHomeAddress(in))
-                .education(validator.getEducation(in))
-                .name(validator.getNameUser(in))
-                .password(validator.getPassword(in))
-                .mail(validator.getMail(in))
-                .phone(validator.getPhone(in))
-                .login(validator.getLogin(in))
-                .qualificationEnum(validator.qualificationEnum(in))
-                .outfits(new ArrayList<>())
-                .role(Role.MASTER)
-                .build();
+              .id(UUID.randomUUID())
+              .description(validator.validateDescription(in))
+              .homeAddress(validator.validateHomeAddress(in))
+              .education(validator.validateEducation(in))
+              .name(validator.validateNameUser(in))
+              .password(validator.validatePassword(in))
+              .mail(validator.validateMail(in))
+              .phone(validator.validatePhone(in))
+              .login(validator.validateLogin(in))
+              .qualificationEnum(validator.qualificationEnum(in))
+              .outfits(new ArrayList<>())
+              .role(Role.MASTER)
+              .build();
             if (this.masterServices.addMaster(master)) {
               log.info("Data saved successfully");
             } else {
@@ -61,18 +59,18 @@ public class RegistrationMaster implements Menu {
           }
           if (str.equalsIgnoreCase("2")) {
             MasterReceiver masterReceiver = MasterReceiver.builder()
-                .id(UUID.randomUUID())
-                .education(validator.getEducation(in))
-                .description(validator.getDescription(in))
-                .homeAddress(validator.getHomeAddress(in))
-                .qualificationEnum(validator.qualificationEnum(in))
-                .mail(validator.getMail(in))
-                .login(validator.getLogin(in))
-                .password(validator.getPassword(in))
-                .role(Role.RECEPTIONIST)
-                .name(validator.getNameUser(in))
-                .orders(new ArrayList<>())
-                .build();
+              .id(UUID.randomUUID())
+              .education(validator.validateEducation(in))
+              .description(validator.validateDescription(in))
+              .homeAddress(validator.validateHomeAddress(in))
+              .qualificationEnum(validator.qualificationEnum(in))
+              .mail(validator.validateMail(in))
+              .login(validator.validateLogin(in))
+              .password(validator.validatePassword(in))
+              .role(Role.RECEPTIONIST)
+              .name(validator.validateNameUser(in))
+              .orders(new ArrayList<>())
+              .build();
             if (this.masterReceiverServices.addMaster(masterReceiver)) {
               log.info("Data saved successfully");
             } else {

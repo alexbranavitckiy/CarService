@@ -14,7 +14,6 @@ import java.util.Scanner;
 @Slf4j
 public class ClientMenu implements Menu {
 
-
   private final ClientServices clientServices = new ClientServicesImpl();
 
   @Override
@@ -23,7 +22,7 @@ public class ClientMenu implements Menu {
     log.info("Enter 2 for contact information");
     log.info("Enter 3 to open recording menu:\n-Sign up for repairs.\n-View car status.");
     log.info(
-        "Enter 4 to get information about the car:\n-View the list of cars.\n-Edit information on car");
+      "Enter 4 to get information about the car:\n-View the list of cars.\n-Edit information on car");
     log.info("Enter 5 to edit information about the client");
   }
 

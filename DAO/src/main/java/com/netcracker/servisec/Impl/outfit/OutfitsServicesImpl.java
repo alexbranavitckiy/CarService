@@ -16,7 +16,6 @@ public class OutfitsServicesImpl implements OutfitsServices {
   private final CRUDServices<Outfit> searchServices = new CRUDServicesImpl<>();
   private final FileService fileService = new FileService();
 
-
   @Override
   public List<Outfit> getAllOutfits() throws EmptySearchException {
     return searchServices.getAll(fileService.getOutfit(), Outfit[].class);
@@ -30,7 +29,7 @@ public class OutfitsServicesImpl implements OutfitsServices {
   @Override
   public boolean updateOutfit(Outfit outfit) {
     return searchServices.updateObject(outfit,
-        new File(FileService.USER_PATH), Outfit[].class);
+      new File(FileService.USER_PATH), Outfit[].class);
   }
 
 }

@@ -94,7 +94,6 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     }
   }
 
-
   @Override
   public void successfullyMessages(boolean flag) {//recursion!
     if (flag) {
@@ -121,7 +120,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
   @Override
-  public String getLogin(Scanner in) {
+  public String validateLogin(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter login");
     stringBuilder.append(in.next());
@@ -129,11 +128,11 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Login must contain from 3 to 20 characters");
-    return getLogin(in);
+    return validateLogin(in);
   }
 
   @Override
-  public String getPhone(Scanner in) {
+  public String validatePhone(Scanner in) {
     log.info("Enter phone");
     stringBuilder.delete(0, stringBuilder.length());
     stringBuilder.append(in.next());
@@ -142,11 +141,11 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Enter must contain +375 ## #######");
-    return getPhone(in);
+    return validatePhone(in);
   }
 
   @Override
-  public String getMileage(Scanner in) {
+  public String validateMileage(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter Mileage");
     stringBuilder.append(in.nextLong());
@@ -154,17 +153,17 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Mileage must contain from 0 to 20 numbers");
-    return getMileage(in);
+    return validateMileage(in);
   }
 
   @Override
-  public double getPrice(Scanner in) {
+  public double validatePrice(Scanner in) {
     log.info("Enter Price");
     return in.nextDouble();
   }
 
   @Override
-  public String getYear(Scanner in) {
+  public String validateYear(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter year of car");
     stringBuilder.append(in.nextLong());
@@ -172,11 +171,11 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Year must contain from 4 numbers");
-    return getYear(in);
+    return validateYear(in);
   }
 
   @Override
-  public String getNumberCar(Scanner in) {
+  public String validateNumberCar(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter number of car");
     stringBuilder.append(in.next());
@@ -184,11 +183,11 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Vehicle number must contain at least 7 characters");
-    return getNumberCar(in);
+    return validateNumberCar(in);
   }
 
   @Override
-  public String getNameOutfit(Scanner in) {
+  public String validateNameOutfit(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter Name outfit");
     stringBuilder.append(in.next());
@@ -196,12 +195,12 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Name must contain from 1 to 20 characters");
-    return getNameOutfit(in);
+    return validateNameOutfit(in);
   }
 
 
   @Override
-  public String getNameUser(Scanner in) {
+  public String validateNameUser(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter Name");
     stringBuilder.append(in.next());
@@ -209,7 +208,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Name must contain from 3 to 20 characters");
-    return getNameUser(in);
+    return validateNameUser(in);
   }
 
   @Override
@@ -220,9 +219,8 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     return in.next().equalsIgnoreCase("2");
   }
 
-
   @Override
-  public String getDescription(Scanner in) {
+  public String validateDescription(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter Description");
     stringBuilder.append(in.next());
@@ -230,17 +228,17 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Description must contain from 4 to 50 characters");
-    return getDescription(in);
+    return validateDescription(in);
   }
 
   @Override
-  public String getEducation(Scanner in) {
+  public String validateEducation(Scanner in) {
     log.info("Enter Education");
     return in.next();
   }
 
   @Override
-  public String getMail(Scanner in) {//recursion!
+  public String validateMail(Scanner in) {//recursion!
     try {
       stringBuilder.delete(0, stringBuilder.length());
       log.info("Enter Mail");
@@ -252,18 +250,18 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     } catch (InvalidValuesException e) {
       log.warn("Invalid values entered:{}", e.getLocalizedMessage());
     }
-    return this.getMail(in);
+    return this.validateMail(in);
   }
 
   @Override
-  public String getHomeAddress(Scanner in) {
+  public String validateHomeAddress(Scanner in) {
     log.info("Enter HomeAddress");
     return in.next();
   }
 
 
   @Override
-  public String getPassword(Scanner in) {
+  public String validatePassword(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter password");
     stringBuilder.append(in.next());
@@ -271,7 +269,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
       return stringBuilder.toString();
     }
     log.info("Password must contain from 3 to 20 characters");
-    return getPassword(in);
+    return validatePassword(in);
 
   }
 }

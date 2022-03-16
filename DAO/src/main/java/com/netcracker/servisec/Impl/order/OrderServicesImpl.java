@@ -16,8 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderServicesImpl implements OrderServices {
 
-
   private final CRUDServices<Order> searchServices = new CRUDServicesImpl<>();
+
+  public OrderServicesImpl() {
+  }
 
   @Override
   public boolean addOrder(Order order) {
@@ -38,9 +40,8 @@ public class OrderServicesImpl implements OrderServices {
   @SneakyThrows
   public List<Order> getOrderWithRequestState() {
     return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class).stream()
-        .filter(x -> x.getStateOrder().equals(State.REQUEST)).collect(
-            Collectors.toList());
+      .filter(x -> x.getStateOrder().equals(State.REQUEST)).collect(
+        Collectors.toList());
   }
-
 
 }

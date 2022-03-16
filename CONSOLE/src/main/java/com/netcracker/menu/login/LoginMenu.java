@@ -14,7 +14,6 @@ import java.util.Scanner;
 @Slf4j
 public class LoginMenu implements Menu {
 
-
   private final String NAME_MENU = "Login menu";
 
   private final LoginService loginServices = new LoginServicesImpl();
@@ -39,7 +38,7 @@ public class LoginMenu implements Menu {
           log.info("Enter password");
           String password = in.next();
           if (
-              loginServices.searchByUserLoginAndPassword(login, password)) {
+            loginServices.searchByUserLoginAndPassword(login, password)) {
             new EnterLogin().run(in, NAME_MENU);
           } else {
             System.out.println(FileService.NOT_FOUND);

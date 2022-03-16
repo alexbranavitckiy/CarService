@@ -12,7 +12,6 @@ public class UserSession {
   private static Master masterSession;
   private static Client clientSession;
 
-
   private UserSession() {
   }
 
@@ -52,7 +51,6 @@ public class UserSession {
     return false;
   }
 
-
   public static void closeSession(Object... o) {
     Arrays.stream(o).forEach(x -> {
       if (x instanceof Client) {
@@ -79,7 +77,6 @@ public class UserSession {
     clientSession = null;
   }
 
-
   public static Optional<MasterReceiver> getMasterReceiverSession() {//return immutable object
     return Optional.ofNullable(masterReceiverSession);
   }
@@ -88,59 +85,56 @@ public class UserSession {
     return Optional.ofNullable(masterSession);
   }
 
-
   public static MasterReceiver getCloneMasterReceiverSession() {
     return MasterReceiver.builder()
-        .description(masterReceiverSession.getDescription())
-        .education(masterReceiverSession.getEducation())
-        .homeAddress(masterReceiverSession.getHomeAddress())
-        .id(masterReceiverSession.getId())
-        .login(masterReceiverSession.getLogin())
-        .role(masterReceiverSession.getRole())
-        .qualificationEnum(masterReceiverSession.getQualificationEnum())
-        .mail(masterReceiverSession.getMail())
-        .homeAddress(masterReceiverSession.getHomeAddress())
-        .password(masterReceiverSession.getPassword())
-        .name(masterReceiverSession.getName())
-        .orders(new ArrayList<>(masterReceiverSession.getOrders())).build();
+      .description(masterReceiverSession.getDescription())
+      .education(masterReceiverSession.getEducation())
+      .homeAddress(masterReceiverSession.getHomeAddress())
+      .id(masterReceiverSession.getId())
+      .login(masterReceiverSession.getLogin())
+      .role(masterReceiverSession.getRole())
+      .qualificationEnum(masterReceiverSession.getQualificationEnum())
+      .mail(masterReceiverSession.getMail())
+      .homeAddress(masterReceiverSession.getHomeAddress())
+      .password(masterReceiverSession.getPassword())
+      .name(masterReceiverSession.getName())
+      .orders(new ArrayList<>(masterReceiverSession.getOrders())).build();
   }
-
 
   public static Client getCloneClient(Client client) {
     return Client.builder()
-        .carClients(client.getCarClients())
-        .description(client.getDescription())
-        .id(client.getId())
-        .email(client.getEmail())
-        .name(client.getName())
-        .password(client.getPassword())
-        .roleuser(client.getRoleuser())
-        .phone(client.getPhone())
-        .login(client.getLogin())
-        .carClients(new ArrayList<>(client.getCarClients()))
-        .build();
+      .carClients(client.getCarClients())
+      .description(client.getDescription())
+      .id(client.getId())
+      .email(client.getEmail())
+      .name(client.getName())
+      .password(client.getPassword())
+      .roleuser(client.getRoleuser())
+      .phone(client.getPhone())
+      .login(client.getLogin())
+      .carClients(new ArrayList<>(client.getCarClients()))
+      .build();
   }
-
 
   public static Client getCloneClientSession() {
     return Client.builder()
-        .carClients(clientSession.getCarClients())
-        .description(clientSession.getDescription())
-        .id(clientSession.getId())
-        .email(clientSession.getEmail())
-        .name(clientSession.getName())
-        .password(clientSession.getPassword())
-        .roleuser(clientSession.getRoleuser())
-        .phone(clientSession.getPhone())
-        .login(clientSession.getLogin())
-        .carClients(new ArrayList<>(clientSession.getCarClients()))
-        .build();
+      .carClients(clientSession.getCarClients())
+      .description(clientSession.getDescription())
+      .id(clientSession.getId())
+      .email(clientSession.getEmail())
+      .name(clientSession.getName())
+      .password(clientSession.getPassword())
+      .roleuser(clientSession.getRoleuser())
+      .phone(clientSession.getPhone())
+      .login(clientSession.getLogin())
+      .carClients(new ArrayList<>(clientSession.getCarClients()))
+      .build();
   }
 
   public static Optional<Client> getClientSession() {
-      if (clientSession != null) {
-          return Optional.ofNullable(getCloneClient(clientSession));
-      }
+    if (clientSession != null) {
+      return Optional.ofNullable(getCloneClient(clientSession));
+    }
     return Optional.empty();
   }
 }

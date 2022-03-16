@@ -32,25 +32,25 @@ public class EditMasterReceiver implements Menu {
   public void run(Scanner in, String parentsName) throws IOException {
     log.info("Name");
     if (validator.edit(this.masterReceiver.getName(), in)) {
-      this.masterReceiver.setName(validator.getNameUser(in));
+      this.masterReceiver.setName(validator.validateNameUser(in));
     }
     log.info("Descriptions");
     if (validator.edit(this.masterReceiver.getDescription(), in)) {
-      this.masterReceiver.setDescription(validator.getDescription(in));
+      this.masterReceiver.setDescription(validator.validateDescription(in));
     }
     log.info("Login");
     if (validator.edit(this.masterReceiver.getLogin(), in)) {
-      this.masterReceiver.setLogin(validator.getLogin(in));
+      this.masterReceiver.setLogin(validator.validateLogin(in));
     }
     log.info("Enter a new password");
-    this.masterReceiver.setPassword(validator.getPassword(in));
+    this.masterReceiver.setPassword(validator.validatePassword(in));
     log.info("Education");
     if (validator.edit(this.masterReceiver.getEducation(), in)) {
-      this.masterReceiver.setPassword(validator.getEducation(in));
+      this.masterReceiver.setPassword(validator.validateEducation(in));
     }
     log.info("HomeAddress");
     if (validator.edit(this.masterReceiver.getHomeAddress(), in)) {
-      this.masterReceiver.setHomeAddress(validator.getHomeAddress(in));
+      this.masterReceiver.setHomeAddress(validator.validateHomeAddress(in));
     }
     log.info("Mail");
     if (validator.edit(this.masterReceiver.getMail(), in)) {
@@ -58,7 +58,7 @@ public class EditMasterReceiver implements Menu {
     }
     log.info("Phone");
     if (validator.edit(this.masterReceiver.getPhone(), in)) {
-      this.masterReceiver.setPhone(validator.getPhone(in));
+      this.masterReceiver.setPhone(validator.validatePhone(in));
     }
     if (masterReceiverServices.updateMaster(masterReceiver)) {
       log.info("Data entered successfully");

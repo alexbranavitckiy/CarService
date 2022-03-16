@@ -1,7 +1,7 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.car.CreatCarClient;
+import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.order.NewOrder;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
@@ -24,10 +24,6 @@ public class RegistrationClientByMaster implements Menu {
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
   private Client clientLast;
 
-  public RegistrationClientByMaster() {
-    clientLast = null;
-  }
-
   @Override
   public void preMessage(String parentsName) {
     log.info("Enter 1 {}", parentsName);
@@ -36,7 +32,7 @@ public class RegistrationClientByMaster implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
-    CreatCarClient carClientMenu = new CreatCarClient();
+    CreateCarClient carClientMenu = new CreateCarClient();
     this.preMessage(parentsName);
     label:
     while (true) {
@@ -46,16 +42,16 @@ public class RegistrationClientByMaster implements Menu {
           log.info("Filling in customer data");
           if (carClientMenu.getCarClient().isPresent()) {
             Client client = Client.builder()
-                .id(UUID.randomUUID())
-                .description(validator.getDescription(in))
-                .email(validator.getMail(in))
-                .name(validator.getNameUser(in))
-                .roleuser(RoleUser.UNREGISTERED)
-                .orders(new HashSet<>())
-                .carClients(new ArrayList<>())
-                .login(carClientMenu.getCarClient().get().getMetadataCar())
-                .password(carClientMenu.getCarClient().get().getMetadataCar())
-                .build();
+              .id(UUID.randomUUID())
+              .description(validator.validateDescription(in))
+              .email(validator.validateMail(in))
+              .name(validator.validateNameUser(in))
+              .roleuser(RoleUser.UNREGISTERED)
+              .orders(new HashSet<>())
+              .carClients(new ArrayList<>())
+              .login(carClientMenu.getCarClient().get().getMetadataCar())
+              .password(carClientMenu.getCarClient().get().getMetadataCar())
+              .build();
             if (clientServices.addObjectInClientNotOnline(client)) {
               log.info("User created successfully");
               this.clientLast = client;
@@ -75,7 +71,7 @@ public class RegistrationClientByMaster implements Menu {
         case "3": {
           if (clientLast != null) {
             NewOrder newOrder = new NewOrder(clientLast,
-                carClientMenu.getCarClient().get().getId());
+              carClientMenu.getCarClient().get().getId());
             newOrder.run(in, "Client creation menu");
           }
           this.preMessage(parentsName);

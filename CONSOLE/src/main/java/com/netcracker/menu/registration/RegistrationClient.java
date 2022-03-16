@@ -1,7 +1,7 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.car.CreatCarClient;
+import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.servisec.ClientServices;
@@ -33,19 +33,19 @@ public class RegistrationClient implements Menu {
     while (true) {
       switch (in.next()) {
         case "2": {
-          CreatCarClient carClient = new CreatCarClient();
+          CreateCarClient carClient = new CreateCarClient();
           carClient.run(in, "Enter car information");
           log.info("Enter customer details");
           Client client = Client.builder()
-              .id(UUID.randomUUID())
-              .login(validator.getLogin(in))
-              .password(validator.getPassword(in))
-              .name(validator.getNameUser(in))
-              .email(validator.getMail(in))
-              .description(validator.getDescription(in))
-              .phone(validator.getPhone(in))
-              .roleuser(RoleUser.REGISTERED)
-              .build();
+            .id(UUID.randomUUID())
+            .login(validator.validateLogin(in))
+            .password(validator.validatePassword(in))
+            .name(validator.validateNameUser(in))
+            .email(validator.validateMail(in))
+            .description(validator.validateDescription(in))
+            .phone(validator.validatePhone(in))
+            .roleuser(RoleUser.REGISTERED)
+            .build();
           if (carClient.getCarClient().isPresent()) {
             client.setCarClients(new ArrayList<>());
             client.getCarClients().add((carClient.getCarClient().get()));

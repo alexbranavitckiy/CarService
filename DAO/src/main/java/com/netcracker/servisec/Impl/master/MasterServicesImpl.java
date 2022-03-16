@@ -21,6 +21,9 @@ public class MasterServicesImpl implements MasterServices {
   private final LoginService loginService = new LoginServicesImpl();
   private final CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
 
+  public MasterServicesImpl() {
+  }
+
   public boolean addMaster(Master master) {
     try {
       if (this.passwordCheck(master)) {
@@ -34,16 +37,16 @@ public class MasterServicesImpl implements MasterServices {
 
   @Override
   public Optional<Master> getMasterById(UUID master) throws EmptySearchException {
-    return   this.getAllMaster().stream().filter(x->x.getId().equals(master)).findFirst();
+    return this.getAllMaster().stream().filter(x -> x.getId().equals(master)).findFirst();
 
   }
 
-  public List<Master> getAllMaster()  throws EmptySearchException {
-    return this.crudServices.getAll(fileService.getMasterFile(),Master[].class);
+  public List<Master> getAllMaster() throws EmptySearchException {
+    return this.crudServices.getAll(fileService.getMasterFile(), Master[].class);
   }
 
 
-  private boolean passwordCheck(Master master) {
+  public boolean passwordCheck(Master master) {
     try {
       if (loginService.searchByUserLoginAndPassword(master.getLogin(),
           master.getPassword())) {

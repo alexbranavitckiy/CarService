@@ -11,13 +11,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@JsonTypeInfo(
-//        use = JsonTypeInfo.Id.NAME,
-//        include = JsonTypeInfo.As.PROPERTY,
-//        property = "type")
-//@JsonSubTypes({
-//        @JsonSubTypes.Type(value = MasterReceiver.class, name = "masterReceiver")
-//})
 public class Employer {
 
   private UUID id;

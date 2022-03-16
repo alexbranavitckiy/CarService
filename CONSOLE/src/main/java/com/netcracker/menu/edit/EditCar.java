@@ -27,19 +27,19 @@ public class EditCar implements Menu {
   public void run(Scanner in, String parentsName) throws IOException {
     log.info("Descriptions");
     if (validator.edit(this.carClient.getSummer(), in)) {
-      this.carClient.setSummer(validator.getDescription(in));
+      this.carClient.setSummer(validator.validateDescription(in));
     }
     log.info("Enter vehicle mileage");
     if (validator.edit(this.carClient.getRun(), in)) {
-      this.carClient.setRun(validator.getMileage(in));
+      this.carClient.setRun(validator.validateMileage(in));
     }
     log.info("Enter year of car");
     if (validator.edit(this.carClient.getEar(), in)) {
-      this.carClient.setEar(validator.getYear(in));
+      this.carClient.setEar(validator.validateYear(in));
     }
     log.info("Enter number of the car");
     if (validator.edit(this.carClient.getMetadataCar(), in)) {
-      this.carClient.setSummer(validator.getNumberCar(in));
+      this.carClient.setSummer(validator.validateNumberCar(in));
     }
   }
 

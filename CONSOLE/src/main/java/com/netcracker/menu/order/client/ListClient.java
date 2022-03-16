@@ -20,10 +20,6 @@ public class ListClient implements Menu {
   private final ClientServices searchServices = new ClientServicesImpl();
   private Client client;
 
-  public ListClient() {
-    this.client = null;
-  }
-
   @Override
   public void preMessage(String parentsName) {
     log.info("Enter 1: {}", parentsName);

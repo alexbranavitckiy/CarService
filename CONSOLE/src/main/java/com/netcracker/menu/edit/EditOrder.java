@@ -28,7 +28,7 @@ public class EditOrder implements Menu {
   public void run(Scanner in, String parentsName) throws IOException {
     log.info("Descriptions");
     if (validator.edit(this.order.getDescriptions(), in)) {
-      this.order.setDescriptions(validator.getDescription(in));
+      this.order.setDescriptions(validator.validateDescription(in));
     }
     log.info("State order");
     if (validator.edit(this.order.getStateOrder().toString(), in)) {
@@ -36,9 +36,9 @@ public class EditOrder implements Menu {
     }
     log.info("Price sum:");
     if (validator.edit(String.valueOf(this.order.getPriceSum()), in)) {
-      this.order.setPriceSum(validator.getPrice(in));
+      this.order.setPriceSum(validator.validatePrice(in));
     }
-    this.order.setDateUpdate(new Date());
+    this.order.setUpdatedDate(new Date());
   }
 
   public Order getOrder() {

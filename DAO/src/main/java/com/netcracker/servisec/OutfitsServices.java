@@ -6,12 +6,10 @@ import java.util.List;
 
 public interface OutfitsServices {
 
-
   List<Outfit> getAllOutfits() throws EmptySearchException;
 
   boolean addObjectInOutfits(Outfit o);
 
   boolean updateOutfit(Outfit outfit);
-
 
 }

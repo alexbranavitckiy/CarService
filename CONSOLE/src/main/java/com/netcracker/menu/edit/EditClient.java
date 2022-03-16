@@ -31,32 +31,31 @@ public class EditClient implements Menu {
     this.client = UserSession.getCloneClient(client);
   }
 
-
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
     log.info("Descriptions");
     if (validator.edit(this.client.getDescription(), in)) {
-      this.client.setDescription(validator.getDescription(in));
+      this.client.setDescription(validator.validateDescription(in));
     }
     log.info("Name");
     if (validator.edit(this.client.getName(), in)) {
-      this.client.setName(validator.getNameUser(in));
+      this.client.setName(validator.validateNameUser(in));
     }
     log.info("Login");
     if (validator.edit(this.client.getLogin(), in)) {
-      this.client.setLogin(validator.getLogin(in));
+      this.client.setLogin(validator.validateLogin(in));
     }
     log.info("Password");
     if (validator.edit(this.client.getPassword(), in)) {
-      this.client.setPassword(validator.getPassword(in));
+      this.client.setPassword(validator.validatePassword(in));
     }
     log.info("Phone");
     if (validator.edit(this.client.getPhone(), in)) {
-      this.client.setPhone(validator.getPhone(in));
+      this.client.setPhone(validator.validatePhone(in));
     }
     log.info("Email");
     if (validator.edit(this.client.getEmail(), in)) {
-      this.client.setPassword(validator.getPassword(in));
+      this.client.setPassword(validator.validatePassword(in));
     }
   }
 
