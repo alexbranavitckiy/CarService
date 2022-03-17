@@ -1,6 +1,5 @@
 package com.netcracker.servisec.Impl;
 
-import com.netcracker.errors.EmptySearchException;
 import com.netcracker.servisec.CRUDServices;
 import com.netcracker.servisec.FileService;
 import com.netcracker.servisec.LoginService;
@@ -81,9 +80,8 @@ public class LoginServicesImpl implements LoginService {
             }
           }
         }
-
       }
-    } catch (EmptySearchException e) {
+    } catch (Exception e) {
       new FileService().init();
       this.searchByUserLoginAndPassword(login, password);
     }
