@@ -66,18 +66,19 @@ public class FileService {
     return outfit;
   }
 
-
-  public void initMethod() throws IOException {//Data for the first launch of the application
-    try {
-      ObjectMapperServices.getObjectMapper().readTree(orders);
-      ObjectMapperServices.getObjectMapper().readTree(user);
-      ObjectMapperServices.getObjectMapper().readTree(master);
-      ObjectMapperServices.getObjectMapper().readTree(receiver);
-      ObjectMapperServices.getObjectMapper().readTree(outfit);
-    } catch (FileNotFoundException e) {
-      log.info("Creating init versions of files");
-      init();
-    }
+  public void initMethod() {//Data for the first launch of the application
+    List.of(orders, user, master, receiver, outfit).forEach(x -> {
+      try {
+        objectMapper.readTree(x);
+      } catch (IOException e) {
+        log.info("Creating init versions of files");
+        try {
+          this.init();
+        } catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      }
+    });
   }
 
   public void init() throws IOException {
