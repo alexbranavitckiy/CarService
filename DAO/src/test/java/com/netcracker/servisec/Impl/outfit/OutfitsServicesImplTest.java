@@ -50,25 +50,27 @@ public class OutfitsServicesImplTest {
 
   @Test
   public void testAddObjectInOutfits_Should_Return_True() {
-    when(crudServices.addObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(true);
+    when(crudServices.addObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(
+      true);
     Assert.assertTrue(outfitsServices.addObjectInOutfits(outfit));
   }
 
   @Test
   public void testUpdateOutfit_Should_Return_True() {
-    when(crudServices.updateObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(true);
+    when(crudServices.updateObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(
+      true);
     Assert.assertTrue(outfitsServices.updateOutfit(outfit));
   }
 
   @Test
   public void testAddObjectInOutfits_Should_Return_False() {
-    when(crudServices.addObject(null, new File(""),Outfit[].class)).thenReturn(false);
+    when(crudServices.addObject(null, new File(""), Outfit[].class)).thenReturn(false);
     Assert.assertFalse(outfitsServices.addObjectInOutfits(outfit));
   }
 
   @Test
   public void testUpdateOutfit_Should_Return_False() {
-    when(crudServices.updateObject(null, new File(""),Outfit[].class)).thenReturn(false);
+    when(crudServices.updateObject(null, new File(""), Outfit[].class)).thenReturn(false);
     Assert.assertFalse(outfitsServices.updateOutfit(null));
   }
 }
