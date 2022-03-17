@@ -8,7 +8,6 @@ import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.servisec.LoginService;
 import com.netcracker.servisec.MasterReceiverServices;
 import com.netcracker.servisec.UserSession;
-import com.netcracker.user.Client;
 import com.netcracker.user.MasterReceiver;
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +18,9 @@ import java.io.File;
 @Slf4j
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
 
-  private final FileService fileService = new FileService();
-  private final LoginService loginService = new LoginServicesImpl();
-  private final CRUDServices<MasterReceiver> searchServices = new CRUDServicesImpl<>();
+  private FileService fileService = new FileService();
+  private LoginService loginService = new LoginServicesImpl();
+  private CRUDServices<MasterReceiver> searchServices = new CRUDServicesImpl<>();
 
   @Override
   public List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException {

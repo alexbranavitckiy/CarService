@@ -17,9 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MasterServicesImpl implements MasterServices {
 
-  private final FileService fileService = new FileService();
-  private final LoginService loginService = new LoginServicesImpl();
-  private final CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
+  private FileService fileService = new FileService();
+  private LoginService loginService = new LoginServicesImpl();
+  private CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
 
   public MasterServicesImpl() {
   }
@@ -49,7 +49,7 @@ public class MasterServicesImpl implements MasterServices {
   public boolean passwordCheck(Master master) {
     try {
       if (loginService.searchByUserLoginAndPassword(master.getLogin(),
-          master.getPassword())) {
+        master.getPassword())) {
         log.info("The username you entered is already taken");
         return false;
       }

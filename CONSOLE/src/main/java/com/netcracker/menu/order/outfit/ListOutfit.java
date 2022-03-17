@@ -40,12 +40,9 @@ public class ListOutfit implements Menu {
               for (int x = 0; x < outfitList.size(); x++) {
                 log.info(
                   "id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
-                  x + 1
-                  , outfitList.get(x).getDateStart()
-                  , outfitList.get(x).getDateEnt()
-                  , outfitList.get(x).getStateOutfit()
-                  , outfitList.get(x).getDescriptions()
-                  , outfitList.get(x).getName());
+                  x + 1, outfitList.get(x).getDateStart(), outfitList.get(x).getDateEnt(),
+                  outfitList.get(x).getStateOutfit(), outfitList.get(x).getDescriptions(),
+                  outfitList.get(x).getName());
               }
               log.info("Enter outfit id");
               this.outfit = outfitList.get(in.nextInt() - 1);

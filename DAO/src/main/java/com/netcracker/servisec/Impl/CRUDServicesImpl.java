@@ -27,7 +27,7 @@ public class CRUDServicesImpl<T> implements CRUDServices<T> {
     } catch (IOException e) {
       log.error("Output error:{}", e.getMessage());
     }
-    throw new EmptySearchException("No orders available");
+    throw new EmptySearchException("No output available");
   }
 
   @Override

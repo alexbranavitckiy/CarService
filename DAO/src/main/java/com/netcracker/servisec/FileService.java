@@ -5,7 +5,10 @@ import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import com.netcracker.outfit.Outfit;
+import com.netcracker.servisec.ObjectMapperServices;
 import com.netcracker.user.*;
+import java.util.stream.Stream;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -66,19 +69,21 @@ public class FileService {
     return outfit;
   }
 
-  public void initMethod() {//Data for the first launch of the application
-    List.of(orders, user, master, receiver, outfit).forEach(x -> {
-      try {
-        objectMapper.readTree(x);
-      } catch (IOException e) {
-        log.info("Creating init versions of files");
-        try {
-          this.init();
-        } catch (IOException ex) {
-          ex.printStackTrace();
-        }
-      }
-    });
+
+  public void initMethod() throws IOException {//Data for the first launch of the application
+    try {
+      Stream.of(orders, user, master, receiver, outfit)
+        .forEach(x -> {
+          try {
+            ObjectMapperServices.getObjectMapper().readTree(x);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+    } catch (Exception e) {
+      log.info("Creating init versions of files");
+      init();
+    }
   }
 
   public void init() throws IOException {
@@ -139,4 +144,5 @@ public class FileService {
       .build();
     ObjectMapperServices.getObjectMapper().writeValue(this.outfit, List.of(outfit));
   }
+
 }

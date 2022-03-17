@@ -13,22 +13,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OutfitsServicesImpl implements OutfitsServices {
 
-  private final CRUDServices<Outfit> searchServices = new CRUDServicesImpl<>();
-  private final FileService fileService = new FileService();
+  private CRUDServices<Outfit> crudServices = new CRUDServicesImpl<>();
+
+  private FileService fileService = new FileService();
+
+  public OutfitsServicesImpl() {
+  }
 
   @Override
   public List<Outfit> getAllOutfits() throws EmptySearchException {
-    return searchServices.getAll(fileService.getOutfit(), Outfit[].class);
+    return crudServices.getAll(fileService.getOutfit(), Outfit[].class);
   }
 
   @Override
   public boolean addObjectInOutfits(Outfit o) {
-    return this.searchServices.addObject(o, fileService.getOutfit(), Outfit[].class);
+    return this.crudServices.addObject(o, fileService.getOutfit(), Outfit[].class);
   }
 
   @Override
   public boolean updateOutfit(Outfit outfit) {
-    return searchServices.updateObject(outfit,
+    return crudServices.updateObject(outfit,
       new File(FileService.USER_PATH), Outfit[].class);
   }
 

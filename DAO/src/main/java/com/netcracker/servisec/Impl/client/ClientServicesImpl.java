@@ -4,6 +4,7 @@ import com.netcracker.errors.EmptySearchException;
 import com.netcracker.marka.CarClient;
 import com.netcracker.servisec.*;
 import com.netcracker.servisec.Impl.CRUDServicesImpl;
+import com.netcracker.servisec.FileService;
 import com.netcracker.servisec.Impl.LoginServicesImpl;
 import com.netcracker.user.Client;
 import java.util.UUID;
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ClientServicesImpl implements ClientServices {
 
-  private final FileService fileService = new FileService();
-  private final LoginService loginService = new LoginServicesImpl();
-  private final CRUDServices<Client> crudServices = new CRUDServicesImpl<>();
+  private FileService fileService = new FileService();
+  private LoginService loginService = new LoginServicesImpl();
+  private CRUDServices<Client> crudServices = new CRUDServicesImpl<>();
 
   @Override
   public List<Client> getAllClient() throws EmptySearchException {

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderServicesImpl implements OrderServices {
 
-  private final CRUDServices<Order> searchServices = new CRUDServicesImpl<>();
+  private CRUDServices<Order> searchServices = new CRUDServicesImpl<>();
 
   public OrderServicesImpl() {
   }
