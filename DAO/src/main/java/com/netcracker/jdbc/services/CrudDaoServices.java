@@ -1,0 +1,27 @@
+package com.netcracker.jdbc.services;
+
+import com.netcracker.EntityId;
+import com.netcracker.errors.PersistException;
+import com.netcracker.file.services.CRUDServices;
+import java.io.Serializable;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+
+public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable> extends
+  CRUDServices<T> {
+
+  boolean create(T object) throws PersistException;
+
+  boolean addObject(T object) throws PersistException;
+
+  Optional<T> getById(K key) throws PersistException;
+
+  boolean update(T object) throws PersistException;
+
+  boolean delete(T object) throws PersistException;
+
+  List<T> getAll() throws PersistException, SQLException;
+
+}

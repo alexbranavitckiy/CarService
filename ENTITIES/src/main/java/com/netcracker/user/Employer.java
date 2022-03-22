@@ -1,9 +1,7 @@
 package com.netcracker.user;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.netcracker.EntityId;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,7 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employer {
+public abstract class Employer implements EntityId<UUID> {
 
   private UUID id;
 

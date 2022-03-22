@@ -1,15 +1,12 @@
 package com.netcracker.outfit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.order.Order;
-import com.netcracker.time.Entry;
+import com.netcracker.EntityId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -17,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Outfit {
+public class Outfit implements EntityId<UUID> {
 
   private UUID id;
 

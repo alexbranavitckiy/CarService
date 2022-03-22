@@ -6,11 +6,11 @@ import com.netcracker.menu.edit.EditOutfit;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.servisec.Impl.master.MasterServicesImpl;
-import com.netcracker.servisec.Impl.outfit.OutfitsServicesImpl;
-import com.netcracker.servisec.MasterServices;
-import com.netcracker.servisec.OutfitsServices;
-import com.netcracker.servisec.UserSession;
+import com.netcracker.file.services.impl.master.MasterServicesImpl;
+import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
+import com.netcracker.MasterServices;
+import com.netcracker.OutfitsServices;
+import com.netcracker.session.UserSession;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class MasterMenu implements Menu {
             if (outfitList.size() > 0) {
               for (int x = 0; x < outfitList.size(); x++) {
                 log.info(
-                    "id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}/Price:{}. ",
+                    "Id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}/Price:{}. ",
                     x + 1
                     , outfitList.get(x).getDateStart()
                     , outfitList.get(x).getDateEnt()

@@ -2,6 +2,8 @@ package com.netcracker.marka;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.netcracker.EntityId;
+import com.netcracker.breakdown.TypeCarBreakdown;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Mark {
+public class Mark implements EntityId<UUID> {
 
   private UUID id;
 

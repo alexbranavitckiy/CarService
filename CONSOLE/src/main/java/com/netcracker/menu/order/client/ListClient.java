@@ -2,9 +2,8 @@ package com.netcracker.menu.order.client;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.edit.EditClient;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import com.netcracker.ClientServices;
+import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.user.Client;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;

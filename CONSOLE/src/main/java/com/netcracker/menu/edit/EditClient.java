@@ -3,7 +3,7 @@ package com.netcracker.menu.edit;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.servisec.UserSession;
+import com.netcracker.session.UserSession;
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 

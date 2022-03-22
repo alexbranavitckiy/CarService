@@ -1,5 +1,6 @@
 package com.netcracker.marka;
 
+import com.netcracker.EntityId;
 import com.netcracker.breakdown.CarBreakdown;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"id"})
-public class CarClient {
+public class CarClient implements EntityId<UUID> {
 
   private UUID id;
 
@@ -24,10 +25,9 @@ public class CarClient {
 
   private String run;
 
-  private List<CarBreakdown> carBreakdowns;
+  private List<UUID> carBreakdowns;
 
   private Mark marka;
-
 
   @Override
   public String toString() {

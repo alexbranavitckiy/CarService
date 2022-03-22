@@ -3,6 +3,7 @@ package com.netcracker.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.netcracker.EntityId;
 import com.netcracker.outfit.Outfit;
 import lombok.*;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Master extends Employer {
+public class Master extends Employer implements EntityId<UUID> {
 
   private List<UUID> outfits;
 

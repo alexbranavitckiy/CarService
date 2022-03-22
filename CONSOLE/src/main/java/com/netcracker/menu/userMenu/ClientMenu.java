@@ -4,8 +4,8 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarMenu;
 import com.netcracker.menu.edit.EditClient;
 import com.netcracker.menu.order.client.SignMenu;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import com.netcracker.ClientServices;
+import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

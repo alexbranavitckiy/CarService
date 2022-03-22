@@ -2,8 +2,8 @@ package com.netcracker.menu.order.master;
 
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
-import com.netcracker.servisec.Impl.master.MasterServicesImpl;
-import com.netcracker.servisec.MasterServices;
+import com.netcracker.file.services.impl.master.MasterServicesImpl;
+import com.netcracker.MasterServices;
 import com.netcracker.user.Master;
 import java.io.IOException;
 import java.util.List;

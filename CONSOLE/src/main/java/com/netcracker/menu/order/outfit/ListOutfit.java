@@ -3,8 +3,8 @@ package com.netcracker.menu.order.outfit;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.servisec.Impl.outfit.OutfitsServicesImpl;
-import com.netcracker.servisec.OutfitsServices;
+import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
+import com.netcracker.OutfitsServices;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -39,14 +39,13 @@ public class ListOutfit implements Menu {
             if (outfitList.size() > 0) {
               for (int x = 0; x < outfitList.size(); x++) {
                 log.info(
-                  "id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
+                  "Id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
                   x + 1, outfitList.get(x).getDateStart(), outfitList.get(x).getDateEnt(),
                   outfitList.get(x).getStateOutfit(), outfitList.get(x).getDescriptions(),
                   outfitList.get(x).getName());
               }
               log.info("Enter outfit id");
               this.outfit = outfitList.get(in.nextInt() - 1);
-              log.info("");
             } else {
               log.info("Outfit that doesn't exist");
             }

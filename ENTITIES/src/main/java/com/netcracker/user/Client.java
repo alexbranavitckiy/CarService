@@ -1,6 +1,7 @@
 package com.netcracker.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.netcracker.EntityId;
 import com.netcracker.marka.CarClient;
 import java.util.List;
 import lombok.*;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends User  {
+public class Client extends User  implements EntityId<UUID> {
 
   private Set<UUID> orders;
 
@@ -42,4 +43,6 @@ public class Client extends User  {
   public int hashCode() {
     return Objects.hash(super.hashCode(), getOrders());
   }
+
+
 }

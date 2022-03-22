@@ -4,7 +4,7 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.userMenu.ClientMenu;
 import com.netcracker.menu.userMenu.MasterMenu;
 import com.netcracker.menu.userMenu.MasterReceiverMenu;
-import com.netcracker.servisec.UserSession;
+import com.netcracker.session.UserSession;
 import java.io.IOException;
 import java.util.Scanner;
 

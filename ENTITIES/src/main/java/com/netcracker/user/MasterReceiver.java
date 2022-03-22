@@ -1,6 +1,7 @@
 package com.netcracker.user;
 
 
+import com.netcracker.EntityId;
 import lombok.*;
 
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MasterReceiver extends Employer {
+public class MasterReceiver extends Employer implements EntityId<UUID> {
 
 
   private List<UUID> orders;

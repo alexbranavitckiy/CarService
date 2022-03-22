@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static com.netcracker.servisec.FileService.CONTACT_INFORMATION;
-
 @Slf4j
 public class InfoMenu implements Menu {
 
@@ -17,6 +15,7 @@ public class InfoMenu implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
-    log.info(CONTACT_INFORMATION);
+    log.info(
+      "Contact Information:\nAddress: Minsk, Gintovta st., 1, 3rd floor\nPhone:+375(33)333-83-79\nOpening hours:8.00-23.00");
   }
 }

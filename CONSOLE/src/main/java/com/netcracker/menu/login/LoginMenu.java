@@ -2,10 +2,9 @@ package com.netcracker.menu.login;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.registration.RegistrationClient;
-import com.netcracker.servisec.FileService;
-import com.netcracker.servisec.Impl.LoginServicesImpl;
-import com.netcracker.servisec.LoginService;
-import com.netcracker.servisec.UserSession;
+import com.netcracker.LoginService;
+import com.netcracker.session.UserSession;
+import com.netcracker.file.services.impl.LoginServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,8 +12,6 @@ import java.util.Scanner;
 
 @Slf4j
 public class LoginMenu implements Menu {
-
-  private final String NAME_MENU = "Login menu";
 
   private final LoginService loginServices = new LoginServicesImpl();
 
@@ -39,15 +36,15 @@ public class LoginMenu implements Menu {
           String password = in.next();
           if (
             loginServices.searchByUserLoginAndPassword(login, password)) {
-            new EnterLogin().run(in, NAME_MENU);
+            new EnterLogin().run(in, "Login menu");
           } else {
-            System.out.println(FileService.NOT_FOUND);
+            log.info("User is not found");
           }
           this.preMessage(parentsName);
           break;
         }
         case "3": {
-          new RegistrationClient().run(in, NAME_MENU);
+          new RegistrationClient().run(in, "Login menu");
           this.preMessage(parentsName);
           break;
         }

@@ -2,10 +2,10 @@ package com.netcracker.menu.registration;
 
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.servisec.Impl.master.MasterServicesImpl;
-import com.netcracker.servisec.Impl.masterReceiver.MasterReceiverServicesImpl;
-import com.netcracker.servisec.MasterReceiverServices;
-import com.netcracker.servisec.MasterServices;
+import com.netcracker.file.services.impl.master.MasterServicesImpl;
+import com.netcracker.file.services.impl.masterReceiver.MasterReceiverServicesImpl;
+import com.netcracker.MasterReceiverServices;
+import com.netcracker.MasterServices;
 import com.netcracker.user.*;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;

@@ -1,13 +1,11 @@
 package com.netcracker.menu.order;
 
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.order.ListOrders;
-import com.netcracker.menu.registration.RegistrationClientByMaster;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.Order;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
+import com.netcracker.ClientServices;
+import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Scanner;
