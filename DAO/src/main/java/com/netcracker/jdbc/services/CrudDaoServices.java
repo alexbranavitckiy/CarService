@@ -9,10 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable> extends
-  CRUDServices<T> {
-
-  boolean create(T object) throws PersistException;
+public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable>  {
 
   boolean addObject(T object) throws PersistException;
 
@@ -25,3 +22,4 @@ public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable> 
   List<T> getAll() throws PersistException, SQLException;
 
 }
+

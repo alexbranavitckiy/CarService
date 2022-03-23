@@ -1,18 +1,18 @@
 package com.netcracker.file.services.impl;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
 import com.netcracker.LoginService;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.*;
-
 import java.io.IOException;
 import java.util.Optional;
 
 public class LoginServicesImpl implements LoginService {
 
   private final FileService fileService = new FileService();
-  private CRUDServices<Client> clientCRUDServices = new CRUDServicesImpl<>();
+  private CRUDServices<ClientDto> clientCRUDServices = new CRUDServicesImpl<>();
   private CRUDServices<Master> masterCRUDServices = new CRUDServicesImpl<>();
   private CRUDServices<MasterReceiver> masterReceiverCRUDServices = new CRUDServicesImpl<>();
 
@@ -25,8 +25,8 @@ public class LoginServicesImpl implements LoginService {
       switch ("diamond") {//all cases are executed until the user is found
         case "diamond": {
           if (fileService.isExistsUser()) {
-            Optional<Client> client = clientCRUDServices.getAll(fileService.getUserFile(),
-              Client[].class).stream().filter(x ->
+            Optional<ClientDto> client = clientCRUDServices.getAll(fileService.getUserFile(),
+              ClientDto[].class).stream().filter(x ->
               {
                 if (x != null) {
                   return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
@@ -43,7 +43,7 @@ public class LoginServicesImpl implements LoginService {
         }
         case "1": {
           if (fileService.isExistsMaster()) {
-            Optional<Master> master = masterCRUDServices.getAll(fileService.getUserFile(),
+            Optional<Master> master = masterCRUDServices.getAll(fileService.getMasterFile(),
               Master[].class).stream().filter(x ->
               {
                 if (x != null) {
@@ -63,7 +63,7 @@ public class LoginServicesImpl implements LoginService {
         case "2": {
           if (fileService.isExistsReceiver()) {
             Optional<MasterReceiver> masters = masterReceiverCRUDServices.getAll(
-                fileService.getMasterFile(), MasterReceiver[].class).stream().
+                fileService.getReceiverFile(), MasterReceiver[].class).stream().
               filter(x ->
                 {
                   if (x != null) {

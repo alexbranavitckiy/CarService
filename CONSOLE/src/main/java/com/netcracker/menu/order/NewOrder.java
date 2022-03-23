@@ -1,5 +1,6 @@
 package com.netcracker.menu.order;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
@@ -7,7 +8,6 @@ import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.order.Order;
 import com.netcracker.file.services.impl.order.OrderServicesImpl;
 import com.netcracker.OrderServices;
-import com.netcracker.user.Client;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,11 +21,11 @@ import java.util.UUID;
 public class NewOrder implements Menu {
 
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
-  private final Client client;
+  private final ClientDto client;
   private final OrderServices orderServices = new OrderServicesImpl();
   private final UUID idCar;
 
-  public NewOrder(Client client, UUID idCar) {
+  public NewOrder(ClientDto client, UUID idCar) {
     this.client = client;
     this.idCar = idCar;
   }

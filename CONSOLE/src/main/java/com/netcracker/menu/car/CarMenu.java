@@ -1,11 +1,11 @@
 package com.netcracker.menu.car;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.edit.EditCar;
 import com.netcracker.ClientServices;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.session.UserSession;
-import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Scanner;
@@ -85,7 +85,7 @@ public class CarMenu implements Menu {
         case "6": {
           CreateCarClient creatCarClient = new CreateCarClient();
           creatCarClient.run(in, "");
-          Client client = UserSession.getCloneClientSession();
+          ClientDto client = UserSession.getCloneClientSession();
           if (client.getCarClients() != null) {
             client.getCarClients().add(creatCarClient.getCarClient().get());
           }

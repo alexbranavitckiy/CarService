@@ -1,10 +1,10 @@
 package com.netcracker.menu.edit;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.session.UserSession;
-import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Scanner;
 @Slf4j
 public class EditClient implements Menu {
 
-  private final Client client;
+  private final ClientDto client;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
   @Override
@@ -27,7 +27,7 @@ public class EditClient implements Menu {
     this.client = UserSession.getCloneClientSession();
   }
 
-  public EditClient(Client client) {
+  public EditClient(ClientDto client) {
     this.client = UserSession.getCloneClient(client);
   }
 
@@ -59,7 +59,7 @@ public class EditClient implements Menu {
     }
   }
 
-  public Client getClient() {
+  public ClientDto getClient() {
     return client;
   }
 

@@ -1,10 +1,10 @@
 package com.netcracker.menu.order.client;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
 import com.netcracker.ClientServices;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
-import com.netcracker.user.Client;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class ListClient implements Menu {
 
   private final ClientServices searchServices = new ClientServicesImpl();
-  private Client client;
+  private ClientDto client;
 
   @Override
   public void preMessage(String parentsName) {
@@ -27,7 +27,7 @@ public class ListClient implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
-    List<Client> clientList;
+    List<ClientDto> clientList;
     this.preMessage(parentsName);
     label:
     while (true) {
@@ -64,7 +64,7 @@ public class ListClient implements Menu {
     }
   }
 
-  public Optional<Client> getClient() {
+  public Optional<ClientDto> getClient() {
     return Optional.of(client);
   }
 

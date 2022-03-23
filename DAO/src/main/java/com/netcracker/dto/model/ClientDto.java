@@ -1,33 +1,39 @@
-package com.netcracker.user;
+package com.netcracker.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.EntityId;
+import com.netcracker.marka.CarClient;
+import com.netcracker.user.RoleUser;
+
+import com.netcracker.user.User;
 import java.util.List;
-import lombok.*;
-
-
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends User  implements EntityId<UUID> {
+public class ClientDto extends User implements EntityId<UUID> {
 
   private Set<UUID> orders;
 
-  private List<UUID> carClients;
+  private List<CarClient> carClients;
 
-  public Client() {
+  public ClientDto() {
     super();
   }
 
   @Builder
-  public Client(UUID id, String name, String phone, String email, String description, String login,
-      String password, RoleUser roleuser, Set<UUID> orders, List<UUID> carClients) {
+  public ClientDto(UUID id, String name, String phone, String email, String description, String login,
+    String password, RoleUser roleuser, Set<UUID> orders, List<CarClient> carClients) {
     super(id,name, phone, email, description, login, password, roleuser);
     this.orders = orders;
     this.carClients = carClients;

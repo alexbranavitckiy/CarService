@@ -1,10 +1,10 @@
 package com.netcracker.menu.validator;
 
-import com.netcracker.menu.errors.InvalidValuesException;
+
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 import java.util.Scanner;
-
+import com.netcracker.menu.errors.InvalidValuesException;
 
 public interface ValidatorInstruments {
 

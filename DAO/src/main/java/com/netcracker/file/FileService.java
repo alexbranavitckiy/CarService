@@ -1,6 +1,7 @@
 package com.netcracker.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
@@ -84,7 +85,7 @@ public class FileService {
 
     String test = "test";
     List<CarClient> carClients = new ArrayList<>();
-    Client client = Client.builder()
+    ClientDto client = ClientDto.builder()
       .carClients(carClients)
       .password(test)
       .description(test)

@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-abstract class User implements EntityId<UUID> {
+public abstract class User implements EntityId<UUID> {
 
   private UUID id;
 

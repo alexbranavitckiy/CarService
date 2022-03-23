@@ -1,5 +1,6 @@
 package com.netcracker.menu.registration;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.order.NewOrder;
@@ -7,7 +8,6 @@ import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.ClientServices;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
-import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class RegistrationClientByMaster implements Menu {
 
   private final ClientServices clientServices = new ClientServicesImpl();
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
-  private Client clientLast;
+  private ClientDto clientLast;
 
   @Override
   public void preMessage(String parentsName) {
@@ -41,7 +41,7 @@ public class RegistrationClientByMaster implements Menu {
           carClientMenu.run(in, "Filling in car details");
           log.info("Filling in customer data");
           if (carClientMenu.getCarClient().isPresent()) {
-            Client client = Client.builder()
+            ClientDto client = ClientDto.builder()
               .id(UUID.randomUUID())
               .description(validator.validateDescription(in))
               .email(validator.validateMail(in))
@@ -85,7 +85,7 @@ public class RegistrationClientByMaster implements Menu {
     }
   }
 
-  public Client getClient() {
+  public ClientDto getClient() {
     return clientLast;
   }
 }

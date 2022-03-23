@@ -1,12 +1,12 @@
 package com.netcracker.menu.registration;
 
+import com.netcracker.dto.model.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.ClientServices;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
-import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +36,7 @@ public class RegistrationClient implements Menu {
           CreateCarClient carClient = new CreateCarClient();
           carClient.run(in, "Enter car information");
           log.info("Enter customer details");
-          Client client = Client.builder()
+          ClientDto client = ClientDto.builder()
             .id(UUID.randomUUID())
             .login(validator.validateLogin(in))
             .password(validator.validatePassword(in))
