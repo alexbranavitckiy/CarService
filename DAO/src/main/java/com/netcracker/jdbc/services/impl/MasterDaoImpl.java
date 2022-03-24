@@ -72,7 +72,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
             throws PersistException {
         try {
             addQuery(statement, master);
-            if (master.getOutfits()!=null&&!master.getOutfits().isEmpty()) {
+            if (master.getOutfits() != null && !master.getOutfits().isEmpty()) {
                 statement.setObject(12, master.getOutfits().get(0));
             } else
                 statement.setObject(12, null);
@@ -108,7 +108,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
             addQuery(statement, master);
             statement.setObject(12, master.getId());
             addQuery(statement, master);
-            if (master.getOutfits()!=null&&!master.getOutfits().isEmpty()) {
+            if (master.getOutfits() != null && !master.getOutfits().isEmpty()) {
                 statement.setObject(13, master.getOutfits().get(0));
             } else
                 statement.setObject(13, null);

@@ -40,7 +40,6 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> {
     }
 
 
-
     @Override
     protected List<CarClient> parseResultSet(ResultSet rs) throws PersistException {
         List<CarClient> carClients = new ArrayList<>();
@@ -64,7 +63,6 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> {
         }
 
     }
-
 
 
     @Override

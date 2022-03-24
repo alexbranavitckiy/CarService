@@ -17,26 +17,26 @@ import java.util.UUID;
 @Builder
 public class Order implements EntityId<UUID> {
 
-  private UUID id;
+    private UUID id;
 
-  private String descriptions;
+    private String descriptions;
 
-  private List<UUID> outfits;
+    private List<UUID> outfits;
 
-  private UUID masterReceiver;
+    private UUID masterReceiver;
 
-  private UUID idCar;
+    private UUID idCar;
 
-  private double priceSum;
+    private double priceSum;
 
-  private UUID clientUUID;
+    private UUID clientUUID;
 
-  private UUID stateOrder;
+    private UUID stateOrder;
 
-  private List<UUID> label;
+    private List<UUID> label;
 
-  private Date createdDate;
+    private Date createdDate;
 
-  private Date updatedDate;
+    private Date updatedDate;
 
 }

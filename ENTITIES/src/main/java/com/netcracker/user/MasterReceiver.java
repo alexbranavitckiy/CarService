@@ -14,24 +14,23 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 public class MasterReceiver extends Employers implements EntityId<UUID> {
 
+    private List<UUID> orders;
 
-  private List<UUID> orders;
+    @Builder
+    public MasterReceiver(UUID id, String name, String phone, String mail, String description,
+                          Role role, String login, String password, String homeAddress, UUID qualificationEnum,
+                          String education, List<UUID> orders) {
+        super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
+                education);
+        this.orders = orders;
+    }
 
-  @Builder
-  public MasterReceiver(UUID id, String name, String phone, String mail, String description,
-      Role role, String login, String password, String homeAddress, UUID qualificationEnum,
-      String education, List<UUID> orders) {
-    super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
-        education);
-    this.orders = orders;
-  }
-
-  @Override
-  public String toString() {
-    return "MasterReceiver{" +
-        "orders=" + orders +
-        "} " + super.toString();
-  }
+    @Override
+    public String toString() {
+        return "MasterReceiver{" +
+                "orders=" + orders +
+                "} " + super.toString();
+    }
 
 
 }

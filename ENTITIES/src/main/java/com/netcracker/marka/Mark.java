@@ -20,13 +20,13 @@ import java.util.UUID;
 @Builder
 public class Mark implements EntityId<UUID> {
 
-  private UUID id;
+    private UUID id;
 
-  private String generation;
+    private String generation;
 
-  private Date year;
+    private Date year;
 
-  private double engineSize;
+    private double engineSize;
 
 
 }

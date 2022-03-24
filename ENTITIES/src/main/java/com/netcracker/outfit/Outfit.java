@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -16,22 +17,22 @@ import java.util.UUID;
 @Builder
 public class Outfit implements EntityId<UUID> {
 
-  private UUID id;
+    private UUID id;
 
-  private String name;
+    private String name;
 
-  private String descriptions;
+    private String descriptions;
 
-  private UUID order;
+    private UUID order;
 
-  private UUID employer;
+    private UUID employer;
 
-  private Date dateStart;
+    private Date dateStart;
 
-  private Date dateEnt;
+    private Date dateEnt;
 
-  private double price;
+    private double price;
 
-  private UUID stateOutfit;
+    private UUID stateOutfit;
 
 }

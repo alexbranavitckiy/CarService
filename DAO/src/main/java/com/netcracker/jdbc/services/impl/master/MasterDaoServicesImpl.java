@@ -1,35 +1,33 @@
-package com.netcracker.file.services.impl.master;
+package com.netcracker.jdbc.services.impl.master;
 
-import com.netcracker.errors.EmptySearchException;
-import com.netcracker.file.services.CRUDServices;
-import com.netcracker.file.FileService;
 import com.netcracker.LoginService;
 import com.netcracker.MasterServices;
-import com.netcracker.file.services.impl.CRUDServicesImpl;
+import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.jdbc.services.CrudDao;
+import com.netcracker.jdbc.services.impl.MasterDaoImpl;
 import com.netcracker.user.Master;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
-public class MasterServicesImpl implements MasterServices {
+public class MasterDaoServicesImpl implements MasterServices {
 
-    private FileService fileService = new FileService();
-    private LoginService loginService = new LoginServicesImpl();
-    private CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
+    private final LoginService loginService = new LoginServicesImpl();
+    private final CrudDao<Master, UUID> crudServices = new MasterDaoImpl();
 
-    public MasterServicesImpl() {
+    public MasterDaoServicesImpl() {
     }
 
     public boolean addMaster(Master master) {
         try {
             if (this.passwordCheck(master)) {
-                return this.crudServices.addObject(master, fileService.getMasterFile(), Master[].class);
+                return this.crudServices.addObject(master);
             }
         } catch (Exception e) {
             log.error("Error adding object", e);
@@ -38,18 +36,20 @@ public class MasterServicesImpl implements MasterServices {
     }
 
     @Override
+    @SneakyThrows
     public Optional<Master> getMasterById(UUID master) throws EmptySearchException {
-        return this.getAllMaster().stream().filter(x -> x.getId().equals(master)).findFirst();
+        return crudServices.getById(master);
 
     }
 
+    @SneakyThrows
     public List<Master> getAllMaster() throws EmptySearchException {
-        return this.crudServices.getAll(fileService.getMasterFile(), Master[].class);
+        return this.crudServices.getAll();
     }
 
 
     public boolean passwordCheck(Master master) {
-        try {
+        try {//TODO!!
             if (loginService.searchByUserLoginAndPassword(master.getLogin(),
                     master.getPassword())) {
                 log.info("The username you entered is already taken");
