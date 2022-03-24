@@ -5,21 +5,20 @@ import com.netcracker.user.Client;
 
 public class MapperFactory<T, Dto> {
 
-  public Object getDoughnut(TypeMapper type, T o, Dto dto) {
-    switch (type) {
-      case CLIENT_CONVECTOR:
-        if (dto instanceof Client) {
-          return new ClientConvector().toDto((Client) dto);
+    public Object getDoughnut(TypeMapper type, T o, Dto dto) throws IllegalArgumentException {
+        switch (type) {
+            case CLIENT_CONVECTOR:
+                if (dto instanceof Client) {
+                    return new ClientConvector().toDto((Client) dto);
+                }
+                break;
+            case ENUM_CONVECTOR:
+                 //TODO!!!
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong doughnut type:" + type);
         }
-        break;
-      case ENUM_CONVECTOR:
-
-        break;
-      default:
         throw new IllegalArgumentException("Wrong doughnut type:" + type);
     }
-    throw new IllegalArgumentException("Wrong doughnut type:" + type);
-  }
-
 
 }

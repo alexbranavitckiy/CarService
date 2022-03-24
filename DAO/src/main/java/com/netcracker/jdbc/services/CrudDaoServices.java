@@ -2,7 +2,6 @@ package com.netcracker.jdbc.services;
 
 import com.netcracker.EntityId;
 import com.netcracker.errors.PersistException;
-import com.netcracker.file.services.CRUDServices;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;

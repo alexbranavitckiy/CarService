@@ -2,7 +2,7 @@ package com.netcracker.file.services.impl.client;
 
 import com.netcracker.ClientServices;
 import com.netcracker.LoginService;
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.marka.CarClient;
 import com.netcracker.file.services.CRUDServices;

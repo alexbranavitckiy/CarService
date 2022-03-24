@@ -5,6 +5,7 @@ import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 import java.util.Scanner;
 import com.netcracker.menu.errors.InvalidValuesException;
+import java.util.UUID;
 
 public interface ValidatorInstruments {
 
@@ -12,7 +13,7 @@ public interface ValidatorInstruments {
 
   Qualification qualificationEnum(Scanner in);
 
-  State orderState(Scanner in);
+  UUID orderState(Scanner in);
 
   String validateLogin(Scanner in);
 
@@ -42,7 +43,7 @@ public interface ValidatorInstruments {
 
   boolean edit(String fieldName, Scanner in);
 
-  com.netcracker.outfit.State stateOutfit(Scanner in);
+  UUID stateOutfit(Scanner in);
 
   void successfullyMessages(boolean flag);
 }

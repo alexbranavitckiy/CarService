@@ -3,6 +3,7 @@ package com.netcracker.menu.validator;
 import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Scanner;
@@ -32,7 +33,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
   @Override
-  public com.netcracker.outfit.State stateOutfit(Scanner in) {
+  public UUID stateOutfit(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Outfit status");
     log.info("Enter 1 create: END");
@@ -41,13 +42,13 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     stringBuilder.append(in.next());
     switch (stringBuilder.toString()) {
       case "1": {
-        return com.netcracker.outfit.State.END;
+        return com.netcracker.outfit.State.END.getId();
       }
       case "2": {
-        return com.netcracker.outfit.State.WORK;
+        return com.netcracker.outfit.State.WORK.getId();
       }
       case "3": {
-        return com.netcracker.outfit.State.NO_STATE;
+        return com.netcracker.outfit.State.NO_STATE.getId();
       }
       default: {
         return stateOutfit(in);
@@ -56,7 +57,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   }
 
   @Override
-  public State orderState(Scanner in) {
+  public UUID orderState(Scanner in) {
     stringBuilder.delete(0, stringBuilder.length());
     log.info("Enter 1 create: TEMPLATE");
     log.info("Enter 2 create: RECORDED");
@@ -68,25 +69,25 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
     stringBuilder.append(in.next());
     switch (stringBuilder.toString()) {
       case "1": {
-        return State.TEMPLATE;
+        return State.TEMPLATE.getId();
       }
       case "2": {
-        return State.RECORDED;
+        return State.RECORDED.getId();
       }
       case "3": {
-        return State.IN_WORK;
+        return State.IN_WORK.getId();
       }
       case "4": {
-        return State.CAR_GIVEN;
+        return State.CAR_GIVEN.getId();
       }
       case "5": {
-        return State.CAR_ACCEPTED;
+        return State.CAR_ACCEPTED.getId();
       }
       case "6": {
-        return State.WAIT_CLIENT;
+        return State.WAIT_CLIENT.getId();
       }
       case "7": {
-        return State.BID;
+        return State.BID.getId();
       }
       default: {
         return orderState(in);

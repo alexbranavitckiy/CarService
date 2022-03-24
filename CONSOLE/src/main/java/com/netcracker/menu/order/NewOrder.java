@@ -1,6 +1,6 @@
 package com.netcracker.menu.order;
 
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
@@ -61,7 +61,7 @@ public class NewOrder implements Menu {
                 .createdDate(new Date())
                 .idCar(idCar)
                 .updatedDate(new Date())
-                .entry(new ArrayList<>())
+                .label(new ArrayList<>())
                 .descriptions(validator.validateDescription(in))
                 .priceSum(0d)
                 .build();

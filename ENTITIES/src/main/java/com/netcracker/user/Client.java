@@ -5,7 +5,6 @@ import com.netcracker.EntityId;
 import java.util.List;
 import lombok.*;
 
-
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -27,8 +26,8 @@ public class Client extends User  implements EntityId<UUID> {
 
   @Builder
   public Client(UUID id, String name, String phone, String email, String description, String login,
-      String password, RoleUser roleuser, Set<UUID> orders, List<UUID> carClients) {
-    super(id,name, phone, email, description, login, password, roleuser);
+      String password, UUID roleUser, Set<UUID> orders, List<UUID> carClients) {
+    super(id,name, phone, email, description, login, password, roleUser);
     this.orders = orders;
     this.carClients = carClients;
   }

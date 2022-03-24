@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Entry implements EntityId<UUID> {
+public class Label implements EntityId<UUID> {
 
   private UUID id;
 

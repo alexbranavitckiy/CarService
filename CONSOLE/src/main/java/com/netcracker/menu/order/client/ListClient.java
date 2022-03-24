@@ -1,6 +1,6 @@
 package com.netcracker.menu.order.client;
 
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.menu.Menu;
 import com.netcracker.ClientServices;

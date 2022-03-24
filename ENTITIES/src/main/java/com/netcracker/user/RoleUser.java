@@ -1,28 +1,17 @@
 package com.netcracker.user;
 
 import com.netcracker.EntityId;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public enum RoleUser implements EntityId<UUID> {
-  REGISTERED("REGISTERED"),
-  UNREGISTERED("UNREGISTERED");
+  REGISTERED,
+  UNREGISTERED;
 
-  RoleUser(String name) {
-    this.name = name;
-  }
-
-  private final String name;
-  private UUID id;
-
-  public String getName() {
-    return name;
-  }
-
+  @Override
   public UUID getId() {
-    return id;
+    return UUID.nameUUIDFromBytes(this.name().getBytes(
+      StandardCharsets.UTF_8));
   }
 
-  public void setId(UUID id) {
-    this.id = id;
-  }
 }

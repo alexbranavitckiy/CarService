@@ -46,7 +46,7 @@ public class RegistrationMaster implements Menu {
               .mail(validator.validateMail(in))
               .phone(validator.validatePhone(in))
               .login(validator.validateLogin(in))
-              .qualificationEnum(validator.qualificationEnum(in))
+              .qualificationEnum(validator.qualificationEnum(in).getId())
               .outfits(new ArrayList<>())
               .role(Role.MASTER)
               .build();
@@ -63,7 +63,7 @@ public class RegistrationMaster implements Menu {
               .education(validator.validateEducation(in))
               .description(validator.validateDescription(in))
               .homeAddress(validator.validateHomeAddress(in))
-              .qualificationEnum(validator.qualificationEnum(in))
+              .qualificationEnum(validator.qualificationEnum(in).getId())
               .mail(validator.validateMail(in))
               .login(validator.validateLogin(in))
               .password(validator.validatePassword(in))

@@ -1,7 +1,5 @@
 package com.netcracker.dto;
 
-import java.util.UUID;
-
 
 public interface MapperDto<T, D> {
 

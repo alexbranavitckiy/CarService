@@ -1,4 +1,4 @@
-package com.netcracker.dto.model;
+package com.netcracker.dto.modelDTO;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.EntityId;
@@ -33,8 +33,8 @@ public class ClientDto extends User implements EntityId<UUID> {
 
   @Builder
   public ClientDto(UUID id, String name, String phone, String email, String description, String login,
-    String password, RoleUser roleuser, Set<UUID> orders, List<CarClient> carClients) {
-    super(id,name, phone, email, description, login, password, roleuser);
+    String password, UUID roleUser, Set<UUID> orders, List<CarClient> carClients) {
+    super(id,name, phone, email, description, login, password, roleUser);
     this.orders = orders;
     this.carClients = carClients;
   }

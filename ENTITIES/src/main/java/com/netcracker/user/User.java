@@ -27,6 +27,6 @@ public abstract class User implements EntityId<UUID> {
 
   private String password;
 
-  private RoleUser roleuser;
+  private UUID roleUser;
 
 }

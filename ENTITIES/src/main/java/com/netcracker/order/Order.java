@@ -23,15 +23,17 @@ public class Order implements EntityId<UUID> {
 
   private List<UUID> outfits;
 
+  private UUID masterReceiver;
+
   private UUID idCar;
 
   private double priceSum;
 
   private UUID clientUUID;
 
-  private State stateOrder;
+  private UUID stateOrder;
 
-  private List<UUID> entry;
+  private List<UUID> label;
 
   private Date createdDate;
 

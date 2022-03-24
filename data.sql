@@ -1,15 +1,16 @@
-DROP TABLE if exists car_clients,emploers,entries,master_receivers,masters,orders,outfits,role_user,state_car_breakdown,state_orders,state_outfits,type_car_breakdowns;
+DROP TABLE if exists car_clients,label,entries,master_receivers,masters,orders,outfits,role_user,state_car_breakdown,state_orders,state_outfits,type_car_breakdowns;
 
-create table if not exists emploers(
+create table if not exists employrs(
                                        id UUID primary key,
-                                       education varchar(50),
+                                       name varchar(50),
+    education varchar(50),
     qualification varchar(50),
     password varchar(50) not null unique,
     login varchar(50) not null ,
-    homa_address varchar(50),
+    home_address varchar(50),
     role UUID not null,
     phone varchar(50) not null,
-    Email varchar(50),
+    mail varchar(50),
     descriptions varchar(50) not null,
     id_outfits UUID unique
     );
@@ -18,12 +19,12 @@ create table if not exists emploers(
 create table if not exists masters(
                                       id UUID primary key ,
                                       id_outfits UUID unique,
-                                      foreign key (id) references emploers(id)
+                                      foreign key (id) references employrs(id)
     );
 
 create table if not exists master_receivers(
                                                id UUID primary key,
-                                               foreign key (id) references emploers(id)
+                                               foreign key (id) references employrs(id)
     );
 
 create table if not exists role_user(
@@ -38,11 +39,10 @@ create table if not exists clients(
     ferst_name varchar(50),
     role_user UUID not null,
     last_name varchar(50),
-    id_role_use UUID not null,
     email varchar(25),
     phone varchar(50),
     descriptions varchar(50) not null,
-    constraint foreign_key_role_user foreign key (id) references role_user(id)
+    constraint foreign_key_role_user foreign key (role_user) references role_user(id)
     );
 
 create table if not exists state_orders(
@@ -52,7 +52,6 @@ create table if not exists state_orders(
 create table if not exists orders(
                                      id UUID primary key,
                                      descriptions varchar(50) not null,
-    name varchar(50),
     id_clients UUID not null,
     id_masters UUID,
     created_date timestamp,
@@ -65,9 +64,9 @@ create table if not exists orders(
     constraint foreign_state_order foreign key (id_state_order) references state_orders(id)
     );
 
-create table if not exists entries(
-                                      call_date timestamp,
-                                      name varchar(50),
+create table if not exists label(
+                                    call_date timestamp,
+                                    name varchar(50),
     id_clients UUID,
     id_orders UUID,
     primary key (id_clients,id_orders),

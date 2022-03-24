@@ -1,6 +1,6 @@
 package com.netcracker.menu.registration;
 
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
@@ -44,7 +44,7 @@ public class RegistrationClient implements Menu {
             .email(validator.validateMail(in))
             .description(validator.validateDescription(in))
             .phone(validator.validatePhone(in))
-            .roleuser(RoleUser.REGISTERED)
+            .roleUser(RoleUser.REGISTERED.getId())
             .build();
           if (carClient.getCarClient().isPresent()) {
             client.setCarClients(new ArrayList<>());

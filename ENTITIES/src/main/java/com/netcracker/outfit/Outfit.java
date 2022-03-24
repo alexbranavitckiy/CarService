@@ -32,6 +32,6 @@ public class Outfit implements EntityId<UUID> {
 
   private double price;
 
-  private State stateOutfit;
+  private UUID stateOutfit;
 
 }

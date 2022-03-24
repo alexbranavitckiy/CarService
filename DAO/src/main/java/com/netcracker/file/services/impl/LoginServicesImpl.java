@@ -1,6 +1,6 @@
 package com.netcracker.file.services.impl;
 
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
 import com.netcracker.LoginService;

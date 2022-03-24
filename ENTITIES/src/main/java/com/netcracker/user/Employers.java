@@ -1,15 +1,18 @@
 package com.netcracker.user;
 
 
+
 import com.netcracker.EntityId;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Employer implements EntityId<UUID> {
+public abstract class Employers  {
 
   private UUID id;
 
@@ -29,9 +32,8 @@ public abstract class Employer implements EntityId<UUID> {
 
   private String homeAddress;
 
-  private Qualification qualificationEnum;
+  private UUID qualificationEnum;
 
   private String education;
-
 
 }

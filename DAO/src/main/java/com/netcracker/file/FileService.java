@@ -1,7 +1,7 @@
 package com.netcracker.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netcracker.dto.model.ClientDto;
+import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
@@ -92,7 +92,7 @@ public class FileService {
       .id(UUID.randomUUID())
       .email(test)
       .login(test + "1")
-      .name(test).roleuser(RoleUser.REGISTERED).build();
+      .name(test).roleUser(RoleUser.REGISTERED.getId()).build();
     ObjectMapperServices.getObjectMapper().writeValue(getUserFile(), List.of(client));
 
     Master master = Master.builder()
@@ -119,7 +119,7 @@ public class FileService {
     ObjectMapperServices.getObjectMapper().writeValue(getReceiverFile(), List.of(masterReceiver));
 
     Order order = Order.builder()
-      .stateOrder(State.BID)
+      .stateOrder(State.BID.getId())
       .updatedDate(new Date())
       .createdDate(new Date())
       .priceSum(12D)
