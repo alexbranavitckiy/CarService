@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -68,18 +69,22 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> {
     protected void prepareStatementForInsert(PreparedStatement preparedStatement, Client client)
             throws PersistException {
         try {
-            preparedStatement.setObject(1, client.getId());
-            preparedStatement.setString(2, client.getPassword());
-            preparedStatement.setString(3, client.getLogin());
-            preparedStatement.setString(4, client.getName());//TODO!!
-            preparedStatement.setObject(5, client.getRoleUser());//.getId()
-            preparedStatement.setString(6, client.getName());//TODO!!
-            preparedStatement.setString(7, client.getEmail());
-            preparedStatement.setObject(8, client.getPhone());
-            preparedStatement.setString(9, client.getDescription());
+            addQuery(preparedStatement, client);
         } catch (Exception e) {
             throw new PersistException(e);
         }
+    }
+
+    private void addQuery(PreparedStatement preparedStatement, Client client) throws SQLException {
+        preparedStatement.setObject(1, client.getId());
+        preparedStatement.setString(2, client.getPassword());
+        preparedStatement.setString(3, client.getLogin());
+        preparedStatement.setString(4, client.getName());//TODO!!
+        preparedStatement.setObject(5, client.getRoleUser());//.getId()
+        preparedStatement.setString(6, client.getName());//TODO!!
+        preparedStatement.setString(7, client.getEmail());
+        preparedStatement.setObject(8, client.getPhone());
+        preparedStatement.setString(9, client.getDescription());
     }
 
 
@@ -87,15 +92,7 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> {
     protected void prepareStatementForUpdate(PreparedStatement statement, Client client)
             throws PersistException {
         try {
-            statement.setObject(1, client.getId());
-            statement.setString(2, client.getPassword());
-            statement.setString(3, client.getLogin());
-            statement.setString(4, client.getName());//TODO!!
-            statement.setObject(5, client.getRoleUser());
-            statement.setString(6, client.getName());//TODO!!
-            statement.setString(7, client.getEmail());
-            statement.setObject(8, client.getPhone());
-            statement.setString(9, client.getDescription());
+            addQuery(statement, client);
             statement.setObject(10, client.getId());
         } catch (Exception e) {
             throw new PersistException(e);

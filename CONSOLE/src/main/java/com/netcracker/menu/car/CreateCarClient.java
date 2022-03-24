@@ -24,7 +24,7 @@ public class CreateCarClient implements Menu {
       .summer(validator.validateDescription(in))
       .metadataCar(validator.validateNumberCar(in))
       .run(validator.validateMileage(in))
-      .marka(new Mark())
+      .mark(new Mark())
       .ear(validator.validateYear(in))
       .build();
   }

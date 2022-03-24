@@ -15,27 +15,31 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = {"id"})
 public class CarClient implements EntityId<UUID> {
 
-  private UUID id;
+    private UUID id;
 
-  private String summer;
+    private UUID id_clients;
 
-  private String ear;
+    private String summer;
 
-  private String metadataCar;
+    private String descriptions;
 
-  private String run;
+    private String ear;
 
-  private List<UUID> carBreakdowns;
+    private String metadataCar;
 
-  private Mark marka;
+    private String run;
 
-  @Override
-  public String toString() {
-    return "Your cars: summer='" + summer + '\'' +
-        ", ear='" + ear + '\'' +
-        ", metadataCar='" + metadataCar + '\'' +
-        ", run='" + run + '\'' +
-        '}';
-  }
+    private List<UUID> carBreakdowns;
+
+    private Mark mark;
+
+    @Override
+    public String toString() {
+        return "Your cars: summer='" + summer + '\'' +
+                ", ear='" + ear + '\'' +
+                ", metadataCar='" + metadataCar + '\'' +
+                ", run='" + run + '\'' +
+                '}';
+    }
 
 }

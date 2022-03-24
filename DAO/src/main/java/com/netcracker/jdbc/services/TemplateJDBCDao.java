@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> implements
-  CrudDaoServices<T, PK> {
+        CrudDao<T, PK> {
 
   public abstract String getSelectQuery();
 

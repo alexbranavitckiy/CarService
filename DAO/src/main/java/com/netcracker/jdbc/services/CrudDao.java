@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable>  {
+public interface CrudDao<T extends EntityId<K>, K extends Serializable>  {
 
   boolean addObject(T object) throws PersistException;
 
@@ -18,7 +18,7 @@ public interface CrudDaoServices<T extends EntityId<K>, K extends Serializable> 
 
   boolean delete(T object) throws PersistException;
 
-  List<T> getAll() throws PersistException, SQLException;
+  List<T> getAll() throws PersistException;
 
 }
 
