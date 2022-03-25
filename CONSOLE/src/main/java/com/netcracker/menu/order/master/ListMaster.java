@@ -1,8 +1,8 @@
 package com.netcracker.menu.order.master;
 
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
-import com.netcracker.file.services.impl.master.MasterServicesImpl;
 import com.netcracker.MasterServices;
 import com.netcracker.user.Master;
 import java.io.IOException;
@@ -13,9 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ListMaster implements Menu {
 
-  private final MasterServices masterServices = new MasterServicesImpl();
+  private final ServicesFactory servicesFactory;
 
   private Master master;
+
+  public ListMaster(ServicesFactory servicesFactory){
+    this.servicesFactory=servicesFactory;
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -25,6 +29,7 @@ public class ListMaster implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    MasterServices masterServices=servicesFactory.getMasterServices();
     this.preMessage(parentsName);
     label:
     while (true) {

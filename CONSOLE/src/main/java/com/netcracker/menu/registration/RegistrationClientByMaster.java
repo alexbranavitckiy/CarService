@@ -1,13 +1,13 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.dto.modelDTO.ClientDto;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.order.NewOrder;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.ClientServices;
-import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.user.RoleUser;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +20,15 @@ import java.util.UUID;
 @Slf4j
 public class RegistrationClientByMaster implements Menu {
 
-  private final ClientServices clientServices = new ClientServicesImpl();
+  private final ClientServices clientServices;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
   private ClientDto clientLast;
+  private final ServicesFactory servicesFactory;
+
+  public RegistrationClientByMaster(ServicesFactory servicesFactory){
+    this.servicesFactory=servicesFactory;
+    this.clientServices=servicesFactory.getClientServices();
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -71,7 +77,7 @@ public class RegistrationClientByMaster implements Menu {
         case "3": {
           if (clientLast != null) {
             NewOrder newOrder = new NewOrder(clientLast,
-              carClientMenu.getCarClient().get().getId());
+              carClientMenu.getCarClient().get().getId(),servicesFactory);
             newOrder.run(in, "Client creation menu");
           }
           this.preMessage(parentsName);

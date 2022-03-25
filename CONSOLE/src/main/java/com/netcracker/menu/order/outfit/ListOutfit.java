@@ -1,9 +1,9 @@
 package com.netcracker.menu.order.outfit;
 
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
 import com.netcracker.OutfitsServices;
 import java.io.IOException;
 import java.util.InputMismatchException;
@@ -16,9 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ListOutfit implements Menu {
 
-  private final OutfitsServices outfitsServices = new OutfitsServicesImpl();
+  private final ServicesFactory servicesFactory;
   private Outfit outfit;
 
+
+  public ListOutfit(ServicesFactory servicesFactory){
+    this.servicesFactory=servicesFactory;
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -28,6 +32,7 @@ public class ListOutfit implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    OutfitsServices outfitsServices = servicesFactory.getOutfitServices();
     List<Outfit> outfitList;
     this.preMessage(parentsName);
     label:

@@ -1,6 +1,6 @@
 package com.netcracker.jdbc.services.impl.masterReceiver;
 
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.impl.LoginServicesImpl;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 public class MasterReceiverDaoServicesImpl implements MasterReceiverServices {
 
-    private LoginService loginService = new LoginServicesImpl();
+    private LoginServices loginService = new LoginServicesImpl();
     private CrudDao<MasterReceiver, UUID> crudServices = new MasterReceiverImpl();
 
     @Override

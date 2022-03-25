@@ -22,14 +22,16 @@ public class FileService {
     public static final String RECEIVER_PATH = "receiver.json";
     public static final String ORDERS_PATH = "orders.json";
     public static final String OUTFIT_PATH = "outfit.json";
+    public static final String CAR_PATH = "car.json";
 
-
+    private final File car = new File(CAR_PATH);
     private final File user = new File(USER_PATH);
     private final File master = new File(MASTER_PATH);
     private final File receiver = new File(RECEIVER_PATH);
     private final File orders = new File(ORDERS_PATH);
     private final File outfit = new File(OUTFIT_PATH);
 
+    public File getCar() { return car; }
 
     public File getUserFile() {
         return user;
@@ -64,7 +66,7 @@ public class FileService {
     }
 
     public void initMethod() {//Data for the first launch of the application
-        List.of(orders, user, master, receiver, outfit).forEach(x -> {
+        List.of(orders, user, master, receiver, outfit, car).forEach(x -> {
             try {
                 objectMapper.readTree(x);
             } catch (IOException e) {
@@ -126,6 +128,15 @@ public class FileService {
                 .id(UUID.randomUUID())
                 .build();
         ObjectMapperServices.getObjectMapper().writeValue(orders, List.of(order));
+
+        CarClient carClient = CarClient.builder()
+                .id(UUID.randomUUID())
+                .descriptions(test)
+                .ear(test)
+                .run(test)
+                .summer(test)
+                .build();
+        ObjectMapperServices.getObjectMapper().writeValue(this.car, List.of(carClient));
 
         Outfit outfit = Outfit.builder()
                 .employer(UUID.randomUUID())

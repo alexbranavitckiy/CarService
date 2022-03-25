@@ -1,12 +1,12 @@
 package com.netcracker.menu.registration;
 
 import com.netcracker.dto.modelDTO.ClientDto;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.ClientServices;
-import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.user.RoleUser;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,9 +16,13 @@ import java.util.*;
 @Slf4j
 public class RegistrationClient implements Menu {
 
-  private final ClientServices clientServices = new ClientServicesImpl();
+  private final ClientServices clientServices;
   private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
+  public RegistrationClient(ServicesFactory servicesFactory){
+    this.clientServices=servicesFactory.getClientServices();
+
+  }
 
   @Override
   public void preMessage(String parentsName) {

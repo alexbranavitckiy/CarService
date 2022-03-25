@@ -3,7 +3,7 @@ package com.netcracker.file.services.impl.masterReceiver;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.session.UserSession;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
@@ -21,7 +21,7 @@ import java.io.File;
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
 
     private FileService fileService = new FileService();
-    private LoginService loginService = new LoginServicesImpl();
+    private LoginServices loginService = new LoginServicesImpl();
     private CRUDServices<MasterReceiver> searchServices = new CRUDServicesImpl<>();
 
     @Override

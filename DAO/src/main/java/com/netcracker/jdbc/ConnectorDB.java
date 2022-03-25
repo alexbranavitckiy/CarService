@@ -2,15 +2,14 @@ package com.netcracker.jdbc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ConnectorDB {
 
-    private static HikariConfig config = new HikariConfig();
-    private static HikariDataSource ds;
+    private static final HikariConfig config = new HikariConfig();
+    private static final HikariDataSource ds;
 
     private ConnectorDB() {
     }
@@ -30,7 +29,5 @@ public class ConnectorDB {
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
-
-
 }
 

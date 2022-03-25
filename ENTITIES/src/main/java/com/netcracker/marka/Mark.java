@@ -28,5 +28,4 @@ public class Mark implements EntityId<UUID> {
 
     private double engineSize;
 
-
 }

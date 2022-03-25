@@ -1,7 +1,7 @@
 package com.netcracker.file.services.impl.client;
 
 import com.netcracker.ClientServices;
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.marka.CarClient;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class ClientServicesImpl implements ClientServices {
 
     private final FileService fileService = new FileService();
-    private final LoginService loginService = new LoginServicesImpl();
+    private final LoginServices loginService = new LoginServicesImpl();
     private final CRUDServices<ClientDto> crudServices = new CRUDServicesImpl<>();
 
     @Override

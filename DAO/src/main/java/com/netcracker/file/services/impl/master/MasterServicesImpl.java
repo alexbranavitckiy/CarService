@@ -3,7 +3,7 @@ package com.netcracker.file.services.impl.master;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.MasterServices;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
 import com.netcracker.file.services.impl.LoginServicesImpl;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MasterServicesImpl implements MasterServices {
 
     private FileService fileService = new FileService();
-    private LoginService loginService = new LoginServicesImpl();
+    private LoginServices loginService = new LoginServicesImpl();
     private CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
 
     public MasterServicesImpl() {

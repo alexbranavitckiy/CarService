@@ -1,5 +1,6 @@
 package com.netcracker.menu.userMenu;
 
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.ListCarClient;
 import com.netcracker.menu.edit.EditMasterReceiver;
@@ -18,7 +19,13 @@ import java.util.Scanner;
 @Slf4j
 public class MasterReceiverMenu implements Menu {
 
-  private final OrderServices orderServices = new OrderServicesImpl();
+  private final OrderServices orderServices ;
+  private final ServicesFactory servicesFactory;
+
+  public MasterReceiverMenu(ServicesFactory servicesFactory){
+    this.orderServices=servicesFactory.getOrderServices();
+    this.servicesFactory=servicesFactory;
+  }
 
   @Override
   public void preMessage(String nameMenu) {
@@ -51,16 +58,16 @@ public class MasterReceiverMenu implements Menu {
         case "3": {
           log.info("Create an order with registered users?\n 1-yeas.\n 2-no.");
           if (in.next().equalsIgnoreCase("2")) {
-            new RegistrationClientByMaster().run(in, "Main menu");
+            new RegistrationClientByMaster(servicesFactory).run(in, "Main menu");
           } else {
-            ListClient listClient = new ListClient();
+            ListClient listClient = new ListClient(servicesFactory);
             listClient.run(in, "Main menu");
             if (listClient.getClient().isPresent()) {
               ListCarClient listCarClient = new ListCarClient(listClient.getClient().get().getId());
               listCarClient.run(in, "Main menu");
               if (listClient.getClient().isPresent()) {
                 NewOrder newOrder = new NewOrder(listClient.getClient().get(),
-                    listCarClient.getClient().get().getId());
+                    listCarClient.getClient().get().getId(),servicesFactory);
                 newOrder.run(in, "Main menu");
               }
             }
@@ -69,28 +76,28 @@ public class MasterReceiverMenu implements Menu {
           break;
         }
         case "4": {
-          new RegistrationMaster().run(in, "Main menu");
+          new RegistrationMaster(servicesFactory).run(in, "Main menu");
           this.preMessage(parentsName);
           break;
         }
         case "5": {
-          new EditMasterReceiver().run(in, "Main menu");
+          new EditMasterReceiver(servicesFactory).run(in, "Main menu");
           this.preMessage(parentsName);
           break;
         }
         case "6": {
-          new ListClient().run(in, "Main menu");
+          new ListClient(servicesFactory).run(in, "Main menu");
           this.preMessage(parentsName);
           break;
         }
         case "7": {
-          ListOutfit listOutfits = new ListOutfit();
+          ListOutfit listOutfits = new ListOutfit(servicesFactory);
           listOutfits.run(in, "");
           this.preMessage(parentsName);
           break;
         }
         case "8": {
-          ListOrders listOrders = new ListOrders();
+          ListOrders listOrders = new ListOrders(servicesFactory);
           listOrders.run(in, "");
           this.preMessage(parentsName);
           break;

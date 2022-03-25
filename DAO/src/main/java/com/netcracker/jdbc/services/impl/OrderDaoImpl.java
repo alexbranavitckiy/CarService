@@ -17,12 +17,12 @@ public class OrderDaoImpl extends TemplateJDBCDao<Order, UUID> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT id, descriptions, id_clients, id_masters, created_date, id_outfits, updated_date, id_state_order, price_sum FROM public.orders;";
+        return "SELECT * FROM public.orders;";
     }
 
     @Override
     public String getSelectByIdQuery() {
-        return "SELECT id, descriptions, id_clients, id_masters, created_date, id_outfits, updated_date, id_state_order, price_sum FROM public.orders where id=?;";
+        return "SELECT * FROM public.orders where id=?;";
     }
 
     @Override

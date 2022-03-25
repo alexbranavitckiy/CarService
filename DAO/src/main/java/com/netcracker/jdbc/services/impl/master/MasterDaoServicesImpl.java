@@ -1,6 +1,6 @@
 package com.netcracker.jdbc.services.impl.master;
 
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.MasterServices;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.impl.LoginServicesImpl;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 public class MasterDaoServicesImpl implements MasterServices {
 
-    private final LoginService loginService = new LoginServicesImpl();
+    private final LoginServices loginService = new LoginServicesImpl();
     private final CrudDao<Master, UUID> crudServices = new MasterDaoImpl();
 
     public MasterDaoServicesImpl() {

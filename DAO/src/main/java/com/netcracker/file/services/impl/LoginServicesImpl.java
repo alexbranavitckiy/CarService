@@ -3,19 +3,19 @@ package com.netcracker.file.services.impl;
 import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
-import com.netcracker.LoginService;
+import com.netcracker.LoginServices;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.*;
 
 import java.io.IOException;
 import java.util.Optional;
 
-public class LoginServicesImpl implements LoginService {
+public class LoginServicesImpl implements LoginServices {
 
     private final FileService fileService = new FileService();
-    private CRUDServices<ClientDto> clientCRUDServices = new CRUDServicesImpl<>();
-    private CRUDServices<Master> masterCRUDServices = new CRUDServicesImpl<>();
-    private CRUDServices<MasterReceiver> masterReceiverCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<ClientDto> clientCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<Master> masterCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<MasterReceiver> masterReceiverCRUDServices = new CRUDServicesImpl<>();
 
     public LoginServicesImpl() {
     }

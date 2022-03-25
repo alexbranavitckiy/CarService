@@ -17,12 +17,12 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT id, name_outfits, descriptions, start_date, end_date, price_sum, state_outfits FROM public.outfits;";
+        return "SELECT * FROM public.outfits;";
     }
 
     @Override
     public String getSelectByIdQuery() {
-        return "SELECT id, name_outfits, descriptions, start_date, end_date, price_sum, state_outfits FROM public.outfits where id=?;";
+        return "SELECT * FROM public.outfits where id=?;";
     }
 
     @Override
@@ -34,7 +34,6 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
     public String getUpdateQuery() {
         return "UPDATE public.outfits SET id=?, name_outfits=?, descriptions=?, start_date=?, end_date=?, price_sum=?, state_outfits=? where id=?;";
     }
-
 
     @Override
     public String getDeleteQuery() {

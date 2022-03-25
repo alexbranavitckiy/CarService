@@ -14,7 +14,6 @@ public class OrderDaoServicesImpl implements OrderServices {
 
     private final CrudDao<Order, UUID> orderDao = new OrderDaoImpl();
 
-
     @Override
     @SneakyThrows
     public boolean addOrder(Order order) {

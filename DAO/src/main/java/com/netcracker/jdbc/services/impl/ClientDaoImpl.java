@@ -1,6 +1,7 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
+import com.netcracker.jdbc.services.ClientDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
@@ -14,26 +15,26 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> {
+public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> implements ClientDao {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT id, password, login, ferst_name, role_user, last_name,  email, phone, descriptions FROM public.clients;";
+        return "SELECT * FROM public.clients;";
     }
 
     @Override
     public String getSelectByIdQuery() {
-        return "SELECT id, password, login, ferst_name, role_user, last_name,  email, phone, descriptions FROM public.clients where  id=?;";
+        return "SELECT * FROM public.clients where  id=?;";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO clients(id, password, login, ferst_name, role_user, last_name, email, phone, descriptions)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        return "INSERT INTO clients(id, password, login, first_name, role_user, last_name, email, phone, descriptions)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE clients SET id=?, password=?, login=?, ferst_name=?, role_user=?, last_name=?, email=?, phone=?, descriptions=? WHERE clients.id=?;";
+        return "UPDATE clients SET id=?, password=?, login=?, first_name=?, role_user=?, last_name=?, email=?, phone=?, descriptions=? WHERE clients.id=?;";
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> {
                         .phone(rs.getString("phone"))
                         .login(rs.getString("login"))
                         .password(rs.getString("password"))
-                        .name(rs.getString("ferst_name") + rs.getString("last_name"))
+                        .name(rs.getString("first_name") + rs.getString("last_name"))
                         .email(rs.getString("email"))
                         .roleUser((UUID) rs.getObject("role_user"))
                         .build();

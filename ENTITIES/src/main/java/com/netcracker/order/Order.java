@@ -2,7 +2,6 @@ package com.netcracker.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.EntityId;
-import com.netcracker.marka.Mark;
 import lombok.*;
 
 
