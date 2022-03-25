@@ -16,13 +16,14 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.util.UUID;
 
 @Slf4j
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
 
     private FileService fileService = new FileService();
     private LoginServices loginService = new LoginServicesImpl();
-    private CRUDServices<MasterReceiver> searchServices = new CRUDServicesImpl<>();
+    private CRUDServices<MasterReceiver, UUID> searchServices = new CRUDServicesImpl<>();
 
     @Override
     public List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException {

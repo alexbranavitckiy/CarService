@@ -10,6 +10,7 @@ import com.netcracker.OrderServices;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.SneakyThrows;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderServicesImpl implements OrderServices {
 
-    private CRUDServices<Order> searchServices = new CRUDServicesImpl<>();
+    private CRUDServices<Order, UUID> searchServices = new CRUDServicesImpl<>();
 
     public OrderServicesImpl() {
     }

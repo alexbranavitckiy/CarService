@@ -1,6 +1,5 @@
 package com.netcracker.file.services.impl;
 
-import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
 import com.netcracker.LoginServices;
@@ -9,13 +8,14 @@ import com.netcracker.user.*;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 public class LoginServicesImpl implements LoginServices {
 
     private final FileService fileService = new FileService();
-    private final CRUDServices<ClientDto> clientCRUDServices = new CRUDServicesImpl<>();
-    private final CRUDServices<Master> masterCRUDServices = new CRUDServicesImpl<>();
-    private final CRUDServices<MasterReceiver> masterReceiverCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<Client, UUID> clientCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<Master,UUID> masterCRUDServices = new CRUDServicesImpl<>();
+    private final CRUDServices<MasterReceiver,UUID> masterReceiverCRUDServices = new CRUDServicesImpl<>();
 
     public LoginServicesImpl() {
     }
@@ -26,8 +26,8 @@ public class LoginServicesImpl implements LoginServices {
             switch ("diamond") {//all cases are executed until the user is found
                 case "diamond": {
                     if (fileService.isExistsUser()) {
-                        Optional<ClientDto> client = clientCRUDServices.getAll(fileService.getUserFile(),
-                                ClientDto[].class).stream().filter(x ->
+                        Optional<Client> client = clientCRUDServices.getAll(fileService.getUserFile(),
+                                Client[].class).stream().filter(x ->
                                 {
                                     if (x != null) {
                                         return x.getLogin().equalsIgnoreCase(login) && x.getPassword()

@@ -15,20 +15,20 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class User implements EntityId<UUID> {
 
-    private UUID id;
+ private UUID id;
 
-    private String name;
+ private String name;
 
-    private String phone;
+ private String phone;
 
-    private String email;
+ private String email;
 
-    private String description;
+ private String description;
 
-    private String login;
+ private String login;
 
-    private String password;
+ private String password;
 
-    private UUID roleUser;
+ private UUID roleUser;
 
 }

@@ -1,7 +1,6 @@
 package com.netcracker.user;
 
 
-import com.netcracker.EntityId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,26 +12,26 @@ import java.util.UUID;
 @AllArgsConstructor
 public abstract class Employers {
 
-    private UUID id;
+ private UUID id;
 
-    private String name;
+ private String name;
 
-    private String phone;
+ private String phone;
 
-    private String mail;
+ private String mail;
 
-    private String description;
+ private String description;
 
-    private Role role;
+ private Role role;
 
-    private String login;
+ private String login;
 
-    private String password;
+ private String password;
 
-    private String homeAddress;
+ private String homeAddress;
 
-    private UUID qualificationEnum;
+ private UUID qualificationEnum;
 
-    private String education;
+ private String education;
 
 }

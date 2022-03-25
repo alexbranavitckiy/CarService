@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class OutfitsServicesImplTest {
 
   @Mock
-  private CRUDServicesImpl<Outfit> crudServices ;
+  private CRUDServicesImpl<Outfit,UUID> crudServices ;
 
   private final Outfit outfit = Outfit.builder().id(UUID.randomUUID()).build();
 

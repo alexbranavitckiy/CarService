@@ -6,13 +6,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public enum RoleUser implements EntityId<UUID> {
-    REGISTERED,
-    UNREGISTERED;
+ REGISTERED,
+ UNREGISTERED;
 
-    @Override
-    public UUID getId() {
-        return UUID.nameUUIDFromBytes(this.name().getBytes(
-                StandardCharsets.UTF_8));
-    }
+ @Override
+ public UUID getId() {
+  return UUID.nameUUIDFromBytes(this.name().getBytes(
+   StandardCharsets.UTF_8));
+ }
 
 }

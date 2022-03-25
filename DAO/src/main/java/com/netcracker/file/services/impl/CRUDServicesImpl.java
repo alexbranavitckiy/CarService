@@ -1,6 +1,7 @@
 package com.netcracker.file.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netcracker.EntityId;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.ObjectMapperServices;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class CRUDServicesImpl<T> implements CRUDServices<T> {
+public class CRUDServicesImpl<T extends EntityId<PK>, PK extends UUID> implements CRUDServices<T, PK> {
 
     private final ObjectMapperServices objectMapperServices = new ObjectMapperServices();
 
@@ -51,20 +52,10 @@ public class CRUDServicesImpl<T> implements CRUDServices<T> {
     public boolean deleteObjectById(T deleteObject, File file, Class<T[]> typeObject) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            Field field = deleteObject.getClass().getSuperclass().getDeclaredFields()[0];
-            field.setAccessible(true);
-            UUID uuid = (UUID) field.get(deleteObject);
             List<T> clients = new ArrayList<>(Arrays.asList(ObjectMapperServices.getObjectMapper()
                     .readValue(file, typeObject)));
             objectMapper.writeValue(file,
-                    clients.stream().filter(x -> {
-                                try {
-                                    return !uuid.equals(field.get(x));
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
-                                return true;
-                            }
+                    clients.stream().filter(x -> !deleteObject.getId().equals(x.getId())
                     )
                             .collect(Collectors.toList()));
             return true;

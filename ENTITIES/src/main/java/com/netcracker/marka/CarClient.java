@@ -1,7 +1,6 @@
 package com.netcracker.marka;
 
 import com.netcracker.EntityId;
-import com.netcracker.breakdown.CarBreakdown;
 import lombok.*;
 
 
@@ -15,31 +14,30 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = {"id"})
 public class CarClient implements EntityId<UUID> {
 
-    private UUID id;
+ private UUID id;
 
-    private UUID id_clients;
+ private UUID id_clients;
 
-    private String summer;
+ private String summer;
 
-    private String descriptions;
+ private String descriptions;
 
-    private String ear;
+ private String ear;
 
-    private String metadataCar;
+ private String metadataCar;
 
-    private String run;
+ private String run;
 
-    private List<UUID> carBreakdowns;
+ private List<UUID> carBreakdowns;
 
-    private Mark mark;
+ private Mark mark;
 
-    @Override
-    public String toString() {
-        return "Your cars: summer='" + summer + '\'' +
-                ", ear='" + ear + '\'' +
-                ", metadataCar='" + metadataCar + '\'' +
-                ", run='" + run + '\'' +
-                '}';
-    }
+ @Override
+ public String toString() {
+  return "Your cars: summer='" + summer + '\'' +
+   ", ear='" + ear + '\'' +
+   ", metadataCar='" + metadataCar + '\'' +
+   ", run='" + run;
+ }
 
 }

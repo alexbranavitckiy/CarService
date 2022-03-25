@@ -1,7 +1,6 @@
 package com.netcracker.menu.validator;
 
 
-import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 import java.util.Scanner;
 import com.netcracker.menu.errors.InvalidValuesException;
@@ -9,41 +8,41 @@ import java.util.UUID;
 
 public interface ValidatorInstruments {
 
-  boolean inEmail(String email) throws InvalidValuesException;
+ boolean inEmail(String email) throws InvalidValuesException;
 
-  Qualification qualificationEnum(Scanner in);
+ Qualification qualificationEnum(Scanner in);
 
-  UUID orderState(Scanner in);
+ UUID orderState(Scanner in);
 
-  String validateLogin(Scanner in);
+ String validateLogin(Scanner in);
 
-  String validatePhone(Scanner in);
+ String validatePhone(Scanner in);
 
-  String validateMileage(Scanner in);
+ String validateMileage(Scanner in);
 
-  String validateNameUser(Scanner in);
+ String validateNameUser(Scanner in);
 
-  String validateDescription(Scanner in);
+ String validateDescription(Scanner in);
 
-  String validateEducation(Scanner in);
+ String validateEducation(Scanner in);
 
-  String validateMail(Scanner in);
+ String validateMail(Scanner in);
 
-  double validatePrice(Scanner in);
+ double validatePrice(Scanner in);
 
-  String validateNameOutfit(Scanner in);
+ String validateNameOutfit(Scanner in);
 
-  String validateHomeAddress(Scanner in);
+ String validateHomeAddress(Scanner in);
 
-  String validatePassword(Scanner in);
+ String validatePassword(Scanner in);
 
-  String validateYear(Scanner in);
+ String validateYear(Scanner in);
 
-  String validateNumberCar(Scanner in);
+ String validateNumberCar(Scanner in);
 
-  boolean edit(String fieldName, Scanner in);
+ boolean edit(String fieldName, Scanner in);
 
-  UUID stateOutfit(Scanner in);
+ UUID stateOutfit(Scanner in);
 
-  void successfullyMessages(boolean flag);
+ void successfullyMessages(boolean flag);
 }

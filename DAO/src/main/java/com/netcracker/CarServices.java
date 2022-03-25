@@ -1,9 +1,7 @@
 package com.netcracker;
 
-import com.netcracker.dto.modelDTO.ClientDto;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.marka.CarClient;
-import com.netcracker.user.Client;
 
 import java.io.IOException;
 import java.util.List;

@@ -15,10 +15,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TypeCarBreakdown implements EntityId<UUID> {
 
-    private UUID id;
+ private UUID id;
 
-    private String name;
+ private String name;
 
-    private String location;
+ private String location;
 
 }

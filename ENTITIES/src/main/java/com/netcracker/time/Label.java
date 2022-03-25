@@ -6,9 +6,7 @@ import com.netcracker.order.Order;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,11 +16,11 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Label implements EntityId<UUID> {
 
-    private UUID id;
+ private UUID id;
 
-    private Date date;
+ private Date date;
 
-    private String descriptions;
+ private String descriptions;
 
-    private Order order;
+ private Order order;
 }

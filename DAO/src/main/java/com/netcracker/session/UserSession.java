@@ -1,6 +1,6 @@
 package com.netcracker.session;
 
-import com.netcracker.dto.modelDTO.ClientDto;
+import com.netcracker.user.Client;
 import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 
@@ -10,14 +10,14 @@ public class UserSession {
 
     private static MasterReceiver masterReceiverSession;
     private static Master masterSession;
-    private static ClientDto clientSession;
+    private static Client clientSession;
 
     private UserSession() {
     }
 
     public static void openSession(Object object) {
-        if (clientSession == null && object instanceof ClientDto) {
-            clientSession = (ClientDto) object;
+        if (clientSession == null && object instanceof Client) {
+            clientSession = (Client) object;
             closeSession(masterSession, masterReceiverSession);
             return;
         }
@@ -33,8 +33,8 @@ public class UserSession {
     }
 
     public static boolean updateSession(Object object) {
-        if (object instanceof ClientDto) {
-            clientSession = UserSession.getCloneClient((ClientDto) object);
+        if (object instanceof Client) {
+            clientSession = UserSession.getCloneClient((Client) object);
             closeSession(masterSession, masterReceiverSession);
             return true;
         }
@@ -53,8 +53,8 @@ public class UserSession {
 
     public static void closeSession(Object... o) {
         Arrays.stream(o).forEach(x -> {
-            if (x instanceof ClientDto) {
-                clientSession = (ClientDto) x;
+            if (x instanceof Client) {
+                clientSession = (Client) x;
                 masterSession = null;
                 masterReceiverSession = null;
             }
@@ -101,8 +101,8 @@ public class UserSession {
                 .orders(new ArrayList<>(masterReceiverSession.getOrders())).build();
     }
 
-    public static ClientDto getCloneClient(ClientDto client) {
-        return ClientDto.builder()
+    public static Client getCloneClient(Client client) {
+        return Client.builder()
                 .carClients(client.getCarClients())
                 .description(client.getDescription())
                 .id(client.getId())
@@ -116,8 +116,8 @@ public class UserSession {
                 .build();
     }
 
-    public static ClientDto getCloneClientSession() {
-        return ClientDto.builder()
+    public static Client getCloneClientSession() {
+        return Client.builder()
                 .carClients(clientSession.getCarClients())
                 .description(clientSession.getDescription())
                 .id(clientSession.getId())
@@ -131,7 +131,7 @@ public class UserSession {
                 .build();
     }
 
-    public static Optional<ClientDto> getClientSession() {
+    public static Optional<Client> getClientSession() {
         if (clientSession != null) {
             return Optional.ofNullable(getCloneClient(clientSession));
         }

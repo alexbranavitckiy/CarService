@@ -3,11 +3,13 @@ package com.netcracker.factory;
 
 import com.netcracker.*;
 import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.car.CarServicesImpl;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.file.services.impl.master.MasterServicesImpl;
 import com.netcracker.file.services.impl.masterReceiver.MasterReceiverServicesImpl;
 import com.netcracker.file.services.impl.order.OrderServicesImpl;
 import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
+import com.netcracker.jdbc.services.impl.car.CarDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.client.ClientDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.login.LoginDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.master.MasterDaoServicesImpl;
@@ -21,70 +23,77 @@ import java.util.ResourceBundle;
 @Slf4j
 public class ServicesFactory {
 
-    ResourceBundle resource = ResourceBundle.getBundle("persistent");
-    String name_persistent = (String) resource.getObject("persistents");
+ ResourceBundle resource = ResourceBundle.getBundle("persistent");
+ String name_persistent = (String) resource.getObject("persistents");
 
-    public ClientServices getClientServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new ClientServicesImpl();
-        return new ClientDaoServicesImpl();
-    }
+ public ClientServices getClientServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new ClientServicesImpl();
+  return new ClientDaoServicesImpl();
+ }
 
-    public MasterServices getMasterServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new MasterServicesImpl();
-        return new MasterDaoServicesImpl();
-    }
-
-    public LoginServices getLoginServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new LoginServicesImpl();
-        return new LoginDaoServicesImpl();
-    }
-
-    public OutfitsServices getOutfitServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new OutfitsServicesImpl();
-        return new OutfitsDaoServicesImpl();
-    }
-
-    public OrderServices getOrderServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new OrderServicesImpl();
-        return new OrderDaoServicesImpl();
-    }
-
-    public MasterReceiverServices getMasterReceiverServices() {
-        if (name_persistent.equalsIgnoreCase("file"))
-            return new MasterReceiverServicesImpl();
-        return new MasterReceiverDaoServicesImpl();
-    }
+ public CarServices getCarServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new CarServicesImpl();
+  return new CarDaoServicesImpl();
+ }
 
 
-    public Object daoFactory(TypeFactory factory) {
-        switch (factory) {
-            case CLIENT_SERVICES: {
-                return this.getClientServices();
-            }
-            case MASTER_SERVICES: {
-                return this.getMasterServices();
-            }
-            case LOGIN_SERVICES: {
-                return this.getLoginServices();
-            }
-            case MASTER_RECEIVER_SERVICES: {
-                return this.getMasterReceiverServices();
-            }
-            case ORDER_SERVICES: {
-                this.getOrderServices();
-            }
-            case OUTFITS_SERVICES: {
-                this.getOutfitServices();
-            }
-        }
-        log.warn("Service take error");
-        throw new IllegalArgumentException("Service take error");
-    }
+ public MasterServices getMasterServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new MasterServicesImpl();
+  return new MasterDaoServicesImpl();
+ }
+
+ public LoginServices getLoginServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new LoginServicesImpl();
+  return new LoginDaoServicesImpl();
+ }
+
+ public OutfitsServices getOutfitServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new OutfitsServicesImpl();
+  return new OutfitsDaoServicesImpl();
+ }
+
+ public OrderServices getOrderServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new OrderServicesImpl();
+  return new OrderDaoServicesImpl();
+ }
+
+ public MasterReceiverServices getMasterReceiverServices() {
+  if (name_persistent.equalsIgnoreCase("file"))
+   return new MasterReceiverServicesImpl();
+  return new MasterReceiverDaoServicesImpl();
+ }
+
+
+ public Object daoFactory(TypeFactory factory) {
+  switch (factory) {
+   case CLIENT_SERVICES: {
+    return this.getClientServices();
+   }
+   case MASTER_SERVICES: {
+    return this.getMasterServices();
+   }
+   case LOGIN_SERVICES: {
+    return this.getLoginServices();
+   }
+   case MASTER_RECEIVER_SERVICES: {
+    return this.getMasterReceiverServices();
+   }
+   case ORDER_SERVICES: {
+    return this.getOrderServices();
+   }
+   case OUTFITS_SERVICES: {
+    return this.getOutfitServices();
+   }
+  }
+  log.warn("Service take error");
+  throw new IllegalArgumentException("Service take error");
+ }
 
 }
 

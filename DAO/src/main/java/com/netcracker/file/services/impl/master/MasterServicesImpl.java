@@ -21,7 +21,7 @@ public class MasterServicesImpl implements MasterServices {
 
     private FileService fileService = new FileService();
     private LoginServices loginService = new LoginServicesImpl();
-    private CRUDServices<Master> crudServices = new CRUDServicesImpl<>();
+    private CRUDServices<Master,UUID> crudServices = new CRUDServicesImpl<>();
 
     public MasterServicesImpl() {
     }

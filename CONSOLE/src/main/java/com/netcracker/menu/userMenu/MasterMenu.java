@@ -21,76 +21,76 @@ import java.util.Scanner;
 @Slf4j
 public class MasterMenu implements Menu {
 
-    private final OutfitsServices outfitsServices;
-    private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
+ private final OutfitsServices outfitsServices;
+ private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
-    public MasterMenu(ServicesFactory servicesFactory) {
-        this.outfitsServices = servicesFactory.getOutfitServices();
+ public MasterMenu(ServicesFactory servicesFactory) {
+  this.outfitsServices = servicesFactory.getOutfitServices();
+ }
+
+ @Override
+ public void preMessage(String nameMenu) {
+  log.info("Enter 1 {}", nameMenu);
+  log.info("Enter 2 list of current outfits");
+ }
+
+ @Override
+ public void run(Scanner in, String parentsName) throws IOException {
+  log.info("You are logged in as a master");
+  this.preMessage(parentsName);
+  label:
+  while (true) {
+   switch (in.next()) {
+    case "1": {
+     break label;
     }
-
-    @Override
-    public void preMessage(String nameMenu) {
-        log.info("Enter 1 {}", nameMenu);
-        log.info("Enter 2 list of current outfits");
-    }
-
-    @Override
-    public void run(Scanner in, String parentsName) throws IOException {
-        log.info("You are logged in as a master");
-        this.preMessage(parentsName);
-        label:
-        while (true) {
-            switch (in.next()) {
-                case "1": {
-                    break label;
-                }
-                case "2": {
-                    try {
-                        List<Outfit> outfitList = outfitsServices.getAllOutfits().stream()
-                                .filter(x -> {
-                                    if (x != null) {
-                                        return x.getEmployer().equals(
-                                                UserSession.getMasterSession().get().getId());
-                                    }
-                                    return false;
-                                }).collect(Collectors.toList());
-                        if (outfitList.size() > 0) {
-                            for (int x = 0; x < outfitList.size(); x++) {
-                                log.info(
-                                        "Id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}/Price:{}. ",
-                                        x + 1
-                                        , outfitList.get(x).getDateStart()
-                                        , outfitList.get(x).getDateEnt()
-                                        , outfitList.get(x).getStateOutfit()
-                                        , outfitList.get(x).getDescriptions()
-                                        , outfitList.get(x).getName()
-                                        , outfitList.get(x).getPrice());
-                            }
-                            log.info("Proceed to order? Enter 1-yeas/ 2-no");
-                            if (in.next().equalsIgnoreCase("2")) {
-                                log.info("Enter Order ID");
-                                EditOutfit editOutfit = new EditOutfit(outfitList.get(in.nextInt()));
-                                editOutfit.run(in, "");
-                                validator.successfullyMessages(
-                                        outfitsServices.updateOutfit(editOutfit.getOutfit()));
-                            }
-                        } else {
-                            log.info("No existing outfits");
-                            break;
-                        }
-                    } catch (EmptySearchException e) {
-                        log.info("{}", e.getMessage());
-                    }
-                    this.preMessage(parentsName);
-                    break;
-                }
-                default: {
-                    this.preMessage(parentsName);
-                    break;
-                }
-            }
+    case "2": {
+     try {
+      List<Outfit> outfitList = outfitsServices.getAllOutfits().stream()
+       .filter(x -> {
+        if (x != null) {
+         return x.getEmployer().equals(
+          UserSession.getMasterSession().get().getId());
         }
+        return false;
+       }).collect(Collectors.toList());
+      if (outfitList.size() > 0) {
+       for (int x = 0; x < outfitList.size(); x++) {
+        log.info(
+         "Id[{}]/DateStart: {}/DateEnt: {}/StateOutfit: {}/Descriptions: {}/Name: {}/Price:{}. ",
+         x + 1
+         , outfitList.get(x).getDateStart()
+         , outfitList.get(x).getDateEnt()
+         , outfitList.get(x).getStateOutfit()
+         , outfitList.get(x).getDescriptions()
+         , outfitList.get(x).getName()
+         , outfitList.get(x).getPrice());
+       }
+       log.info("Proceed to order? Enter 1-yeas/ 2-no");
+       if (in.next().equalsIgnoreCase("2")) {
+        log.info("Enter Order ID");
+        EditOutfit editOutfit = new EditOutfit(outfitList.get(in.nextInt()));
+        editOutfit.run(in, "");
+        validator.successfullyMessages(
+         outfitsServices.updateOutfit(editOutfit.getOutfit()));
+       }
+      } else {
+       log.info("No existing outfits");
+       break;
+      }
+     } catch (EmptySearchException e) {
+      log.info("{}", e.getMessage());
+     }
+     this.preMessage(parentsName);
+     break;
     }
+    default: {
+     this.preMessage(parentsName);
+     break;
+    }
+   }
+  }
+ }
 
 }
 
