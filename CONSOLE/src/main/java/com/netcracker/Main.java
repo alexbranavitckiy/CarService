@@ -1,6 +1,7 @@
 package com.netcracker;
 
 import com.netcracker.factory.ServicesFactory;
+import com.netcracker.jdbc.ConnectorDB;
 import com.netcracker.menu.startMenu.StartMenu;
 import com.netcracker.file.FileService;
 import lombok.extern.slf4j.Slf4j;

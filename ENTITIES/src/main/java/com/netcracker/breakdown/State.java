@@ -15,4 +15,5 @@ public enum State implements EntityId<UUID> {
   return UUID.nameUUIDFromBytes(this.name().getBytes(
    StandardCharsets.UTF_8));
  }
+
 }

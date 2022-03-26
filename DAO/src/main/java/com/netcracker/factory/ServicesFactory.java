@@ -9,6 +9,7 @@ import com.netcracker.file.services.impl.master.MasterServicesImpl;
 import com.netcracker.file.services.impl.masterReceiver.MasterReceiverServicesImpl;
 import com.netcracker.file.services.impl.order.OrderServicesImpl;
 import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
+import com.netcracker.jdbc.ConnectorDB;
 import com.netcracker.jdbc.services.impl.car.CarDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.client.ClientDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.login.LoginDaoServicesImpl;
@@ -24,7 +25,13 @@ import java.util.ResourceBundle;
 public class ServicesFactory {
 
  ResourceBundle resource = ResourceBundle.getBundle("persistent");
- String name_persistent = (String) resource.getObject("persistents");
+ String name_persistent = (String) resource.getObject("persistent");
+
+ {//start database initialization
+  if (!name_persistent.equalsIgnoreCase("file"))
+   ConnectorDB.initDb();
+ }
+
 
  public ClientServices getClientServices() {
   if (name_persistent.equalsIgnoreCase("file"))
@@ -37,7 +44,6 @@ public class ServicesFactory {
    return new CarServicesImpl();
   return new CarDaoServicesImpl();
  }
-
 
  public MasterServices getMasterServices() {
   if (name_persistent.equalsIgnoreCase("file"))

@@ -39,7 +39,7 @@ create table if not exists clients(
 id UUID primary key,
 password varchar(50) not null unique,
 login varchar(50) not null,
-ferst_name varchar(50),
+first_name varchar(50),
 role_user UUID not null,
 last_name varchar(50),
 email varchar(25),
@@ -101,20 +101,19 @@ locationd varchar(50));
 
 create table if not exists state_car_breakdown(
 id UUID primary key,
-name varchar(50),
-id_state_car_breakdown UUID,
-constraint foreign_key_state_car_breakdown foreign key (id_state_car_breakdown) references state_car_breakdown(id)
-);
+name varchar(50));
 
 create table if not exists car_clients(
 id UUID primary key,
 id_clients UUID unique,
 id_breakdown UUID,
-summar varchar(45),
+summaer varchar(45),
 ear timestamp,
 run real,
-metadataCar varchar(45),
+metadata_сar varchar(45),
+id_state_car_breakdown UUID,
 descriptions varchar(50) not null,
+constraint foreign_key_state_car_breakdown foreign key (id_state_car_breakdown) references state_car_breakdown(id),
 constraint foreign_key_clients foreign key (id_clients) references clients(id),
 constraint foreign_key_type_car_breakdown foreign key (id_breakdown) references type_car_breakdowns(id));
 
