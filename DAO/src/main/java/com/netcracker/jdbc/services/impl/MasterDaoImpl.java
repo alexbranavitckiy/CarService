@@ -1,6 +1,7 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
+import com.netcracker.jdbc.services.CrudDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.user.Master;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +17,12 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
 
     @Override
     public String getSelectQuery() {
-        return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions,employers.id_outfits FROM public.masters,public.employers where masters.id=employers.id; ";
+        return "SELECT masters.id,masters.id_outfits,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions FROM public.masters,public.employers where masters.id=employers.id; ";
     }
 
     @Override
     public String getSelectByIdQuery() {
-        return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions,employers.id_outfits FROM public.masters,public.employers where masters.id=employers.id AND masters.id=?;";
+        return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions,masters.id_outfits FROM public.masters,public.employers where masters.id=employers.id AND masters.id=?;";
     }
 
     @Override

@@ -1,3 +1,4 @@
+BEGIN;
 DROP TABLE if exists clients,qualifications, car_clients,label,employers,master_receivers,masters,orders,outfits,role_user,state_car_breakdown,state_orders,state_outfits,type_car_breakdowns CASCADE;
 
 create table if not exists qualifications(
@@ -117,3 +118,25 @@ constraint foreign_key_state_car_breakdown foreign key (id_state_car_breakdown) 
 constraint foreign_key_clients foreign key (id_clients) references clients(id),
 constraint foreign_key_type_car_breakdown foreign key (id_breakdown) references type_car_breakdowns(id));
 
+INSERT INTO public.role_user  (id,name)
+VALUES
+('c1a4d3ea-a5e5-3205-beb2-894e21c4a2bf', 'REGISTERED'),
+('c65b6b5a-311f-369f-9936-5e0b45ca6907', 'UNREGISTERED');
+
+INSERT INTO public.qualifications(id, name)
+VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'DISC_EDITING'),
+('efa1d473-42dc-3d5c-af48-448b55c705cc', 'ELECTRICIAN');
+
+INSERT INTO public.employers(
+id, name, education, qualification_id, password, login, home_address, phone, mail, descriptions)
+VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test1', 'test1','test', 'test', 'test', 'test'),
+('cda01a34-4119-3e5e-9ab9-60b341f234fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test', 'test2','test2', 'test', 'test', 'test');
+
+INSERT INTO public.master_receivers(
+	id)
+	VALUES ('cda01a34-4119-3e5e-9ab9-60b341f234fb');
+
+	INSERT INTO public.masters(
+	id)
+	VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb');
+	COMMIT;

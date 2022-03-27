@@ -3,7 +3,7 @@ package com.netcracker.jdbc.services.impl.master;
 import com.netcracker.LoginServices;
 import com.netcracker.MasterServices;
 import com.netcracker.errors.EmptySearchException;
-import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.jdbc.services.CrudDao;
 import com.netcracker.jdbc.services.impl.MasterDaoImpl;
 import com.netcracker.user.Master;

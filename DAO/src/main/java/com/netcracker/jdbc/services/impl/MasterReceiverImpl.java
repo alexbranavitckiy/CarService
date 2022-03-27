@@ -1,7 +1,9 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
+import com.netcracker.jdbc.services.CrudDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
+import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class MasterReceiverImpl extends TemplateJDBCDao<MasterReceiver, UUID> {
+public class MasterReceiverImpl extends TemplateJDBCDao<MasterReceiver, UUID>  {
 
     @Override
     public String getSelectQuery() {

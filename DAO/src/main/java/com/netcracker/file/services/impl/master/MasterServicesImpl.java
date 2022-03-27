@@ -6,7 +6,7 @@ import com.netcracker.file.FileService;
 import com.netcracker.LoginServices;
 import com.netcracker.MasterServices;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
-import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.user.Master;
 
 import java.io.IOException;

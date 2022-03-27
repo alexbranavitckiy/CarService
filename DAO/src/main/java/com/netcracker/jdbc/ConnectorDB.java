@@ -3,7 +3,6 @@ package com.netcracker.jdbc;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,13 +13,14 @@ import java.util.ResourceBundle;
 public class ConnectorDB {
 
  private static final HikariConfig config = new HikariConfig();
- private static final HikariDataSource ds;
+ private static HikariDataSource ds;
  private static final ResourceBundle resource = ResourceBundle.getBundle("database");
 
  private ConnectorDB() {
  }
 
  static {
+  initDb();
   config.setJdbcUrl(resource.getString("db.url.service") + resource.getString("db.url.database"));
   config.setUsername(resource.getString("db.user"));
   config.setPassword(resource.getString("db.password"));

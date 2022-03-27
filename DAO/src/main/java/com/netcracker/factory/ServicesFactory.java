@@ -2,14 +2,13 @@ package com.netcracker.factory;
 
 
 import com.netcracker.*;
-import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.file.services.impl.car.CarServicesImpl;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.file.services.impl.master.MasterServicesImpl;
 import com.netcracker.file.services.impl.masterReceiver.MasterReceiverServicesImpl;
 import com.netcracker.file.services.impl.order.OrderServicesImpl;
 import com.netcracker.file.services.impl.outfit.OutfitsServicesImpl;
-import com.netcracker.jdbc.ConnectorDB;
 import com.netcracker.jdbc.services.impl.car.CarDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.client.ClientDaoServicesImpl;
 import com.netcracker.jdbc.services.impl.login.LoginDaoServicesImpl;
@@ -25,53 +24,48 @@ import java.util.ResourceBundle;
 public class ServicesFactory {
 
  ResourceBundle resource = ResourceBundle.getBundle("persistent");
- String name_persistent = (String) resource.getObject("persistent");
-
- {//start database initialization
-  if (!name_persistent.equalsIgnoreCase("file"))
-   ConnectorDB.initDb();
- }
+ String name_persistent =  resource.getString("persistent");
 
 
  public ClientServices getClientServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new ClientServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new ClientServicesImpl();}
   return new ClientDaoServicesImpl();
  }
 
  public CarServices getCarServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new CarServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new CarServicesImpl();}
   return new CarDaoServicesImpl();
  }
 
  public MasterServices getMasterServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new MasterServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new MasterServicesImpl();}
   return new MasterDaoServicesImpl();
  }
 
  public LoginServices getLoginServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new LoginServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new LoginServicesImpl();}
   return new LoginDaoServicesImpl();
  }
 
  public OutfitsServices getOutfitServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new OutfitsServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new OutfitsServicesImpl();}
   return new OutfitsDaoServicesImpl();
  }
 
  public OrderServices getOrderServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new OrderServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new OrderServicesImpl();}
   return new OrderDaoServicesImpl();
  }
 
  public MasterReceiverServices getMasterReceiverServices() {
-  if (name_persistent.equalsIgnoreCase("file"))
-   return new MasterReceiverServicesImpl();
+  if (name_persistent.equalsIgnoreCase("file")){
+   return new MasterReceiverServicesImpl();}
   return new MasterReceiverDaoServicesImpl();
  }
 

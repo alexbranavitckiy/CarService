@@ -7,7 +7,7 @@ import com.netcracker.LoginServices;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.session.UserSession;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
-import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.user.MasterReceiver;
 
 import java.io.IOException;

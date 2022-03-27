@@ -6,7 +6,7 @@ import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
-import com.netcracker.file.services.impl.LoginServicesImpl;
+import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
