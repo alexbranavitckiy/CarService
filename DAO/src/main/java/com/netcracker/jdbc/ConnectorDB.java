@@ -3,6 +3,7 @@ package com.netcracker.jdbc;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

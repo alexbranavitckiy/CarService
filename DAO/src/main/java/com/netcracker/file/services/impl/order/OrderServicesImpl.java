@@ -19,32 +19,36 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderServicesImpl implements OrderServices {
 
-    private CRUDServices<Order, UUID> searchServices = new CRUDServicesImpl<>();
+ private final CRUDServices<Order, UUID> searchServices = new CRUDServicesImpl<>();
 
-    public OrderServicesImpl() {
-    }
+ public OrderServicesImpl() {
+ }
 
-    @Override
-    public boolean addOrder(Order order) {
-        try {
-            return (searchServices.addObject(order, new File(FileService.ORDERS_PATH), Order[].class));
-        } catch (Exception e) {
-            log.error("Error adding object", e);
-        }
-        return false;
-    }
+ @Override
+ public boolean addOrder(Order order) {
+  try {
+   return (searchServices.addObject(order, new File(FileService.ORDERS_PATH), Order[].class));
+  } catch (Exception e) {
+   log.error("Error adding object", e);
+  }
+  return false;
+ }
 
-    @Override
-    public List<Order> getAll() throws EmptySearchException {
-        return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class);
-    }
+ @Override
+ public List<Order> getAll() throws EmptySearchException {
+  return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class);
+ }
 
-    @Override
-    @SneakyThrows
-    public List<Order> getOrderWithRequestState() {
-        return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class).stream()
-                .filter(x -> x.getStateOrder().equals(State.REQUEST)).collect(
-                        Collectors.toList());
-    }
+ @Override
+ @SneakyThrows
+ public List<Order> getOrderWithRequestState() {
+  return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class).stream()
+   .filter(x -> x.getStateOrder().equals(State.REQUEST.getId())).collect(
+    Collectors.toList());
+ }
 
+ @Override
+ public boolean updateOrder(Order order) {
+  return searchServices.updateObject(order, new File(FileService.ORDERS_PATH), Order[].class);
+ }
 }

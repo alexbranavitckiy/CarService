@@ -4,6 +4,10 @@ import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
@@ -155,7 +159,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   if (stringBuilder.length() > 0 && stringBuilder.length() < 20) {
    return stringBuilder.toString();
   }
-  log.info("Mileage must contain from 0 to 20 numbers");
+  log.info("Mileage must contain from 0 to 20 numbers: Enter in the format 300400");
   return validateMileage(in);
  }
 
@@ -220,6 +224,19 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
   log.info("Enter 1 to skip");
   log.info("Enter 2 to edit");
   return in.next().equalsIgnoreCase("2");
+ }
+
+
+ @Override
+ public String validateSummary(Scanner in) {
+  stringBuilder.delete(0, stringBuilder.length());
+  log.info("Enter Summary, describe the car damage");
+  stringBuilder.append(in.next());
+  if (stringBuilder.length() > 3 && stringBuilder.length() < 20) {
+   return stringBuilder.toString();
+  }
+  log.info("Description must contain from 4 to 50 characters");
+  return validateDescription(in);
  }
 
  @Override

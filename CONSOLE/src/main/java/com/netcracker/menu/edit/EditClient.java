@@ -27,7 +27,7 @@ public class EditClient implements Menu {
  }
 
  public EditClient(Client client) {
-  this.client = UserSession.getCloneClient(client);
+  this.client=client;
  }
 
  @Override

@@ -2,13 +2,18 @@ package com.netcracker.menu.validator;
 
 
 import com.netcracker.user.Qualification;
+
 import java.util.Scanner;
+
 import com.netcracker.menu.errors.InvalidValuesException;
+
 import java.util.UUID;
 
 public interface ValidatorInstruments {
 
  boolean inEmail(String email) throws InvalidValuesException;
+
+ String validateSummary(Scanner in);
 
  Qualification qualificationEnum(Scanner in);
 

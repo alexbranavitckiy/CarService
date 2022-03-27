@@ -21,55 +21,55 @@ import java.util.UUID;
 @Slf4j
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
 
-    private FileService fileService = new FileService();
-    private LoginServices loginService = new LoginServicesImpl();
-    private CRUDServices<MasterReceiver, UUID> searchServices = new CRUDServicesImpl<>();
+ private FileService fileService = new FileService();
+ private LoginServices loginService = new LoginServicesImpl();
+ private CRUDServices<MasterReceiver, UUID> searchServices = new CRUDServicesImpl<>();
 
-    @Override
-    public List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException {
-        return searchServices.getAll(new File(FileService.USER_PATH), MasterReceiver[].class);
-    }
+ @Override
+ public List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException {
+  return searchServices.getAll(new File(FileService.USER_PATH), MasterReceiver[].class);
+ }
 
-    @Override
-    public boolean updateMaster(MasterReceiver masterReceiver) {
-        if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
-                masterReceiver,
-                fileService.getReceiverFile(), MasterReceiver[].class)) {
-            return UserSession.updateSession(masterReceiver);
-        }
-        return false;
-    }
+ @Override
+ public boolean updateMaster(MasterReceiver masterReceiver) {
+  if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
+   masterReceiver,
+   fileService.getReceiverFile(), MasterReceiver[].class)) {
+   return UserSession.updateSession(masterReceiver);
+  }
+  return false;
+ }
 
-    @Override
-    public boolean updateMasterAndSession(MasterReceiver masterReceiver) {
-        if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
-                masterReceiver,
-                fileService.getReceiverFile(), MasterReceiver[].class)) {
-            return UserSession.updateSession(masterReceiver);
-        }
-        return false;
-    }
+ @Override
+ public boolean updateMasterAndSession(MasterReceiver masterReceiver) {
+  if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
+   masterReceiver,
+   fileService.getReceiverFile(), MasterReceiver[].class)) {
+   return UserSession.updateSession(masterReceiver);
+  }
+  return false;
+ }
 
-    @Override
-    public boolean addMaster(MasterReceiver masterReceiver) {
-        if (this.passwordCheck(masterReceiver)) {
-            return searchServices.addObject(masterReceiver,
-                    new File(FileService.RECEIVER_PATH), MasterReceiver[].class);
-        }
-        return false;
-    }
+ @Override
+ public boolean addMaster(MasterReceiver masterReceiver) {
+  if (this.passwordCheck(masterReceiver)) {
+   return searchServices.addObject(masterReceiver,
+    new File(FileService.RECEIVER_PATH), MasterReceiver[].class);
+  }
+  return false;
+ }
 
-    private boolean passwordCheck(MasterReceiver masterReceiver) {
-        try {
-            if (loginService.searchByUserLoginAndPassword(masterReceiver.getLogin(),
-                    masterReceiver.getPassword())) {
-                log.info("The username you entered is already taken");
-                return false;
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-        return true;
-    }
+ private boolean passwordCheck(MasterReceiver masterReceiver) {
+  try {
+   if (loginService.searchByUserLoginAndPassword(masterReceiver.getLogin(),
+    masterReceiver.getPassword())) {
+    log.info("The username you entered is already taken");
+    return false;
+   }
+  } catch (IOException e) {
+   log.error(e.getMessage());
+  }
+  return true;
+ }
 
 }

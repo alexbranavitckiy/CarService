@@ -9,9 +9,11 @@ import java.util.UUID;
 
 public interface MasterServices {
 
-    List<Master> getAllMaster() throws EmptySearchException;
+ List<Master> getAllMaster() throws EmptySearchException;
 
-    boolean addMaster(Master master);
+ boolean addMaster(Master master);
 
-    Optional<Master> getMasterById(UUID master) throws EmptySearchException;
+ Optional<Master> getMasterById(UUID master) throws EmptySearchException;
+
+ boolean updateMaster(Master master);
 }

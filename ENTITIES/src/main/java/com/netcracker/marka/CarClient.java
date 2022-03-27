@@ -18,7 +18,7 @@ public class CarClient implements EntityId<UUID> {
 
  private UUID id_clients;
 
- private String summer;
+ private String summary;
 
  private String descriptions;
 
@@ -34,7 +34,7 @@ public class CarClient implements EntityId<UUID> {
 
  @Override
  public String toString() {
-  return "Your cars: summer='" + summer + '\'' +
+  return "Your cars: summer='" + summary + '\'' +
    ", ear='" + ear + '\'' +
    ", metadataCar='" + metadataCar + '\'' +
    ", run='" + run;

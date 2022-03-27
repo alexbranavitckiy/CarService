@@ -24,48 +24,55 @@ import java.util.ResourceBundle;
 public class ServicesFactory {
 
  ResourceBundle resource = ResourceBundle.getBundle("persistent");
- String name_persistent =  resource.getString("persistent");
+ String name_persistent = resource.getString("persistent");
 
 
  public ClientServices getClientServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new ClientServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new ClientServicesImpl();
+  }
   return new ClientDaoServicesImpl();
  }
 
  public CarServices getCarServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new CarServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new CarServicesImpl();
+  }
   return new CarDaoServicesImpl();
  }
 
  public MasterServices getMasterServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new MasterServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new MasterServicesImpl();
+  }
   return new MasterDaoServicesImpl();
  }
 
  public LoginServices getLoginServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new LoginServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new LoginServicesImpl();
+  }
   return new LoginDaoServicesImpl();
  }
 
  public OutfitsServices getOutfitServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new OutfitsServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new OutfitsServicesImpl();
+  }
   return new OutfitsDaoServicesImpl();
  }
 
  public OrderServices getOrderServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new OrderServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new OrderServicesImpl();
+  }
   return new OrderDaoServicesImpl();
  }
 
  public MasterReceiverServices getMasterReceiverServices() {
-  if (name_persistent.equalsIgnoreCase("file")){
-   return new MasterReceiverServicesImpl();}
+  if (name_persistent.equalsIgnoreCase("file")) {
+   return new MasterReceiverServicesImpl();
+  }
   return new MasterReceiverDaoServicesImpl();
  }
 

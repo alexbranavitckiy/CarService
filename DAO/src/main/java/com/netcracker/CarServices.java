@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public interface CarServices {
 
-    List<CarClient> getCarByIdClient(UUID uuidClient) throws EmptySearchException;
+ List<CarClient> getCarByIdClient(UUID uuidClient) throws EmptySearchException;
 
-    List<CarClient> getAllCar() throws EmptySearchException;
+ List<CarClient> getAllCar() throws EmptySearchException;
 
-    boolean addCar(CarClient carClient) throws IOException;
+ boolean addCar(CarClient carClient) throws IOException;
 
-    boolean updateCarClient(CarClient carClient) throws IOException;
+ boolean updateCarClient(CarClient carClient) throws IOException;
 
 }

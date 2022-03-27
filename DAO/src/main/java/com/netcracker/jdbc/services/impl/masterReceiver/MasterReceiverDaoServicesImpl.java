@@ -3,7 +3,7 @@ package com.netcracker.jdbc.services.impl.masterReceiver;
 import com.netcracker.LoginServices;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.jdbc.services.CrudDao;
-import com.netcracker.jdbc.services.impl.MasterReceiverImpl;
+import com.netcracker.jdbc.services.impl.MasterReceiverDaoImpl;
 import com.netcracker.jdbc.services.impl.login.LoginDaoServicesImpl;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.MasterReceiver;
@@ -19,11 +19,12 @@ import java.util.UUID;
 public class MasterReceiverDaoServicesImpl implements MasterReceiverServices {
 
  private LoginServices loginService = new LoginDaoServicesImpl();
- private CrudDao<MasterReceiver, UUID> crudServices = new MasterReceiverImpl();
+ private CrudDao<MasterReceiver, UUID> crudServices = new MasterReceiverDaoImpl();
 
  @Override
  @SneakyThrows
  public List<MasterReceiver> getAllMasterReceiver() {
+  System.out.println(crudServices.getAll());
   return crudServices.getAll();
  }
 

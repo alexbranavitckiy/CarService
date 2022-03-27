@@ -38,13 +38,14 @@ public class CreateOutfit implements Menu {
    .price(validator.validatePrice(in))
    .order(this.order)
    .build();
-
-  log.info("appoint master? 1-yeas,2-no");
-  if (in.next().equalsIgnoreCase("1")) {
-   ListMaster listMaster = new ListMaster(servicesFactory);
-   listMaster.run(in, "");
-   this.outfit.setEmployer(listMaster.getMaster().getId());
-  }
+  log.info("appoint master.");
+  ListMaster listMaster = new ListMaster(servicesFactory);
+  listMaster.run(in, "");
+  this.outfit.setEmployer(listMaster.getMaster().getId());
+  listMaster.getMaster().getOutfits().add(this.outfit.getId());
+  log.info("List data:");
+  validator.successfullyMessages(servicesFactory.getMasterServices().updateMaster(listMaster.getMaster()));
+  log.info("Outfit data:");
   validator.successfullyMessages(outfitsServices.addObjectInOutfits(outfit));
  }
 
@@ -52,7 +53,6 @@ public class CreateOutfit implements Menu {
  public void preMessage(String parentsName) {
   log.info(parentsName);
  }
-
 
  public Outfit getOutfit() {
   return outfit;

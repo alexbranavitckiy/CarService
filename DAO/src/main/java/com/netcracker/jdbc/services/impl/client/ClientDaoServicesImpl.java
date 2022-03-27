@@ -2,6 +2,7 @@ package com.netcracker.jdbc.services.impl.client;
 
 import com.netcracker.ClientServices;
 import com.netcracker.LoginServices;
+import com.netcracker.errors.PersistException;
 import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.jdbc.services.ClientDao;
 import com.netcracker.jdbc.services.impl.ClientDaoImpl;
@@ -10,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -18,38 +20,57 @@ public class ClientDaoServicesImpl implements ClientServices {
  private final LoginServices loginService = new LoginServicesImpl();
  private final ClientDao clientDao = new ClientDaoImpl();
 
-
  @Override
- @SneakyThrows
  public List<Client> getAllClient() {
-  return clientDao.getAll();
+  try {
+   return clientDao.getAll();
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return new ArrayList<>();
  }
 
  @Override
- @SneakyThrows
  public boolean addObjectInClient(Client client) {
-  return clientDao.addObject(client);
+  try {
+   return clientDao.addObject(client);
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return false;
  }
 
  @Override
- @SneakyThrows
- public boolean addObjectInClientNotOnline(Client client) throws IOException {
-  return clientDao.addObject(client);
+ public boolean addObjectInClientNotOnline(Client client) {
+  try {
+   return clientDao.addObject(client);
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return false;
  }
 
  @Override
  @SneakyThrows
  public boolean updateClient(Client client) {
-
-  return clientDao.update(client);
+  try {
+   return clientDao.update(client);
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return false;
  }
 
  @Override
  @SneakyThrows
  public boolean updateClientNotSession(Client client) {
-  return clientDao.update(client);
+  try {
+   return clientDao.update(client);
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return false;
  }
-
 
  private boolean passwordCheck(Client client) {
   try {

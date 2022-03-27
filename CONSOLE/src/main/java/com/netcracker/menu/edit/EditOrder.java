@@ -7,8 +7,11 @@ import com.netcracker.order.Order;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
+import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,8 +35,13 @@ public class EditOrder implements Menu {
   if (validator.edit(this.order.getDescriptions(), in)) {
    this.order.setDescriptions(validator.validateDescription(in));
   }
+  Optional<State> state = List.of(State.values()).stream().filter(x -> x.getId().equals(this.order.getStateOrder())).findFirst();
   log.info("State order");
-  if (validator.edit(this.order.getStateOrder().toString(), in)) {
+  if (state.isPresent()) {
+   if (validator.edit(state.get().toString(), in)) {
+    this.order.setStateOrder(validator.orderState(in));
+   }
+  } else {
    this.order.setStateOrder(validator.orderState(in));
   }
   log.info("Price sum:");

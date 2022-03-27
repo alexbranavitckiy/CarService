@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface OutfitsServices {
 
-    List<Outfit> getAllOutfits() throws EmptySearchException;
+ List<Outfit> getAllOutfits() throws EmptySearchException;
 
-    boolean addObjectInOutfits(Outfit o);
+ boolean addObjectInOutfits(Outfit o);
 
-    boolean updateOutfit(Outfit outfit);
+ boolean updateOutfit(Outfit outfit);
 
 }

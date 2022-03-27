@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface MasterReceiverServices {
 
-    boolean updateMaster(MasterReceiver masterReceiver) throws IOException;
+ boolean updateMaster(MasterReceiver masterReceiver) throws IOException;
 
-    boolean updateMasterAndSession(MasterReceiver masterReceiver) throws IOException;
+ boolean updateMasterAndSession(MasterReceiver masterReceiver) throws IOException;
 
-    boolean addMaster(MasterReceiver masterReceiver);
+ boolean addMaster(MasterReceiver masterReceiver);
 
-    List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException;
+ List<MasterReceiver> getAllMasterReceiver() throws EmptySearchException;
 }

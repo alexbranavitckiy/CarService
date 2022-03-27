@@ -3,6 +3,7 @@ package com.netcracker.menu.userMenu;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.ListCarClient;
+import com.netcracker.menu.edit.EditClient;
 import com.netcracker.menu.edit.EditMasterReceiver;
 import com.netcracker.menu.order.ListOrders;
 import com.netcracker.menu.order.NewOrder;
@@ -11,6 +12,8 @@ import com.netcracker.menu.order.outfit.ListOutfit;
 import com.netcracker.menu.registration.RegistrationClientByMaster;
 import com.netcracker.menu.registration.RegistrationMaster;
 import com.netcracker.OrderServices;
+import com.netcracker.menu.validator.ValidatorInstruments;
+import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -21,6 +24,7 @@ public class MasterReceiverMenu implements Menu {
 
  private final OrderServices orderServices;
  private final ServicesFactory servicesFactory;
+ private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public MasterReceiverMenu(ServicesFactory servicesFactory) {
   this.orderServices = servicesFactory.getOrderServices();
@@ -66,9 +70,13 @@ public class MasterReceiverMenu implements Menu {
        ListCarClient listCarClient = new ListCarClient(servicesFactory, listClient.getClient().get().getId());
        listCarClient.run(in, "Main menu");
        if (listClient.getClient().isPresent()) {
-        NewOrder newOrder = new NewOrder(listClient.getClient().get(),
-         listCarClient.getClient().get().getId(), servicesFactory);
-        newOrder.run(in, "Main menu");
+        if (listCarClient.getClient().isPresent()) {
+         NewOrder newOrder = new NewOrder(listClient.getClient().get(),
+          listCarClient.getClient().get().getId(), servicesFactory);
+         newOrder.run(in, "Main menu");
+        } else {
+         System.out.println("This user has no cars");
+        }
        }
       }
      }
@@ -86,19 +94,26 @@ public class MasterReceiverMenu implements Menu {
      break;
     }
     case "6": {
-     new ListClient(servicesFactory).run(in, "Main menu");
+     log.info("Select and edit a client?\n1-yeas\n2-no");
+     if (in.next().equalsIgnoreCase("1")) {
+      ListClient listClient = new ListClient(servicesFactory);
+      listClient.run(in, "Main menu");
+      EditClient editClient = new EditClient(listClient.getClient().get());
+      editClient.run(in, "Main menu");
+      validator.successfullyMessages(servicesFactory.getClientServices().updateClientNotSession(editClient.getClient()));
+     }
      this.preMessage(parentsName);
      break;
     }
     case "7": {
      ListOutfit listOutfits = new ListOutfit(servicesFactory);
-     listOutfits.run(in, "");
+     listOutfits.run(in, "Main menu");
      this.preMessage(parentsName);
      break;
     }
     case "8": {
      ListOrders listOrders = new ListOrders(servicesFactory);
-     listOrders.run(in, "");
+     listOrders.run(in, "Main menu");
      this.preMessage(parentsName);
      break;
     }
@@ -111,7 +126,9 @@ public class MasterReceiverMenu implements Menu {
  }
 
  private int getOrderSize() {
-  return orderServices.getOrderWithRequestState().size();
+  if (!orderServices.getOrderWithRequestState().isEmpty())
+   return orderServices.getOrderWithRequestState().size();
+  else return 0;
  }
 
 

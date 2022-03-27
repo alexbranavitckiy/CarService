@@ -28,8 +28,8 @@ public class EditCar implements Menu {
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
   log.info("Descriptions");
-  if (validator.edit(this.carClient.getSummer(), in)) {
-   this.carClient.setSummer(validator.validateDescription(in));
+  if (validator.edit(this.carClient.getSummary(), in)) {
+   this.carClient.setSummary(validator.validateDescription(in));
   }
   log.info("Enter vehicle mileage");
   if (validator.edit(this.carClient.getRun(), in)) {

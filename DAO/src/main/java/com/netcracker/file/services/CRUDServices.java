@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public interface CRUDServices<T extends EntityId<PK>, PK extends UUID> {
 
-    List<T> getAll(File file, Class<T[]> object) throws EmptySearchException;
+ List<T> getAll(File file, Class<T[]> object) throws EmptySearchException;
 
-    boolean addObject(T addObject, File file, Class<T[]> typeObject);
+ boolean addObject(T addObject, File file, Class<T[]> typeObject);
 
-    boolean deleteObjectById(T deleteObject, File file, Class<T[]> typeObject);
+ boolean deleteObjectById(T deleteObject, File file, Class<T[]> typeObject);
 
-    boolean updateObject(T object, File file, Class<T[]> typeObject);
+ boolean updateObject(T object, File file, Class<T[]> typeObject);
 
 }

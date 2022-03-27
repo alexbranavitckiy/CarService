@@ -78,11 +78,10 @@ public class ListOrders implements Menu {
       if (in.next().equals("1")) {
        log.info("Outfit data:");
        CreateOutfit createOutfit = new CreateOutfit(this.order.getId(), servicesFactory);
-       createOutfit.run(in,
-        "");
+       createOutfit.run(in, "Main menu");
        order.setOutfits(new ArrayList<>());
        order.getOutfits().add(createOutfit.getOrder());
-       validator.successfullyMessages(orderServices.addOrder(order));
+       validator.successfullyMessages(orderServices.updateOrder(order));
       }
      } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());
@@ -117,7 +116,7 @@ public class ListOrders implements Menu {
   if (in.next().equals("1")) {
    EditOrder editOrder = new EditOrder(this.order);
    editOrder.run(in, "Main menu");
-   validator.successfullyMessages(orderServices.addOrder(editOrder.getOrder()));
+   validator.successfullyMessages(orderServices.updateOrder(editOrder.getOrder()));
    this.order = editOrder.getOrder();
   }
  }

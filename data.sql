@@ -22,7 +22,7 @@ foreign key (qualification_id) references qualifications(id)
 
 create table if not exists masters(
 id UUID primary key ,
-id_outfits UUID unique,
+id_outfits UUID,
 foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -34,7 +34,6 @@ foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
 create table if not exists role_user(
 id UUID primary key,
 name varchar(50));
-
 
 create table if not exists clients(
 id UUID primary key,
@@ -108,12 +107,12 @@ create table if not exists car_clients(
 id UUID primary key,
 id_clients UUID unique,
 id_breakdown UUID,
-summaer varchar(45),
-ear timestamp,
-run real,
-metadata_сar varchar(45),
+summary varchar(250),
+ear date,
+run varchar(250),
+metadata_car varchar(250),
 id_state_car_breakdown UUID,
-descriptions varchar(50) not null,
+descriptions varchar(250) not null,
 constraint foreign_key_state_car_breakdown foreign key (id_state_car_breakdown) references state_car_breakdown(id),
 constraint foreign_key_clients foreign key (id_clients) references clients(id),
 constraint foreign_key_type_car_breakdown foreign key (id_breakdown) references type_car_breakdowns(id));
@@ -129,14 +128,26 @@ VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'DISC_EDITING'),
 
 INSERT INTO public.employers(
 id, name, education, qualification_id, password, login, home_address, phone, mail, descriptions)
-VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test1', 'test1','test', 'test', 'test', 'test'),
-('cda01a34-4119-3e5e-9ab9-60b341f234fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test', 'test2','test2', 'test', 'test', 'test');
+VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb',
+ 'test1', 'test1','test', 'test', 'test', 'test'),
+('cda01a34-4119-3e5e-9ab9-60b341f234fb', 'test', 'test', 'cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test',
+ 'test2','test2', 'test', 'test', 'test');
 
-INSERT INTO public.master_receivers(
-	id)
-	VALUES ('cda01a34-4119-3e5e-9ab9-60b341f234fb');
+INSERT INTO public.master_receivers(id)
+VALUES ('cda01a34-4119-3e5e-9ab9-60b341f234fb');
 
-	INSERT INTO public.masters(
-	id)
-	VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb');
-	COMMIT;
+INSERT INTO public.masters(id)
+VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb');
+
+INSERT INTO public.clients(
+	id, password, login, first_name, role_user, last_name, email, phone, descriptions)
+	VALUES ('8ef08b2c-7ffa-4373-ad3a-72ae64fd4935', 'clients', 'clients', 'clients',
+	'c65b6b5a-311f-369f-9936-5e0b45ca6907',
+	 'clients', 'clients', 'clients', 'clients');
+
+INSERT INTO public.state_car_breakdown(
+	id, name)
+	VALUES ('acfd38b7-5861-37a2-b04d-ce420b134a80', 'CORRECTED'),
+	('b3c1b7df-bc67-3b62-adb7-f44946c07784', 'NOT_FIXED');
+
+COMMIT;

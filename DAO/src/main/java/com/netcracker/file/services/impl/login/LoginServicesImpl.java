@@ -1,16 +1,18 @@
 package com.netcracker.file.services.impl.login;
 
-import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.FileService;
 import com.netcracker.LoginServices;
+import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.services.impl.CRUDServicesImpl;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 public class LoginServicesImpl implements LoginServices {
 
  private final FileService fileService = new FileService();
@@ -88,7 +90,3 @@ public class LoginServicesImpl implements LoginServices {
   return false;
  }
 }
-
-
-
-

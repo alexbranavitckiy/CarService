@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface OrderServices {
 
-    boolean addOrder(Order master);
+ boolean addOrder(Order order);
 
-    List<Order> getAll() throws EmptySearchException;
+ List<Order> getAll() throws EmptySearchException;
 
-    List<Order> getOrderWithRequestState();
+ boolean updateOrder(Order order);
+
+ List<Order> getOrderWithRequestState();
 }

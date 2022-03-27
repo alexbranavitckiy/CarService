@@ -48,7 +48,7 @@ public class MasterMenu implements Menu {
      try {
       List<Outfit> outfitList = outfitsServices.getAllOutfits().stream()
        .filter(x -> {
-        if (x != null) {
+        if (x != null && x.getEmployer() != null) {
          return x.getEmployer().equals(
           UserSession.getMasterSession().get().getId());
         }
@@ -71,8 +71,7 @@ public class MasterMenu implements Menu {
         log.info("Enter Order ID");
         EditOutfit editOutfit = new EditOutfit(outfitList.get(in.nextInt()));
         editOutfit.run(in, "");
-        validator.successfullyMessages(
-         outfitsServices.updateOutfit(editOutfit.getOutfit()));
+        validator.successfullyMessages(outfitsServices.updateOutfit(editOutfit.getOutfit()));
        }
       } else {
        log.info("No existing outfits");

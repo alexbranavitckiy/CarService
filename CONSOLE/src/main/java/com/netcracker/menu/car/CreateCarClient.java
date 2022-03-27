@@ -28,11 +28,12 @@ public class CreateCarClient implements Menu {
   this.carClient = CarClient.builder()
    .id(UUID.randomUUID())
    .id_clients(uuidClient)
-   .summer(validator.validateDescription(in))
+   .summary(validator.validateSummary(in))
    .metadataCar(validator.validateNumberCar(in))
    .run(validator.validateMileage(in))
    .mark(new Mark())
    .ear(validator.validateYear(in))
+   .descriptions(validator.validateDescription(in))
    .build();
  }
 
