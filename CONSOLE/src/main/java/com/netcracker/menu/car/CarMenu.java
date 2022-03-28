@@ -22,8 +22,8 @@ public class CarMenu implements Menu {
  private final CarServices carServices;
 
  public CarMenu(ServicesFactory servicesFactory) {
-  this.clientServices = servicesFactory.getClientServices();
-  this.carServices = servicesFactory.getCarServices();
+  this.clientServices = servicesFactory.getFactory().getClientServices();
+  this.carServices = servicesFactory.getFactory().getCarServices();
  }
 
  @Override

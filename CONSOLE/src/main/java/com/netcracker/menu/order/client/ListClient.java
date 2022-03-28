@@ -34,7 +34,7 @@ public class ListClient implements Menu {
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  ClientServices searchServices = servicesFactory.getClientServices();
+  ClientServices searchServices = servicesFactory.getFactory().getClientServices();
   List<Client> clientList;
   this.preMessage(parentsName);
   label:
@@ -73,7 +73,7 @@ public class ListClient implements Menu {
  }
 
  public Optional<Client> getClient() {
-  return Optional.of(client);
+  return Optional.ofNullable(client);
  }
 
 }

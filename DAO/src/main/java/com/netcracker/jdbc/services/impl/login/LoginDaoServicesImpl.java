@@ -7,9 +7,6 @@ import com.netcracker.jdbc.services.impl.ClientDaoImpl;
 import com.netcracker.jdbc.services.impl.MasterDaoImpl;
 import com.netcracker.jdbc.services.impl.MasterReceiverDaoImpl;
 import com.netcracker.jdbc.services.impl.car.CarDaoServicesImpl;
-import com.netcracker.jdbc.services.impl.client.ClientDaoServicesImpl;
-import com.netcracker.jdbc.services.impl.master.MasterDaoServicesImpl;
-import com.netcracker.jdbc.services.impl.masterReceiver.MasterReceiverDaoServicesImpl;
 import com.netcracker.marka.CarClient;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.Client;
@@ -49,9 +46,7 @@ public class LoginDaoServicesImpl implements LoginServices {
     if (client.isPresent()) {
      List<CarClient> carClients = carServices.getCarByIdClient(client.get().getId());
      if (!carClients.isEmpty()) {
-      carClients.forEach(x -> {
-       client.get().getCarClients().add(x.getId());
-      });
+      carClients.forEach(x -> client.get().getCarClients().add(x.getId()));
      }
      client.ifPresent(UserSession::openSession);
      return true;

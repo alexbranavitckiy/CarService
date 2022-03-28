@@ -9,6 +9,8 @@ public interface OrderServices {
 
  boolean addOrder(Order order);
 
+ boolean repairRequest(Order order);
+
  List<Order> getAll() throws EmptySearchException;
 
  boolean updateOrder(Order order);

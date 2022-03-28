@@ -21,8 +21,8 @@ public class RegistrationMaster implements Menu {
  private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
 
  public RegistrationMaster(ServicesFactory servicesFactory) {
-  masterServices = servicesFactory.getMasterServices();
-  masterReceiverServices = servicesFactory.getMasterReceiverServices();
+  masterServices = servicesFactory.getFactory().getMasterServices();
+  masterReceiverServices = servicesFactory.getFactory().getMasterReceiverServices();
  }
 
  @Override

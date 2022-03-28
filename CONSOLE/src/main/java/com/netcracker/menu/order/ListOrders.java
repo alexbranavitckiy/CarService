@@ -1,5 +1,6 @@
 package com.netcracker.menu.order;
 
+import com.netcracker.OutfitsServices;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
@@ -28,7 +29,7 @@ public class ListOrders implements Menu {
  private final OrderServices orderServices;
 
  public ListOrders(ServicesFactory servicesFactory) {
-  this.orderServices = servicesFactory.getOrderServices();
+  this.orderServices = servicesFactory.getFactory().getOrderServices();
   this.servicesFactory = servicesFactory;
  }
 
@@ -41,6 +42,7 @@ public class ListOrders implements Menu {
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
+  OutfitsServices outfitsServices = servicesFactory.getFactory().getOutfitServices();
   this.preMessage(parentsName);
   label:
   while (true) {
@@ -82,6 +84,7 @@ public class ListOrders implements Menu {
        order.setOutfits(new ArrayList<>());
        order.getOutfits().add(createOutfit.getOrder());
        validator.successfullyMessages(orderServices.updateOrder(order));
+       validator.successfullyMessages(outfitsServices.addObjectInOutfits(createOutfit.getOutfit()));
       }
      } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());

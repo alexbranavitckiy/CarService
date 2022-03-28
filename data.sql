@@ -21,8 +21,7 @@ foreign key (qualification_id) references qualifications(id)
 
 
 create table if not exists masters(
-id UUID primary key ,
-id_outfits UUID,
+id UUID primary key,
 foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -86,12 +85,14 @@ id UUID primary key,
 name_outfits varchar(45),
 descriptions varchar(100) ,
 start_date timestamp,
+id_master UUID,
+id_orders  UUID,
 end_date timestamp,
 price_sum real,
 state_outfits UUID ,
-constraint foreign_key_masters_outfits foreign key (id) references masters(id_outfits),
+constraint foreign_key_masters_outfits foreign key (id_master) references masters(id),
 constraint foreign_key_state_outfits foreign key (state_outfits) references state_outfits(id),
-constraint foreign_key_orders_outfits foreign key (id) references orders(id_outfits)
+constraint foreign_key_orders_outfits foreign key (id_orders) references orders(id)
 );
 
 create table if not exists type_car_breakdowns(
@@ -150,4 +151,21 @@ INSERT INTO public.state_car_breakdown(
 	VALUES ('acfd38b7-5861-37a2-b04d-ce420b134a80', 'CORRECTED'),
 	('b3c1b7df-bc67-3b62-adb7-f44946c07784', 'NOT_FIXED');
 
+INSERT INTO public.state_outfits(
+	id, name)
+	VALUES ('b1a326c0-6d88-3f04-af73-d70f50197905','END')
+	,('9f20f1fb-4bd4-3381-84d4-f642b3159812','WORK')
+	,('8eaf13f3-6ff5-3721-8a27-449e4a36517e', 'NO_STATE');
+
+INSERT INTO public.state_orders(
+	id, name)
+	VALUES
+	('9208fdeb-4912-3594-91a5-aa9c4a66aba1', 'TEMPLATE'),
+	('e11c6364-ef1b-36b5-ac2b-5e507c7d0910', 'RECORDED'),
+	('085778f9-9947-3e51-acc3-88465338089f', 'IN_WORK'),
+	('36a8522f-d7b4-3401-b77d-a6df41b23baf', 'CAR_GIVEN'),
+	('76fd9514-6e9a-3d90-9b90-798a17702b63', 'CAR_ACCEPTED'),
+	('97f03df1-695a-3aed-a95f-e723bc3cf67c', 'WAIT_CLIENT'),
+	('ad6c3588-0c58-397c-83d6-0a6ad0f23737', 'REQUEST'),
+	('61613d5a-4896-3fbf-9bdb-8cb2f476b7f6', 'BID');
 COMMIT;

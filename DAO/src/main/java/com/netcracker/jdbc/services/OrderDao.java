@@ -9,4 +9,5 @@ public interface OrderDao extends CrudDao<Order, UUID> {
 
  String getAllOrderByState();
 
+ String getRequestQueryByRepairRequest();
 }

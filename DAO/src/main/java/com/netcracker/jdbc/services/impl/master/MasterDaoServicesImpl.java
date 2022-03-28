@@ -33,7 +33,7 @@ public class MasterDaoServicesImpl implements MasterServices {
     return this.crudServices.addObject(master);
    }
   } catch (Exception e) {
-   log.error("Error adding object", e);
+   log.error("Error adding object:{}", e.getMessage());
   }
   return false;
  }
@@ -66,7 +66,7 @@ public class MasterDaoServicesImpl implements MasterServices {
     return false;
    }
   } catch (IOException e) {
-   log.error(e.getMessage());
+   log.warn(e.getMessage());
   }
   return true;
  }

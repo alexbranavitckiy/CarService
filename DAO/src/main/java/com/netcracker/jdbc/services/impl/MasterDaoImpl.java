@@ -1,7 +1,6 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
-import com.netcracker.jdbc.services.CrudDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.user.Master;
 import lombok.extern.slf4j.Slf4j;
@@ -17,22 +16,22 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
 
  @Override
  public String getSelectQuery() {
-  return "SELECT masters.id,masters.id_outfits,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions FROM public.masters,public.employers where masters.id=employers.id; ";
+  return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions FROM public.masters,public.employers where masters.id=employers.id; ";
  }
 
  @Override
  public String getSelectByIdQuery() {
-  return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions,masters.id_outfits FROM public.masters,public.employers where masters.id=employers.id AND masters.id=?;";
+  return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions, FROM public.masters,public.employers where masters.id=employers.id AND masters.id=?;";
  }
 
  @Override
  public String getCreateQuery() {
-  return "INSERT INTO public.employers(id, name, education, qualification_id, password, login, home_address, phone, mail, descriptions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); INSERT INTO public.masters(id, id_outfits)VALUES (?, ?);";
+  return "INSERT INTO public.employers(id, name, education, qualification_id, password, login, home_address, phone, mail, descriptions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?); INSERT INTO public.masters(id)VALUES ( ?);";
  }
 
  @Override
  public String getUpdateQuery() {
-  return "UPDATE public.employers SET id=?, name=?, education=?, qualification_id=?, password=?, login=?, home_address=?, phone=?, mail=?, descriptions=? WHERE id=?; UPDATE public.masters SET id=?, id_outfits=? WHERE id=?;";
+  return "UPDATE public.employers SET id=?, name=?, education=?, qualification_id=?, password=?, login=?, home_address=?, phone=?, mail=?, descriptions=? WHERE id=?; UPDATE public.masters SET id=? WHERE id=?;";
  }
 
  @Override
@@ -57,9 +56,6 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
      .password(rs.getString("password"))
      .homeAddress(rs.getString("home_address"))
      .build();
-    if (rs.getString("id_outfits") != null) {
-     master.setOutfits(List.of(UUID.fromString(rs.getString(rs.getString("id_outfits")))));
-    }
     masters.add(master);
    }
    return masters;
@@ -71,15 +67,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
  @Override
  protected void prepareStatementForInsert(PreparedStatement statement, Master master)
   throws PersistException {
-  try {
    addQuery(statement, master);
-   if (master.getOutfits() != null && !master.getOutfits().isEmpty()) {
-    statement.setObject(12, master.getOutfits().get(0));
-   } else
-    statement.setObject(12, null);
-  } catch (Exception e) {
-   throw new PersistException(e);
-  }
  }
 
 
@@ -109,11 +97,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
    addQuery(statement, master);
    statement.setObject(12, master.getId());
    addQuery(statement, master);
-   if (master.getOutfits() != null && !master.getOutfits().isEmpty()) {
-    statement.setObject(13, master.getOutfits().get(0));
-   } else
-    statement.setObject(13, null);
-   statement.setObject(14, master.getId());
+   statement.setObject(13, master.getId());
   } catch (Exception e) {
    throw new PersistException(e);
   }

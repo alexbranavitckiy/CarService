@@ -23,9 +23,8 @@ public class ListCarClient implements Menu {
  private final UUID uuid;
  private final CarServices carServices;
 
-
  public ListCarClient(ServicesFactory servicesFactory, UUID uuid) {
-  this.carServices = servicesFactory.getCarServices();
+  this.carServices = servicesFactory.getFactory().getCarServices();
   this.uuid = uuid;
  }
 

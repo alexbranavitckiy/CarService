@@ -78,7 +78,7 @@ public class MasterReceiverDaoImpl extends TemplateJDBCDao<MasterReceiver, UUID>
  private void addQuery(PreparedStatement statement, MasterReceiver master) throws PersistException {
   try {
    statement.setObject(1, master.getId());
-   statement.setObject(2, master.getName());
+   statement.setString(2, master.getName());
    statement.setObject(3, master.getEducation());
    statement.setObject(4, master.getQualificationEnum());
    statement.setObject(5, master.getPassword());

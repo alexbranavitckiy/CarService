@@ -27,7 +27,7 @@ public class MasterReceiverMenu implements Menu {
  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public MasterReceiverMenu(ServicesFactory servicesFactory) {
-  this.orderServices = servicesFactory.getOrderServices();
+  this.orderServices = servicesFactory.getFactory().getOrderServices();
   this.servicesFactory = servicesFactory;
  }
 
@@ -100,7 +100,7 @@ public class MasterReceiverMenu implements Menu {
       listClient.run(in, "Main menu");
       EditClient editClient = new EditClient(listClient.getClient().get());
       editClient.run(in, "Main menu");
-      validator.successfullyMessages(servicesFactory.getClientServices().updateClientNotSession(editClient.getClient()));
+      validator.successfullyMessages(servicesFactory.getFactory().getClientServices().updateClientNotSession(editClient.getClient()));
      }
      this.preMessage(parentsName);
      break;

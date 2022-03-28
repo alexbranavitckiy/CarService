@@ -22,7 +22,7 @@ public interface CrudDao<T extends EntityId<K>, K extends Serializable> {
 
  List<T> getAllByQuery(Object object, String query) throws PersistException;
 
- ;
+ boolean addByQuery(T object, String query) throws PersistException;
 
 }
 

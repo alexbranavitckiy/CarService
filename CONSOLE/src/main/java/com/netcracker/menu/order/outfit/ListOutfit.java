@@ -34,7 +34,7 @@ public class ListOutfit implements Menu {
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  OutfitsServices outfitsServices = servicesFactory.getOutfitServices();
+  OutfitsServices outfitsServices = servicesFactory.getFactory().getOutfitServices();
   List<Outfit> outfitList;
   this.preMessage(parentsName);
   label:

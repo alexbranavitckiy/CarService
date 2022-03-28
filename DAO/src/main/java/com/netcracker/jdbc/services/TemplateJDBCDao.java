@@ -95,6 +95,17 @@ public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> i
    throw new PersistException(e);
   }
  }
+ public boolean addByQuery(T object, String query) throws PersistException {
+  try (Connection connection = ConnectorDB.getConnection();
+       PreparedStatement statement = connection.prepareStatement(query)) {
+   prepareStatementForInsert(statement, object);
+   statement.executeUpdate();
+   return true;
+  } catch (Exception e) {
+   throw new PersistException(e);
+  }
+ }
+
 
  public List<T> getAllByQuery(Object object, String query) throws PersistException {
   List<T> list;
@@ -108,4 +119,5 @@ public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> i
   }
   return list;
  }
+
 }

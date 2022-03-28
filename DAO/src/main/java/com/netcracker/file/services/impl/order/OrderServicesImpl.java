@@ -51,4 +51,14 @@ public class OrderServicesImpl implements OrderServices {
  public boolean updateOrder(Order order) {
   return searchServices.updateObject(order, new File(FileService.ORDERS_PATH), Order[].class);
  }
+
+ @Override
+ public boolean repairRequest(Order order)  {
+  try {
+   return (searchServices.addObject(order, new File(FileService.ORDERS_PATH), Order[].class));
+  } catch (Exception e) {
+   log.error("Error adding object", e);
+  }
+  return false;
+ }
 }

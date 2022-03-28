@@ -32,7 +32,7 @@ public class EditMasterReceiver implements Menu {
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  MasterReceiverServices masterReceiverServices = servicesFactory.getMasterReceiverServices();
+  MasterReceiverServices masterReceiverServices = servicesFactory.getFactory().getMasterReceiverServices();
   log.info("Name");
   if (validator.edit(this.masterReceiver.getName(), in)) {
    this.masterReceiver.setName(validator.validateNameUser(in));

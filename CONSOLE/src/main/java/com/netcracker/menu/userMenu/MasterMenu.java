@@ -25,7 +25,7 @@ public class MasterMenu implements Menu {
  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public MasterMenu(ServicesFactory servicesFactory) {
-  this.outfitsServices = servicesFactory.getOutfitServices();
+  this.outfitsServices = servicesFactory.getFactory().getOutfitServices();
  }
 
  @Override

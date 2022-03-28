@@ -24,7 +24,6 @@ public class MasterReceiverDaoServicesImpl implements MasterReceiverServices {
  @Override
  @SneakyThrows
  public List<MasterReceiver> getAllMasterReceiver() {
-  System.out.println(crudServices.getAll());
   return crudServices.getAll();
  }
 

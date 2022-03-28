@@ -22,8 +22,8 @@ public class RegistrationClient implements Menu {
  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public RegistrationClient(ServicesFactory servicesFactory) {
-  this.clientServices = servicesFactory.getClientServices();
-  this.carServices = servicesFactory.getCarServices();
+  this.clientServices = servicesFactory.getFactory().getClientServices();
+  this.carServices = servicesFactory.getFactory().getCarServices();
  }
 
  @Override

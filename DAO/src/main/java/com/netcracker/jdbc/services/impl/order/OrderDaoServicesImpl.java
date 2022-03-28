@@ -55,4 +55,14 @@ public class OrderDaoServicesImpl implements OrderServices {
   }
   return false;
  }
+
+ @Override
+ public boolean repairRequest(Order order) {
+  try {
+   return orderDao.addObject(order);
+  } catch (PersistException p) {
+   log.warn("Order add error:{}", p.getMessage());
+  }
+  return false;
+ }
 }

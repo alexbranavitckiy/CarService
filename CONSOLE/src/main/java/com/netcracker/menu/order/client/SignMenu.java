@@ -25,7 +25,7 @@ public class SignMenu implements Menu {
  private final CarServices carServices;
 
  public SignMenu(ServicesFactory servicesFactory) {
-  this.carServices = servicesFactory.getCarServices();
+  this.carServices = servicesFactory.getFactory().getCarServices();
   this.servicesFactory = servicesFactory;
  }
 
@@ -38,7 +38,7 @@ public class SignMenu implements Menu {
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  OrderServices orderServices = servicesFactory.getOrderServices();
+  OrderServices orderServices = servicesFactory.getFactory().getOrderServices();
   this.preMessage(parentsName);
   label:
   while (true) {
@@ -71,7 +71,8 @@ public class SignMenu implements Menu {
           .descriptions(validator.validateDescription(in))
           .priceSum(0d)
           .build();
-         validator.successfullyMessages(orderServices.addOrder(order));
+         order.setMasterReceiver(servicesFactory.getFactory().getMasterReceiverServices().getAllMasterReceiver().stream().findFirst().get().getId());
+         validator.successfullyMessages(orderServices.repairRequest(order));
          this.preMessage(parentsName);
         } catch (IndexOutOfBoundsException e) {
          log.info("The selected car was not found. Please try again");

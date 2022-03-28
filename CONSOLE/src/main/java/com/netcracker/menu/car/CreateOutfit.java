@@ -6,9 +6,9 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.order.master.ListMaster;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.OutfitsServices;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -19,34 +19,31 @@ public class CreateOutfit implements Menu {
 
  private Outfit outfit;
  private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
- private final UUID order;
+ private final UUID orderUUID;
  private final ServicesFactory servicesFactory;
 
- public CreateOutfit(UUID order, ServicesFactory servicesFactory) {
+ public CreateOutfit(UUID orderUUID, ServicesFactory servicesFactory) {
   this.servicesFactory = servicesFactory;
-  this.order = order;
+  this.orderUUID = orderUUID;
  }
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  OutfitsServices outfitsServices = servicesFactory.getOutfitServices();
   this.outfit = Outfit.builder()
    .id(UUID.randomUUID())
    .descriptions(validator.validateDescription(in))
    .stateOutfit(validator.stateOutfit(in))
    .name(validator.validateNameOutfit(in))
    .price(validator.validatePrice(in))
-   .order(this.order)
+   .order(this.orderUUID)
+   .dateEnt(new Date())
+   .dateStart(new Date())
    .build();
   log.info("appoint master.");
   ListMaster listMaster = new ListMaster(servicesFactory);
   listMaster.run(in, "");
   this.outfit.setEmployer(listMaster.getMaster().getId());
-  listMaster.getMaster().getOutfits().add(this.outfit.getId());
-  log.info("List data:");
-  validator.successfullyMessages(servicesFactory.getMasterServices().updateMaster(listMaster.getMaster()));
   log.info("Outfit data:");
-  validator.successfullyMessages(outfitsServices.addObjectInOutfits(outfit));
  }
 
  @Override
@@ -63,6 +60,6 @@ public class CreateOutfit implements Menu {
  }
 
  public UUID getOrder() {
-  return order;
+  return orderUUID;
  }
 }

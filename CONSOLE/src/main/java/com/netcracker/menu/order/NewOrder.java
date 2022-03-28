@@ -9,12 +9,13 @@ import com.netcracker.order.Order;
 import com.netcracker.OrderServices;
 
 import java.util.ArrayList;
-import java.util.Date;
+
 
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class NewOrder implements Menu {
   this.client = client;
   this.idCar = idCar;
   this.servicesFactory = servicesFactory;
-  this.orderServices = servicesFactory.getOrderServices();
+  this.orderServices = servicesFactory.getFactory().getOrderServices();
  }
 
  @Override
@@ -76,7 +77,9 @@ public class NewOrder implements Menu {
         "");
        order.setOutfits(new ArrayList<>());
        order.getOutfits().add(createOutfit.getOrder());
-       validator.successfullyMessages(orderServices.addOrder(order));
+       System.out.println(order);
+       orderServices.addOrder(order);
+       validator.successfullyMessages(servicesFactory.getFactory().getOutfitServices().addObjectInOutfits(createOutfit.getOutfit()));
       }
      }
      break label;

@@ -28,7 +28,7 @@ public class RegistrationClientByMaster implements Menu {
 
  public RegistrationClientByMaster(ServicesFactory servicesFactory) {
   this.servicesFactory = servicesFactory;
-  this.clientServices = servicesFactory.getClientServices();
+  this.clientServices = servicesFactory.getFactory().getClientServices();
  }
 
  @Override
@@ -59,7 +59,8 @@ public class RegistrationClientByMaster implements Menu {
        .login(carClientMenu.getCarClient().get().getMetadataCar())
        .password(carClientMenu.getCarClient().get().getMetadataCar())
        .build();
-      if (clientServices.addObjectInClientNotOnline(client)) {
+      if (clientServices.addObjectInClientNotOnline(client) &&
+       servicesFactory.getFactory().getCarServices().addCar(carClientMenu.getCarClient().get())) {
        log.info("User created successfully");
        this.clientLast = client;
        log.info("Enter 3 to Create an order with these customers");

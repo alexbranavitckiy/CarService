@@ -38,7 +38,7 @@ public class LoginMenu implements Menu {
      String login = in.next();
      log.info("Enter password");
      String password = in.next();
-     if (servicesFactory.getLoginServices().searchByUserLoginAndPassword(login, password)) {
+     if (servicesFactory.getFactory().getLoginServices().searchByUserLoginAndPassword(login, password)) {
       new EnterLogin(servicesFactory).run(in, "Login menu");
      } else {
       log.info("User is not found");

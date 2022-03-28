@@ -25,21 +25,16 @@ public class ListMaster implements Menu {
 
  @Override
  public void preMessage(String parentsName) {
-  log.info("Enter 1: {}", parentsName);
   log.info("Enter 2 Display a list of master.");
  }
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
-  MasterServices masterServices = servicesFactory.getMasterServices();
+  MasterServices masterServices = servicesFactory.getFactory().getMasterServices();
   this.preMessage(parentsName);
   label:
   while (true) {
    switch (in.next()) {
-    case "1": {
-     log.info("");
-     break label;
-    }
     case "2": {
      try {
       List<Master> masters = masterServices.getAllMaster();

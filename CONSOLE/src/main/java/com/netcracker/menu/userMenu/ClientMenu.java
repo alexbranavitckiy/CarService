@@ -19,7 +19,7 @@ public class ClientMenu implements Menu {
 
  public ClientMenu(ServicesFactory servicesFactory) {
   this.servicesFactory = servicesFactory;
-  this.clientServices = servicesFactory.getClientServices();
+  this.clientServices = servicesFactory.getFactory().getClientServices();
  }
 
  @Override
