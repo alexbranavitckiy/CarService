@@ -3,6 +3,7 @@ package com.netcracker.menu.validator;
 
 import com.netcracker.user.Qualification;
 
+import java.util.Date;
 import java.util.Scanner;
 
 import com.netcracker.menu.errors.InvalidValuesException;
@@ -14,6 +15,10 @@ public interface ValidatorInstruments {
  boolean inEmail(String email) throws InvalidValuesException;
 
  String validateSummary(Scanner in);
+
+ Date getDate(Scanner in);
+
+ String validatorTime(Scanner in);
 
  Qualification qualificationEnum(Scanner in);
 
@@ -50,4 +55,6 @@ public interface ValidatorInstruments {
  UUID stateOutfit(Scanner in);
 
  void successfullyMessages(boolean flag);
+
+ UUID orderStateCarBr(Scanner in);
 }

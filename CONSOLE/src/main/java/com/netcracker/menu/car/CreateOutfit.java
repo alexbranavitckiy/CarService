@@ -8,10 +8,10 @@ import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.outfit.Outfit;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
+import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,12 +32,12 @@ public class CreateOutfit implements Menu {
   this.outfit = Outfit.builder()
    .id(UUID.randomUUID())
    .descriptions(validator.validateDescription(in))
-   .stateOutfit(validator.stateOutfit(in))
+   .stateOutfit(State.RECORDED.getId())
    .name(validator.validateNameOutfit(in))
    .price(validator.validatePrice(in))
    .order(this.orderUUID)
-   .dateEnt(new Date())
-   .dateStart(new Date())
+   .dateEnt(validator.getDate(in))
+   .dateStart(validator.getDate(in))
    .build();
   log.info("appoint master.");
   ListMaster listMaster = new ListMaster(servicesFactory);
@@ -45,6 +45,13 @@ public class CreateOutfit implements Menu {
   this.outfit.setEmployer(listMaster.getMaster().getId());
   log.info("Outfit data:");
  }
+
+ private void dateEditor() {
+  log.info("Outfit recording menu");
+  log.info("Enter 1. Pull out all the outfits");
+  log.info("Enter 2. List order by date");
+ }
+
 
  @Override
  public void preMessage(String parentsName) {

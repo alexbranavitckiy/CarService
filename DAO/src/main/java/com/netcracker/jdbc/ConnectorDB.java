@@ -22,7 +22,7 @@ public class ConnectorDB {
 
  static {
   initDb();
-  config.setJdbcUrl(resource.getString("db.url.service") + resource.getString("db.url.database"));
+  config.setJdbcUrl(resource.getString("db.url.service") + resource.getString("db.url.database")+"?stringtype=unspecified");
   config.setUsername(resource.getString("db.user"));
   config.setPassword(resource.getString("db.password"));
   config.setMaximumPoolSize(Integer.parseInt(resource.getString("db.poolSize")));

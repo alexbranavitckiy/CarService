@@ -9,6 +9,7 @@ import java.util.UUID;
 public enum State implements EntityId<UUID> {
  WORK,
  END,
+ RECORDED,
  NO_STATE;
 
  @Override

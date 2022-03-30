@@ -1,5 +1,5 @@
 BEGIN;
-DROP TABLE if exists clients,qualifications, car_clients,label,employers,master_receivers,masters,orders,outfits,role_user,state_car_breakdown,state_orders,state_outfits,type_car_breakdowns CASCADE;
+DROP TABLE if exists clients,qualifications, car_clients,label,employers,master_receivers,masters,orders,outfits,role_user,state_car_breakdown,state_orders,state_outfits,car_breakdowns CASCADE;
 
 create table if not exists qualifications(
 id UUID primary key,
@@ -34,18 +34,49 @@ create table if not exists role_user(
 id UUID primary key,
 name varchar(50));
 
+create table if not exists state_car_breakdown(
+id UUID primary key,
+name varchar(50));
+
+
+
 create table if not exists clients(
 id UUID primary key,
-password varchar(50) not null unique,
-login varchar(50) not null,
-first_name varchar(50),
+password varchar(100) not null unique,
+login varchar(100) not null,
+first_name varchar(100),
 role_user UUID not null,
-last_name varchar(50),
-email varchar(25),
-phone varchar(50),
-descriptions varchar(50) not null,
+last_name varchar(100),
+email varchar(100),
+phone varchar(100),
+descriptions varchar(100) not null,
 constraint foreign_key_role_user foreign key (role_user) references role_user(id)
 );
+
+create table if not exists car_clients(
+id UUID primary key,
+id_clients UUID ,
+id_breakdown UUID,
+summary varchar(250),
+ear date,
+run varchar(250),
+metadata_car varchar(250),
+descriptions varchar(250) not null,
+constraint foreign_key_clients foreign key (id_clients) references clients(id)
+);
+
+create table if not exists car_breakdowns(
+id UUID primary key,
+descriptions varchar(250) not null,
+name varchar(50) not null,
+id_car UUID not null,
+locationd varchar(50),
+run_car_size varchar(50) not null,
+state_id UUID not null,
+constraint foreign_key_state_car_breakdown foreign key (state_id) references state_car_breakdown(id),
+constraint foreign_key_state_car_breakdown_car_clients foreign key (id_car) references car_clients(id)
+);
+
 
 create table if not exists state_orders(
 id UUID primary key,
@@ -54,14 +85,13 @@ name varchar(50));
 create table if not exists orders(
 id UUID primary key,
 descriptions varchar(50) not null,
-id_clients UUID not null,
+id_car UUID not null,
 id_masters UUID,
 created_date timestamp,
 id_outfits UUID unique,
 updated_date timestamp,
 id_state_order UUID not null,
-price_sum real not null,
-constraint foreign_key_master_orders foreign key (id_clients) references clients(id),
+constraint foreign_key_master_orders foreign key (id_car) references car_clients(id),
 constraint foreign_key_id_orders foreign key (id_masters) references master_receivers(id),
 constraint foreign_state_order foreign key (id_state_order) references state_orders(id)
 );
@@ -94,29 +124,6 @@ constraint foreign_key_masters_outfits foreign key (id_master) references master
 constraint foreign_key_state_outfits foreign key (state_outfits) references state_outfits(id),
 constraint foreign_key_orders_outfits foreign key (id_orders) references orders(id)
 );
-
-create table if not exists type_car_breakdowns(
-id UUID primary key,
-name varchar(50) not null,
-locationd varchar(50));
-
-create table if not exists state_car_breakdown(
-id UUID primary key,
-name varchar(50));
-
-create table if not exists car_clients(
-id UUID primary key,
-id_clients UUID unique,
-id_breakdown UUID,
-summary varchar(250),
-ear date,
-run varchar(250),
-metadata_car varchar(250),
-id_state_car_breakdown UUID,
-descriptions varchar(250) not null,
-constraint foreign_key_state_car_breakdown foreign key (id_state_car_breakdown) references state_car_breakdown(id),
-constraint foreign_key_clients foreign key (id_clients) references clients(id),
-constraint foreign_key_type_car_breakdown foreign key (id_breakdown) references type_car_breakdowns(id));
 
 INSERT INTO public.role_user  (id,name)
 VALUES
@@ -168,4 +175,15 @@ INSERT INTO public.state_orders(
 	('97f03df1-695a-3aed-a95f-e723bc3cf67c', 'WAIT_CLIENT'),
 	('ad6c3588-0c58-397c-83d6-0a6ad0f23737', 'REQUEST'),
 	('61613d5a-4896-3fbf-9bdb-8cb2f476b7f6', 'BID');
+
+	INSERT INTO public.state_outfits(
+	id, name)
+	VALUES ('e11c6364-ef1b-36b5-ac2b-5e507c7d0910', 'RECORDED');
+
+	INSERT INTO public.state_car_breakdown(
+	id, name)
+	VALUES
+	( 'edf6e973-473e-390b-91da-a7601c0d434d','NEEDS_CORRECTED' ),
+	('279ac5dd-73c3-3578-bebe-b10e172c4f38','IMPORTANT' );
+
 COMMIT;

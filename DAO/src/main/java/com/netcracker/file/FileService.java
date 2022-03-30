@@ -1,6 +1,7 @@
 package com.netcracker.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
@@ -22,6 +23,7 @@ public class FileService {
  public static final String ORDERS_PATH = "orders.json";
  public static final String OUTFIT_PATH = "outfit.json";
  public static final String CAR_PATH = "car.json";
+ public static final String BREAKDOWN = "breakdown.json";
 
  private final File car = new File(CAR_PATH);
  private final File user = new File(USER_PATH);
@@ -29,6 +31,7 @@ public class FileService {
  private final File receiver = new File(RECEIVER_PATH);
  private final File orders = new File(ORDERS_PATH);
  private final File outfit = new File(OUTFIT_PATH);
+ private final File breakdown = new File(BREAKDOWN);
 
  public File getCar() {
   return car;
@@ -62,12 +65,16 @@ public class FileService {
   return Files.exists(receiver.toPath());
  }
 
+ public File getBreakdown() {
+  return breakdown;
+ }
+
  public File getOutfit() {
   return outfit;
  }
 
  public void initMethod() {//Data for the first launch of the application
-  List.of(orders, user, master, receiver, outfit, car).forEach(x -> {
+  List.of(orders, user, master, receiver, outfit, car, breakdown).forEach(x -> {
    try {
     objectMapper.readTree(x);
    } catch (IOException e) {
@@ -85,8 +92,11 @@ public class FileService {
 
   ObjectMapperServices.getObjectMapper().writeValue(orders, "");
   ObjectMapperServices.getObjectMapper().writeValue(outfit, "");
+  ObjectMapperServices.getObjectMapper().writeValue(breakdown, "");
 
   String test = "test";
+
+
   List<UUID> carClients = new ArrayList<>();
   Client client = Client.builder()
    .carClients(carClients)
@@ -125,7 +135,6 @@ public class FileService {
    .stateOrder(State.BID.getId())
    .updatedDate(new Date())
    .createdDate(new Date())
-   .priceSum(12D)
    .id(UUID.randomUUID())
    .build();
   ObjectMapperServices.getObjectMapper().writeValue(orders, List.of(order));
@@ -147,6 +156,19 @@ public class FileService {
    .order(UUID.randomUUID())
    .build();
   ObjectMapperServices.getObjectMapper().writeValue(this.outfit, List.of(outfit));
+
+  CarBreakdown carBreakdown = CarBreakdown.builder()
+   .carClient(carClient.getId())
+   .descriptions(test)
+   .location(test)
+   .state(com.netcracker.breakdown.State.IMPORTANT.getId())
+   .runCarSize(test)
+   .id(UUID.randomUUID())
+   .build();
+
+  ObjectMapperServices.getObjectMapper().writeValue(this.breakdown, List.of(carBreakdown));
+
+
  }
 
 }

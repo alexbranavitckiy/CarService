@@ -6,6 +6,7 @@ import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.edit.EditOrder;
+import com.netcracker.menu.order.master.ListMaster;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.Order;
@@ -57,7 +58,9 @@ public class ListOrders implements Menu {
       }
       log.info("Go to order ID:");
       this.order = orders.get(in.nextInt() - 1);
-      this.EditOrder(in);
+      this.editOrder(in);
+      log.info("Create an outfit with this order?\n1-yes.\n2-no.");
+      this.createOutfit(in, outfitsServices);
       break label;
      } catch (EmptySearchException e) {
       log.warn("The search has not given any results. {}", e.getMessage());
@@ -75,17 +78,9 @@ public class ListOrders implements Menu {
       this.printOrders(orders);
       log.info("Go to order ID:");
       this.order = orders.get(in.nextInt() - 1);
-      this.EditOrder(in);
+      this.editOrder(in);
       log.info("Create an outfit? 1-yeas. 2-no");
-      if (in.next().equals("1")) {
-       log.info("Outfit data:");
-       CreateOutfit createOutfit = new CreateOutfit(this.order.getId(), servicesFactory);
-       createOutfit.run(in, "Main menu");
-       order.setOutfits(new ArrayList<>());
-       order.getOutfits().add(createOutfit.getOrder());
-       validator.successfullyMessages(orderServices.updateOrder(order));
-       validator.successfullyMessages(outfitsServices.addObjectInOutfits(createOutfit.getOutfit()));
-      }
+      this.createOutfit(in, outfitsServices);
      } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());
      } catch (IndexOutOfBoundsException e) {
@@ -106,15 +101,26 @@ public class ListOrders implements Menu {
   }
  }
 
+ private void createOutfit(Scanner in, OutfitsServices outfitsServices) throws IOException {
+  if (in.next().equalsIgnoreCase("1")) {
+   CreateOutfit createOutfit = new CreateOutfit(this.order.getId(), servicesFactory);
+   createOutfit.run(in, "Main menu");
+   log.info("appoint master.");
+   validator.successfullyMessages(outfitsServices.addObjectInOutfits(createOutfit.getOutfit()));
+   this.order.setOutfits(List.of(createOutfit.getOutfit().getId()));
+   validator.successfullyMessages(orderServices.updateOrder(this.order));
+  }
+ }
+
  private void printOrders(List<Order> orders) {
   if (orders.size() > 0) {
-   for (int x = 1; x < orders.size() + 1; x++) {
+   for (int x = 1; x < orders.size(); x++) {
     log.info("Id:{} {} ", x, orders.get(x - 1));
    }
   }
  }
 
- private void EditOrder(Scanner in) throws IOException {
+ private void editOrder(Scanner in) throws IOException {
   log.info("Edit Order? 1-yeas. 2-no");
   if (in.next().equals("1")) {
    EditOrder editOrder = new EditOrder(this.order);

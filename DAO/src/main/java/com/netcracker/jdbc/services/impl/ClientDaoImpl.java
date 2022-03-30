@@ -23,7 +23,7 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> implements Clie
 
  @Override
  public String getSelectByIdQuery() {
-  return "SELECT * FROM public.clients where  id=?;";
+  return "SELECT * FROM clients where  id=?;";
  }
 
  @Override
@@ -80,9 +80,9 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> implements Clie
   preparedStatement.setObject(1, client.getId());
   preparedStatement.setString(2, client.getPassword());
   preparedStatement.setString(3, client.getLogin());
-  preparedStatement.setString(4, client.getName());//TODO!!
-  preparedStatement.setObject(5, client.getRoleUser());//.getId()
-  preparedStatement.setString(6, client.getName());//TODO!!
+  preparedStatement.setString(4, client.getName());
+  preparedStatement.setObject(5, client.getRoleUser());
+  preparedStatement.setString(6, client.getName());
   preparedStatement.setString(7, client.getEmail());
   preparedStatement.setObject(8, client.getPhone());
   preparedStatement.setString(9, client.getDescription());

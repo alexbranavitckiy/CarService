@@ -1,6 +1,7 @@
 package com.netcracker.factory;
 
 import com.netcracker.*;
+import com.netcracker.file.services.impl.breakdown.CarBreakdownServicesImpl;
 import com.netcracker.file.services.impl.car.CarServicesImpl;
 import com.netcracker.file.services.impl.client.ClientServicesImpl;
 import com.netcracker.file.services.impl.login.LoginServicesImpl;
@@ -46,4 +47,8 @@ public class FileDaoFactory implements DaoFactory {
   return new MasterReceiverServicesImpl();
  }
 
+ @Override
+ public CarBreakdownServices getCarBreakdownServices() {
+  return new CarBreakdownServicesImpl();
+ }
 }

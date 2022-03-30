@@ -1,19 +1,22 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
+import com.netcracker.jdbc.services.OutfitDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.outfit.Outfit;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
+public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> implements OutfitDao {
 
  @Override
  public String getSelectQuery() {
@@ -27,7 +30,33 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
 
  @Override
  public String getCreateQuery() {
-  return "INSERT INTO public.outfits(id, name_outfits, descriptions, start_date, end_date, price_sum, state_outfits,id_master,id_orders) VALUES (?,?,?, ?, ?, ?, ?, ?, ?);";
+  return "INSERT INTO public.outfits(id, name_outfits, descriptions, start_date, end_date, price_sum, state_outfits,id_master,id_orders) VALUES (?,?,?, ?, ? , ?, ?, ?, ?);";
+ }
+
+ @Override
+ public String getAllByMasterAndState() {
+  return "SELECT * FROM public.outfits where id_master=? and state_outfits=?;";
+ }
+
+ @Override
+ public String getAllByState() {
+  return "SELECT * FROM public.outfits where  state_outfits=?;";
+ }
+
+ @Override
+ public String getAllByMaster() {
+  return "SELECT * FROM public.outfits where id_master=?;";
+ }
+
+ @Override
+ public String getAllBetweenDate() {
+  return "SELECT * FROM  public.outfits WHERE start_date BETWEEN ? AND ?;";
+ }
+
+
+ @Override
+ public String getAllSortByDateDesc() {
+  return "SELECT * FROM public.outfits  ORDER BY start_date  DESC;";
  }
 
  @Override
@@ -49,8 +78,8 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
      .id(UUID.fromString(rs.getString("id")))
      .name(rs.getString("name_outfits"))
      .descriptions(rs.getString("descriptions"))
-     .dateStart((Date) rs.getObject("start_date"))
-     .dateEnt((Date) rs.getObject("end_date"))
+     .dateStart(rs.getTimestamp("start_date"))
+     .dateEnt(rs.getTimestamp("end_date"))
      .employer(UUID.fromString(rs.getString("id_master")))
      .price(rs.getDouble("price_sum"))
      .stateOutfit((UUID) rs.getObject("state_outfits"))
@@ -60,7 +89,7 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
    }
    return masters;
   } catch (Exception e) {
-   log.warn("Entity parsing error:{}",e.getMessage());
+   log.warn("Entity parsing error:{}", e.getMessage());
    throw new PersistException(e);
   }
  }
@@ -76,14 +105,14 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
    statement.setObject(1, outfit.getId());
    statement.setObject(2, outfit.getName());
    statement.setObject(3, outfit.getDescriptions());
-   statement.setDate(4, new java.sql.Date(outfit.getDateStart().getTime()));
-   statement.setDate(5, new java.sql.Date(outfit.getDateEnt().getTime()));
+   statement.setTimestamp(4, new Timestamp(outfit.getDateStart().getTime()));
+   statement.setTimestamp(5, new Timestamp(outfit.getDateEnt().getTime()));
    statement.setObject(6, outfit.getPrice());
    statement.setObject(7, outfit.getStateOutfit());
    statement.setObject(8, outfit.getEmployer());
    statement.setObject(9, outfit.getOrder());
   } catch (Exception e) {
-   log.warn("Entity parsing error:{}",e.getMessage());
+   log.warn("Entity parsing error:{}", e.getMessage());
    throw new PersistException(e);
   }
  }
@@ -95,9 +124,8 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> {
   try {
    statement.setObject(10, outfit.getId());
   } catch (Exception e) {
-   log.warn("Entity parsing error:{}",e.getMessage());
+   log.warn("Entity parsing error:{}", e.getMessage());
   }
  }
-
 
 }

@@ -44,10 +44,6 @@ public class EditOrder implements Menu {
   } else {
    this.order.setStateOrder(validator.orderState(in));
   }
-  log.info("Price sum:");
-  if (validator.edit(String.valueOf(this.order.getPriceSum()), in)) {
-   this.order.setPriceSum(validator.validatePrice(in));
-  }
   this.order.setUpdatedDate(new Date());
  }
 

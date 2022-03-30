@@ -5,29 +5,30 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.EntityId;
 import com.netcracker.marka.CarClient;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CarBreakdown implements EntityId<UUID> {
 
  private UUID id;
 
- private CarClient carClient;
-
- private List<UUID> typeCarBreakdowns;
+ private UUID carClient;
 
  private String descriptions;
 
- private Double runCarSize;
+ private String runCarSize;
 
- private State state;
+ private UUID state;
+
+ private String location;
 
 }

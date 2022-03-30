@@ -26,8 +26,6 @@ public class Order implements EntityId<UUID> {
 
  private UUID idCar;
 
- private double priceSum;
-
  private UUID clientUUID;
 
  private UUID stateOrder;

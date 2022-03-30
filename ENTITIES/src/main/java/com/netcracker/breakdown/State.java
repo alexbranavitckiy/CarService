@@ -8,7 +8,9 @@ import java.util.UUID;
 
 public enum State implements EntityId<UUID> {
  CORRECTED,
- NOT_FIXED;
+ NOT_FIXED,
+ IMPORTANT,
+ NEEDS_CORRECTED;
 
  @Override
  public UUID getId() {

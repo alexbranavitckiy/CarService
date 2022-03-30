@@ -1,13 +1,11 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
-import com.netcracker.jdbc.ConnectorDB;
 import com.netcracker.jdbc.services.CarDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.marka.CarClient;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +25,16 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> implement
  @Override
  public String getSelectAllByIdClient() {
   return "SELECT * FROM public.car_clients where id_clients=?;";
+ }
+
+ @Override
+ public String getAllCarClientWaitState() {
+  return "SELECT   car_clients.id, id_clients, id_breakdown, summary, ear, run, metadata_car, car_clients.descriptions FROM public.car_clients, public.orders where car_clients.id_clients=?  AND orders.id_state_order =?";
+ }
+
+ @Override
+ public String getAllCarWithState() {
+  return "SELECT   car_clients.id, id_clients, id_breakdown, summary, ear, run, metadata_car, car_clients.descriptions FROM public.car_clients, public.orders where orders.id_state_order =?";
  }
 
  @Override
@@ -79,7 +87,6 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> implement
   }
  }
 
-
  @Override
  protected void prepareStatementForUpdate(PreparedStatement preparedStatement, CarClient carClient)
   throws PersistException {
@@ -95,7 +102,7 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> implement
   preparedStatement.setObject(1, carClient.getId());
   preparedStatement.setObject(2, carClient.getId_clients());
   preparedStatement.setObject(3, carClient.getSummary());
-  preparedStatement.setObject(4, Date.valueOf(LocalDate.parse("2018-05-05")));
+  preparedStatement.setObject(4, Date.valueOf(carClient.getEar()));
   preparedStatement.setObject(5, carClient.getRun());
   preparedStatement.setObject(6, carClient.getMetadataCar());
   preparedStatement.setObject(7, carClient.getDescriptions());

@@ -7,6 +7,7 @@ import com.netcracker.jdbc.ConnectorDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -95,6 +96,7 @@ public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> i
    throw new PersistException(e);
   }
  }
+
  public boolean addByQuery(T object, String query) throws PersistException {
   try (Connection connection = ConnectorDB.getConnection();
        PreparedStatement statement = connection.prepareStatement(query)) {
@@ -106,6 +108,18 @@ public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> i
   }
  }
 
+ public List<T> getAllByAnyQuery(String query, Object... objects) throws PersistException {
+  List<T> list;
+  try (Connection connection = ConnectorDB.getConnection();
+       PreparedStatement statement = connection.prepareStatement(query)) {
+   this.statementOne(statement, objects);
+   ResultSet rs = statement.executeQuery();
+   list = parseResultSet(rs);
+  } catch (Exception e) {
+   throw new PersistException(e);
+  }
+  return list;
+ }
 
  public List<T> getAllByQuery(Object object, String query) throws PersistException {
   List<T> list;
@@ -120,4 +134,20 @@ public abstract class TemplateJDBCDao<T extends EntityId<PK>, PK extends UUID> i
   return list;
  }
 
+ public void statementOne(PreparedStatement statement, Object... objects) throws SQLException {
+  for (int x = 0; x < objects.length; x++) {
+   statement.setObject(x + 1, objects[x]);
+  }
+ }
+
+ public boolean byAnyQuery(String query, Object... objects) throws PersistException {
+  try (Connection connection = ConnectorDB.getConnection();
+       PreparedStatement statement = connection.prepareStatement(query)) {
+   this.statementOne(statement, objects);
+   statement.executeUpdate();
+   return true;
+  } catch (Exception e) {
+   throw new PersistException(e);
+  }
+ }
 }

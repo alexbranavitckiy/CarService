@@ -4,6 +4,8 @@ import com.netcracker.errors.EmptySearchException;
 import com.netcracker.order.Order;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface OrderServices {
 
@@ -16,4 +18,8 @@ public interface OrderServices {
  boolean updateOrder(Order order);
 
  List<Order> getOrderWithRequestState();
+
+ boolean cancelRequest(UUID uuidCar);
+
+ Optional<Order> getOrderByIdCar(UUID car);
 }

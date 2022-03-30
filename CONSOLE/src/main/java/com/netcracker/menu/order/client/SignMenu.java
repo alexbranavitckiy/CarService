@@ -31,9 +31,8 @@ public class SignMenu implements Menu {
 
  @Override
  public void preMessage(String nameMenu) {
-  log.info("Enter 1 {}", nameMenu);
-  log.info("Enter 2 Submit a repair request");
-  // log.info("Enter 3 Find out about the status of the order and the machine");//TODO Add functionality!!!
+  log.info("Enter 1. {}", nameMenu);
+  log.info("Enter 2. Submit a repair request");
  }
 
  @Override
@@ -57,22 +56,25 @@ public class SignMenu implements Menu {
         try {
          log.info("Enter car id");
          CarClient carClient = carClients.get(in.nextInt() - 1);
-         UUID orderUUID = UUID.randomUUID();
-         log.info("Fill in the request information");
-         Order order = Order.builder()
-          .id(orderUUID)
-          .clientUUID(UserSession.getClientSession().get().getId())
-          .stateOrder(State.REQUEST.getId())
-          .outfits(new ArrayList<>())
-          .createdDate(new Date())
-          .idCar(carClient.getId())
-          .updatedDate(new Date())
-          .label(new ArrayList<>())
-          .descriptions(validator.validateDescription(in))
-          .priceSum(0d)
-          .build();
-         order.setMasterReceiver(servicesFactory.getFactory().getMasterReceiverServices().getAllMasterReceiver().stream().findFirst().get().getId());
-         validator.successfullyMessages(orderServices.repairRequest(order));
+         if (orderServices.getOrderByIdCar(carClient.getId()).isEmpty()) {
+          UUID orderUUID = UUID.randomUUID();
+          log.info("Fill in the request information");
+          Order order = Order.builder()
+           .id(orderUUID)
+           .clientUUID(UserSession.getClientSession().get().getId())
+           .stateOrder(State.REQUEST.getId())
+           .outfits(new ArrayList<>())
+           .createdDate(new Date())
+           .idCar(carClient.getId())
+           .updatedDate(new Date())
+           .label(new ArrayList<>())
+           .descriptions(validator.validateDescription(in))
+           .build();
+          order.setMasterReceiver(servicesFactory.getFactory().getMasterReceiverServices().getAllMasterReceiver().stream().findFirst().get().getId());
+          validator.successfullyMessages(orderServices.repairRequest(order));
+         } else {
+          log.info("Request for an order with this vehicle has been sent");
+         }
          this.preMessage(parentsName);
         } catch (IndexOutOfBoundsException e) {
          log.info("The selected car was not found. Please try again");

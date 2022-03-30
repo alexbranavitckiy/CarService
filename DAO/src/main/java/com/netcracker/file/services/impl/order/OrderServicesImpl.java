@@ -1,6 +1,7 @@
 package com.netcracker.file.services.impl.order;
 
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import com.netcracker.file.services.CRUDServices;
@@ -10,6 +11,7 @@ import com.netcracker.OrderServices;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,12 +55,32 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public boolean repairRequest(Order order)  {
+ public boolean repairRequest(Order order) {
   try {
    return (searchServices.addObject(order, new File(FileService.ORDERS_PATH), Order[].class));
   } catch (Exception e) {
    log.error("Error adding object", e);
   }
   return false;
+ }
+
+ @Override
+ public boolean cancelRequest(UUID uuidCar) {
+  try {
+   return (searchServices
+    .deleteObjectById(searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class)
+     .stream().filter(x -> x.getIdCar().equals(uuidCar)).findFirst()
+     .get(), new File(FileService.ORDERS_PATH), Order[].class));
+  } catch (Exception e) {
+   log.error("Error adding object", e);
+  }
+  return false;
+ }
+
+ @Override
+ @SneakyThrows
+ public Optional<Order> getOrderByIdCar(UUID car) {
+  return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class)
+   .stream().filter(x -> x.getIdCar().equals(car)).findFirst();
  }
 }

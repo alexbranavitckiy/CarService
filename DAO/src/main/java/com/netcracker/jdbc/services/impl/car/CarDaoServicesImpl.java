@@ -5,6 +5,7 @@ import com.netcracker.errors.PersistException;
 import com.netcracker.jdbc.services.CarDao;
 import com.netcracker.jdbc.services.impl.CarClientDaoImpl;
 import com.netcracker.marka.CarClient;
+import com.netcracker.order.State;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,4 +59,24 @@ public class CarDaoServicesImpl implements CarServices {
   return false;
  }
 
+
+ @Override
+ public List<CarClient> getAllCarClientWaitState(State state, UUID uuidClient) {
+  try {
+   return carDao.getAllByAnyQuery(carDao.getAllCarClientWaitState(),uuidClient, state.getId());
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return new ArrayList<>();
+ }
+
+ @Override
+ public List<CarClient> getAllCarClientWithState(State state) {
+  try {
+   return carDao.getAllByAnyQuery(carDao.getAllCarWithState(), state.getId());
+  } catch (PersistException p) {
+   log.warn("Error getting data car:{}", p.getMessage());
+  }
+  return new ArrayList<>();
+ }
 }

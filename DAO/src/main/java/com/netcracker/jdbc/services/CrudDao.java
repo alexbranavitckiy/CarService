@@ -24,5 +24,8 @@ public interface CrudDao<T extends EntityId<K>, K extends Serializable> {
 
  boolean addByQuery(T object, String query) throws PersistException;
 
+ boolean byAnyQuery( String query,Object...objects) throws PersistException;
+
+ List<T> getAllByAnyQuery( String query,Object...objects) throws PersistException;
 }
 

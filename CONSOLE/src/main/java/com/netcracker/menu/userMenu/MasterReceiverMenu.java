@@ -1,5 +1,7 @@
 package com.netcracker.menu.userMenu;
 
+import com.netcracker.CarServices;
+import com.netcracker.OutfitsServices;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.ListCarClient;
@@ -14,6 +16,7 @@ import com.netcracker.menu.registration.RegistrationMaster;
 import com.netcracker.OrderServices;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
+import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -23,12 +26,16 @@ import java.util.Scanner;
 public class MasterReceiverMenu implements Menu {
 
  private final OrderServices orderServices;
+ private final CarServices carServices;
+ private final OutfitsServices outfitsServices;
  private final ServicesFactory servicesFactory;
  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public MasterReceiverMenu(ServicesFactory servicesFactory) {
+  this.carServices = servicesFactory.getFactory().getCarServices();
   this.orderServices = servicesFactory.getFactory().getOrderServices();
   this.servicesFactory = servicesFactory;
+  this.outfitsServices = servicesFactory.getFactory().getOutfitServices();
  }
 
  @Override
@@ -39,9 +46,18 @@ public class MasterReceiverMenu implements Menu {
   log.info("Enter 4 to create:\n-Master\n-Master receiver");
   log.info("Enter 5 to edit personal information");
   log.info("Enter 6 to search and modify a client");
-  log.info("Enter 7 Go to the list of outfits");
+  log.info("Enter 7 Go to the list of outfits.\n-By date\n-All outfits");
   log.info("Enter 8 Show a list of requests from customers({})",
    this.getOrderSize());
+
+  log.info("Outfits with status:END({})", outfitsServices.getAllByState(com.netcracker.outfit.State.END.getId()).size());
+  log.info("Outfits with status:RECORDED({})", outfitsServices.getAllByState(com.netcracker.outfit.State.RECORDED.getId()).size());
+  log.info("Outfits with status:CAR_GIVEN({})", outfitsServices.getAllByState(com.netcracker.outfit.State.WORK.getId()).size());
+
+
+  log.info("Orders with status:IN_WORK({})", carServices.getAllCarClientWithState(State.IN_WORK).size());
+  log.info("Orders with status:CAR_GIVEN({})", carServices.getAllCarClientWithState(State.CAR_GIVEN).size());
+  log.info("Orders with status:WAIT_CLIENT({})", carServices.getAllCarClientWithState(State.WAIT_CLIENT).size());
  }
 
  @Override

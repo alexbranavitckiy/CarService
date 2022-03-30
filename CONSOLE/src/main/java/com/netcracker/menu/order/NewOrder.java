@@ -69,7 +69,6 @@ public class NewOrder implements Menu {
         .updatedDate(new Date())
         .label(new ArrayList<>())
         .descriptions(validator.validateDescription(in))
-        .priceSum(0d)
         .build();
        log.info("Outfit data:");
        CreateOutfit createOutfit = new CreateOutfit(orderUUID, servicesFactory);
@@ -77,7 +76,6 @@ public class NewOrder implements Menu {
         "");
        order.setOutfits(new ArrayList<>());
        order.getOutfits().add(createOutfit.getOrder());
-       System.out.println(order);
        orderServices.addOrder(order);
        validator.successfullyMessages(servicesFactory.getFactory().getOutfitServices().addObjectInOutfits(createOutfit.getOutfit()));
       }

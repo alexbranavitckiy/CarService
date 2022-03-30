@@ -8,4 +8,8 @@ public interface CarDao extends CrudDao<CarClient, UUID> {
 
  String getSelectAllByIdClient();
 
+ String getAllCarClientWaitState();
+
+ String getAllCarWithState();
+
 }

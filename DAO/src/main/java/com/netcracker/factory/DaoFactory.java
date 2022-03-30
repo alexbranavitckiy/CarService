@@ -18,6 +18,6 @@ public interface DaoFactory {
 
  MasterReceiverServices getMasterReceiverServices();
 
-
+ CarBreakdownServices getCarBreakdownServices();
 
 }

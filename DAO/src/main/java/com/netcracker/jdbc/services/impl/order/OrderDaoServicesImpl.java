@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 public class OrderDaoServicesImpl implements OrderServices {
@@ -64,5 +66,25 @@ public class OrderDaoServicesImpl implements OrderServices {
    log.warn("Order add error:{}", p.getMessage());
   }
   return false;
+ }
+
+ @Override
+ public boolean cancelRequest(UUID uuidCar) {
+  try {
+   return orderDao.byAnyQuery(orderDao.deleteOrderByIdCar(), uuidCar);
+  } catch (PersistException p) {
+   log.warn("Order add error:{}", p.getMessage());
+  }
+  return false;
+ }
+
+ @Override
+ public Optional<Order> getOrderByIdCar(UUID car) {
+  try {
+   return orderDao.getAllByAnyQuery(orderDao.getSelectByIdCarQuery(), car).stream().findFirst();
+  } catch (PersistException p) {
+   log.warn("Order add error:{}", p.getMessage());
+  }
+  return Optional.empty();
  }
 }
