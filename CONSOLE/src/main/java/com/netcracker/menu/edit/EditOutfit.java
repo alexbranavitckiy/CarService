@@ -6,8 +6,10 @@ import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.outfit.Outfit;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
+import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -36,7 +38,8 @@ public class EditOutfit implements Menu {
    this.outfit.setName(validator.validateNameOutfit(in));
   }
   log.info("Enter state outfit");
-  if (validator.edit(this.outfit.getStateOutfit().toString(), in)) {
+  if (validator.edit(List.of(State.values()).stream()
+   .filter(z -> z.getId().equals(this.outfit.getStateOutfit())).findFirst().get().name(), in)) {
    this.outfit.setStateOutfit(validator.stateOutfit(in));
   }
   log.info("Enter price outfit");

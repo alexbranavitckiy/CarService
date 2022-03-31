@@ -67,7 +67,10 @@ public class MasterMenu implements Menu {
       try {
        Outfit outfit = outfitList.get(in.nextInt() - 1);
        log.info("Enter information about breakdowns");
-       CarBreakdownCreate carBreakdownCreate = new CarBreakdownCreate(outfit.getId(), servicesFactory);
+       CarBreakdownCreate carBreakdownCreate = new CarBreakdownCreate(servicesFactory
+        .getFactory()
+        .getOrderServices()
+        .getOrderById(outfit.getOrder()).get().getIdCar(), servicesFactory);
        carBreakdownCreate.run(in, "");
        log.info("Descriptions");
        if (validator.edit(outfit.getDescriptions(), in)) {

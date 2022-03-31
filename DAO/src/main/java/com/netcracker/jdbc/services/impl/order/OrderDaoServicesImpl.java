@@ -87,4 +87,14 @@ public class OrderDaoServicesImpl implements OrderServices {
   }
   return Optional.empty();
  }
+
+ @Override
+ public Optional<Order> getOrderById(UUID uuid) {
+  try {
+   return orderDao.getById(uuid).stream().findFirst();
+  } catch (PersistException p) {
+   log.warn("Order add error:{}", p.getMessage());
+  }
+  return Optional.empty();
+ }
 }

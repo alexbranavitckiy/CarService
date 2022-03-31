@@ -3,7 +3,7 @@ DROP TABLE if exists clients,qualifications, car_clients,label,employers,master_
 
 create table if not exists qualifications(
 id UUID primary key,
-name varchar(50));
+name_qualifications varchar(50));
 
 create table if not exists employers(
 id UUID primary key ,
@@ -32,7 +32,7 @@ foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 create table if not exists role_user(
 id UUID primary key,
-name varchar(50));
+role varchar(50));
 
 create table if not exists state_car_breakdown(
 id UUID primary key,
@@ -108,7 +108,7 @@ foreign key (id_orders) references orders(id)
 
 create table if not exists state_outfits(
 id UUID primary key,
-name varchar(50));
+state varchar(50));
 
 create table if not exists outfits(
 id UUID primary key,
@@ -125,12 +125,12 @@ constraint foreign_key_state_outfits foreign key (state_outfits) references stat
 constraint foreign_key_orders_outfits foreign key (id_orders) references orders(id)
 );
 
-INSERT INTO public.role_user  (id,name)
+INSERT INTO public.role_user  (id,role)
 VALUES
 ('c1a4d3ea-a5e5-3205-beb2-894e21c4a2bf', 'REGISTERED'),
 ('c65b6b5a-311f-369f-9936-5e0b45ca6907', 'UNREGISTERED');
 
-INSERT INTO public.qualifications(id, name)
+INSERT INTO public.qualifications(id, name_qualifications)
 VALUES ('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'DISC_EDITING'),
 ('efa1d473-42dc-3d5c-af48-448b55c705cc', 'ELECTRICIAN');
 
@@ -159,7 +159,7 @@ INSERT INTO public.state_car_breakdown(
 	('b3c1b7df-bc67-3b62-adb7-f44946c07784', 'NOT_FIXED');
 
 INSERT INTO public.state_outfits(
-	id, name)
+	id, state)
 	VALUES ('b1a326c0-6d88-3f04-af73-d70f50197905','END')
 	,('9f20f1fb-4bd4-3381-84d4-f642b3159812','WORK')
 	,('8eaf13f3-6ff5-3721-8a27-449e4a36517e', 'NO_STATE');
@@ -177,7 +177,7 @@ INSERT INTO public.state_orders(
 	('61613d5a-4896-3fbf-9bdb-8cb2f476b7f6', 'BID');
 
 	INSERT INTO public.state_outfits(
-	id, name)
+	id, state)
 	VALUES ('e11c6364-ef1b-36b5-ac2b-5e507c7d0910', 'RECORDED');
 
 	INSERT INTO public.state_car_breakdown(

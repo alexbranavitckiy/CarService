@@ -10,11 +10,9 @@ import com.netcracker.outfit.Outfit;
 import com.netcracker.OutfitsServices;
 
 import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
+import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -108,10 +106,12 @@ public class ListOutfit implements Menu {
  private void print(List<Outfit> outfitList, Scanner in) {
   if (outfitList.size() > 0) {
    for (int x = 0; x < outfitList.size(); x++) {
+    UUID uuidState=outfitList.get(x).getStateOutfit();
     log.info(
      "Id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
      x + 1, outfitList.get(x).getDateStart(), outfitList.get(x).getDateEnt(),
-     outfitList.get(x).getStateOutfit(), outfitList.get(x).getDescriptions(),
+     List.of(State.values()).stream().filter(z -> z.getId().equals(uuidState)).findFirst().get().name()
+    , outfitList.get(x).getDescriptions(),
      outfitList.get(x).getName());
    }
    log.info("Enter outfit id");

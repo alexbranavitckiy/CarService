@@ -22,4 +22,6 @@ public interface OrderServices {
  boolean cancelRequest(UUID uuidCar);
 
  Optional<Order> getOrderByIdCar(UUID car);
+
+ Optional<Order> getOrderById(UUID uuid);
 }

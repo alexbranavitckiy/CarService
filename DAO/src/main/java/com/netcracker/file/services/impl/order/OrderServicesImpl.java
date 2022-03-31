@@ -83,4 +83,11 @@ public class OrderServicesImpl implements OrderServices {
   return searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class)
    .stream().filter(x -> x.getIdCar().equals(car)).findFirst();
  }
+
+ @Override
+ @SneakyThrows
+ public Optional<Order> getOrderById(UUID uuid) {
+  return  searchServices.getAll(new File(FileService.ORDERS_PATH), Order[].class)
+   .stream().filter(x -> x.getId().equals(uuid)).findFirst();
+ }
 }

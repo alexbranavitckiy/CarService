@@ -13,12 +13,9 @@ import com.netcracker.order.Order;
 import com.netcracker.OrderServices;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
+import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -51,11 +48,7 @@ public class ListOrders implements Menu {
     case "2": {
      try {
       List<Order> orders = orderServices.getAll();
-      if (orders.size() > 0) {
-       for (int x = 1; x < orders.size() + 1; x++) {
-        log.info("Id:{} {} ", x, orders.get(x - 1));
-       }
-      }
+      printOrders(orders);
       log.info("Go to order ID:");
       this.order = orders.get(in.nextInt() - 1);
       this.editOrder(in);
@@ -75,12 +68,14 @@ public class ListOrders implements Menu {
     case "3": {
      try {
       List<Order> orders = orderServices.getOrderWithRequestState();
-      this.printOrders(orders);
-      log.info("Go to order ID:");
-      this.order = orders.get(in.nextInt() - 1);
-      this.editOrder(in);
-      log.info("Create an outfit? 1-yeas. 2-no");
-      this.createOutfit(in, outfitsServices);
+      if (orders.size() > 0) {
+       this.printOrders(orders);
+       log.info("Go to order ID:");
+       this.order = orders.get(in.nextInt() - 1);
+       this.editOrder(in);
+       log.info("Create an outfit? 1-yeas. 2-no");
+       this.createOutfit(in, outfitsServices);
+      } else log.info("No data with this status");
      } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());
      } catch (IndexOutOfBoundsException e) {
@@ -113,9 +108,18 @@ public class ListOrders implements Menu {
  }
 
  private void printOrders(List<Order> orders) {
+  Order order;
   if (orders.size() > 0) {
-   for (int x = 1; x < orders.size(); x++) {
-    log.info("Id:{} {} ", x, orders.get(x - 1));
+   for (int x = 0; x < orders.size(); x++) {
+    order = orders.get(x);
+    UUID uuidState = order.getStateOrder();
+    log.info("Id:{} {} Created:{} {} Updated:{}"
+     , x
+     , List.of(State.values()).stream().filter(z -> z.getId().equals(uuidState)).findFirst().get().name()
+     , order.getCreatedDate()
+     , order.getDescriptions()
+     , order.getUpdatedDate()
+    );
    }
   }
  }
