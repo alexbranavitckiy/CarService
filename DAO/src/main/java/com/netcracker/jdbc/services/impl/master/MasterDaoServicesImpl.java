@@ -59,7 +59,7 @@ public class MasterDaoServicesImpl implements MasterServices {
  }
 
  public boolean passwordCheck(Master master) {
-  try {//TODO!!
+  try {
    if (loginService.searchByUserLoginAndPassword(master.getLogin(),
     master.getPassword())) {
     log.info("The username you entered is already taken");

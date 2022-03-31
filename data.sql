@@ -19,7 +19,6 @@ descriptions varchar(50) not null,
 foreign key (qualification_id) references qualifications(id)
 );
 
-
 create table if not exists masters(
 id UUID primary key,
 foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -32,13 +31,11 @@ foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
 
 create table if not exists role_user(
 id UUID primary key,
-role varchar(50));
+role varchar(50) not null unique);
 
 create table if not exists state_car_breakdown(
 id UUID primary key,
-name varchar(50));
-
-
+state_car varchar(50) not null unique);
 
 create table if not exists clients(
 id UUID primary key,
@@ -52,6 +49,7 @@ phone varchar(100),
 descriptions varchar(100) not null,
 constraint foreign_key_role_user foreign key (role_user) references role_user(id)
 );
+
 
 create table if not exists car_clients(
 id UUID primary key,
@@ -80,7 +78,7 @@ constraint foreign_key_state_car_breakdown_car_clients foreign key (id_car) refe
 
 create table if not exists state_orders(
 id UUID primary key,
-name varchar(50));
+state varchar(50)  not null unique);
 
 create table if not exists orders(
 id UUID primary key,
@@ -108,7 +106,7 @@ foreign key (id_orders) references orders(id)
 
 create table if not exists state_outfits(
 id UUID primary key,
-state varchar(50));
+state varchar(50) not null unique);
 
 create table if not exists outfits(
 id UUID primary key,
@@ -154,7 +152,7 @@ INSERT INTO public.clients(
 	 'clients', 'clients', 'clients', 'clients');
 
 INSERT INTO public.state_car_breakdown(
-	id, name)
+	id, state_car)
 	VALUES ('acfd38b7-5861-37a2-b04d-ce420b134a80', 'CORRECTED'),
 	('b3c1b7df-bc67-3b62-adb7-f44946c07784', 'NOT_FIXED');
 
@@ -165,7 +163,7 @@ INSERT INTO public.state_outfits(
 	,('8eaf13f3-6ff5-3721-8a27-449e4a36517e', 'NO_STATE');
 
 INSERT INTO public.state_orders(
-	id, name)
+	id, state)
 	VALUES
 	('9208fdeb-4912-3594-91a5-aa9c4a66aba1', 'TEMPLATE'),
 	('e11c6364-ef1b-36b5-ac2b-5e507c7d0910', 'RECORDED'),
@@ -181,7 +179,7 @@ INSERT INTO public.state_orders(
 	VALUES ('e11c6364-ef1b-36b5-ac2b-5e507c7d0910', 'RECORDED');
 
 	INSERT INTO public.state_car_breakdown(
-	id, name)
+	id, state_car)
 	VALUES
 	( 'edf6e973-473e-390b-91da-a7601c0d434d','NEEDS_CORRECTED' ),
 	('279ac5dd-73c3-3578-bebe-b10e172c4f38','IMPORTANT' );

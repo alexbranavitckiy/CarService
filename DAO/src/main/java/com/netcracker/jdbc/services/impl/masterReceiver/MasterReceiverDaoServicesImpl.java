@@ -29,8 +29,8 @@ public class MasterReceiverDaoServicesImpl implements MasterReceiverServices {
 
  @Override
  @SneakyThrows
- public boolean updateMaster(MasterReceiver masterReceiver) { //TODO!!! add password check for all entities analog login service from the file system
-  if (crudServices.update(//this.passwordCheck(masterReceiver)
+ public boolean updateMaster(MasterReceiver masterReceiver) {
+  if (crudServices.update(
    masterReceiver)) {
    return UserSession.updateSession(masterReceiver);
   }

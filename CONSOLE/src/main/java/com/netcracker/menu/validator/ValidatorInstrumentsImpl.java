@@ -4,11 +4,7 @@ import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -69,7 +65,7 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
  @Override
  public String validateYear(Scanner in) {
   stringBuilder.delete(0, stringBuilder.length());
-  log.info("Enter year of car. YYY-MM-DD");
+  log.info("Enter year. YYY-MM-DD");
   stringBuilder.append(in.next());
   if (Pattern.compile(YEAR_PATTERN).matcher(stringBuilder.toString().toLowerCase()).find()) {
    return stringBuilder.toString();
