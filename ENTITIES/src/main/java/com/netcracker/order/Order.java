@@ -18,7 +18,7 @@ public class Order implements EntityId<UUID> {
 
  private UUID id;
 
- private String descriptions;
+ private String description;
 
  private List<UUID> outfits;
 

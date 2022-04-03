@@ -9,6 +9,7 @@ import com.netcracker.file.services.impl.CRUDServicesImpl;
 import com.netcracker.file.services.impl.login.LoginServicesImpl;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.Client;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -36,6 +37,7 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
+ @SneakyThrows
  public boolean updateClient(Client client) {
   if (crudServices.updateObject(client,
    new File(FileService.USER_PATH), Client[].class)) {

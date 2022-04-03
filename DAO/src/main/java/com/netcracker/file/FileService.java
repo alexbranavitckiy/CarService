@@ -90,12 +90,11 @@ public class FileService {
 
  public void init() throws IOException {
 
-  ObjectMapperServices.getObjectMapper().writeValue(orders, "");
-  ObjectMapperServices.getObjectMapper().writeValue(outfit, "");
-  ObjectMapperServices.getObjectMapper().writeValue(breakdown, "");
+  objectMapper.writeValue(orders, "");
+  objectMapper.writeValue(outfit, "");
+  objectMapper.writeValue(breakdown, "");
 
   String test = "test";
-
 
   List<UUID> carClients = new ArrayList<>();
   Client client = Client.builder()
@@ -141,7 +140,7 @@ public class FileService {
 
   CarClient carClient = CarClient.builder()
    .id(UUID.randomUUID())
-   .descriptions(test)
+   .description(test)
    .ear(test)
    .run(test)
    .summary(test)
@@ -152,14 +151,14 @@ public class FileService {
    .employer(UUID.randomUUID())
    .dateEnt(new Date())
    .id(UUID.randomUUID())
-   .descriptions(test)
+   .description(test)
    .order(UUID.randomUUID())
    .build();
   ObjectMapperServices.getObjectMapper().writeValue(this.outfit, List.of(outfit));
 
   CarBreakdown carBreakdown = CarBreakdown.builder()
    .carClient(carClient.getId())
-   .descriptions(test)
+   .description(test)
    .location(test)
    .state(com.netcracker.breakdown.State.IMPORTANT.getId())
    .runCarSize(test)
@@ -167,7 +166,6 @@ public class FileService {
    .build();
 
   ObjectMapperServices.getObjectMapper().writeValue(this.breakdown, List.of(carBreakdown));
-
 
  }
 

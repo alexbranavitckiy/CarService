@@ -14,11 +14,12 @@ import java.util.UUID;
 import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class CreateOutfit implements Menu {
 
  private Outfit outfit;
- private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
  private final UUID orderUUID;
  private final ServicesFactory servicesFactory;
 
@@ -31,13 +32,13 @@ public class CreateOutfit implements Menu {
  public void run(Scanner in, String parentsName) throws IOException {
   this.outfit = Outfit.builder()
    .id(UUID.randomUUID())
-   .descriptions(validator.validateDescription(in))
+   .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
    .stateOutfit(State.RECORDED.getId())
-   .name(validator.validateNameOutfit(in))
-   .price(validator.validatePrice(in))
+   .name(VALIDATOR_INSTRUMENTS.validateNameOutfit(in))
+   .price(VALIDATOR_INSTRUMENTS.validatePrice(in))
    .order(this.orderUUID)
-   .dateEnt(validator.getDate(in))
-   .dateStart(validator.getDate(in))
+   .dateEnt(VALIDATOR_INSTRUMENTS.getDate(in))
+   .dateStart(VALIDATOR_INSTRUMENTS.getDate(in))
    .build();
   log.info("appoint master.");
   ListMaster listMaster = new ListMaster(servicesFactory);

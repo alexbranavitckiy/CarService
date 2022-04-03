@@ -16,7 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class ValidatorInstrumentsImpl implements ValidatorInstruments {
+public enum ValidatorInstrumentsImpl implements ValidatorInstruments {
+
+ VALIDATOR_INSTRUMENTS;
 
  private final StringBuilder stringBuilder = new StringBuilder(20);
 
@@ -312,8 +314,14 @@ public class ValidatorInstrumentsImpl implements ValidatorInstruments {
 
  @Override
  public String validateEducation(Scanner in) {
+  stringBuilder.delete(0, stringBuilder.length());
   log.info("Enter Education");
-  return in.next();
+  stringBuilder.append(in.next());
+  if (stringBuilder.length() > 3 && stringBuilder.length() < 50) {
+   return stringBuilder.toString();
+  }
+  log.info("Education must contain from 4 to 50 characters");
+  return validateEducation(in);
  }
 
  @Override

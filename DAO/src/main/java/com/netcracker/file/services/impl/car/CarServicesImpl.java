@@ -9,12 +9,15 @@ import com.netcracker.marka.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class CarServicesImpl implements CarServices {
 
  private final FileService fileService = new FileService();
@@ -50,10 +53,19 @@ public class CarServicesImpl implements CarServices {
  @Override
  @SneakyThrows
  public List<CarClient> getAllCarClientWaitState(State state, UUID uuidClient) {
-  List<CarClient> carClients = crudServices.getAll(new File(FileService.CAR_PATH), CarClient[].class)
-   .stream().filter(x -> { if (x!=null) return x.getId_clients().equals(uuidClient);return false;}).collect(Collectors.toList());
-  return getCarClients(state, carClients);
+  try {
+   List<CarClient> carClients = crudServices.getAll(new File(FileService.CAR_PATH), CarClient[].class)
+    .stream().filter(x -> {
+     if (x != null) return x.getId_clients().equals(uuidClient);
+     return false;
+    }).collect(Collectors.toList());
+   return getCarClients(state, carClients);
+  } catch (NullPointerException e) {
+   log.debug("Read error:{}", e.getMessage());
+   return new ArrayList<>();
+  }
  }
+
  @Override
  @SneakyThrows
  public List<CarClient> getAllCarClientWithState(State state) {

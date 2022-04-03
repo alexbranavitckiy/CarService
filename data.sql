@@ -19,6 +19,8 @@ descriptions varchar(50) not null,
 foreign key (qualification_id) references qualifications(id)
 );
 
+CREATE INDEX employers_index ON employers(password,login);
+
 create table if not exists masters(
 id UUID primary key,
 foreign key (id) references employers(id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -50,6 +52,7 @@ descriptions varchar(100) not null,
 constraint foreign_key_role_user foreign key (role_user) references role_user(id)
 );
 
+CREATE INDEX clients_index ON clients(password,login);
 
 create table if not exists car_clients(
 id UUID primary key,
@@ -93,6 +96,7 @@ constraint foreign_key_master_orders foreign key (id_car) references car_clients
 constraint foreign_key_id_orders foreign key (id_masters) references master_receivers(id),
 constraint foreign_state_order foreign key (id_state_order) references state_orders(id)
 );
+CREATE INDEX car_orders ON orders(updated_date,created_date);
 
 create table if not exists label(
 call_date timestamp,

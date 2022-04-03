@@ -30,7 +30,7 @@ public class CarBreakdownDaoImpl extends TemplateJDBCDao<CarBreakdown, UUID> imp
  }
 
  @Override
- public String getAllCarBreakdownDaoById_Car() {
+ public String getAllCarBreakdownsById() {
   return "SELECT * FROM public.car_breakdowns where id_car=?;";
  }
 
@@ -54,7 +54,7 @@ public class CarBreakdownDaoImpl extends TemplateJDBCDao<CarBreakdown, UUID> imp
      .state(UUID.fromString(rs.getString("state_id")))
      .runCarSize(rs.getString("run_car_size"))
      .location(rs.getString("locationd"))
-     .descriptions(rs.getString("descriptions"))
+     .description(rs.getString("descriptions"))
      .carClient(UUID.fromString(rs.getString("id_car")))
      .build();
     carClients.add(carClient);
@@ -89,7 +89,7 @@ public class CarBreakdownDaoImpl extends TemplateJDBCDao<CarBreakdown, UUID> imp
 
  private void addQuery(PreparedStatement preparedStatement, CarBreakdown carBreakdown) throws SQLException {
   preparedStatement.setObject(1, carBreakdown.getId());
-  preparedStatement.setObject(2, carBreakdown.getDescriptions());
+  preparedStatement.setObject(2, carBreakdown.getDescription());
   preparedStatement.setObject(3, "");
   preparedStatement.setObject(4, carBreakdown.getCarClient());
   preparedStatement.setObject(5, carBreakdown.getLocation());

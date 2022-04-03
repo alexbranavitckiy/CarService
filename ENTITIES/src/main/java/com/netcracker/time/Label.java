@@ -20,7 +20,7 @@ public class Label implements EntityId<UUID> {
 
  private Date date;
 
- private String descriptions;
+ private String description;
 
  private Order order;
 }

@@ -64,7 +64,7 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> implement
      .ear(rs.getString("ear"))
      .run(rs.getString("run"))
      .metadataCar(rs.getString("metadata_car"))
-     .descriptions(rs.getString("descriptions"))
+     .description(rs.getString("descriptions"))
      .id_clients((UUID) rs.getObject("id_clients"))
      .build();
     carClients.add(carClient);
@@ -105,7 +105,7 @@ public class CarClientDaoImpl extends TemplateJDBCDao<CarClient, UUID> implement
   preparedStatement.setObject(4, Date.valueOf(carClient.getEar()));
   preparedStatement.setObject(5, carClient.getRun());
   preparedStatement.setObject(6, carClient.getMetadataCar());
-  preparedStatement.setObject(7, carClient.getDescriptions());
+  preparedStatement.setObject(7, carClient.getDescription());
  }
 
 

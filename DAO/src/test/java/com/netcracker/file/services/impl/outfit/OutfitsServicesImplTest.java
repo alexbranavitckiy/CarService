@@ -39,7 +39,7 @@ public class OutfitsServicesImplTest {
   }
 
   @Test
-  public void testGetAllOutfits_Should_Return_True() throws EmptySearchException {
+  public void testGetAllOutfitsShouldReturnTrue() throws EmptySearchException {
     when(crudServices.getAll(Mockito.anyObject(), Mockito.any())).thenReturn(outfitList);
     Assert.assertEquals(outfitsServices.getAllOutfits(), outfitList);
     verify(outfitsServices.getAllOutfits());
@@ -47,27 +47,27 @@ public class OutfitsServicesImplTest {
   }
 
   @Test
-  public void testAddObjectInOutfits_Should_Return_True() {
+  public void testAddObjectInOutfitsShouldReturnTrue() {
     when(crudServices.addObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(
       true);
     Assert.assertTrue(outfitsServices.addObjectInOutfits(outfit));
   }
 
   @Test
-  public void testUpdateOutfit_Should_Return_True() {
+  public void testUpdateOutfitShouldReturnTrue() {
     when(crudServices.updateObject(Mockito.anyObject(), Mockito.any(), Mockito.any())).thenReturn(
       true);
     Assert.assertTrue(outfitsServices.updateOutfit(outfit));
   }
 
   @Test
-  public void testAddObjectInOutfits_Should_Return_False() {
+  public void testAddObjectInOutfitsShouldReturnFalse() {
     when(crudServices.addObject(null, new File(""), Outfit[].class)).thenReturn(false);
     Assert.assertFalse(outfitsServices.addObjectInOutfits(outfit));
   }
 
   @Test
-  public void testUpdateOutfit_Should_Return_False() {
+  public void testUpdateOutfitShouldReturnFalse() {
     when(crudServices.updateObject(null, new File(""), Outfit[].class)).thenReturn(false);
     Assert.assertFalse(outfitsServices.updateOutfit(null));
   }

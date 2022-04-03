@@ -13,6 +13,7 @@ import com.netcracker.user.MasterReceiver;
 import java.io.IOException;
 import java.util.List;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -31,6 +32,7 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
  }
 
  @Override
+ @SneakyThrows
  public boolean updateMaster(MasterReceiver masterReceiver) {
   if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
    masterReceiver,
@@ -41,6 +43,7 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
  }
 
  @Override
+ @SneakyThrows
  public boolean updateMasterAndSession(MasterReceiver masterReceiver) {
   if (this.passwordCheck(masterReceiver) && searchServices.updateObject(
    masterReceiver,

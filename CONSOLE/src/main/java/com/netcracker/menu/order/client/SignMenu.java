@@ -15,12 +15,14 @@ import com.netcracker.session.UserSession;
 import java.io.IOException;
 import java.util.*;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class SignMenu implements Menu {
 
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
  private final ServicesFactory servicesFactory;
  private final CarServices carServices;
 
@@ -68,10 +70,10 @@ public class SignMenu implements Menu {
            .idCar(carClient.getId())
            .updatedDate(new Date())
            .label(new ArrayList<>())
-           .descriptions(validator.validateDescription(in))
+           .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
            .build();
           order.setMasterReceiver(servicesFactory.getFactory().getMasterReceiverServices().getAllMasterReceiver().stream().findFirst().get().getId());
-          validator.successfullyMessages(orderServices.repairRequest(order));
+          VALIDATOR_INSTRUMENTS.successfullyMessages(orderServices.repairRequest(order));
          } else {
           log.info("Request for an order with this vehicle has been sent");
          }

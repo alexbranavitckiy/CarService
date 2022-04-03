@@ -1,6 +1,5 @@
 package com.netcracker.menu.userMenu;
 
-import com.netcracker.CarBreakdownServices;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarBreakdownCreate;
@@ -18,11 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class MasterMenu implements Menu {
 
  private final OutfitsServices outfitsServices;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
  private final ServicesFactory servicesFactory;
 
  public MasterMenu(ServicesFactory servicesFactory) {
@@ -53,12 +53,9 @@ public class MasterMenu implements Menu {
       for (int x = 0; x < outfitList.size(); x++) {
        log.info(
         "Id[{}] DateStart: {}/DateEnt: {}//Descriptions: {}/Name: {}/Price:{}. ",
-        x + 1
-        , outfitList.get(x).getDateStart()
-        , outfitList.get(x).getDateEnt()
-        , outfitList.get(x).getDescriptions()
-        , outfitList.get(x).getName()
-        , outfitList.get(x).getPrice());
+        x + 1, outfitList.get(x).getDateStart(), outfitList.get(x).getDateEnt(),
+        outfitList.get(x).getDescription(), outfitList.get(x).getName(),
+        outfitList.get(x).getPrice());
       }
      }
      log.info("Proceed to order? Enter 1-yeas/ 2-no");
@@ -73,23 +70,23 @@ public class MasterMenu implements Menu {
         .getOrderById(outfit.getOrder()).get().getIdCar(), servicesFactory);
        carBreakdownCreate.run(in, "");
        log.info("Descriptions");
-       if (validator.edit(outfit.getDescriptions(), in)) {
-        outfit.setDescriptions(validator.validateDescription(in));
+       if (VALIDATOR_INSTRUMENTS.edit(outfit.getDescription(), in)) {
+        outfit.setDescription(VALIDATOR_INSTRUMENTS.validateDescription(in));
        }
        outfit.setStateOutfit(com.netcracker.outfit.State.END.getId());
        log.info("Enter price outfit");
-       if (validator.edit(String.valueOf(outfit.getPrice()), in)) {
-        outfit.setPrice(validator.validatePrice(in));
+       if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(outfit.getPrice()), in)) {
+        outfit.setPrice(VALIDATOR_INSTRUMENTS.validatePrice(in));
        }
        log.info("Enter data end");
-       if (validator.edit(String.valueOf(outfit.getDateEnt()), in)) {
-        outfit.setDateEnt(validator.getDate(in));
+       if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(outfit.getDateEnt()), in)) {
+        outfit.setDateEnt(VALIDATOR_INSTRUMENTS.getDate(in));
        }
        log.info("Enter price");
-       if (validator.edit(String.valueOf(outfit.getPrice()), in)) {
-        outfit.setPrice(validator.validatePrice(in));
+       if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(outfit.getPrice()), in)) {
+        outfit.setPrice(VALIDATOR_INSTRUMENTS.validatePrice(in));
        }
-       validator.successfullyMessages(outfitsServices.updateOutfit(outfit));
+       VALIDATOR_INSTRUMENTS.successfullyMessages(outfitsServices.updateOutfit(outfit));
       } catch (Exception e) {
        log.info("Invalid index entered");
       }

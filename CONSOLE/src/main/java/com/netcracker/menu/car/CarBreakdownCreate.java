@@ -11,11 +11,12 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class CarBreakdownCreate implements Menu {
 
  private CarBreakdown carBreakdown;
- private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
  private final UUID carUUID;
  private final ServicesFactory servicesFactory;
  private final CarBreakdownServices carBreakdownServices;
@@ -30,13 +31,13 @@ public class CarBreakdownCreate implements Menu {
  public void run(Scanner in, String parentsName) throws IOException {
   this.carBreakdown = CarBreakdown.builder()
    .id(UUID.randomUUID())
-   .descriptions(validator.validateDescription(in))
-   .state(validator.orderStateCarBr(in))
+   .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+   .state(VALIDATOR_INSTRUMENTS.orderStateCarBr(in))
    .carClient(carUUID)
-   .location(validator.validateDescription(in))
-   .runCarSize(validator.validateMileage(in))
+   .location(VALIDATOR_INSTRUMENTS.validateDescription(in))
+   .runCarSize(VALIDATOR_INSTRUMENTS.validateMileage(in))
    .build();
-  validator.successfullyMessages(carBreakdownServices.addBreakdown(carBreakdown));
+  VALIDATOR_INSTRUMENTS.successfullyMessages(carBreakdownServices.addBreakdown(carBreakdown));
  }
 
 

@@ -18,11 +18,12 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class RegistrationClientByMaster implements Menu {
 
  private final ClientServices clientServices;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
  private Client clientLast;
  private final ServicesFactory servicesFactory;
 
@@ -51,9 +52,9 @@ public class RegistrationClientByMaster implements Menu {
      if (carClientMenu.getCarClient().isPresent()) {
       Client client = Client.builder()
        .id(uuidCNewClient)
-       .description(validator.validateDescription(in))
-       .email(validator.validateMail(in))
-       .name(validator.validateNameUser(in))
+       .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+       .email(VALIDATOR_INSTRUMENTS.validateMail(in))
+       .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
        .roleUser(RoleUser.UNREGISTERED.getId())
        .carClients(new ArrayList<>())
        .login(carClientMenu.getCarClient().get().getMetadataCar())
@@ -78,7 +79,7 @@ public class RegistrationClientByMaster implements Menu {
     }
     case "3": {
      if (clientLast != null) {
-      NewOrder newOrder = new NewOrder(clientLast,
+      NewOrder newOrder = NewOrder.CreateNewOrder(clientLast,
        carClientMenu.getCarClient().get().getId(), servicesFactory);
       newOrder.run(in, "Client creation menu");
      }

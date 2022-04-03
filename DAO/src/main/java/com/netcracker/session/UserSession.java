@@ -3,9 +3,11 @@ package com.netcracker.session;
 import com.netcracker.user.Client;
 import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
+@Slf4j
 public class UserSession {
 
  private static MasterReceiver masterReceiverSession;
@@ -32,7 +34,7 @@ public class UserSession {
   }
  }
 
- public static boolean updateSession(Object object) {
+ public static boolean updateSession(Object object) throws CloneNotSupportedException {
   if (object instanceof Client) {
    clientSession = UserSession.getCloneClient((Client) object);
    closeSession(masterSession, masterReceiverSession);
@@ -85,59 +87,29 @@ public class UserSession {
   return Optional.ofNullable(masterSession);
  }
 
- public static MasterReceiver getCloneMasterReceiverSession() {
-  return MasterReceiver.builder()
-   .description(masterReceiverSession.getDescription())
-   .education(masterReceiverSession.getEducation())
-   .homeAddress(masterReceiverSession.getHomeAddress())
-   .id(masterReceiverSession.getId())
-   .login(masterReceiverSession.getLogin())
-   .role(masterReceiverSession.getRole())
-   .qualificationEnum(masterReceiverSession.getQualificationEnum())
-   .mail(masterReceiverSession.getMail())
-   .homeAddress(masterReceiverSession.getHomeAddress())
-   .password(masterReceiverSession.getPassword())
-   .name(masterReceiverSession.getName())
-   .orders(new ArrayList<>())
-   .build();
+ public static MasterReceiver getCloneMasterReceiverSession() throws CloneNotSupportedException {
+  return masterReceiverSession.clone();
  }
 
- public static Client getCloneClient(Client client) {
-  return Client.builder()
-   .carClients(client.getCarClients())
-   .description(client.getDescription())
-   .id(client.getId())
-   .email(client.getEmail())
-   .name(client.getName())
-   .password(client.getPassword())
-   .roleUser(client.getRoleUser())
-   .phone(client.getPhone())
-   .login(client.getLogin())
-   .carClients(client.getCarClients())
-   .build();
+ public static Client getCloneClient(Client client) throws CloneNotSupportedException {
+  return client.clone();
  }
 
- public static Client getCloneClientSession() {
-  return Client.builder()
-   .carClients(clientSession.getCarClients())
-   .description(clientSession.getDescription())
-   .id(clientSession.getId())
-   .email(clientSession.getEmail())
-   .name(clientSession.getName())
-   .password(clientSession.getPassword())
-   .roleUser(clientSession.getRoleUser())
-   .phone(clientSession.getPhone())
-   .login(clientSession.getLogin())
-   .carClients(clientSession.getCarClients())
-   .build();
+ public static Client getCloneClientSession() throws CloneNotSupportedException {
+  return clientSession.clone();
  }
 
  public static Optional<Client> getClientSession() {
-  if (clientSession != null) {
-   return Optional.ofNullable(getCloneClient(clientSession));
+  try {
+   if (clientSession != null) {
+    return Optional.ofNullable(getCloneClient(clientSession));
+   }
+  } catch (CloneNotSupportedException clientSession) {
+   log.warn(clientSession.getMessage());
   }
   return Optional.empty();
  }
+
 }
 
 

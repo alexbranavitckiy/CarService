@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,7 +75,7 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> implements Out
     Outfit master = Outfit.builder()
      .id(UUID.fromString(rs.getString("id")))
      .name(rs.getString("name_outfits"))
-     .descriptions(rs.getString("descriptions"))
+     .description(rs.getString("descriptions"))
      .dateStart(rs.getTimestamp("start_date"))
      .dateEnt(rs.getTimestamp("end_date"))
      .employer(UUID.fromString(rs.getString("id_master")))
@@ -104,7 +102,7 @@ public class OutfitsDaoImpl extends TemplateJDBCDao<Outfit, UUID> implements Out
   try {
    statement.setObject(1, outfit.getId());
    statement.setObject(2, outfit.getName());
-   statement.setObject(3, outfit.getDescriptions());
+   statement.setObject(3, outfit.getDescription());
    statement.setTimestamp(4, new Timestamp(outfit.getDateStart().getTime()));
    statement.setTimestamp(5, new Timestamp(outfit.getDateEnt().getTime()));
    statement.setObject(6, outfit.getPrice());

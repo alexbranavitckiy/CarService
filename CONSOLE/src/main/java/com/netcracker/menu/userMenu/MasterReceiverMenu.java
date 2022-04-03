@@ -14,13 +14,13 @@ import com.netcracker.menu.order.outfit.ListOutfit;
 import com.netcracker.menu.registration.RegistrationClientByMaster;
 import com.netcracker.menu.registration.RegistrationMaster;
 import com.netcracker.OrderServices;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Scanner;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class MasterReceiverMenu implements Menu {
@@ -29,7 +29,6 @@ public class MasterReceiverMenu implements Menu {
  private final CarServices carServices;
  private final OutfitsServices outfitsServices;
  private final ServicesFactory servicesFactory;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public MasterReceiverMenu(ServicesFactory servicesFactory) {
   this.carServices = servicesFactory.getFactory().getCarServices();
@@ -87,7 +86,7 @@ public class MasterReceiverMenu implements Menu {
        listCarClient.run(in, "Main menu");
        if (listClient.getClient().isPresent()) {
         if (listCarClient.getClient().isPresent()) {
-         NewOrder newOrder = new NewOrder(listClient.getClient().get(),
+         NewOrder newOrder =  NewOrder.CreateNewOrder(listClient.getClient().get(),
           listCarClient.getClient().get().getId(), servicesFactory);
          newOrder.run(in, "Main menu");
         } else {
@@ -116,7 +115,7 @@ public class MasterReceiverMenu implements Menu {
       listClient.run(in, "Main menu");
       EditClient editClient = new EditClient(listClient.getClient().get());
       editClient.run(in, "Main menu");
-      validator.successfullyMessages(servicesFactory.getFactory().getClientServices().updateClientNotSession(editClient.getClient()));
+      VALIDATOR_INSTRUMENTS.successfullyMessages(servicesFactory.getFactory().getClientServices().updateClientNotSession(editClient.getClient()));
      }
      this.preMessage(parentsName);
      break;

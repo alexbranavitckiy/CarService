@@ -23,7 +23,7 @@ public class CarBreakdown implements EntityId<UUID> {
 
  private UUID carClient;
 
- private String descriptions;
+ private String description;
 
  private String runCarSize;
 

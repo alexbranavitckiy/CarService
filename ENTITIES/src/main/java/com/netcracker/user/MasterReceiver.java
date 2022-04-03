@@ -12,13 +12,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class MasterReceiver extends Employers implements EntityId<UUID> {
+public class MasterReceiver extends Employers implements EntityId<UUID>, Cloneable {
 
  private List<UUID> orders;
 
  @Builder
  public MasterReceiver(UUID id, String name, String phone, String mail, String description,
-                       Role role, String login, String password, String homeAddress, UUID qualificationEnum,
+                       Role role, String login, String password, String homeAddress, Qualification qualificationEnum,
                        String education, List<UUID> orders) {
   super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
    education);
@@ -32,6 +32,10 @@ public class MasterReceiver extends Employers implements EntityId<UUID> {
    "} " + super.toString();
  }
 
+ @Override
+ public MasterReceiver clone() throws CloneNotSupportedException {
+  return (MasterReceiver)super.clone();
+ }
 
 }
 

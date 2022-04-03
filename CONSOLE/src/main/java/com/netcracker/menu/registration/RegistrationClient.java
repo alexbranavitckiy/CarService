@@ -14,12 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.*;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class RegistrationClient implements Menu {
 
  private final ClientServices clientServices;
  private final CarServices carServices;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  public RegistrationClient(ServicesFactory servicesFactory) {
   this.clientServices = servicesFactory.getFactory().getClientServices();
@@ -45,12 +46,12 @@ public class RegistrationClient implements Menu {
      log.info("Enter customer details");
      Client client = Client.builder()
       .id(uuidCNewClient)
-      .login(validator.validateLogin(in))
-      .password(validator.validatePassword(in))
-      .name(validator.validateNameUser(in))
-      .email(validator.validateMail(in))
-      .description(validator.validateDescription(in))
-      .phone(validator.validatePhone(in))
+      .login(VALIDATOR_INSTRUMENTS.validateLogin(in))
+      .password(VALIDATOR_INSTRUMENTS.validatePassword(in))
+      .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
+      .email(VALIDATOR_INSTRUMENTS.validateMail(in))
+      .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+      .phone(VALIDATOR_INSTRUMENTS.validatePhone(in))
       .roleUser(RoleUser.REGISTERED.getId())
       .build();
      if (carClient.getCarClient().isPresent()) {

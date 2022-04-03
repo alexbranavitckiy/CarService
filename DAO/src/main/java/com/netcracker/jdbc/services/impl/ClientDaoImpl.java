@@ -27,6 +27,11 @@ public class ClientDaoImpl extends TemplateJDBCDao<Client, UUID> implements Clie
  }
 
  @Override
+ public String getSelectByPasswordAndLogin() {
+  return "SELECT * FROM clients where  password=? AND login=?;";
+ }
+
+ @Override
  public String getCreateQuery() {
   return "INSERT INTO clients(id, password, login, first_name, role_user, last_name, email, phone, descriptions)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
  }

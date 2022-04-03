@@ -31,4 +31,6 @@ public abstract class User implements EntityId<UUID> {
 
  private UUID roleUser;
 
+
+
 }

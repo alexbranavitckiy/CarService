@@ -11,11 +11,12 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class CreateCarClient implements Menu {
 
  private CarClient carClient;
- private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
  private final UUID uuidClient;
 
  public CreateCarClient(UUID uuidClient) {
@@ -28,12 +29,12 @@ public class CreateCarClient implements Menu {
   this.carClient = CarClient.builder()
    .id(UUID.randomUUID())
    .id_clients(uuidClient)
-   .summary(validator.validateSummary(in))
-   .metadataCar(validator.validateNumberCar(in))
-   .run(validator.validateMileage(in))
+   .summary(VALIDATOR_INSTRUMENTS.validateSummary(in))
+   .metadataCar(VALIDATOR_INSTRUMENTS.validateNumberCar(in))
+   .run(VALIDATOR_INSTRUMENTS.validateMileage(in))
    .mark(new Mark())
-   .ear(validator.validateYear(in))
-   .descriptions(validator.validateDescription(in))
+   .ear(VALIDATOR_INSTRUMENTS.validateYear(in))
+   .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
    .build();
  }
 

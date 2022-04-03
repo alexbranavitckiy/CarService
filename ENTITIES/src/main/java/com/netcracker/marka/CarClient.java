@@ -20,7 +20,7 @@ public class CarClient implements EntityId<UUID> {
 
  private String summary;
 
- private String descriptions;
+ private String description;
 
  private String ear;
 

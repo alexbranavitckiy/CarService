@@ -19,22 +19,28 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
-public class NewOrder implements Menu {
+public final class NewOrder implements Menu {
 
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
- private final Client client;
- private final OrderServices orderServices;
- private final UUID idCar;
- private final ServicesFactory servicesFactory;
+ private  Client client;
+ private  OrderServices orderServices;
+ private  UUID idCar;
+ private  ServicesFactory servicesFactory;
 
-
- public NewOrder(Client client, UUID idCar, ServicesFactory servicesFactory) {
-  this.client = client;
-  this.idCar = idCar;
-  this.servicesFactory = servicesFactory;
-  this.orderServices = servicesFactory.getFactory().getOrderServices();
+ private NewOrder() {
  }
+
+ public static NewOrder CreateNewOrder(Client client, UUID idCar, ServicesFactory servicesFactory) {
+  NewOrder newOrder = new NewOrder();
+  newOrder.client = client;
+  newOrder.idCar = idCar;
+  newOrder.servicesFactory = servicesFactory;
+  newOrder.orderServices = servicesFactory.getFactory().getOrderServices();
+  return newOrder;
+ }
+
 
  @Override
  public void preMessage(String parentsName) {
@@ -62,13 +68,13 @@ public class NewOrder implements Menu {
        Order order = Order.builder()
         .id(orderUUID)
         .clientUUID(this.client.getId())
-        .stateOrder(validator.orderState(in))
+        .stateOrder(VALIDATOR_INSTRUMENTS.orderState(in))
         .outfits(new ArrayList<>())
         .createdDate(new Date())
         .idCar(idCar)
         .updatedDate(new Date())
         .label(new ArrayList<>())
-        .descriptions(validator.validateDescription(in))
+        .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
         .build();
        log.info("Outfit data:");
        CreateOutfit createOutfit = new CreateOutfit(orderUUID, servicesFactory);
@@ -77,7 +83,7 @@ public class NewOrder implements Menu {
        order.setOutfits(new ArrayList<>());
        order.getOutfits().add(createOutfit.getOrder());
        orderServices.addOrder(order);
-       validator.successfullyMessages(servicesFactory.getFactory().getOutfitServices().addObjectInOutfits(createOutfit.getOutfit()));
+       VALIDATOR_INSTRUMENTS.successfullyMessages(servicesFactory.getFactory().getOutfitServices().addObjectInOutfits(createOutfit.getOutfit()));
       }
      }
      break label;

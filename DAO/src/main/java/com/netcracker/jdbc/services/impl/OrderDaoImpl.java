@@ -67,7 +67,7 @@ public class OrderDaoImpl extends TemplateJDBCDao<Order, UUID> implements OrderD
    while (rs.next()) {
     Order master = Order.builder()
      .id(UUID.fromString(rs.getString("id")))
-     .descriptions(rs.getString("descriptions"))
+     .description(rs.getString("descriptions"))
      .idCar((UUID) rs.getObject("id_car"))
      .masterReceiver((UUID) rs.getObject("id_masters"))
      .createdDate((Date) rs.getObject("created_date"))
@@ -94,9 +94,8 @@ public class OrderDaoImpl extends TemplateJDBCDao<Order, UUID> implements OrderD
 
  private void addQuery(PreparedStatement statement, Order outfit) {
   try {
-   DateFormat df = new SimpleDateFormat("dd/MM/yyyy-hh:mm");
    statement.setObject(1, outfit.getId());
-   statement.setObject(2, outfit.getDescriptions());
+   statement.setObject(2, outfit.getDescription());
    statement.setObject(3, outfit.getIdCar());
    statement.setObject(4, outfit.getMasterReceiver());
    statement.setString(5, outfit.getCreatedDate().toString());
@@ -122,8 +121,4 @@ public class OrderDaoImpl extends TemplateJDBCDao<Order, UUID> implements OrderD
   }
  }
 
- private static java.sql.Date convertUtilToSql(java.util.Date uDate) {
-  java.sql.Date sDate = new java.sql.Date(uDate.getTime());
-  return sDate;
- }
 }

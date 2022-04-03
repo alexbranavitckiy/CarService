@@ -10,6 +10,7 @@ import com.netcracker.menu.edit.EditCar;
 import com.netcracker.ClientServices;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.Client;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class CarMenu implements Menu {
  }
 
  @Override
+ @SneakyThrows
  public void run(Scanner in, String parentsName) throws IOException {
   this.preMessage(parentsName);
   label:

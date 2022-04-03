@@ -14,19 +14,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Master extends Employers implements EntityId<UUID> {
+public class Master extends Employers implements EntityId<UUID>, Cloneable {
 
  private List<UUID> outfits;
 
  @Builder
  public Master(UUID id, String name, String phone, String mail, String description,
                Role role, String login, String password, String homeAddress,
-               UUID qualificationEnum, String education, List<UUID> outfits) {
+               Qualification qualificationEnum, String education, List<UUID> outfits) {
   super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
    education);
   this.outfits = outfits;
  }
 
+ @Override
+ public Master clone() throws CloneNotSupportedException {
+  return (Master) super.clone();
+ }
 
  @Override
  public String toString() {

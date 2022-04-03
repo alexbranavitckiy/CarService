@@ -15,13 +15,14 @@ import java.util.*;
 import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 
 @Slf4j
 public class ListOutfit implements Menu {
 
  private final ServicesFactory servicesFactory;
  private Outfit outfit;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
 
  public ListOutfit(ServicesFactory servicesFactory) {
@@ -59,7 +60,8 @@ public class ListOutfit implements Menu {
     case "3": {
      try {
       log.info("Enter the time interval");
-      this.print(outfitsServices.getAllOutfitsByData(validator.getDate(in).toString(), validator.getDate(in).toString()), in);
+      this.print(outfitsServices.getAllOutfitsByData(VALIDATOR_INSTRUMENTS.getDate(in).toString(),
+       VALIDATOR_INSTRUMENTS.getDate(in).toString()), in);
      } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());
      } catch (IndexOutOfBoundsException e) {
@@ -77,14 +79,14 @@ public class ListOutfit implements Menu {
       EditOutfit editOutfit = new EditOutfit(this.outfit);
       editOutfit.run(in, "Main menu");
       log.info("Enter dateState");
-      if (validator.edit(String.valueOf(this.outfit.getDateStart()), in)) {
-       this.outfit.setDateStart(validator.getDate(in));
+      if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(this.outfit.getDateStart()), in)) {
+       this.outfit.setDateStart(VALIDATOR_INSTRUMENTS.getDate(in));
       }
       log.info("Enter dateEnd");
-      if (validator.edit(String.valueOf(this.outfit.getDateEnt()), in)) {
-       this.outfit.setDateEnt(validator.getDate(in));
+      if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(this.outfit.getDateEnt()), in)) {
+       this.outfit.setDateEnt(VALIDATOR_INSTRUMENTS.getDate(in));
       }
-      validator.successfullyMessages(outfitsServices.updateOutfit(this.outfit));
+      VALIDATOR_INSTRUMENTS.successfullyMessages(outfitsServices.updateOutfit(this.outfit));
      } catch (EmptySearchException e) {
       log.warn("The search has not given any results. {}", e.getMessage());
      } catch (InputMismatchException e) {
@@ -111,7 +113,7 @@ public class ListOutfit implements Menu {
      "Id[{}] DateStart: {} DateEnt: {} StateOutfit: {} Descriptions: {} Name: {}. ",
      x + 1, outfitList.get(x).getDateStart(), outfitList.get(x).getDateEnt(),
      List.of(State.values()).stream().filter(z -> z.getId().equals(uuidState)).findFirst().get().name()
-    , outfitList.get(x).getDescriptions(),
+    , outfitList.get(x).getDescription(),
      outfitList.get(x).getName());
    }
    log.info("Enter outfit id");

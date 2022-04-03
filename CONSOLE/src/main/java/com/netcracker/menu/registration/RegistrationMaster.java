@@ -2,7 +2,6 @@ package com.netcracker.menu.registration;
 
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.MasterServices;
 import com.netcracker.user.*;
@@ -13,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class RegistrationMaster implements Menu {
 
  private final MasterServices masterServices;
  private final MasterReceiverServices masterReceiverServices;
- private final ValidatorInstrumentsImpl validator = new ValidatorInstrumentsImpl();
 
  public RegistrationMaster(ServicesFactory servicesFactory) {
   masterServices = servicesFactory.getFactory().getMasterServices();
@@ -43,15 +43,15 @@ public class RegistrationMaster implements Menu {
      if (str.equalsIgnoreCase("1")) {
       Master master = Master.builder()
        .id(UUID.randomUUID())
-       .description(validator.validateDescription(in))
-       .homeAddress(validator.validateHomeAddress(in))
-       .education(validator.validateEducation(in))
-       .name(validator.validateNameUser(in))
-       .password(validator.validatePassword(in))
-       .mail(validator.validateMail(in))
-       .phone(validator.validatePhone(in))
-       .login(validator.validateLogin(in))
-       .qualificationEnum(validator.qualificationEnum(in).getId())
+       .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+       .homeAddress(VALIDATOR_INSTRUMENTS.validateHomeAddress(in))
+       .education(VALIDATOR_INSTRUMENTS.validateEducation(in))
+       .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
+       .password(VALIDATOR_INSTRUMENTS.validatePassword(in))
+       .mail(VALIDATOR_INSTRUMENTS.validateMail(in))
+       .phone(VALIDATOR_INSTRUMENTS.validatePhone(in))
+       .login(VALIDATOR_INSTRUMENTS.validateLogin(in))
+       .qualificationEnum(VALIDATOR_INSTRUMENTS.qualificationEnum(in))
        .outfits(new ArrayList<>())
        .role(Role.MASTER)
        .build();
@@ -65,15 +65,15 @@ public class RegistrationMaster implements Menu {
      if (str.equalsIgnoreCase("2")) {
       MasterReceiver masterReceiver = MasterReceiver.builder()
        .id(UUID.randomUUID())
-       .education(validator.validateEducation(in))
-       .description(validator.validateDescription(in))
-       .homeAddress(validator.validateHomeAddress(in))
-       .qualificationEnum(validator.qualificationEnum(in).getId())
-       .mail(validator.validateMail(in))
-       .login(validator.validateLogin(in))
-       .password(validator.validatePassword(in))
+       .education(VALIDATOR_INSTRUMENTS.validateEducation(in))
+       .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+       .homeAddress(VALIDATOR_INSTRUMENTS.validateHomeAddress(in))
+       .qualificationEnum(VALIDATOR_INSTRUMENTS.qualificationEnum(in))
+       .mail(VALIDATOR_INSTRUMENTS.validateMail(in))
+       .login(VALIDATOR_INSTRUMENTS.validateLogin(in))
+       .password(VALIDATOR_INSTRUMENTS.validatePassword(in))
        .role(Role.RECEPTIONIST)
-       .name(validator.validateNameUser(in))
+       .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
        .orders(new ArrayList<>())
        .build();
       if (this.masterReceiverServices.addMaster(masterReceiver)) {

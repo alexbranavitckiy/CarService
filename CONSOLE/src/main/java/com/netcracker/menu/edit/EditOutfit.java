@@ -12,11 +12,12 @@ import java.util.Scanner;
 import com.netcracker.outfit.State;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class EditOutfit implements Menu {
 
  private final Outfit outfit;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
 
  @Override
  public void preMessage(String parentsName) {
@@ -30,21 +31,21 @@ public class EditOutfit implements Menu {
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
   log.info("Descriptions");
-  if (validator.edit(this.outfit.getDescriptions(), in)) {
-   this.outfit.setDescriptions(validator.validateDescription(in));
+  if (VALIDATOR_INSTRUMENTS.edit(this.outfit.getDescription(), in)) {
+   this.outfit.setDescription(VALIDATOR_INSTRUMENTS.validateDescription(in));
   }
   log.info("Enter name outfit");
-  if (validator.edit(this.outfit.getName(), in)) {
-   this.outfit.setName(validator.validateNameOutfit(in));
+  if (VALIDATOR_INSTRUMENTS.edit(this.outfit.getName(), in)) {
+   this.outfit.setName(VALIDATOR_INSTRUMENTS.validateNameOutfit(in));
   }
   log.info("Enter state outfit");
-  if (validator.edit(List.of(State.values()).stream()
+  if (VALIDATOR_INSTRUMENTS.edit(List.of(State.values()).stream()
    .filter(z -> z.getId().equals(this.outfit.getStateOutfit())).findFirst().get().name(), in)) {
-   this.outfit.setStateOutfit(validator.stateOutfit(in));
+   this.outfit.setStateOutfit(VALIDATOR_INSTRUMENTS.stateOutfit(in));
   }
   log.info("Enter price outfit");
-  if (validator.edit(String.valueOf(this.outfit.getPrice()), in)) {
-   this.outfit.setPrice(validator.validatePrice(in));
+  if (VALIDATOR_INSTRUMENTS.edit(String.valueOf(this.outfit.getPrice()), in)) {
+   this.outfit.setPrice(VALIDATOR_INSTRUMENTS.validatePrice(in));
   }
  }
 

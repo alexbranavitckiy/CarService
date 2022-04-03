@@ -43,7 +43,7 @@ public class ListMaster implements Menu {
         x + 1,
         masters.get(x).getLogin(), masters.get(x).getDescription(),
         masters.get(x).getMail(), masters.get(x).getPhone(),
-        masters.get(x).getQualificationEnum(), masters.get(x).getRole());
+        masters.get(x).getQualification(), masters.get(x).getRole());
       }
       log.info("Enter Master ID");
       this.master = masters.get(in.nextInt() - 1);

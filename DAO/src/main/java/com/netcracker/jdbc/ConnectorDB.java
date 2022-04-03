@@ -16,15 +16,27 @@ public class ConnectorDB {
  private static final HikariConfig config = new HikariConfig();
  private static HikariDataSource ds;
  private static final ResourceBundle resource = ResourceBundle.getBundle("database");
+ private static final String URL_SERVICES = resource.getString("db.url.service");
+ private static final String URL_DATABASE = resource.getString("db.url.database");
+ private static final String USER = resource.getString("db.user");
+ private static final String PASSWORD = resource.getString("db.password");
+
+ public static HikariDataSource getDs() {
+  return ds;
+ }
+
+ public static void setDs(HikariDataSource ds) {
+  ConnectorDB.ds = ds;
+ }
 
  private ConnectorDB() {
  }
 
  static {
   initDb();
-  config.setJdbcUrl(resource.getString("db.url.service") + resource.getString("db.url.database")+"?stringtype=unspecified");
-  config.setUsername(resource.getString("db.user"));
-  config.setPassword(resource.getString("db.password"));
+  config.setJdbcUrl(URL_SERVICES + URL_DATABASE + "?stringtype=unspecified");
+  config.setUsername(USER);
+  config.setPassword(PASSWORD);
   config.setMaximumPoolSize(Integer.parseInt(resource.getString("db.poolSize")));
   config.addDataSourceProperty("cachePrepStmts", resource.getString("db.cachePrepStmts"));
   config.addDataSourceProperty("prepStmtCacheSize", resource.getString("db.prepStmtCacheSize"));
@@ -38,45 +50,43 @@ public class ConnectorDB {
 
  public static void initDb() {
   try (Connection conn = DriverManager.getConnection(
-   resource.getString("db.url.service") + resource.getString("db.url.database"),
-   resource.getString("db.user"), resource.getString("db.password"));
+   URL_SERVICES + URL_DATABASE,
+   USER, PASSWORD);
        PreparedStatement preparedStatement = conn.prepareStatement("SELECT NOW ()")
   ) {
    preparedStatement.executeQuery();
   } catch (ExceptionInInitializerError | Exception e) {
-   try (Connection conn = DriverManager.getConnection(resource.getString("db.url.service"),
-    resource.getString("db.user"), resource.getString("db.password"));
-        PreparedStatement preparedStatementCreateDb = conn.prepareStatement("CREATE DATABASE " + resource.getString("db.url.database") + ";");
+   try (Connection conn = DriverManager.getConnection(URL_SERVICES, USER, PASSWORD);
+        PreparedStatement preparedStatementCreateDb = conn.prepareStatement("CREATE DATABASE " + URL_DATABASE + ";");
    ) {
     preparedStatementCreateDb.execute();
     log.debug("Database created successfully");
    } catch (Exception ee) {
-    log.info("Database created error:{}", ee.getMessage());
+    log.error("Database created error:{}", ee.getMessage());
    }
-   try (Connection conn = DriverManager.getConnection(resource.getString("db.url.service") + resource.getString("db.url.database"),
-    resource.getString("db.user"), resource.getString("db.password"));
+   try (Connection conn = DriverManager.getConnection(URL_SERVICES + URL_DATABASE, USER, PASSWORD);
         PreparedStatement preparedStatementInitSqlFile = conn.prepareStatement(readFileInitSQL())
    ) {
     preparedStatementInitSqlFile.execute();
     log.debug("Initialization data upload successfully");
    } catch (Exception ee) {
-    log.info("Database initialization error:{}", ee.getMessage());
+    log.error("Database initialization error:{}", ee.getMessage());
    }
   }
  }
 
-
  private static String readFileInitSQL() throws IOException {
-  BufferedReader reader = new BufferedReader(new FileReader("data.sql"));
-  String line;
-  StringBuilder stringBuilder = new StringBuilder();
-  String ls = System.getProperty("line.separator");
-  while ((line = reader.readLine()) != null) {
-   stringBuilder.append(line);
-   stringBuilder.append(ls);
+  try (BufferedReader reader = new BufferedReader(new FileReader("data.sql"))) {
+   String line;
+   StringBuilder stringBuilder = new StringBuilder();
+   String ls = System.getProperty("line.separator");
+   while ((line = reader.readLine()) != null) {
+    stringBuilder.append(line);
+    stringBuilder.append(ls);
+   }
+   stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+   return stringBuilder.toString();
   }
-  stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-  return stringBuilder.toString();
  }
 }
 

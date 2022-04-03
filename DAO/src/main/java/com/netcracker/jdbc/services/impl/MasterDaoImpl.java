@@ -1,8 +1,10 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
+import com.netcracker.jdbc.services.MasterDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
 import com.netcracker.user.Master;
+import com.netcracker.user.Qualification;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
@@ -12,16 +14,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
+public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> implements MasterDao {
 
  @Override
  public String getSelectQuery() {
-  return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions FROM public.masters,public.employers where masters.id=employers.id; ";
+  return "SELECT * FROM public.masters LEFT JOIN public.employers ON masters.id=employers.id;";
  }
 
  @Override
  public String getSelectByIdQuery() {
-  return "SELECT masters.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions, FROM public.masters,public.employers where masters.id=employers.id AND masters.id=?;";
+  return "SELECT * FROM public.masters  LEFT JOIN public.employers ON masters.id=employers.id AND masters.id=?;";
+ }
+
+ @Override
+ public String getSelectByPasswordAndLogin() {
+  return "SELECT * FROM public.masters LEFT JOIN public.employers ON masters.id=employers.id AND employers.password=? AND employers.login=?;";
  }
 
  @Override
@@ -44,11 +51,14 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
   List<Master> masters = new ArrayList<>();
   try {
    while (rs.next()) {
+    UUID qualification = (UUID) rs.getObject("qualification_id");
     Master master = Master.builder()
      .id(UUID.fromString(rs.getString("id")))
-     .education(rs.getString("education"))
+     .education(rs.getString("education")) //
      .description(rs.getString("descriptions"))
-     .qualificationEnum((UUID) rs.getObject("qualification_id"))
+     .qualificationEnum(List.of(Qualification.values())
+      .stream()
+      .filter(x -> x.getId().equals(qualification)).findFirst().orElse(Qualification.ELECTRICIAN))
      .phone(rs.getString("phone"))
      .login(rs.getString("login"))
      .mail(rs.getString("mail"))
@@ -67,7 +77,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
  @Override
  protected void prepareStatementForInsert(PreparedStatement statement, Master master)
   throws PersistException {
-   addQuery(statement, master);
+  addQuery(statement, master);
  }
 
 
@@ -76,7 +86,7 @@ public class MasterDaoImpl extends TemplateJDBCDao<Master, UUID> {
    statement.setObject(1, master.getId());
    statement.setObject(2, master.getName());
    statement.setObject(3, master.getEducation());
-   statement.setObject(4, master.getQualificationEnum());
+   statement.setObject(4, master.getQualification());
    statement.setObject(5, master.getPassword());
    statement.setObject(6, master.getLogin());
    statement.setObject(7, master.getHomeAddress());

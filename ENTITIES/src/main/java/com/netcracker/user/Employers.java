@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Data
@@ -30,7 +31,7 @@ public abstract class Employers {
 
  private String homeAddress;
 
- private UUID qualificationEnum;
+ private Qualification qualification;
 
  private String education;
 

@@ -6,7 +6,6 @@ import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.edit.EditOrder;
-import com.netcracker.menu.order.master.ListMaster;
 import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.Order;
@@ -18,12 +17,13 @@ import java.util.*;
 import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class ListOrders implements Menu {
 
  private final ServicesFactory servicesFactory;
  private Order order;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
  private final OrderServices orderServices;
 
  public ListOrders(ServicesFactory servicesFactory) {
@@ -101,9 +101,9 @@ public class ListOrders implements Menu {
    CreateOutfit createOutfit = new CreateOutfit(this.order.getId(), servicesFactory);
    createOutfit.run(in, "Main menu");
    log.info("appoint master.");
-   validator.successfullyMessages(outfitsServices.addObjectInOutfits(createOutfit.getOutfit()));
+   VALIDATOR_INSTRUMENTS.successfullyMessages(outfitsServices.addObjectInOutfits(createOutfit.getOutfit()));
    this.order.setOutfits(List.of(createOutfit.getOutfit().getId()));
-   validator.successfullyMessages(orderServices.updateOrder(this.order));
+   VALIDATOR_INSTRUMENTS.successfullyMessages(orderServices.updateOrder(this.order));
   }
  }
 
@@ -117,7 +117,7 @@ public class ListOrders implements Menu {
      , x
      , List.of(State.values()).stream().filter(z -> z.getId().equals(uuidState)).findFirst().get().name()
      , order.getCreatedDate()
-     , order.getDescriptions()
+     , order.getDescription()
      , order.getUpdatedDate()
     );
    }
@@ -129,7 +129,7 @@ public class ListOrders implements Menu {
   if (in.next().equals("1")) {
    EditOrder editOrder = new EditOrder(this.order);
    editOrder.run(in, "Main menu");
-   validator.successfullyMessages(orderServices.updateOrder(editOrder.getOrder()));
+   VALIDATOR_INSTRUMENTS.successfullyMessages(orderServices.updateOrder(editOrder.getOrder()));
    this.order = editOrder.getOrder();
   }
  }

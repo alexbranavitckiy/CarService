@@ -3,6 +3,8 @@ package com.netcracker.jdbc.services.impl.login;
 import com.netcracker.*;
 import com.netcracker.jdbc.services.ClientDao;
 import com.netcracker.jdbc.services.CrudDao;
+import com.netcracker.jdbc.services.MasterDao;
+import com.netcracker.jdbc.services.MasterReceiverDao;
 import com.netcracker.jdbc.services.impl.ClientDaoImpl;
 import com.netcracker.jdbc.services.impl.MasterDaoImpl;
 import com.netcracker.jdbc.services.impl.MasterReceiverDaoImpl;
@@ -22,8 +24,8 @@ import java.util.UUID;
 public class LoginDaoServicesImpl implements LoginServices {
 
  private final ClientDao clientDao = new ClientDaoImpl();
- private final CrudDao<Master, UUID> masterDao = new MasterDaoImpl();
- private final CrudDao<MasterReceiver, UUID> masterReceiverDao = new MasterReceiverDaoImpl();
+ private final MasterDao masterDao = new MasterDaoImpl();
+ private final MasterReceiverDao masterReceiverDao = new MasterReceiverDaoImpl();
  private final CarServices carServices = new CarDaoServicesImpl();
 
 
@@ -34,7 +36,7 @@ public class LoginDaoServicesImpl implements LoginServices {
  public boolean searchByUserLoginAndPassword(String login, String password) {
   try {
    {
-    Optional<Client> client = clientDao.getAll().stream().filter(x ->
+    Optional<Client> client = clientDao.getAllByAnyQuery(clientDao.getSelectByPasswordAndLogin(), password, login).stream().filter(x ->
      {
       if (x != null) {
        return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
@@ -53,9 +55,9 @@ public class LoginDaoServicesImpl implements LoginServices {
     }
    }
    {
-    Optional<Master> master = masterDao.getAll().stream().filter(x ->
+    Optional<Master> master = masterDao.getAllByAnyQuery(masterDao.getSelectByPasswordAndLogin(), password, login).stream().filter(x ->
      {
-      if (x != null) {
+      if (x != null && x.getLogin() != null && x.getPassword() != null) {
        return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
         .equalsIgnoreCase(password);
       } else {
@@ -69,10 +71,10 @@ public class LoginDaoServicesImpl implements LoginServices {
     }
    }
    {
-    Optional<MasterReceiver> masters = masterReceiverDao.getAll().stream().
+    Optional<MasterReceiver> masterReceiver = masterReceiverDao.getAllByAnyQuery(masterReceiverDao.getSelectByPasswordAndLogin(), password, login).stream().
      filter(x ->
       {
-       if (x != null) {
+       if (x != null && x.getPassword() != null && x.getLogin() != null) {
         return x.getLogin().equalsIgnoreCase(login) && x.getPassword()
          .equalsIgnoreCase(password);
        } else {
@@ -80,13 +82,13 @@ public class LoginDaoServicesImpl implements LoginServices {
        }
       }
      ).findFirst();
-    if (masters.isPresent()) {
-     masters.ifPresent(UserSession::openSession);
+    if (masterReceiver.isPresent()) {
+     masterReceiver.ifPresent(UserSession::openSession);
      return true;
     }
    }
   } catch (Exception e) {
-   log.warn("User search failed:{}", e.getMessage());
+   log.warn("User search failed", e);
   }
   return false;
  }

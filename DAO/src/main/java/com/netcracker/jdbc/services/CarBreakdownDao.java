@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface CarBreakdownDao extends CrudDao<CarBreakdown, UUID>{
 
- String getAllCarBreakdownDaoById_Car();
+ String getAllCarBreakdownsById();
 }

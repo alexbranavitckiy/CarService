@@ -20,7 +20,7 @@ public class Outfit implements EntityId<UUID> {
 
     private String name;
 
-    private String descriptions;
+    private String description;
 
     private UUID order;
 

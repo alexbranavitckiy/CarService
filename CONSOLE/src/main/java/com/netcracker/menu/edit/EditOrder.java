@@ -14,11 +14,13 @@ import java.util.Scanner;
 import com.netcracker.order.State;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
+
 @Slf4j
 public class EditOrder implements Menu {
 
  private final Order order;
- private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
+
 
  @Override
  public void preMessage(String parentsName) {
@@ -32,17 +34,17 @@ public class EditOrder implements Menu {
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
   log.info("Descriptions");
-  if (validator.edit(this.order.getDescriptions(), in)) {
-   this.order.setDescriptions(validator.validateDescription(in));
+  if (VALIDATOR_INSTRUMENTS.edit(this.order.getDescription(), in)) {
+   this.order.setDescription(VALIDATOR_INSTRUMENTS.validateDescription(in));
   }
   Optional<State> state = List.of(State.values()).stream().filter(x -> x.getId().equals(this.order.getStateOrder())).findFirst();
   log.info("State order");
   if (state.isPresent()) {
-   if (validator.edit(state.get().toString(), in)) {
-    this.order.setStateOrder(validator.orderState(in));
+   if (VALIDATOR_INSTRUMENTS.edit(state.get().toString(), in)) {
+    this.order.setStateOrder(VALIDATOR_INSTRUMENTS.orderState(in));
    }
   } else {
-   this.order.setStateOrder(validator.orderState(in));
+   this.order.setStateOrder(VALIDATOR_INSTRUMENTS.orderState(in));
   }
   this.order.setUpdatedDate(new Date());
  }

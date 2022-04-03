@@ -3,7 +3,6 @@ package com.netcracker.jdbc.services.impl.breakdown;
 
 import com.netcracker.CarBreakdownServices;
 import com.netcracker.breakdown.CarBreakdown;
-import com.netcracker.errors.EmptySearchException;
 import com.netcracker.errors.PersistException;
 import com.netcracker.jdbc.services.CarBreakdownDao;
 import com.netcracker.jdbc.services.impl.CarBreakdownDaoImpl;
@@ -59,7 +58,7 @@ public class CarBreakdownDaoServicesImpl implements CarBreakdownServices {
  @Override
  public List<CarBreakdown> getAllBreakdownByCar(UUID uuid) {
   try {
-   return this.carDao.getAllByQuery(carDao.getAllCarBreakdownDaoById_Car(), uuid.toString());
+   return this.carDao.getAllByQuery(carDao.getAllCarBreakdownsById(), uuid.toString());
   } catch (PersistException p) {
    log.warn("Error getting data car:{}", p.getMessage());
   }

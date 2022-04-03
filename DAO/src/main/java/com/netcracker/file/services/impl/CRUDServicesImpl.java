@@ -6,7 +6,6 @@ import com.netcracker.errors.EmptySearchException;
 import com.netcracker.file.services.CRUDServices;
 import com.netcracker.file.ObjectMapperServices;
 
-import java.lang.reflect.Field;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;

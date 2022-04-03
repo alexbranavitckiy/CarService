@@ -1,10 +1,10 @@
 package com.netcracker.jdbc.services.impl;
 
 import com.netcracker.errors.PersistException;
-import com.netcracker.jdbc.services.CrudDao;
+import com.netcracker.jdbc.services.MasterReceiverDao;
 import com.netcracker.jdbc.services.TemplateJDBCDao;
-import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
+import com.netcracker.user.Qualification;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.PreparedStatement;
@@ -14,16 +14,21 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-public class MasterReceiverDaoImpl extends TemplateJDBCDao<MasterReceiver, UUID> {
+public class MasterReceiverDaoImpl extends TemplateJDBCDao<MasterReceiver, UUID> implements MasterReceiverDao {
 
  @Override
  public String getSelectQuery() {
-  return "SELECT master_receivers.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions FROM public.master_receivers,public.employers where master_receivers.id=employers.id; ";
+  return "SELECT * FROM public.master_receivers  LEFT JOIN public.employers on master_receivers.id=employers.id; ";
  }
 
  @Override
  public String getSelectByIdQuery() {
-  return "SELECT master_receivers.id,employers.education,employers.name,employers.qualification_id,employers.password,employers.login,employers.home_address,employers.phone,employers.mail,employers.descriptions, FROM public.master_receivers,public.employers where master_receivers.id=employers.id AND master_receivers.id=?;";
+  return "SELECT * FROM public.master_receivers LEFT JOIN public.employers on master_receivers.id=employers.id AND master_receivers.id=?;";
+ }
+
+ @Override
+ public String getSelectByPasswordAndLogin() {
+  return "SELECT * FROM public.master_receivers LEFT JOIN public.employers ON master_receivers.id=employers.id AND employers.password=? AND employers.login=?;";
  }
 
  @Override
@@ -48,11 +53,14 @@ public class MasterReceiverDaoImpl extends TemplateJDBCDao<MasterReceiver, UUID>
   List<MasterReceiver> masters = new ArrayList<>();
   try {
    while (rs.next()) {
+    UUID qualification = (UUID) rs.getObject("qualification_id");
     MasterReceiver master = MasterReceiver.builder()
      .id(UUID.fromString(rs.getString("id")))
      .education(rs.getString("education"))
      .description(rs.getString("descriptions"))
-     .qualificationEnum((UUID) rs.getObject("qualification_id"))
+     .qualificationEnum(List.of(Qualification.values())
+      .stream()
+      .filter(x -> x.getId().equals(qualification)).findFirst().orElse(Qualification.ELECTRICIAN))
      .phone(rs.getString("phone"))
      .login(rs.getString("login"))
      .mail(rs.getString("mail"))
@@ -80,7 +88,7 @@ public class MasterReceiverDaoImpl extends TemplateJDBCDao<MasterReceiver, UUID>
    statement.setObject(1, master.getId());
    statement.setString(2, master.getName());
    statement.setObject(3, master.getEducation());
-   statement.setObject(4, master.getQualificationEnum());
+   statement.setObject(4, master.getQualification());
    statement.setObject(5, master.getPassword());
    statement.setObject(6, master.getLogin());
    statement.setObject(7, master.getHomeAddress());
