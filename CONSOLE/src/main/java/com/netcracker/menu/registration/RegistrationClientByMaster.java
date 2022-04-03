@@ -4,8 +4,6 @@ import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.order.NewOrder;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.ClientServices;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
@@ -79,8 +77,9 @@ public class RegistrationClientByMaster implements Menu {
     }
     case "3": {
      if (clientLast != null) {
-      NewOrder newOrder = NewOrder.CreateNewOrder(clientLast,
-       carClientMenu.getCarClient().get().getId(), servicesFactory);
+      NewOrder newOrder = new NewOrder(servicesFactory);
+      newOrder.setClient(clientLast);
+      newOrder.setIdCar(carClientMenu.getCarClient().get().getId());
       newOrder.run(in, "Client creation menu");
      }
      this.preMessage(parentsName);

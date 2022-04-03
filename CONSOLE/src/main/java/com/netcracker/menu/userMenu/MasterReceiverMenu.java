@@ -86,8 +86,9 @@ public class MasterReceiverMenu implements Menu {
        listCarClient.run(in, "Main menu");
        if (listClient.getClient().isPresent()) {
         if (listCarClient.getClient().isPresent()) {
-         NewOrder newOrder =  NewOrder.CreateNewOrder(listClient.getClient().get(),
-          listCarClient.getClient().get().getId(), servicesFactory);
+         NewOrder newOrder = new NewOrder(servicesFactory);
+         newOrder.setIdCar(listCarClient.getClient().get().getId());
+         newOrder.setClient(listClient.getClient().get());
          newOrder.run(in, "Main menu");
         } else {
          System.out.println("This user has no cars");

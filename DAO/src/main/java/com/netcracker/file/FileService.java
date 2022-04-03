@@ -41,10 +41,6 @@ public class FileService {
   return user;
  }
 
- public File getOrders() {
-  return orders;
- }
-
  public File getMasterFile() {
   return master;
  }

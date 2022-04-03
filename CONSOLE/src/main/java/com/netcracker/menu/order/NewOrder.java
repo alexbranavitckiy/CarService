@@ -22,25 +22,17 @@ import java.util.UUID;
 import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
-public final class NewOrder implements Menu {
+public class NewOrder implements Menu {
 
  private  Client client;
- private  OrderServices orderServices;
  private  UUID idCar;
- private  ServicesFactory servicesFactory;
+ private final OrderServices orderServices;
+ private final ServicesFactory servicesFactory;
 
- private NewOrder() {
+ public NewOrder(ServicesFactory servicesFactory) {
+  this.servicesFactory = servicesFactory;
+  this.orderServices = servicesFactory.getFactory().getOrderServices();
  }
-
- public static NewOrder CreateNewOrder(Client client, UUID idCar, ServicesFactory servicesFactory) {
-  NewOrder newOrder = new NewOrder();
-  newOrder.client = client;
-  newOrder.idCar = idCar;
-  newOrder.servicesFactory = servicesFactory;
-  newOrder.orderServices = servicesFactory.getFactory().getOrderServices();
-  return newOrder;
- }
-
 
  @Override
  public void preMessage(String parentsName) {
@@ -96,5 +88,19 @@ public final class NewOrder implements Menu {
   }
  }
 
+ public Client getClient() {
+  return client;
+ }
 
+ public void setClient(Client client) {
+  this.client = client;
+ }
+
+ public UUID getIdCar() {
+  return idCar;
+ }
+
+ public void setIdCar(UUID idCar) {
+  this.idCar = idCar;
+ }
 }
