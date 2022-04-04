@@ -1,18 +1,16 @@
 package com.netcracker.menu.order.client;
 
+import com.netcracker.ClientServices;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
-import com.netcracker.ClientServices;
-
-import java.util.Optional;
-
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 

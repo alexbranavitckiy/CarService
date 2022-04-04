@@ -1,13 +1,11 @@
 package com.netcracker.menu.validator;
 
 
+import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.user.Qualification;
 
 import java.util.Date;
 import java.util.Scanner;
-
-import com.netcracker.menu.errors.InvalidValuesException;
-
 import java.util.UUID;
 
 public interface ValidatorInstruments {

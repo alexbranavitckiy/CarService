@@ -1,10 +1,8 @@
 package com.netcracker.menu.edit;
 
+import com.netcracker.MasterReceiverServices;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.MasterReceiverServices;
 import com.netcracker.session.UserSession;
 import com.netcracker.user.MasterReceiver;
 import lombok.SneakyThrows;

@@ -1,10 +1,12 @@
 package com.netcracker.menu.registration;
 
-import com.netcracker.factory.ServicesFactory;
-import com.netcracker.menu.Menu;
 import com.netcracker.MasterReceiverServices;
 import com.netcracker.MasterServices;
-import com.netcracker.user.*;
+import com.netcracker.factory.ServicesFactory;
+import com.netcracker.menu.Menu;
+import com.netcracker.user.Master;
+import com.netcracker.user.MasterReceiver;
+import com.netcracker.user.Role;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

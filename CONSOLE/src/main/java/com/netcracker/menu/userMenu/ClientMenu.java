@@ -1,6 +1,7 @@
 package com.netcracker.menu.userMenu;
 
 import com.netcracker.CarServices;
+import com.netcracker.ClientServices;
 import com.netcracker.OrderServices;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.marka.CarClient;
@@ -8,7 +9,6 @@ import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarMenu;
 import com.netcracker.menu.edit.EditClient;
 import com.netcracker.menu.order.client.SignMenu;
-import com.netcracker.ClientServices;
 import com.netcracker.order.State;
 import com.netcracker.session.UserSession;
 import lombok.extern.slf4j.Slf4j;
@@ -73,8 +73,7 @@ public class ClientMenu implements Menu {
     }
     case "5": {
      EditClient editClient = new EditClient();
-     editClient.run(in, "Main menu");
-     if (clientServices.updateClient(editClient.getClient())) {
+     if (clientServices.updateClient(editClient.run(in))) {
       log.info("Data entered successfully");
      } else {
       log.info("An input error occurred while entering data. Retry data change");

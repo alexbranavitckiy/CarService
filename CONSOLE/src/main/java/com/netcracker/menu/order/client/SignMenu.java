@@ -1,22 +1,18 @@
 package com.netcracker.menu.order.client;
 
 import com.netcracker.CarServices;
+import com.netcracker.OrderServices;
 import com.netcracker.errors.EmptySearchException;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
-import com.netcracker.OrderServices;
 import com.netcracker.session.UserSession;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.*;
-
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 

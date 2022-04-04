@@ -1,20 +1,16 @@
 package com.netcracker.menu.userMenu;
 
+import com.netcracker.OutfitsServices;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CarBreakdownCreate;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.State;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.OutfitsServices;
 import com.netcracker.session.UserSession;
-
-import java.util.List;
-
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
@@ -64,11 +60,11 @@ public class MasterMenu implements Menu {
       try {
        Outfit outfit = outfitList.get(in.nextInt() - 1);
        log.info("Enter information about breakdowns");
-       CarBreakdownCreate carBreakdownCreate = new CarBreakdownCreate(servicesFactory
-        .getFactory()
-        .getOrderServices()
-        .getOrderById(outfit.getOrder()).get().getIdCar(), servicesFactory);
-       carBreakdownCreate.run(in, "");
+       CarBreakdownCreate carBreakdownCreate = new CarBreakdownCreate(servicesFactory);
+       carBreakdownCreate.run(servicesFactory
+               .getFactory()
+               .getOrderServices()
+               .getOrderById(outfit.getOrder()).get().getIdCar(),in, "");
        log.info("Descriptions");
        if (VALIDATOR_INSTRUMENTS.edit(outfit.getDescription(), in)) {
         outfit.setDescription(VALIDATOR_INSTRUMENTS.validateDescription(in));

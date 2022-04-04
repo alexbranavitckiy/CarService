@@ -15,24 +15,27 @@ import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_I
 @Slf4j
 public class CarBreakdownCreate implements Menu {
 
- private final UUID carUUID;
  private final CarBreakdownServices carBreakdownServices;
 
- public CarBreakdownCreate(UUID carUUID, ServicesFactory servicesFactory) {
+ public CarBreakdownCreate( ServicesFactory servicesFactory) {
   this.carBreakdownServices = servicesFactory.getFactory().getCarBreakdownServices();
-  this.carUUID = carUUID;
  }
 
  @Override
  public void run(Scanner in, String parentsName) throws IOException {
+ this.preMessage(parentsName);
+ }
+
+
+ public void run(UUID carUUID,Scanner in, String parentsName) throws IOException {
   CarBreakdown carBreakdown = CarBreakdown.builder()
-   .id(UUID.randomUUID())
-   .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
-   .state(VALIDATOR_INSTRUMENTS.orderStateCarBr(in))
-   .carClient(carUUID)
-   .location(VALIDATOR_INSTRUMENTS.validateDescription(in))
-   .runCarSize(VALIDATOR_INSTRUMENTS.validateMileage(in))
-   .build();
+          .id(UUID.randomUUID())
+          .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+          .state(VALIDATOR_INSTRUMENTS.orderStateCarBr(in))
+          .carClient(carUUID)
+          .location(VALIDATOR_INSTRUMENTS.validateDescription(in))
+          .runCarSize(VALIDATOR_INSTRUMENTS.validateMileage(in))
+          .build();
   VALIDATOR_INSTRUMENTS.successfullyMessages(carBreakdownServices.addBreakdown(carBreakdown));
  }
 

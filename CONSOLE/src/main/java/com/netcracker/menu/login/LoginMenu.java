@@ -12,7 +12,6 @@ import java.util.Scanner;
 @Slf4j
 public class LoginMenu implements Menu {
 
-
  private final ServicesFactory servicesFactory;
 
  public LoginMenu(ServicesFactory servicesFactory) {

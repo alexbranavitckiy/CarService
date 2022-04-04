@@ -3,15 +3,13 @@ package com.netcracker.menu.validator;
 import com.netcracker.menu.errors.InvalidValuesException;
 import com.netcracker.order.State;
 import com.netcracker.user.Qualification;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

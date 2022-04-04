@@ -1,8 +1,8 @@
 package com.netcracker.menu.startMenu;
 
 import com.netcracker.factory.ServicesFactory;
-import com.netcracker.menu.login.LoginMenu;
 import com.netcracker.menu.Menu;
+import com.netcracker.menu.login.LoginMenu;
 import com.netcracker.menu.userMenu.InfoMenu;
 import lombok.extern.slf4j.Slf4j;
 
