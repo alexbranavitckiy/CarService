@@ -48,12 +48,9 @@ public class MasterReceiverMenu implements Menu {
   log.info("Enter 7 Go to the list of outfits.\n-By date\n-All outfits");
   log.info("Enter 8 Show a list of requests from customers({})",
    this.getOrderSize());
-
   log.info("Outfits with status:END({})", outfitsServices.getAllByState(com.netcracker.outfit.State.END.getId()).size());
   log.info("Outfits with status:RECORDED({})", outfitsServices.getAllByState(com.netcracker.outfit.State.RECORDED.getId()).size());
   log.info("Outfits with status:CAR_GIVEN({})", outfitsServices.getAllByState(com.netcracker.outfit.State.WORK.getId()).size());
-
-
   log.info("Orders with status:IN_WORK({})", carServices.getAllCarClientWithState(State.IN_WORK).size());
   log.info("Orders with status:CAR_GIVEN({})", carServices.getAllCarClientWithState(State.CAR_GIVEN).size());
   log.info("Orders with status:WAIT_CLIENT({})", carServices.getAllCarClientWithState(State.WAIT_CLIENT).size());
@@ -87,8 +84,7 @@ public class MasterReceiverMenu implements Menu {
        if (listClient.getClient().isPresent()) {
         if (listCarClient.getClient().isPresent()) {
          NewOrder newOrder = new NewOrder(servicesFactory);
-         newOrder.setIdCar(listCarClient.getClient().get().getId());
-         newOrder.setClient(listClient.getClient().get());
+         newOrder.createOrder(in, listClient.getClient().get(), listCarClient.getClient().get().getId());
          newOrder.run(in, "Main menu");
         } else {
          System.out.println("This user has no cars");

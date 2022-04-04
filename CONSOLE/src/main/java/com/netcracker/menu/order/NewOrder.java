@@ -3,8 +3,6 @@ package com.netcracker.menu.order;
 import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.order.Order;
 import com.netcracker.OrderServices;
 
@@ -24,8 +22,6 @@ import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_I
 @Slf4j
 public class NewOrder implements Menu {
 
- private  Client client;
- private  UUID idCar;
  private final OrderServices orderServices;
  private final ServicesFactory servicesFactory;
 
@@ -51,7 +47,41 @@ public class NewOrder implements Menu {
      break label;
     }
     case "2": {
-     if (this.client != null && client.getId() != null) {
+      log.info("Enter 1-yes. 2-not ");
+      if (in.next().equalsIgnoreCase("1")) {
+       orderUUID = UUID.randomUUID();
+       Order order = Order.builder()
+        .id(orderUUID)
+        .stateOrder(VALIDATOR_INSTRUMENTS.orderState(in))
+        .outfits(new ArrayList<>())
+        .createdDate(new Date())
+        .updatedDate(new Date())
+        .label(new ArrayList<>())
+        .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+        .build();
+       orderServices.addOrder(order);
+      }
+     break label;
+    }
+    default: {
+     this.preMessage(parentsName);
+     break;
+    }
+   }
+  }
+ }
+
+ public void createOrder(Scanner in, Client client, UUID idCar) throws IOException {
+  UUID orderUUID;
+  this.print();
+  label:
+  while (true) {
+   switch (in.next()) {
+    case "1": {
+     break label;
+    }
+    case "2": {
+     if (client != null && client.getId() != null) {
       log.info("Create an order with a customer?:Login {}, name:{}, phone:{}",
        client.getLogin(), client.getName(), client.getPhone());
       log.info("Enter 1-yes. 2-not ");
@@ -59,7 +89,7 @@ public class NewOrder implements Menu {
        orderUUID = UUID.randomUUID();
        Order order = Order.builder()
         .id(orderUUID)
-        .clientUUID(this.client.getId())
+        .clientUUID(client.getId())
         .stateOrder(VALIDATOR_INSTRUMENTS.orderState(in))
         .outfits(new ArrayList<>())
         .createdDate(new Date())
@@ -81,26 +111,17 @@ public class NewOrder implements Menu {
      break label;
     }
     default: {
-     this.preMessage(parentsName);
+     this.print();
      break;
     }
    }
   }
+
  }
 
- public Client getClient() {
-  return client;
+ public void print() {
+  log.info("Enter 1 to leave");
+  log.info("Enter 2 to create order");
  }
 
- public void setClient(Client client) {
-  this.client = client;
- }
-
- public UUID getIdCar() {
-  return idCar;
- }
-
- public void setIdCar(UUID idCar) {
-  this.idCar = idCar;
- }
 }

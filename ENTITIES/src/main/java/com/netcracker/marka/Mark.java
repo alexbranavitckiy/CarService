@@ -1,6 +1,5 @@
 package com.netcracker.marka;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.netcracker.EntityId;
 import lombok.AllArgsConstructor;

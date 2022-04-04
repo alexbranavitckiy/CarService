@@ -78,8 +78,7 @@ public class RegistrationClientByMaster implements Menu {
     case "3": {
      if (clientLast != null) {
       NewOrder newOrder = new NewOrder(servicesFactory);
-      newOrder.setClient(clientLast);
-      newOrder.setIdCar(carClientMenu.getCarClient().get().getId());
+      newOrder.createOrder(in, clientLast, carClientMenu.getCarClient().get().getId());
       newOrder.run(in, "Client creation menu");
      }
      this.preMessage(parentsName);
