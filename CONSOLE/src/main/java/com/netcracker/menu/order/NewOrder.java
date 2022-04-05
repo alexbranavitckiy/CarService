@@ -1,33 +1,31 @@
 package com.netcracker.menu.order;
 
+import com.netcracker.OrderServices;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
 import com.netcracker.order.Order;
-import com.netcracker.servisec.Impl.order.OrderServicesImpl;
-import com.netcracker.servisec.OrderServices;
+import com.netcracker.outfit.Outfit;
 import com.netcracker.user.Client;
-import java.util.ArrayList;
-import java.util.Date;
-
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class NewOrder implements Menu {
 
-  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
-  private final Client client;
-  private final OrderServices orderServices = new OrderServicesImpl();
-  private final UUID idCar;
+  private final OrderServices orderServices;
+  private final ServicesFactory servicesFactory;
 
-  public NewOrder(Client client, UUID idCar) {
-    this.client = client;
-    this.idCar = idCar;
+  public NewOrder(ServicesFactory servicesFactory) {
+    this.servicesFactory = servicesFactory;
+    this.orderServices = servicesFactory.getFactory().getOrderServices();
   }
 
   @Override
@@ -47,32 +45,19 @@ public class NewOrder implements Menu {
           break label;
         }
         case "2": {
-          if (this.client != null && client.getId() != null) {
-            log.info("Create an order with a customer?:Login {}, name:{}, phone:{}",
-              client.getLogin(), client.getName(), client.getPhone());
-            log.info("Enter 1-yes. 2-not ");
-            if (in.next().equalsIgnoreCase("1")) {
-              orderUUID = UUID.randomUUID();
-              Order order = Order.builder()
+          log.info("Enter 1-yes. 2-not ");
+          if (in.next().equalsIgnoreCase("1")) {
+            orderUUID = UUID.randomUUID();
+            Order order = Order.builder()
                 .id(orderUUID)
-                .clientUUID(this.client.getId())
-                .stateOrder(validator.orderState(in))
+                .stateOrder(VALIDATOR_INSTRUMENTS.orderState(in))
                 .outfits(new ArrayList<>())
                 .createdDate(new Date())
-                .idCar(idCar)
                 .updatedDate(new Date())
-                .entry(new ArrayList<>())
-                .descriptions(validator.validateDescription(in))
-                .priceSum(0d)
+                .label(new ArrayList<>())
+                .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
                 .build();
-              log.info("Outfit data:");
-              CreateOutfit createOutfit = new CreateOutfit(orderUUID);
-              createOutfit.run(in,
-                "");
-              order.setOutfits(new ArrayList<>());
-              order.getOutfits().add(createOutfit.getOrder());
-              validator.successfullyMessages(orderServices.addOrder(order));
-            }
+            orderServices.addOrder(order);
           }
           break label;
         }
@@ -84,5 +69,59 @@ public class NewOrder implements Menu {
     }
   }
 
+  public void createOrder(Scanner in, Client client, UUID idCar) throws IOException {
+    UUID orderUUID;
+    this.print();
+    label:
+    while (true) {
+      switch (in.next()) {
+        case "1": {
+          break label;
+        }
+        case "2": {
+          if (client != null && client.getId() != null) {
+            log.info("Create an order with a customer?:Login {}, name:{}, phone:{}",
+                client.getLogin(), client.getName(), client.getPhone());
+            log.info("Enter 1-yes. 2-not ");
+            if (in.next().equalsIgnoreCase("1")) {
+              orderUUID = UUID.randomUUID();
+              Order order = Order.builder()
+                  .id(orderUUID)
+                  .clientUUID(client.getId())
+                  .stateOrder(VALIDATOR_INSTRUMENTS.orderState(in))
+                  .outfits(new ArrayList<>())
+                  .createdDate(new Date())
+                  .idCar(idCar)
+                  .updatedDate(new Date())
+                  .label(new ArrayList<>())
+                  .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+                  .build();
+              log.info("Outfit data:");
+              CreateOutfit createOutfit = new CreateOutfit(servicesFactory);
+              Outfit outfit= createOutfit.createOutfit(in,
+                  "", orderUUID);
+              order.setOutfits(new ArrayList<>());
+              order.getOutfits().add(outfit.getOrder());
+              orderServices.addOrder(order);
+              VALIDATOR_INSTRUMENTS.successfullyMessages(
+                  servicesFactory.getFactory().getOutfitServices()
+                      .addObjectInOutfits(outfit));
+            }
+          }
+          break label;
+        }
+        default: {
+          this.print();
+          break;
+        }
+      }
+    }
+
+  }
+
+  public void print() {
+    log.info("Enter 1 to leave");
+    log.info("Enter 2 to create order");
+  }
 
 }

@@ -1,28 +1,32 @@
 package com.netcracker.menu.registration;
 
+import com.netcracker.ClientServices;
+import com.netcracker.factory.ServicesFactory;
+import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
 import com.netcracker.menu.order.NewOrder;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
-import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class RegistrationClientByMaster implements Menu {
 
-  private final ClientServices clientServices = new ClientServicesImpl();
-  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
-  private Client clientLast;
+  private final ClientServices clientServices;
+  private final ServicesFactory servicesFactory;
+
+  public RegistrationClientByMaster(ServicesFactory servicesFactory) {
+    this.servicesFactory = servicesFactory;
+    this.clientServices = servicesFactory.getFactory().getClientServices();
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -32,29 +36,31 @@ public class RegistrationClientByMaster implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    Client clientLast = null;
+    UUID uuidCNewClient = UUID.randomUUID();
     CreateCarClient carClientMenu = new CreateCarClient();
+    CarClient carClient = carClientMenu.createCar(in, "Filling in car details", uuidCNewClient);
     this.preMessage(parentsName);
     label:
     while (true) {
       switch (in.next()) {
         case "2": {
-          carClientMenu.run(in, "Filling in car details");
           log.info("Filling in customer data");
-          if (carClientMenu.getCarClient().isPresent()) {
+          if (carClient != null) {
             Client client = Client.builder()
-              .id(UUID.randomUUID())
-              .description(validator.validateDescription(in))
-              .email(validator.validateMail(in))
-              .name(validator.validateNameUser(in))
-              .roleuser(RoleUser.UNREGISTERED)
-              .orders(new HashSet<>())
-              .carClients(new ArrayList<>())
-              .login(carClientMenu.getCarClient().get().getMetadataCar())
-              .password(carClientMenu.getCarClient().get().getMetadataCar())
-              .build();
-            if (clientServices.addObjectInClientNotOnline(client)) {
+                .id(uuidCNewClient)
+                .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+                .email(VALIDATOR_INSTRUMENTS.validateMail(in))
+                .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
+                .roleUser(RoleUser.UNREGISTERED.getId())
+                .carClients(new ArrayList<>())
+                .login(carClient.getMetadataCar())
+                .password(carClient.getMetadataCar())
+                .build();
+            if (clientServices.addObjectInClientNotOnline(client) &&
+                servicesFactory.getFactory().getCarServices().addCar(carClient)) {
               log.info("User created successfully");
-              this.clientLast = client;
+              clientLast = client;
               log.info("Enter 3 to Create an order with these customers");
             } else {
               log.info("Invalid data. Repeat registration");
@@ -70,8 +76,8 @@ public class RegistrationClientByMaster implements Menu {
         }
         case "3": {
           if (clientLast != null) {
-            NewOrder newOrder = new NewOrder(clientLast,
-              carClientMenu.getCarClient().get().getId());
+            NewOrder newOrder = new NewOrder(servicesFactory);
+            newOrder.createOrder(in, clientLast, carClient.getId());
             newOrder.run(in, "Client creation menu");
           }
           this.preMessage(parentsName);
@@ -85,7 +91,4 @@ public class RegistrationClientByMaster implements Menu {
     }
   }
 
-  public Client getClient() {
-    return clientLast;
-  }
 }

@@ -1,12 +1,11 @@
 package com.netcracker.marka;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.netcracker.EntityId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.Date;
 import java.util.UUID;
@@ -16,15 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Mark {
+public class Mark implements EntityId<UUID> {
 
-  private UUID id;
+ private UUID id;
 
-  private String generation;
+ private String generation;
 
-  private Date year;
+ private Date year;
 
-  private double engineSize;
-
+ private double engineSize;
 
 }

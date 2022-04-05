@@ -1,6 +1,7 @@
 package com.netcracker.order;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.netcracker.EntityId;
 import lombok.*;
 
 
@@ -13,26 +14,26 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Order implements EntityId<UUID> {
 
-  private UUID id;
+ private UUID id;
 
-  private String descriptions;
+ private String description;
 
-  private List<UUID> outfits;
+ private List<UUID> outfits;
 
-  private UUID idCar;
+ private UUID masterReceiver;
 
-  private double priceSum;
+ private UUID idCar;
 
-  private UUID clientUUID;
+ private UUID clientUUID;
 
-  private State stateOrder;
+ private UUID stateOrder;
 
-  private List<UUID> entry;
+ private List<UUID> label;
 
-  private Date createdDate;
+ private Date createdDate;
 
-  private Date updatedDate;
+ private Date updatedDate;
 
 }
