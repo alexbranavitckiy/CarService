@@ -1,28 +1,36 @@
 package com.netcracker.menu.order;
 
+import com.netcracker.OrderServices;
+import com.netcracker.OutfitsServices;
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateOutfit;
 import com.netcracker.menu.edit.EditOrder;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
 import com.netcracker.order.Order;
-import com.netcracker.servisec.Impl.order.OrderServicesImpl;
-import com.netcracker.servisec.OrderServices;
+import com.netcracker.order.State;
+import com.netcracker.outfit.Outfit;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
-import lombok.extern.slf4j.Slf4j;
+import java.util.UUID;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class ListOrders implements Menu {
 
-  private final OrderServices orderServices = new OrderServicesImpl();
-  private Order order;
-  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
+  private final ServicesFactory servicesFactory;
+
+  private final OrderServices orderServices;
+
+  public ListOrders(ServicesFactory servicesFactory) {
+    this.orderServices = servicesFactory.getFactory().getOrderServices();
+    this.servicesFactory = servicesFactory;
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -33,6 +41,8 @@ public class ListOrders implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    Order order;
+    OutfitsServices outfitsServices = servicesFactory.getFactory().getOutfitServices();
     this.preMessage(parentsName);
     label:
     while (true) {
@@ -40,14 +50,12 @@ public class ListOrders implements Menu {
         case "2": {
           try {
             List<Order> orders = orderServices.getAll();
-            if (orders.size() > 0) {
-              for (int x = 1; x < orders.size() + 1; x++) {
-                log.info("Id:{} {} ", x, orders.get(x - 1));
-              }
-            }
+            printOrders(orders);
             log.info("Go to order ID:");
-            this.order = orders.get(in.nextInt() - 1);
-            this.EditOrder(in);
+            order = orders.get(in.nextInt() - 1);
+            this.editOrder(in,order);
+            log.info("Create an outfit with this order?\n1-yes.\n2-no.");
+            this.createOutfit(in, outfitsServices, order);
             break label;
           } catch (EmptySearchException e) {
             log.warn("The search has not given any results. {}", e.getMessage());
@@ -62,19 +70,15 @@ public class ListOrders implements Menu {
         case "3": {
           try {
             List<Order> orders = orderServices.getOrderWithRequestState();
-            this.printOrders(orders);
-            log.info("Go to order ID:");
-            this.order = orders.get(in.nextInt() - 1);
-            this.EditOrder(in);
-            log.info("Create an outfit? 1-yeas. 2-no");
-            if (in.next().equals("1")) {
-              log.info("Outfit data:");
-              CreateOutfit createOutfit = new CreateOutfit(this.order.getId());
-              createOutfit.run(in,
-                "");
-              order.setOutfits(new ArrayList<>());
-              order.getOutfits().add(createOutfit.getOrder());
-              validator.successfullyMessages(orderServices.addOrder(order));
+            if (orders.size() > 0) {
+              this.printOrders(orders);
+              log.info("Go to order ID:");
+              order = orders.get(in.nextInt() - 1);
+              this.editOrder(in, order);
+              log.info("Create an outfit? 1-yeas. 2-no");
+              this.createOutfit(in, outfitsServices, order);
+            } else {
+              log.info("No data with this status");
             }
           } catch (InputMismatchException e) {
             log.warn("Invalid data:{}. Please try again", e.getMessage());
@@ -96,26 +100,48 @@ public class ListOrders implements Menu {
     }
   }
 
+  private Order createOutfit(Scanner in, OutfitsServices outfitsServices, Order order)
+      throws IOException {
+    if (in.next().equalsIgnoreCase("1")) {
+      CreateOutfit createOutfit = new CreateOutfit(servicesFactory);
+      Outfit outfit = createOutfit.createOutfit(in, "Main menu", order.getId());
+      log.info("appoint master.");
+      VALIDATOR_INSTRUMENTS
+          .successfullyMessages(outfitsServices.addObjectInOutfits(outfit));
+      order.setOutfits(List.of(outfit.getId()));
+      VALIDATOR_INSTRUMENTS.successfullyMessages(orderServices.updateOrder(order));
+    }
+    return order;
+  }
+
   private void printOrders(List<Order> orders) {
+    Order order;
     if (orders.size() > 0) {
-      for (int x = 1; x < orders.size() + 1; x++) {
-        log.info("Id:{} {} ", x, orders.get(x - 1));
+      for (int x = 0; x < orders.size(); x++) {
+        order = orders.get(x);
+        UUID uuidState = order.getStateOrder();
+        log.info("Id:{} {} Created:{} {} Updated:{}"
+            , x
+            , List.of(State.values()).stream().filter(z -> z.getId().equals(uuidState)).findFirst()
+                .get().name()
+            , order.getCreatedDate()
+            , order.getDescription()
+            , order.getUpdatedDate()
+        );
       }
     }
   }
 
-  private void EditOrder(Scanner in) throws IOException {
+  private Order editOrder(Scanner in, Order order) throws IOException {
     log.info("Edit Order? 1-yeas. 2-no");
     if (in.next().equals("1")) {
-      EditOrder editOrder = new EditOrder(this.order);
-      editOrder.run(in, "Main menu");
-      validator.successfullyMessages(orderServices.addOrder(editOrder.getOrder()));
-      this.order = editOrder.getOrder();
+      EditOrder editOrder = new EditOrder();
+      Order orderNew = editOrder.run(in, "Main menu", order);
+      VALIDATOR_INSTRUMENTS.successfullyMessages(orderServices.updateOrder(order));
+      return order;
     }
+    return order;
   }
 
-  public Optional<Order> getOrder() {
-    return Optional.of(this.order);
-  }
 
 }

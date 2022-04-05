@@ -1,24 +1,32 @@
 package com.netcracker.menu.registration;
 
+import com.netcracker.CarServices;
+import com.netcracker.ClientServices;
+import com.netcracker.factory.ServicesFactory;
+import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
 import com.netcracker.menu.car.CreateCarClient;
-import com.netcracker.menu.validator.ValidatorInstrumentsImpl;
-import com.netcracker.menu.validator.ValidatorInstruments;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
 import com.netcracker.user.Client;
 import com.netcracker.user.RoleUser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.UUID;
+
+import static com.netcracker.menu.validator.ValidatorInstrumentsImpl.VALIDATOR_INSTRUMENTS;
 
 @Slf4j
 public class RegistrationClient implements Menu {
 
-  private final ClientServices clientServices = new ClientServicesImpl();
-  private final ValidatorInstruments validator = new ValidatorInstrumentsImpl();
+  private final ClientServices clientServices;
+  private final CarServices carServices;
 
+  public RegistrationClient(ServicesFactory servicesFactory) {
+    this.clientServices = servicesFactory.getFactory().getClientServices();
+    this.carServices = servicesFactory.getFactory().getCarServices();
+  }
 
   @Override
   public void preMessage(String parentsName) {
@@ -28,33 +36,36 @@ public class RegistrationClient implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    UUID uuidCNewClient = UUID.randomUUID();
     this.preMessage(parentsName);
     label:
     while (true) {
       switch (in.next()) {
         case "2": {
-          CreateCarClient carClient = new CreateCarClient();
-          carClient.run(in, "Enter car information");
+          CreateCarClient createCarClient = new CreateCarClient();
+          CarClient carClient = createCarClient
+              .createCar(in, "Enter car information", uuidCNewClient);
           log.info("Enter customer details");
           Client client = Client.builder()
-            .id(UUID.randomUUID())
-            .login(validator.validateLogin(in))
-            .password(validator.validatePassword(in))
-            .name(validator.validateNameUser(in))
-            .email(validator.validateMail(in))
-            .description(validator.validateDescription(in))
-            .phone(validator.validatePhone(in))
-            .roleuser(RoleUser.REGISTERED)
-            .build();
-          if (carClient.getCarClient().isPresent()) {
+              .id(uuidCNewClient)
+              .login(VALIDATOR_INSTRUMENTS.validateLogin(in))
+              .password(VALIDATOR_INSTRUMENTS.validatePassword(in))
+              .name(VALIDATOR_INSTRUMENTS.validateNameUser(in))
+              .email(VALIDATOR_INSTRUMENTS.validateMail(in))
+              .description(VALIDATOR_INSTRUMENTS.validateDescription(in))
+              .phone(VALIDATOR_INSTRUMENTS.validatePhone(in))
+              .roleUser(RoleUser.REGISTERED.getId())
+              .build();
+          if (carClient != null) {
             client.setCarClients(new ArrayList<>());
-            client.getCarClients().add((carClient.getCarClient().get()));
+            client.getCarClients().add((carClient.getId()));
           } else {
             log.info("Try again to enter information");
             this.preMessage(parentsName);
             break;
           }
-          if (clientServices.addObjectInClient(client)) {
+          if (clientServices.addObjectInClient(client) && carServices
+              .addCar(carClient)) {
             log.info("User created successfully");
             break label;
           } else {

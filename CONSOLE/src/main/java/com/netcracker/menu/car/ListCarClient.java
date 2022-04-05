@@ -1,28 +1,23 @@
 package com.netcracker.menu.car;
 
+import com.netcracker.CarServices;
 import com.netcracker.errors.EmptySearchException;
+import com.netcracker.factory.ServicesFactory;
 import com.netcracker.marka.CarClient;
 import com.netcracker.menu.Menu;
-import com.netcracker.servisec.ClientServices;
-import com.netcracker.servisec.Impl.client.ClientServicesImpl;
-import java.io.IOException;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
+import java.util.*;
 
 
 @Slf4j
 public class ListCarClient implements Menu {
 
-  private final ClientServices searchServices = new ClientServicesImpl();
-  private CarClient carClient;
-  private final UUID uuid;
+  private final CarServices carServices;
 
-  public ListCarClient(UUID uuid) {
-    this.uuid = uuid;
+  public ListCarClient(ServicesFactory servicesFactory) {
+    this.carServices = servicesFactory.getFactory().getCarServices();
   }
 
   @Override
@@ -33,15 +28,19 @@ public class ListCarClient implements Menu {
 
   @Override
   public void run(Scanner in, String parentsName) throws IOException {
+    this.preMessage(parentsName);
+  }
+
+  public CarClient run(Scanner in, String parentsName, UUID uuid) throws IOException {
     List<CarClient> clientList;
     try {
-      clientList = searchServices.getCarByIdClient(this.uuid);
+      clientList = carServices.getCarByIdClient(uuid);
       if (clientList.size() > 0) {
         for (int x = 1; x < clientList.size() + 1; x++) {
           log.info("Id:{} {} ", x, clientList.get(x - 1));
         }
         log.info("Enter car id");
-        this.carClient = clientList.get(in.nextInt() - 1);
+        return  clientList.get(in.nextInt() - 1);
       }
     } catch (InputMismatchException e) {
       log.warn("Invalid data:{}. Please try again", e.getMessage());
@@ -50,10 +49,7 @@ public class ListCarClient implements Menu {
     } catch (EmptySearchException e) {
       log.warn("The search has not given any results. {}", e.getMessage());
     }
-  }
-
-  public Optional<CarClient> getClient() {
-    return Optional.ofNullable(carClient);
+    throw new  EmptyStackException();
   }
 
 }
