@@ -1,20 +1,20 @@
 package com.netcracker.outfit;
 
 
-import com.netcracker.EntityId;
+public enum State {
+ WORK("WORK"),
+ END("END"),
+ RECORDED("RECORDED"),
+ NO_STATE("NO_STATE");
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+ private String code;
 
-public enum State implements EntityId<UUID> {
- WORK,
- END,
- RECORDED,
- NO_STATE;
+ State(String code) {
+  this.code = code;
+ }
 
- @Override
- public UUID getId() {
-  return UUID.nameUUIDFromBytes(this.name().getBytes(
-   StandardCharsets.UTF_8));
+ public String getCode() {
+  return code;
  }
 }
+

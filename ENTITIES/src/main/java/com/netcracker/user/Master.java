@@ -2,9 +2,13 @@ package com.netcracker.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.EntityId;
+import com.netcracker.outfit.Outfit;
 import lombok.*;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,28 +18,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Master extends Employers implements EntityId<UUID>, Cloneable {
+@Entity(name = "master")
+public class Master extends Employers  {
 
- private List<UUID> outfits;
+ @OneToMany(mappedBy = "master")
+ private List<Outfit> outfits;
 
- @Builder
- public Master(UUID id, String name, String phone, String mail, String description,
-               Role role, String login, String password, String homeAddress,
-               Qualification qualificationEnum, String education, List<UUID> outfits) {
-  super(id, name, phone, mail, description, role, login, password, homeAddress, qualificationEnum,
-   education);
-  this.outfits = outfits;
- }
-
- @Override
- public Master clone() throws CloneNotSupportedException {
-  return (Master) super.clone();
- }
-
- @Override
- public String toString() {
-  return "Master{" +
-   "outfits=" + outfits +
-   "} " + super.toString();
- }
 }

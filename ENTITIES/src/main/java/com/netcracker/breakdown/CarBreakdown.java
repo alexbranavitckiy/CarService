@@ -1,33 +1,39 @@
 package com.netcracker.breakdown;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.EntityId;
-import com.netcracker.marka.CarClient;
+import com.netcracker.car.CarClient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import java.util.UUID;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CarBreakdown implements EntityId<UUID> {
+@Entity(name = "car_breakdown")
+public class CarBreakdown {
 
+ @Id
+ @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
- private UUID carClient;
+ @ManyToOne
+ @JoinColumn(name = "id_car")
+ private CarClient carClient;
 
+ @Column(name = "description")
  private String description;
 
+ @Column(name = "run_car_size")
  private String runCarSize;
 
- private UUID state;
+ private State state;
 
  private String location;
 

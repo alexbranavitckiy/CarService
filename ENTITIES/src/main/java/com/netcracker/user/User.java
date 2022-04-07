@@ -2,19 +2,27 @@ package com.netcracker.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.EntityId;
 
 import java.util.UUID;
 
 import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class User implements EntityId<UUID> {
+@MappedSuperclass
+public abstract class User {
 
+ @Id
+ @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
  private String name;
@@ -25,12 +33,15 @@ public abstract class User implements EntityId<UUID> {
 
  private String description;
 
+ @NotNull
+ @Size(min = 4, max = 14)
  private String login;
 
+ @NotNull
+ @Size(min = 4, max = 14)
  private String password;
 
- private UUID roleUser;
-
-
+ @Column(name = "role_user")
+ private RoleUser roleUser;
 
 }

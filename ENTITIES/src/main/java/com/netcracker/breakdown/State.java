@@ -1,21 +1,19 @@
 package com.netcracker.breakdown;
 
 
-import com.netcracker.EntityId;
+public enum State {
+ CORRECTED("CORRECTED"),
+ NOT_FIXED("NOT_FIXED"),
+ IMPORTANT("IMPORTANT"),
+ NEEDS_CORRECTED("NEEDS_CORRECTED");
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+ private String code;
 
-public enum State implements EntityId<UUID> {
- CORRECTED,
- NOT_FIXED,
- IMPORTANT,
- NEEDS_CORRECTED;
-
- @Override
- public UUID getId() {
-  return UUID.nameUUIDFromBytes(this.name().getBytes(
-   StandardCharsets.UTF_8));
+ State(String code) {
+  this.code = code;
  }
 
+ public String getCode() {
+  return code;
+ }
 }
