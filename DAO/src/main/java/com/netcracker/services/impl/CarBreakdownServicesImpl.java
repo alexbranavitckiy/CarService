@@ -24,16 +24,18 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
 
  @Override
  public List<CarBreakdown> getAllBreakdown() {
-  return null;
+  return  this.breakdownRepository.findAll();
  }
 
  @Override
  public boolean addBreakdown(CarBreakdown carBreakdown) {
-  return false;
+  this.breakdownRepository.save(carBreakdown);
+  return true;
  }
 
  @Override
  public Optional<CarBreakdown> getBreakdownById(UUID uuid) {
+
   return Optional.empty();
  }
 

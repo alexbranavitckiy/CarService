@@ -38,7 +38,6 @@ public abstract class User {
  private String login;
 
  @NotNull
- @Size(min = 4, max = 14)
  private String password;
 
  @Column(name = "role_user")

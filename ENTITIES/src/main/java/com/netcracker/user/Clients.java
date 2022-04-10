@@ -1,5 +1,6 @@
 package com.netcracker.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 public class Clients extends User  {
 
  @OneToMany(mappedBy = "client")
+ @JsonIgnore
  private List<CarClient> carClients;
 
  public Clients() {

@@ -1,12 +1,13 @@
 package com.netcracker.services.impl;
 
-import ch.qos.logback.core.net.server.Client;
 import com.netcracker.repository.ClientsRepository;
 import com.netcracker.services.ClientServices;
+import com.netcracker.user.Clients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientServicesImpl implements ClientServices {
@@ -21,27 +22,34 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public List<Client> getAllClient() {
+ public List<Clients> getAllClient() {
   return null;
  }
 
  @Override
- public boolean addObjectInClient(Client client) {
+ public boolean addObjectInClient(Clients client) {
   return false;
  }
 
  @Override
- public boolean addObjectInClientNotOnline(Client client) {
+ public boolean addObjectInClientNotOnline(Clients client) {
   return false;
  }
 
  @Override
- public boolean updateClient(Client client) {
+ public boolean updateClient(Clients client) {
   return false;
  }
 
  @Override
- public boolean updateClientNotSession(Client client) {
+ public boolean updateClientNotSession(Clients client) {
   return false;
  }
+
+
+ @Override
+ public Optional<Clients> getClientsByName(String name) {
+  return clientsRepository.getAllByName(name);
+ }
+
 }

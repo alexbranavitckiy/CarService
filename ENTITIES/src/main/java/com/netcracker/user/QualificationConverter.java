@@ -2,7 +2,6 @@ package com.netcracker.user;
 
 
 
-import com.netcracker.outfit.State;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
