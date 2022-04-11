@@ -22,6 +22,7 @@ public class OrderServicesImpl implements OrderServices {
   this.orderRepository = orderRepository;
  }
 
+
  @Override
  public boolean addOrder(Orders order) {
   return false;
@@ -33,7 +34,7 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public List<Order> getAll() {
+ public List<Order> getAllOrderClientsWithState(String login, String state) {
   return null;
  }
 

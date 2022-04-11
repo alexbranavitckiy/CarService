@@ -35,6 +35,7 @@ public abstract class Employers  implements PrincipalEntity {
 
  private String description;
 
+ @NotNull
  @Column(name = "role")
  private Role role;
 

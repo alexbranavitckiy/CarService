@@ -7,6 +7,8 @@ import com.netcracker.order.Orders;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.OrderServices;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,13 +43,13 @@ public class CarController {
 
  @ApiOperation("Get all car of a user")
  @GetMapping("/aut/masterReceiver/getAllCar/Car{ClientUUID}")
- public ResponseEntity<List<CarClient>> getAllCarByLoginClients(@PathVariable UUID ClientUUID) {
+ public ResponseEntity<List<CarClient>> getAllCarByLoginClients(@PathVariable @Parameter(description = "User ID") UUID ClientUUID) {
   return ResponseEntity.ok(carServices.getCarByIdClient(ClientUUID));
  }
 
  @ApiOperation("Get a car by car ID")
  @GetMapping("/aut/masterReceiver/get/Car{CarUUID}")
- public ResponseEntity<CarClient> getCarByIdCar(@PathVariable UUID CarUUID) {
+ public ResponseEntity<CarClient> getCarByIdCar(@PathVariable @Parameter(description = "Machine ID") UUID CarUUID) {
   return ResponseEntity.ok(carServices.getCarByIdCar(CarUUID).get());
  }
 

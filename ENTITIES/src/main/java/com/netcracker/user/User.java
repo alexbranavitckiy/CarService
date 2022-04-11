@@ -49,6 +49,7 @@ public abstract class User  implements PrincipalEntity {
  @Column(name = "password",unique=true)
  private String password;
 
+ @NotNull
  @Column(name = "role_user")
  private RoleUser roleUser;
 

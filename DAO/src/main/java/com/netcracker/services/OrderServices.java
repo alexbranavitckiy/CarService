@@ -14,7 +14,7 @@ public interface OrderServices {
 
  boolean repairRequest(Orders order,String nameUser);
 
- List<Order> getAll() ;
+ List<Order> getAllOrderClientsWithState(String login,String state) ;
 
  boolean updateOrder(Orders order);
 

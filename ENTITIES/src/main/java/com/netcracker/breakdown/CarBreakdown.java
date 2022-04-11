@@ -3,6 +3,7 @@ package com.netcracker.breakdown;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,10 +21,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Entity of car breakdowns")
 @Entity(name = "car_breakdown")
 public class CarBreakdown {
 
  @Id
+ @Schema(description = "Breakdown ID")
  @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 

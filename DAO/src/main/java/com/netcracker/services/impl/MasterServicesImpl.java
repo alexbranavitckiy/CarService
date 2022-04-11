@@ -33,8 +33,8 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  @Override
- public List<Master> getMasterByLogin(String name) {
-  return null;
+ public Optional<Master> getMasterByLogin(String name) {
+  return Optional.empty();
  }
 
  @Override

@@ -1,19 +1,24 @@
 package com.netcracker.security;
 
-import com.netcracker.PrincipalEntity;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.MasterReceiverServices;
 import com.netcracker.services.MasterServices;
 import com.netcracker.user.Clients;
 import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
+import com.netcracker.user.RoleUser;
+import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
+@Hidden
 public class UserRegister {
 
  private final PasswordEncoder passwordEncoder;
@@ -29,10 +34,12 @@ public class UserRegister {
   this.masterReceiverServices = masterReceiverServices;
  }
 
- public boolean registerNewUser(PrincipalEntity clients) {
-  if (clients instanceof Clients && clientServices.getClientsByLogin(clients.getLogin()).isEmpty()) {
+ public boolean registerNewUser(Clients clients) {
+  if (clientServices.getClientsByLogin(clients.getLogin()).isEmpty()) {
    clients.setPassword(passwordEncoder.encode(clients.getPassword()));
-   clientServices.addObjectInClient((Clients) clients);
+   clients.setId(UUID.randomUUID());
+   clients.setRoleUser(RoleUser.REGISTERED);
+   clientServices.addObjectInClient(clients);
    return true;
   }
   return false;

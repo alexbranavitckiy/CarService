@@ -7,6 +7,7 @@ import com.netcracker.repository.MasterRepository;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.impl.ClientServicesImpl;
 import com.netcracker.user.*;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Hidden
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 

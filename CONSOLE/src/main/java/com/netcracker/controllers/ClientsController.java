@@ -4,11 +4,13 @@ package com.netcracker.controllers;
 import com.netcracker.DTO.clients.ClientsDto;
 import com.netcracker.DTO.response.ApiResponse;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
+import com.netcracker.DTO.response.EntityResponse;
 import com.netcracker.order.Orders;
 import com.netcracker.security.UserRegister;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
 import com.netcracker.user.Clients;
+import com.netcracker.user.Master;
 import com.netcracker.user.RoleUser;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Model;
@@ -94,5 +96,26 @@ public class ClientsController {
   contactConfirmationResponse.setResult(userRegister.registerNewUser(clients));
   return ResponseEntity.ok(contactConfirmationResponse);
  }
+
+
+ @GetMapping("/getClients")
+ @ApiOperation("Get the master logged in")
+ public ResponseEntity<EntityResponse<ClientsDto>> getClientsOnline(Principal principal) {
+  EntityResponse<ClientsDto> masterEntityResponse = new EntityResponse<>();
+  Optional<ClientsDto> master = clientServices.getClientsByLogin(principal.getName());
+  if (master.isEmpty()) {
+   masterEntityResponse.setMessage("date size:0 elements");
+   masterEntityResponse.setDate(new ArrayList<>());
+  } else {
+   masterEntityResponse.setMessage("date size:1 elements");
+   masterEntityResponse.setDate(List.of(master.get()));
+  }
+  masterEntityResponse.setHttpStatus(HttpStatus.OK);
+  masterEntityResponse.setDebugMessage("successful request");
+  masterEntityResponse.setLocalDateTime(LocalDateTime.now());
+  return ResponseEntity.ok(masterEntityResponse);
+ }
+
+
 
 }
