@@ -1,6 +1,8 @@
 package com.netcracker.services;
 
 
+import com.netcracker.order.Orders;
+
 import javax.persistence.criteria.Order;
 import java.util.List;
 import java.util.Optional;
@@ -8,19 +10,19 @@ import java.util.UUID;
 
 public interface OrderServices {
 
- boolean addOrder(Order order);
+ boolean addOrder(Orders order);
 
- boolean repairRequest(Order order);
+ boolean repairRequest(Orders order,String nameUser);
 
  List<Order> getAll() ;
 
- boolean updateOrder(Order order);
+ boolean updateOrder(Orders order);
 
- List<Order> getOrderWithRequestState();
+ List<Orders> getOrderWithRequestState();
 
  boolean cancelRequest(UUID uuidCar);
 
- Optional<Order> getOrderByIdCar(UUID car);
+ Optional<Orders> getOrderByIdCar(UUID car);
 
- Optional<Order> getOrderById(UUID uuid);
+ Optional<Orders> getOrderById(UUID uuid);
 }

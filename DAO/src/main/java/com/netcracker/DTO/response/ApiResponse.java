@@ -1,4 +1,4 @@
-package com.netcracker.DTO;
+package com.netcracker.DTO.response;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

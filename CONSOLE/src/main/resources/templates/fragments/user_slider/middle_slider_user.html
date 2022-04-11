@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div  th:fragment="middle_user">
+<div th:fragment="middle_user">
     <div class="container-fluid">
         <div class="row">
             <header class="col-md-3">
-                <nav class=" ">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action  list-group-flush">
-                            The current link item
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action ">A second link item</a>
-                        <a href="#" class="list-group-item list-group-item-action ">A third link item</a>
-                        <a href="#" class="list-group-item list-group-item-action -flush">A fourth link item</a>
-                        <a class="list-group-item list-group-item-action  ">A disabled link item</a>
+                <div class=" border-right">
+                    <div class="d-flex flex-column align-items-center text-center "><img
+                            class="rounded-circle " width="150px"
+                            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                            class="font-weight-bold">Eedogaru@mail.com.my</span><span> </span>
                     </div>
-                </nav>
+                    <nav class="mt-2 ">
+                        <div class="list-group">
+                            <a th:href="@{/index/myRequest}"
+                               class="list-group-item list-group-item-action  list-group-flush">Profile</a>
+                            <a th:href="@{/index/cars}" class="list-group-item list-group-item-action ">Cars</a>
+                            <a th:href="@{/index/profile}" class="list-group-item list-group-item-action ">My
+                                request</a>
+                            <a th:href="@{/index/atWork}" class="list-group-item list-group-item-action -flush">Machines
+                                at work</a>
+                            <a th:href="@{/index/myEntries}" class="list-group-item list-group-item-action  ">My
+                                entries</a>
+                        </div>
+                    </nav>
+                </div>
+
             </header>
             <main class="col-md-9">
-                <div class="card-group">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок карточки</h5>
-                            <p class="card-text">Это более широкая карточка с вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Этот контент немного длиннее.</p>
-                            <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
-                        </div>
+                <div th:switch="${pathVariable}">
+                    <div th:case="'myRequest'">
+                        <div th:replace="~{fragments/user_slider/profile_fragment::profile}"></div>
                     </div>
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок карточки</h5>
-                            <p class="card-text">Эта подсказка имеет вспомогательный текст ниже, как естественный ввод к дополнительному контенту.</p>
-                            <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Заголовок карточки</h5>
-                            <p class="card-text">Это более широкая карта С вспомогательным текстом ниже в качестве естественного перехода к дополнительному контенту. Эта карточка имеет даже более длинный контент, чем первая, чтобы показать действие одинаковой высоты.</p>
-                            <p class="card-text"><small class="text-muted">Последнее обновление 3 мин. назад</small></p>
-                        </div>
+                    <div th:case="'cars'">car</div>
+                    <div th:case="'profile'">profile</div>
+                    <div th:case="'atWork'">atWork</div>
+                    <div th:case="'myEntries'">MyEntries</div>
+                    <div th:case="*">
+                        <div th:replace="~{fragments/user_slider/profile_fragment::profile}"></div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
-
-
+</div>
+</html>
 </div>

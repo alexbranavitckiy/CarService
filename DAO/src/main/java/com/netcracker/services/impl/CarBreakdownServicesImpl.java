@@ -1,6 +1,7 @@
 package com.netcracker.services.impl;
 
 import com.netcracker.breakdown.CarBreakdown;
+import com.netcracker.breakdown.State;
 import com.netcracker.repository.CarBreakdownRepository;
 import com.netcracker.services.CarBreakdownServices;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,11 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
 
  @Override
  public List<CarBreakdown> getAllBreakdownByCar(UUID uuid) {
+  return null;
+ }
+
+ @Override
+ public List<CarBreakdown> getAllBreakdownBeCarAndState(UUID uuid, State state) {
   return null;
  }
 }

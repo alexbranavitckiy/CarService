@@ -6,11 +6,8 @@ import com.netcracker.outfit.Outfit;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
-import java.util.UUID;
 
 
 @EqualsAndHashCode(callSuper = true)

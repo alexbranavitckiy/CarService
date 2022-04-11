@@ -13,4 +13,6 @@ public interface MasterReceiverRepository extends CrudRepository<MasterReceiver,
 
  Optional<MasterReceiver> getAllById(UUID id);
 
+ Optional<MasterReceiver> getAllByLogin(String name);
+
 }

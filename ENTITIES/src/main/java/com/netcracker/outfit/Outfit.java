@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,6 +26,8 @@ public class Outfit  {
     @org.hibernate.annotations.Type(type="pg-uuid")
     private UUID id;
 
+    @Length(min = 1, max = 100)
+    @Column(name = "name",columnDefinition = "VARCHAR(100) not null ")
     private String name;
 
     private String description;
@@ -41,6 +45,7 @@ public class Outfit  {
     @Column(name = "date_end")
     private Date dateEnt;
 
+    @Range(min = 0, max = 10000)
     private double price;
 
     @Column(name = "state_outfit")

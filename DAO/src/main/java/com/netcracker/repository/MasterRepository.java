@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface MasterRepository extends CrudRepository<Master, UUID> {
  Optional<Master> getAllById(UUID id);
 
+ Optional<Master> getAllByLogin(String name);
 }

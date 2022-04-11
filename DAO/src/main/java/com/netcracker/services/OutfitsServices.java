@@ -2,6 +2,7 @@ package com.netcracker.services;
 
 import com.netcracker.outfit.Outfit;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ public interface OutfitsServices {
 
  boolean updateOutfit(Outfit outfit);
 
- List<Outfit> getAllOutfitsAndSortingByData();
+ List<Outfit> getAllOutfitsAndSortingByData(Date dateStart);
 
  List<Outfit> getAllOutfitsByData(String start, String end);
 

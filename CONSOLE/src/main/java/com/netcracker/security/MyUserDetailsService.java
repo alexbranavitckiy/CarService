@@ -1,10 +1,12 @@
 package com.netcracker.security;
 
+import com.netcracker.EnumRole;
+import com.netcracker.repository.ClientsRepository;
+import com.netcracker.repository.MasterReceiverRepository;
+import com.netcracker.repository.MasterRepository;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.impl.ClientServicesImpl;
-import com.netcracker.user.Clients;
-import com.netcracker.user.Role;
-import com.netcracker.user.RoleUser;
+import com.netcracker.user.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,25 +27,37 @@ import java.util.stream.Collectors;
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
- private ClientServices clientServices;
+ private final ClientsRepository clientsRepository;
+ private final MasterReceiverRepository masterReceiverRepository;
+ private final MasterRepository masterRepository;
 
  @Autowired
- private MyUserDetailsService(ClientServices clientServices) {
-  this.clientServices = clientServices;
+ private MyUserDetailsService(MasterRepository masterRepository, MasterReceiverRepository masterReceiverRepository, ClientsRepository clientsRepository) {
+  this.clientsRepository = clientsRepository;
+  this.masterRepository = masterRepository;
+  this.masterReceiverRepository = masterReceiverRepository;
  }
 
  @Override
  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-  Optional<Clients> user = clientServices.getClientsByName(s);
-  if (user.isPresent())
+  Optional<Clients> user = clientsRepository.getAllByLogin(s);
+  if (user.isPresent()) {
    return new User(user.get().getName(), user.get().getPassword(), grantedAuthorities(List.of(user.get().getRoleUser())));
-  else
-   throw new UsernameNotFoundException("user not found doh!");
+  }
+  Optional<MasterReceiver> masterReceiver = masterReceiverRepository.getAllByLogin(s);
+  if (masterReceiver.isPresent()) {
+   return new User(masterReceiver.get().getName(), masterReceiver.get().getPassword(), grantedAuthorities(List.of(masterReceiver.get().getRole())));
+  }
+  Optional<Master> master = masterRepository.getAllByLogin(s);
+  if (master.isPresent()) {
+   return new User(master.get().getName(), master.get().getPassword(), grantedAuthorities(List.of(master.get().getRole())));
+  }
+  throw new UsernameNotFoundException("user not found doh!");
  }
 
- private Collection<? extends GrantedAuthority> grantedAuthorities(Collection<RoleUser> roles) {
-  return roles.stream().map(r -> new SimpleGrantedAuthority(r.getCode())).collect(Collectors.toList());
 
+ private Collection<? extends GrantedAuthority> grantedAuthorities(Collection<EnumRole> roles) {
+  return roles.stream().map(r -> new SimpleGrantedAuthority(r.getCode())).collect(Collectors.toList());
  }
 
 

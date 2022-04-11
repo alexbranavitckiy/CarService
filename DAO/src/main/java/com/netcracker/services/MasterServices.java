@@ -8,7 +8,9 @@ import java.util.UUID;
 
 public interface MasterServices {
 
- List<Master> getAllMaster() ;
+ List<Master> getAllMaster();
+
+ List<Master> getMasterByLogin(String name);
 
  boolean addMaster(Master master);
 

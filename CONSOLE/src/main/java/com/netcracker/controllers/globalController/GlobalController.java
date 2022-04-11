@@ -13,11 +13,8 @@ public class GlobalController {
  @ModelAttribute("searchRole")
  public String searchWordDto(Authentication authentication) {
   if (authentication != null) {
-   log.info( authentication.getAuthorities().toString());
    return String.valueOf(authentication.getAuthorities());
   } else
    return "NO";
  }
-
-
 }

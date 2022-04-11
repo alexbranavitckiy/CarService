@@ -7,6 +7,7 @@ import com.netcracker.services.OutfitsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,22 +24,24 @@ public class OutfitsServicesImpl implements  OutfitsServices{
 
  @Override
  public List<Outfit> getAllOutfits() {
-  return null;
+  return outfitsRepository.findAllBy();
  }
 
  @Override
  public boolean addObjectInOutfits(Outfit o) {
-  return false;
+   outfitsRepository.save(o);
+  return true;
  }
 
  @Override
  public boolean updateOutfit(Outfit outfit) {
-  return false;
+  outfitsRepository.save(outfit);
+  return true;
  }
 
  @Override
- public List<Outfit> getAllOutfitsAndSortingByData() {
-  return null;
+ public List<Outfit> getAllOutfitsAndSortingByData(Date dateStart) {
+  return outfitsRepository.getOutfitsOrderByDateStart(dateStart);
  }
 
  @Override

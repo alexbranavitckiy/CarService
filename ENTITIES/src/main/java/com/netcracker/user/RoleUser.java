@@ -1,6 +1,8 @@
 package com.netcracker.user;
 
-public enum RoleUser {
+import com.netcracker.EnumRole;
+
+public enum RoleUser implements EnumRole {
  REGISTERED("REGISTERED"),
  UNREGISTERED("UNREGISTERED");
  private String code;

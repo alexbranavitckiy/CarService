@@ -1,6 +1,7 @@
 package com.netcracker.services;
 
 
+import com.netcracker.DTO.clients.ClientsDto;
 import com.netcracker.user.Clients;
 
 import java.util.List;
@@ -8,16 +9,14 @@ import java.util.Optional;
 
 public interface ClientServices {
 
- List<Clients> getAllClient() ;
+ List<ClientsDto> getAllClient() ;
 
  boolean addObjectInClient(Clients client) ;
 
- boolean addObjectInClientNotOnline(Clients client) ;
+ boolean updateClient(ClientsDto client);
 
- boolean updateClient(Clients client);
+ Optional<ClientsDto> getClientsByLogin(String name) ;
 
- boolean updateClientNotSession(Clients client) ;
-
- Optional<Clients> getClientsByName(String name) ;
+ Optional<ClientsDto> getClientsByName(String name);
 
 }

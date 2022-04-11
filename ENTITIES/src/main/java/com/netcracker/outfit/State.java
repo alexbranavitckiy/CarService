@@ -1,7 +1,9 @@
 package com.netcracker.outfit;
 
 
-public enum State {
+import java.util.function.Supplier;
+
+public enum State  {
  WORK("WORK"),
  END("END"),
  RECORDED("RECORDED"),

@@ -1,12 +1,17 @@
-package com.netcracker.DTO;
+package com.netcracker.DTO.clients;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ClientsDto {
 
- @Id
- @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
  private String name;

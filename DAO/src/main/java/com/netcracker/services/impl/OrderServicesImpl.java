@@ -1,6 +1,7 @@
 package com.netcracker.services.impl;
 
 
+import com.netcracker.order.Orders;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.services.OrderServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,12 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public boolean addOrder(Order order) {
+ public boolean addOrder(Orders order) {
   return false;
  }
 
  @Override
- public boolean repairRequest(Order order) {
+ public boolean repairRequest(Orders order, String nameUser) {
   return false;
  }
 
@@ -37,12 +38,12 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public boolean updateOrder(Order order) {
+ public boolean updateOrder(Orders order) {
   return false;
  }
 
  @Override
- public List<Order> getOrderWithRequestState() {
+ public List<Orders> getOrderWithRequestState() {
   return null;
  }
 
@@ -52,12 +53,12 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public Optional<Order> getOrderByIdCar(UUID car) {
+ public Optional<Orders> getOrderByIdCar(UUID car) {
   return Optional.empty();
  }
 
  @Override
- public Optional<Order> getOrderById(UUID uuid) {
+ public Optional<Orders> getOrderById(UUID uuid) {
   return Optional.empty();
  }
 }

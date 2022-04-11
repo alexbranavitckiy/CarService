@@ -1,6 +1,8 @@
 package com.netcracker.user;
 
-public enum Role  {
+import com.netcracker.EnumRole;
+
+public enum Role  implements EnumRole {
 
  MASTER("MASTER"),
  RECEPTIONIST("RECEPTIONIST");

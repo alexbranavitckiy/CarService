@@ -3,6 +3,7 @@ package com.netcracker.services.impl;
 
 import com.netcracker.repository.MasterReceiverRepository;
 import com.netcracker.services.MasterReceiverServices;
+import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
  @Override
  public boolean updateMasterAndSession(MasterReceiver masterReceiver) {
   return false;
+ }
+
+ @Override
+ public List<Master> getMasterReceiverByLogin(String name) {
+  return null;
  }
 
  @Override

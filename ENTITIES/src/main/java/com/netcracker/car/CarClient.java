@@ -1,9 +1,11 @@
 package com.netcracker.car;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.order.Orders;
 import com.netcracker.user.Clients;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 
 import javax.persistence.*;
@@ -36,9 +38,11 @@ public class CarClient {
  private String metadataCar;
 
  @Column(name = "run")
- private String run;
+ @Range(min = 0, max = 1000000)
+ private int run;
 
  @ManyToOne
+ @JsonIgnore
  @JoinColumn(name = "id_clients")
  private Clients client;
 

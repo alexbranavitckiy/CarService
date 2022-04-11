@@ -1,5 +1,6 @@
 package com.netcracker.order;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
 import com.netcracker.outfit.Outfit;
 import com.netcracker.user.MasterReceiver;
@@ -30,6 +31,7 @@ public class Orders {
 
  @ManyToMany
  @JoinColumn(name = "id_masters")
+ @JsonIgnore
  private List<MasterReceiver> masterReceiver;
 
  @ManyToOne

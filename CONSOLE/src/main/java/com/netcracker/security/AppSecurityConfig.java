@@ -27,9 +27,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
  @Override
  protected void configure(HttpSecurity http) throws Exception {
   http.csrf().disable().authorizeRequests()
-   .antMatchers("/aut/**").authenticated()
-   .antMatchers("/aut/profile**").hasRole("REGISTERED")
-   .antMatchers("/aut/profiles**").hasRole("UNREGISTERED")
+   .antMatchers("/clients/**").authenticated()
+   .antMatchers("/aut/master/**").hasRole("REGISTERED")
+   .antMatchers("/aut/masterReceiver/**").hasRole("UNREGISTERED")
    .and()
    .formLogin()
    .loginPage("/login")

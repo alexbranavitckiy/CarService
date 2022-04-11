@@ -1,41 +1,77 @@
 package com.netcracker.controllers;
 
+import com.netcracker.DTO.response.ApiResponse;
+import com.netcracker.DTO.response.ContactConfirmationResponse;
+import com.netcracker.car.CarClient;
+import com.netcracker.order.Orders;
 import com.netcracker.services.CarServices;
-import com.netcracker.services.ClientServices;
-import com.netcracker.user.Clients;
+import com.netcracker.services.OrderServices;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
 @RestController
+@RequestMapping("/clients")
+@ApiOperation("Auto Service API")
 public class CarController {
 
  private final CarServices carServices;
- @Autowired
- private ClientServices clientServices;
 
  @Autowired
  private CarController(CarServices carServices) {
   this.carServices = carServices;
  }
 
- @GetMapping("/aut")
- public ResponseEntity<String> page() {
-  return ResponseEntity.ok("page");
+ @ApiOperation("Get all the car of the logged in user")
+ @GetMapping("/clients/getAllCar/car")
+ public ResponseEntity<List<CarClient>> getAllCarByIdClients(Principal principal) {
+  return ResponseEntity.ok(carServices.getCarByLoginClient(principal.getName()));
  }
 
- @GetMapping("/aut/profile")
- public ResponseEntity<String> page2() {
-  return ResponseEntity.ok("clientServices.getClientsByName().get()");
+ @ApiOperation("Get all car of a user")
+ @GetMapping("/aut/masterReceiver/getAllCar/Car{ClientUUID}")
+ public ResponseEntity<List<CarClient>> getAllCarByLoginClients(@PathVariable UUID ClientUUID) {
+  return ResponseEntity.ok(carServices.getCarByIdClient(ClientUUID));
  }
- @GetMapping("/aut/profiles")
- public ResponseEntity<String> page2s() {
 
-  return ResponseEntity.ok("/aut/profiles");
+ @ApiOperation("Get a car by car ID")
+ @GetMapping("/aut/masterReceiver/get/Car{CarUUID}")
+ public ResponseEntity<CarClient> getCarByIdCar(@PathVariable UUID CarUUID) {
+  return ResponseEntity.ok(carServices.getCarByIdCar(CarUUID).get());
  }
+
+ @ApiOperation("Car registration")
+ @PostMapping(value = "/clients/car/registration", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+ public ResponseEntity<ContactConfirmationResponse> createCar(CarClient carClient, Principal principal) {
+  ContactConfirmationResponse contactConfirmationResponse = new ContactConfirmationResponse();
+  contactConfirmationResponse.setResult(carServices.addCar(carClient, principal.getName()));
+  return ResponseEntity.ok(contactConfirmationResponse);
+ }
+
+ @ApiOperation("Car registration")
+ @PostMapping(value = "/clients/car/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+ public ResponseEntity<ContactConfirmationResponse> updateCar(CarClient carClient, Principal principal) {
+  ContactConfirmationResponse contactConfirmationResponse = new ContactConfirmationResponse();
+  contactConfirmationResponse.setResult(carServices.updateCarClient(carClient, principal.getName()));
+  return ResponseEntity.ok(contactConfirmationResponse);
+ }
+
+ @ExceptionHandler(MissingServletRequestParameterException.class)
+ public ResponseEntity<ApiResponse<CarClient>> handleMissingServletRequestParameterException(Exception exception) {
+  return new ResponseEntity<>(new ApiResponse<CarClient>(HttpStatus.BAD_REQUEST, "Missing required parameters",
+   exception), HttpStatus.BAD_REQUEST);
+ }
+
 
 }
