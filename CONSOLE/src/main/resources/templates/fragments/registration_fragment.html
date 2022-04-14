@@ -9,12 +9,11 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
 </head>
 <div class="registration" th:fragment="registration">
     <div class="container-fluid">
         <div class="row">
-            <form th:action="@{/registration}" th:object="${clients}" method="post" >
+            <form th:action="@{/registration}" th:object="${client}" method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputName">Name</label>
@@ -44,7 +43,13 @@
                         <input type="text" class="form-control" th:field="*{description}" id="inputDescription"
                                placeholder="Description">
                     </div>
-                    <button type="submit" class="btn btn-primary">Sign in</button>
+                    <div class="container">
+                        <div class="row justify-content-md-center">
+                            <div class="col-sm mt-1 mb-1 text-center">
+                                <button type="submit" class="btn btn bg-primary">Registration</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>

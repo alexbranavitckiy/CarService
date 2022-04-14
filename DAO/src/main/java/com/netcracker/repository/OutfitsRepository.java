@@ -1,6 +1,5 @@
 package com.netcracker.repository;
 
-import com.netcracker.order.Orders;
 import com.netcracker.outfit.Outfit;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;

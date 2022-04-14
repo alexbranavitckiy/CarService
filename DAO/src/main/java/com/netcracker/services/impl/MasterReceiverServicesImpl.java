@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MasterReceiverServicesImpl implements MasterReceiverServices {
@@ -31,8 +32,8 @@ public class MasterReceiverServicesImpl implements MasterReceiverServices {
  }
 
  @Override
- public List<Master> getMasterReceiverByLogin(String name) {
-  return null;
+ public Optional<MasterReceiver> getMasterReceiverByLogin(String name) {
+  return Optional.empty();
  }
 
  @Override

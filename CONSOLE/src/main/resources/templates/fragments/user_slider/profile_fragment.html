@@ -47,88 +47,53 @@
     }
 </style>
 <div class="profile" th:fragment="profile">
-        <div class="container rounded bg-white mt-5 mb-5">
-            <div class="row">
-                <div class="col-md-5 border-right">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Profile Settings</h4>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">Name</label><input type="text"
-                                                                                           class="form-control"
-                                                                                           placeholder="first name"
-                                                                                           value=""></div>
-                            <div class="col-md-6"><label class="labels">Surname</label><input type="text"
-                                                                                              class="form-control"
-                                                                                              value=""
-                                                                                              placeholder="surname">
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text"
-                                                                                                     class="form-control"
-                                                                                                     placeholder="enter phone number"
-                                                                                                     value="">
-                            </div>
-                            <div class="col-md-12"><label class="labels">Address Line 1</label><input
-                                    type="text" class="form-control" placeholder="enter address line 1"
-                                    value=""></div>
-                            <div class="col-md-12"><label class="labels">Address Line 2</label><input
-                                    type="text" class="form-control" placeholder="enter address line 2"
-                                    value=""></div>
-                            <div class="col-md-12"><label class="labels">Postcode</label><input type="text"
-                                                                                                class="form-control"
-                                                                                                placeholder="enter address line 2"
-                                                                                                value=""></div>
-                            <div class="col-md-12"><label class="labels">State</label><input type="text"
-                                                                                             class="form-control"
-                                                                                             placeholder="enter address line 2"
-                                                                                             value=""></div>
-                            <div class="col-md-12"><label class="labels">Area</label><input type="text"
-                                                                                            class="form-control"
-                                                                                            placeholder="enter address line 2"
-                                                                                            value=""></div>
-                            <div class="col-md-12"><label class="labels">Email ID</label><input type="text"
-                                                                                                class="form-control"
-                                                                                                placeholder="enter email id"
-                                                                                                value=""></div>
-                            <div class="col-md-12"><label class="labels">Education</label><input type="text"
-                                                                                                 class="form-control"
-                                                                                                 placeholder="education"
-                                                                                                 value=""></div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6"><label class="labels">Country</label><input type="text"
-                                                                                              class="form-control"
-                                                                                              placeholder="country"
-                                                                                              value=""></div>
-                            <div class="col-md-6"><label class="labels">State/Region</label><input type="text"
-                                                                                                   class="form-control"
-                                                                                                   value=""
-                                                                                                   placeholder="state">
-                            </div>
-                        </div>
-                        <div class="mt-5 text-center">
-                            <button class="btn btn-primary profile-button" type="button">Save Profile</button>
-                        </div>
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right" >Profile Settings</h4>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span
-                                class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span>
+                    <form th:action="@{/clients/update}" th:object="${client}" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="inputName">Name</label>
+                                <input class="form-control" th:field="*{name}" type="text" id="inputName" placeholder="Name">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputLogin">Login</label>
+                                <input class="form-control" th:field="*{login}" type="text" id="inputLogin" placeholder="Login">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputPhone">Phone</label>
+                                <input type="text" th:field="*{phone}" class="form-control" id="inputPhone"
+                                       placeholder="Phone">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="inputEmail">Email</label>
+                                <input class="form-control" th:field="*{email}" type="email" id="inputEmail"
+                                       placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputDescription">Description</label>
+                                <input type="text" class="form-control" th:field="*{description}" id="inputDescription"
+                                       placeholder="Description">
+                            </div>
+                            <div class="container">
+                                <div class="row justify-content-md-center">
+                                    <div class="col-sm mt-2 mb-2 text-center">
+                                        <button type="submit" class="btn btn bg-primary">Save Profile</button>
+                                    </div>
+                                </div>
+                                <th:block th:if="${contactConfirmationResponse!=null}">
+                                    <p th:text="${contactConfirmationResponse.result}"></p>
+                                </th:block>
+                            </div>
                         </div>
-                        <br>
-                        <div class="col-md-12"><label class="labels">Experience in Designing</label><input
-                                type="text" class="form-control" placeholder="experience" value=""></div>
-                        <br>
-                        <div class="col-md-12"><label class="labels">Additional Details</label><input
-                                type="text" class="form-control" placeholder="additional details" value="">
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 </html>

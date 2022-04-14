@@ -50,7 +50,7 @@ public abstract class User  implements PrincipalEntity {
  private String password;
 
  @NotNull
- @Column(name = "role_user")
+ @Column(name = "role")
  private RoleUser roleUser;
 
 }

@@ -1,6 +1,5 @@
 package com.netcracker.security;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Slf4j
-@Hidden
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -28,20 +26,24 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
  @Override
  protected void configure(HttpSecurity http) throws Exception {
-  http.csrf().disable().authorizeRequests()
-   .antMatchers("/clients/**").authenticated()
-   .antMatchers("/aut/master/**").hasRole("REGISTERED")
-   .antMatchers("/aut/masterReceiver/**").hasRole("UNREGISTERED")
+  http.authorizeRequests()
+   .antMatchers( "/swagger-ui/**", "/javainuse-openapi/**", "/swagger-resources/**",
+    "/webjars/**","/clients/**","/index/**").hasAuthority("REGISTERED")
+   .antMatchers("/aut/**").hasRole("MASTER")
+   .antMatchers("/aut/details/**").hasAnyRole("MASTER", "RECEPTIONIST")
    .and()
    .formLogin()
    .loginPage("/login")
    .loginProcessingUrl("/perform_login")
-   .defaultSuccessUrl("/index", true)
+   .defaultSuccessUrl("/index", false)
    .failureUrl("/login?error=true")
    .and()
    .logout()
    .logoutUrl("/perform_logout")
-   .logoutSuccessUrl("/index");//после выхода
+   .logoutSuccessUrl("/index")
+   .deleteCookies("auth_code", "JSESSIONID")
+   .invalidateHttpSession(true)
+   .and().csrf().disable();
  }
 
  @Bean

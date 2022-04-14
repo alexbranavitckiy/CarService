@@ -1,40 +1,27 @@
 package com.netcracker.controllers;
 
 
-import com.netcracker.DTO.clients.ClientsDto;
-import com.netcracker.DTO.response.ApiResponse;
+import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
-import com.netcracker.DTO.response.EntityResponse;
-import com.netcracker.order.Orders;
+import com.netcracker.order.Order;
 import com.netcracker.security.UserRegister;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
-import com.netcracker.user.Clients;
-import com.netcracker.user.Master;
-import com.netcracker.user.RoleUser;
+import com.netcracker.user.Client;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.Model;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.service.Representation;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Slf4j
-@RestController(value = "/clients")
+@RestController
 @ApiOperation("API for customer service")
 public class ClientsController {
 
@@ -50,8 +37,8 @@ public class ClientsController {
  }
 
  @ApiOperation("Repair Request")
- @PostMapping(value = "/request/order", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
- public ResponseEntity<ContactConfirmationResponse> setOrderRequest(Orders order, Principal principal) {
+ @PostMapping(value = "/clients/request/order", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+ public ResponseEntity<ContactConfirmationResponse> setOrderRequest(Order order, Principal principal) {
   ContactConfirmationResponse contactConfirmationResponse = new ContactConfirmationResponse();
   orderServices.repairRequest(order, principal.getName());
   return ResponseEntity.ok(contactConfirmationResponse);
@@ -59,63 +46,48 @@ public class ClientsController {
 
  @GetMapping("/aut/getAll")
  @ApiOperation("Users list getting operation")
- public ResponseEntity<List<ClientsDto>> getAllClients() {
+ public ResponseEntity<List<ClientDto>> getAllClients() {
   return ResponseEntity.ok(clientServices.getAllClient());
  }
 
  @GetMapping("/aut/byName")
  @ApiOperation("Getting a user by name")
- public ResponseEntity<ApiResponse<ClientsDto>> getClientsByName(@RequestParam("name") String name) {
-  ApiResponse<ClientsDto> apiResponse = new ApiResponse<>();
-  Optional<ClientsDto> clients = clientServices.getClientsByName(name);
-  apiResponse.setDebugMessage("successful request");
-  if (clients.isPresent()) {
-   apiResponse.setMessage("date size:1 elements");
-   apiResponse.setDate(List.of(clients.get()));
-  } else {
-   apiResponse.setMessage("date size:0 elements");
-   apiResponse.setDate(new ArrayList<>());
+ public ResponseEntity<List<ClientDto>> getClientsByName(@RequestParam("name") String name) {
+  Optional<ClientDto> client = clientServices.getClientsByName(name);
+  if (client.isEmpty()) {
+   return ResponseEntity.ok(new ArrayList<>());
   }
-  apiResponse.setHttpStatus(HttpStatus.OK);
-  apiResponse.setLocalDateTime(LocalDateTime.now());
-  return ResponseEntity.ok(apiResponse);
+  return ResponseEntity.ok(List.of(client.get()));
  }
 
  @ApiOperation("Clients registration")
  @PostMapping(value = "/registration", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
- public ResponseEntity<ContactConfirmationResponse> createUser(Clients clients) {
+ public ResponseEntity<ContactConfirmationResponse> createUser(Client clients) {
   ContactConfirmationResponse contactConfirmationResponse = new ContactConfirmationResponse();
   contactConfirmationResponse.setResult(userRegister.registerNewUser(clients));
   return ResponseEntity.ok(contactConfirmationResponse);
  }
 
- @ApiOperation("Clients registration")
- @PostMapping(value = "/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
- public ResponseEntity<ContactConfirmationResponse> updateUser(Clients clients) {
+ @ApiOperation("Updating a logged in client")
+ @PostMapping(value = "/clients/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+ public ResponseEntity<ContactConfirmationResponse> updateUser(Client client,Principal principal) {
   ContactConfirmationResponse contactConfirmationResponse = new ContactConfirmationResponse();
-  contactConfirmationResponse.setResult(userRegister.registerNewUser(clients));
+  contactConfirmationResponse.setResult(clientServices.updateClientByLogin(client,principal.getName()));
   return ResponseEntity.ok(contactConfirmationResponse);
  }
 
 
- @GetMapping("/getClients")
- @ApiOperation("Get the master logged in")
- public ResponseEntity<EntityResponse<ClientsDto>> getClientsOnline(Principal principal) {
-  EntityResponse<ClientsDto> masterEntityResponse = new EntityResponse<>();
-  Optional<ClientsDto> master = clientServices.getClientsByLogin(principal.getName());
-  if (master.isEmpty()) {
-   masterEntityResponse.setMessage("date size:0 elements");
-   masterEntityResponse.setDate(new ArrayList<>());
-  } else {
-   masterEntityResponse.setMessage("date size:1 elements");
-   masterEntityResponse.setDate(List.of(master.get()));
+ @GetMapping("/clients/getClients")
+ @ApiOperation("Get the client logged in")
+ public ResponseEntity<List<ClientDto>> getClientsOnline(Principal principal) {
+  if (principal != null) {
+   Optional<ClientDto> master = clientServices.getClientDtoByLogin(principal.getName());
+   if (master.isPresent()) {
+    return ResponseEntity.ok(List.of(master.get()));
+   }
   }
-  masterEntityResponse.setHttpStatus(HttpStatus.OK);
-  masterEntityResponse.setDebugMessage("successful request");
-  masterEntityResponse.setLocalDateTime(LocalDateTime.now());
-  return ResponseEntity.ok(masterEntityResponse);
+  return ResponseEntity.ok(new ArrayList<>());
  }
-
 
 
 }

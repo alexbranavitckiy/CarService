@@ -1,25 +1,26 @@
 package com.netcracker.DTO.clients;
 
 import com.netcracker.DTO.MapperDto;
-import com.netcracker.user.Clients;
+import com.netcracker.user.Client;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MapperClients implements MapperDto<Clients, ClientsDto> {
+public class MapperClients implements MapperDto<Client, ClientDto> {
 
  @Override
- public Clients toEntity(ClientsDto clientsDto) {
+ public Client toEntity(ClientDto clientsDto) {
   return null;
- }
+ }//TODO!!
 
  @Override
- public ClientsDto toDto(Clients clients) {
-  return ClientsDto.builder()
-   .description(clients.getDescription())
-   .email(clients.getEmail())
-   .id(clients.getId())
-   .name(clients.getName())
-   .phone(clients.getPhone())
+ public ClientDto toDto(Client client) {
+  return ClientDto.builder()
+   .description(client.getDescription())
+   .email(client.getEmail())
+   .id(client.getId())
+   .name(client.getName())
+   .login(client.getLogin())
+   .phone(client.getPhone())
    .build();
  }
 

@@ -4,6 +4,7 @@ import com.netcracker.user.Master;
 import com.netcracker.user.MasterReceiver;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MasterReceiverServices {
 
@@ -11,7 +12,7 @@ public interface MasterReceiverServices {
 
  boolean updateMasterAndSession(MasterReceiver masterReceiver) ;
 
- List<Master> getMasterReceiverByLogin(String name);
+ Optional<MasterReceiver> getMasterReceiverByLogin(String name);
 
  boolean addMaster(MasterReceiver masterReceiver);
 

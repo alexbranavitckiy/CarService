@@ -1,22 +1,25 @@
 package com.netcracker.services;
 
 
-import com.netcracker.DTO.clients.ClientsDto;
-import com.netcracker.user.Clients;
+import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.user.Client;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface ClientServices {
 
- List<ClientsDto> getAllClient() ;
+ List<ClientDto> getAllClient();
 
- boolean addObjectInClient(Clients client) ;
+ boolean addObjectInClient(Client client);
 
- boolean updateClient(ClientsDto client);
+ boolean updateClient(ClientDto client);
 
- Optional<ClientsDto> getClientsByLogin(String name) ;
+ boolean updateClientByLogin(Client client, String login);
 
- Optional<ClientsDto> getClientsByName(String name);
+ Map<String, Object> getRoleClientByLogin(String name);
+
+ Optional<ClientDto> getClientDtoByLogin(String name);
+
+ Optional<ClientDto> getClientsByName(String name);
 
 }

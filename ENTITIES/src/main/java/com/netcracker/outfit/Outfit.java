@@ -1,7 +1,7 @@
 package com.netcracker.outfit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.order.Orders;
+import com.netcracker.order.Order;
 import com.netcracker.user.Master;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +33,7 @@ public class Outfit  {
     private String description;
 
     @OneToOne (optional=false, mappedBy="outfit")
-    private Orders order;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "id_master")

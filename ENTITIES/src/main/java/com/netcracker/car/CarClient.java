@@ -2,8 +2,8 @@ package com.netcracker.car;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.breakdown.CarBreakdown;
-import com.netcracker.order.Orders;
-import com.netcracker.user.Clients;
+import com.netcracker.order.Order;
+import com.netcracker.user.Client;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
@@ -41,18 +41,18 @@ public class CarClient {
  @Range(min = 0, max = 1000000)
  private int run;
 
- @ManyToOne
+ @ManyToOne(fetch = FetchType.LAZY)
  @JsonIgnore
  @JoinColumn(name = "id_clients")
- private Clients client;
+ private Client client;
 
- @OneToMany(mappedBy = "carClient")
- private List<Orders> order;
+ @OneToMany(mappedBy = "carClient",fetch = FetchType.LAZY)
+ private List<Order> order;
 
- @OneToMany(mappedBy = "carClient")
+ @OneToMany(mappedBy = "carClient",fetch = FetchType.LAZY)
  private List<CarBreakdown> carBreakdowns;
 
- @ManyToOne
+ @ManyToOne(fetch = FetchType.LAZY)
  @JoinColumn(name = "id_mark")
  private Mark mark;
 

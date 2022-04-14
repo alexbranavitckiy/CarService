@@ -3,12 +3,9 @@ package com.netcracker.controllers;
 import com.netcracker.DTO.response.ApiResponse;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
 import com.netcracker.car.CarClient;
-import com.netcracker.order.Orders;
 import com.netcracker.services.CarServices;
-import com.netcracker.services.OrderServices;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.annotations.Authorization;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +15,15 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/clients")
-@ApiOperation("Auto Service API")
 public class CarController {
 
  private final CarServices carServices;
@@ -43,14 +41,18 @@ public class CarController {
 
  @ApiOperation("Get all car of a user")
  @GetMapping("/aut/masterReceiver/getAllCar/Car{ClientUUID}")
- public ResponseEntity<List<CarClient>> getAllCarByLoginClients(@PathVariable @Parameter(description = "User ID") UUID ClientUUID) {
+ public ResponseEntity<List<CarClient>> getAllCarByLoginClients(@PathVariable  UUID ClientUUID) {
   return ResponseEntity.ok(carServices.getCarByIdClient(ClientUUID));
  }
 
  @ApiOperation("Get a car by car ID")
  @GetMapping("/aut/masterReceiver/get/Car{CarUUID}")
- public ResponseEntity<CarClient> getCarByIdCar(@PathVariable @Parameter(description = "Machine ID") UUID CarUUID) {
-  return ResponseEntity.ok(carServices.getCarByIdCar(CarUUID).get());
+ public ResponseEntity<List<CarClient>> getCarByIdCar(@PathVariable  UUID CarUUID) {
+  Optional<CarClient> carClient = carServices.getCarByIdCar(CarUUID);
+  if (carClient.isEmpty()) {
+   return ResponseEntity.ok(new ArrayList<>());
+  }
+  return ResponseEntity.ok(List.of(carClient.get()));
  }
 
  @ApiOperation("Car registration")

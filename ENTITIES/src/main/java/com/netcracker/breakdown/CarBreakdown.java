@@ -3,30 +3,24 @@ package com.netcracker.breakdown;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "Entity of car breakdowns")
 @Entity(name = "car_breakdown")
 public class CarBreakdown {
 
  @Id
- @Schema(description = "Breakdown ID")
  @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 

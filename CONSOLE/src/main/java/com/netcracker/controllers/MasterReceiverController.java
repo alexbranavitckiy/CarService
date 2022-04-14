@@ -1,14 +1,11 @@
 package com.netcracker.controllers;
 
-import com.netcracker.DTO.response.ApiResponse;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
-import com.netcracker.DTO.response.EntityResponse;
 import com.netcracker.security.UserRegister;
 import com.netcracker.services.MasterServices;
 import com.netcracker.user.Master;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,18 +48,10 @@ public class MasterReceiverController {
   return ResponseEntity.ok(contactConfirmationResponse);
  }
 
-
  @GetMapping("/getAllMaster")
  @ApiOperation("Get a list of all masters")
- public ResponseEntity<ApiResponse<Master>> getAllMaster() {
-  ApiResponse<Master> apiResponse = new ApiResponse<>();
-  List<Master> clients = masterServices.getAllMaster();
-  apiResponse.setDebugMessage("successful request");
-  apiResponse.setMessage("date size:" + clients.size() + "elements");
-  apiResponse.setDate(clients);
-  apiResponse.setHttpStatus(HttpStatus.OK);
-  apiResponse.setLocalDateTime(LocalDateTime.now());
-  return ResponseEntity.ok(apiResponse);
+ public ResponseEntity<List<Master>> getAllMaster() {
+  return ResponseEntity.ok(masterServices.getAllMaster());
  }
 
  @ApiOperation("Master update")
@@ -76,39 +64,22 @@ public class MasterReceiverController {
 
  @GetMapping("/getMaster/online")
  @ApiOperation("Get an ID master")
- public ResponseEntity<EntityResponse<Master>> getMasterById(Principal principal) {
-  EntityResponse<Master> masterEntityResponse = new EntityResponse<>();
-  Optional<Master> clients = masterServices.getMasterByLogin(principal.getName());
-  if (clients.isPresent()) {
-   masterEntityResponse.setMessage("date size:1 elements");
-   masterEntityResponse.setDate(List.of(clients.get()));
-  } else {
-   masterEntityResponse.setMessage("date size:0 elements");
-   masterEntityResponse.setDate(new ArrayList<>());
+ public ResponseEntity<List<Master>> getMasterById(Principal principal) {
+  Optional<Master> master =masterServices.getMasterByLogin(principal.getName());
+  if (master.isEmpty()) {
+   return ResponseEntity.ok(new ArrayList<>());
   }
-  masterEntityResponse.setHttpStatus(HttpStatus.OK);
-  masterEntityResponse.setDebugMessage("successful request");
-  masterEntityResponse.setLocalDateTime(LocalDateTime.now());
-  return ResponseEntity.ok(masterEntityResponse);
+  return ResponseEntity.ok(List.of(master.get()));
  }
-
 
  @GetMapping("/getMaster/id")
  @ApiOperation("Get an ID master")
- public ResponseEntity<EntityResponse<Master>> getMasterById(@RequestParam("Id") UUID Id) {
-  EntityResponse<Master> masterEntityResponse = new EntityResponse<>();
-  Optional<Master> clients = masterServices.getMasterById(Id);
-  if (clients.isPresent()) {
-   masterEntityResponse.setMessage("date size:1 elements");
-   masterEntityResponse.setDate(List.of(clients.get()));
-  } else {
-   masterEntityResponse.setMessage("date size:0 elements");
-   masterEntityResponse.setDate(new ArrayList<>());
+ public ResponseEntity<List<Master>> getMasterById(@RequestParam("Id") UUID Id) {
+  Optional<Master> master =masterServices.getMasterById(Id);
+  if (master.isEmpty()) {
+   return ResponseEntity.ok(new ArrayList<>());
   }
-  masterEntityResponse.setHttpStatus(HttpStatus.OK);
-  masterEntityResponse.setDebugMessage("successful request");
-  masterEntityResponse.setLocalDateTime(LocalDateTime.now());
-  return ResponseEntity.ok(masterEntityResponse);
+  return ResponseEntity.ok(List.of(master.get()));
  }
 
 }

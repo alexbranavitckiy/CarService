@@ -1,13 +1,12 @@
 package com.netcracker.user;
 
 
-import com.netcracker.order.Orders;
+import com.netcracker.order.Order;
 import lombok.*;
 
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import java.util.List;
 
 @Data
@@ -18,7 +17,7 @@ import java.util.List;
 public class MasterReceiver extends Employers  {
 
  @ManyToMany(mappedBy = "masterReceiver")
- private List<Orders> orders;
+ private List<Order> orders;
 
 
 }

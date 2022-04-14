@@ -1,8 +1,7 @@
 package com.netcracker.repository;
 
 
-import com.netcracker.order.Orders;
-import com.netcracker.user.Master;
+import com.netcracker.order.Order;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,8 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Orders, UUID> {
+public interface OrderRepository extends CrudRepository<Order, UUID> {
 
- Optional<Orders> getAllById(UUID id);
+ Optional<Order> getAllById(UUID id);
 
 }
