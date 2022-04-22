@@ -2,24 +2,28 @@ package com.netcracker.services;
 
 
 import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.user.Client;
 
 import java.util.*;
 
 public interface ClientServices {
+//--client--//
+ boolean updateClientData(ContactConfirmationPayload clientFormUpdate, String login);
 
- List<ClientDto> getAllClient();
+ List<Client> getAllClient();
 
- boolean addObjectInClient(Client client);
+ boolean registrationClient(Client client);
 
- boolean updateClient(ClientDto client);
-
- boolean updateClientByLogin(Client client, String login);
-
- Map<String, Object> getRoleClientByLogin(String name);
-
- Optional<ClientDto> getClientDtoByLogin(String name);
+ Optional<Client> getClientByLogin(String name);
 
  Optional<ClientDto> getClientsByName(String name);
 
+ Optional<ClientDto> getClientDtoByLogin(String name);
+
+ Map<String, Object> getRoleClientByLogin(String name);
+
+ boolean updateClientByLogin(ClientDto client, String login);
+
+ //--client--//
 }

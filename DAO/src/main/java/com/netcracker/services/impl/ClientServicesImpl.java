@@ -1,15 +1,19 @@
 package com.netcracker.services.impl;
 
 import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.DTO.clients.MapperClients;
+import com.netcracker.DTO.convectror.ClientConvectorImpl;
+import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.response.ContactConfirmationPayload;
+import com.netcracker.repository.CarClientRepository;
 import com.netcracker.repository.ClientsRepository;
 import com.netcracker.services.ClientServices;
 import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,26 +23,53 @@ import java.util.Optional;
 public class ClientServicesImpl implements ClientServices {
 
  private final ClientsRepository clientsRepository;
- private final MapperClients mapperClients;
+ private final CarClientRepository carClientRepository;
+ private final ClientConvectorImpl clientConvector;
+ private final MapperDto<ClientDto, Client> mapperDto;
 
+
+ @Lazy
  @Autowired
- private ClientServicesImpl(MapperClients mapperClients, ClientsRepository clientsRepository) {
+ private ClientServicesImpl(@Qualifier("ClientConvectorImpl") MapperDto<ClientDto, Client> mapperDto, ClientConvectorImpl clientConvector, CarClientRepository carClientRepository, ClientsRepository clientsRepository) {
   this.clientsRepository = clientsRepository;
-  this.mapperClients = mapperClients;
+  this.mapperDto = mapperDto;
+  this.clientConvector = clientConvector;
+  this.carClientRepository = carClientRepository;
  }
 
  @Override
- public List<ClientDto> getAllClient() {
-  return null;
+ public Optional<Client> getClientByLogin(String name) {
+  return clientsRepository.getAllByLogin(name);
  }
 
  @Override
- public boolean addObjectInClient(Client client) {
-  return client.equals(clientsRepository.save(client));
+ public List<Client> getAllClient() {
+  return clientsRepository.getAllBy();
  }
 
  @Override
- public boolean updateClient(ClientDto client) {
+ public boolean registrationClient(Client client) {
+  try {
+   Optional<Client> optionalClient = clientsRepository.getByName(client.getLogin());
+   if (optionalClient.isEmpty()) {
+    clientsRepository.save(client);
+    return true;
+   }
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+   return false;
+  }
+  return false;
+ }
+
+ @Override
+ public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login) {
+  try {
+   clientsRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getUsername(), login);
+   return true;
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+  }
   return false;
  }
 
@@ -47,7 +78,7 @@ public class ClientServicesImpl implements ClientServices {
   Optional<Client> client = clientsRepository.getAllByLogin(name);
   if (client.isEmpty()) {
    return Optional.empty();
-  } else return Optional.of(mapperClients.toDto(client.get()));
+  } else return Optional.of(mapperDto.toDto(client.get()));
  }
 
  @Override
@@ -55,29 +86,23 @@ public class ClientServicesImpl implements ClientServices {
   Optional<Client> client = clientsRepository.getByName(name);
   if (client.isEmpty()) {
    return Optional.empty();
-  } else return Optional.of(mapperClients.toDto(client.get()));
+  } else return Optional.of(mapperDto.toDto(client.get()));
  }
 
  @Override
  public Map<String, Object> getRoleClientByLogin(String login) {
-  return clientsRepository.getMyM(login, login, login);
+  return clientsRepository.getMyUser(login, login, login);
  }
 
  @Override
- public boolean updateClientByLogin(Client newClient, String login) {
+ public boolean updateClientByLogin(ClientDto updateClient, String login) {
   try {
-   Optional<Client> client = clientsRepository.getByName(login);
-   client.ifPresent(x -> {
-    newClient.setPassword(x.getPassword());
-    newClient.setId(x.getId());
-    newClient.setRoleUser(x.getRoleUser());
-   });
-   clientsRepository.save(newClient);
+   clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(), updateClient.getDescription(), login);
    return true;
-  } catch (ConstraintViolationException e) {
-   log.warn(e.getMessage());
-   return false;
+  } catch (Exception e) {
+   log.warn("{}",e);
   }
+  return false;
  }
 
 }

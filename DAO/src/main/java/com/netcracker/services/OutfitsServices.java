@@ -1,27 +1,19 @@
 package com.netcracker.services;
 
-import com.netcracker.outfit.Outfit;
 
-import java.util.Date;
+import com.netcracker.DTO.ord.OutfitDto;
+import com.netcracker.outfit.State;
+
 import java.util.List;
 import java.util.UUID;
 
+
 public interface OutfitsServices {
 
- List<Outfit> getAllOutfits() ;
+ List<OutfitDto> getAllMasterOutfitWithStateAndSort(State state, String login);
 
- boolean addObjectInOutfits(Outfit o);
+ boolean outfitStartWork(State state, String login, UUID uuid);
 
- boolean updateOutfit(Outfit outfit);
-
- List<Outfit> getAllOutfitsAndSortingByData(Date dateStart);
-
- List<Outfit> getAllOutfitsByData(String start, String end);
-
- List<Outfit> getAllByMaster(UUID uuidMaster);
-
- List<Outfit> getAllByMasterAndState(UUID uuidMaster, UUID state);
-
- List<Outfit> getAllByState(UUID state);
+ boolean updateOutfitByMaster(OutfitDto outfitDto, String login);
 
 }

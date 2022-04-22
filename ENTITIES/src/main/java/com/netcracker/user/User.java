@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,30 +23,28 @@ import javax.validation.constraints.Size;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @MappedSuperclass
 @ToString
-public abstract class User  implements PrincipalEntity {
+public  class User  implements PrincipalEntity {
 
  @Id
  @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
- @Column(name = "name",columnDefinition = "VARCHAR(50) NOT NULL ")
+ @Column(name = "name",columnDefinition = "VARCHAR NOT NULL ")
  private String name;
 
- @Column(name = "phone",columnDefinition = "VARCHAR(23) not null unique")
+ @Column(name = "phone",columnDefinition = "VARCHAR not null unique")
  private String phone;
 
- @Column(name = "email",columnDefinition = "VARCHAR(50) not null unique")
+ @Email
+ @Column(name = "email",columnDefinition = "VARCHAR not null unique")
  private String email;
 
- @Column(name = "description",columnDefinition = "VARCHAR(100)")
+ @Column(name = "description",columnDefinition = "VARCHAR")
  private String description;
 
- @NotNull
- @Size(min = 4, max = 20)
- @Column(name = "login",columnDefinition = "VARCHAR(50) not null unique")
+ @Column(name = "login",columnDefinition = "VARCHAR not null unique")
  private String login;
 
- @NotNull
  @Column(name = "password",unique=true)
  private String password;
 

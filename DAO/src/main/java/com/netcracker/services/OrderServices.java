@@ -1,7 +1,9 @@
 package com.netcracker.services;
 
 
+import com.netcracker.DTO.ord.OrderDto;
 import com.netcracker.order.Order;
+import com.netcracker.order.State;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,17 +13,15 @@ public interface OrderServices {
 
  boolean addOrder(Order order);
 
- boolean repairRequest(Order order, String nameUser);
+ boolean repairRequest(OrderDto order, String nameUser);
 
- List<Order> getAllOrderClientsWithState(String login, String state) ;
+ List<OrderDto> getAllOrderClientsWithState(String login, State state);
 
  boolean updateOrder(Order order);
 
- List<Order> getOrderWithRequestState();
-
- boolean cancelRequest(UUID uuidCar);
-
- Optional<Order> getOrderByIdCar(UUID car);
+ String cancelRequest(UUID uuidCar, String login);
 
  Optional<Order> getOrderById(UUID uuid);
+
+
 }

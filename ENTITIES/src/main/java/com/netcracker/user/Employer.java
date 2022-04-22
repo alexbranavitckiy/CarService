@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class Employers  implements PrincipalEntity {
+public abstract class Employer implements PrincipalEntity {
 
  @Id
  @org.hibernate.annotations.Type(type="pg-uuid")
@@ -29,6 +30,7 @@ public abstract class Employers  implements PrincipalEntity {
  @Column(name = "phone",columnDefinition = "VARCHAR(50) not null unique")
  private String phone;
 
+ @Email
  @NotNull
  @Column(name = "mail",columnDefinition = "VARCHAR(50) not null unique")
  private String mail;

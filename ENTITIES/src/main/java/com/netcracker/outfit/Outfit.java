@@ -32,10 +32,10 @@ public class Outfit  {
 
     private String description;
 
-    @OneToOne (optional=false, mappedBy="outfit")
+    @OneToOne (optional=false, mappedBy="outfit",fetch = FetchType.LAZY)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(optional=true,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_master")
     private Master master;
 

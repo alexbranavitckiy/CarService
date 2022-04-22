@@ -22,10 +22,8 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @Entity(name = "clients")
-@ToString
 public class Client extends User  {
 
- @JsonIgnore
  @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
  private List<CarClient> cars;
 
@@ -37,6 +35,5 @@ public class Client extends User  {
  public Client(UUID id, String name, String phone, String email, String description, @NotNull @Size(min = 4, max = 14) String login, @NotNull String password, RoleUser roleUser) {
   super(id, name, phone, email, description, login, password, roleUser);
  }
-
 
 }

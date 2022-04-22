@@ -1,7 +1,9 @@
 package com.netcracker.controllers.page;
 
+import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.car.CarClient;
+import com.netcracker.security.UserRegister;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
 import com.netcracker.user.Client;
@@ -10,24 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@ApiIgnore
 @Controller
 public class PageController {
 
  private final ClientServices clientServices;
  private final CarServices carServices;
+ private final UserRegister userRegister;
 
  @Autowired
- PageController(CarServices carServices, ClientServices clientServices) {
+ PageController(UserRegister userRegister, CarServices carServices, ClientServices clientServices) {
   this.carServices = carServices;
+  this.userRegister = userRegister;
   this.clientServices = clientServices;
  }
-
 
  @ModelAttribute("pathVariable")
  public String pathVariable() {
@@ -63,7 +68,7 @@ public class PageController {
  public String cars(Model model, Principal principal) {
   model.addAttribute("pathVariable", "cars");
   if (principal != null) {
-   List<CarClient> carClientList = carServices.getCarByLoginClient(principal.getName());
+   List<CarClientDto> carClientList = carServices.getCarByLoginClient(principal.getName());
    model.addAttribute("car", carClientList);
    if (carClientList != null) {
     model.addAttribute("size", carClientList.size());

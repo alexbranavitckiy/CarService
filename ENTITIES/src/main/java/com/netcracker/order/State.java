@@ -8,7 +8,8 @@ public enum State {
  CAR_ACCEPTED("CAR_ACCEPTED"),
  WAIT_CLIENT("WAIT_CLIENT"),
  REQUEST("REQUEST"),
- BID("BID");
+ BID("BID"),
+ CANCELED("CANCELED");
 
  private String code;
 

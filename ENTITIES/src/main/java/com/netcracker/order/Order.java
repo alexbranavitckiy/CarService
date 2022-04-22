@@ -31,7 +31,6 @@ public class Order {
 
  @ManyToMany
  @JoinColumn(name = "id_masters")
- @JsonIgnore
  private List<MasterReceiver> masterReceiver;
 
  @ManyToOne

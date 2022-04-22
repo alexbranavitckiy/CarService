@@ -1,10 +1,8 @@
 package com.netcracker.security;
 
-import com.netcracker.EnumRole;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.MasterReceiverServices;
 import com.netcracker.services.MasterServices;
-import com.netcracker.user.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -44,7 +41,6 @@ public class MyUserDetailsService implements UserDetailsService {
   }
   throw new UsernameNotFoundException("user not found doh!");
  }
-
 
  private Collection<? extends GrantedAuthority> grantedAuthorities(Collection<String> roles) {
   return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());

@@ -1,26 +1,45 @@
 package com.netcracker.services.impl;
 
 
+import com.netcracker.DTO.ord.OrdMapper;
+import com.netcracker.DTO.ord.OrderDto;
+import com.netcracker.car.CarClient;
 import com.netcracker.order.Order;
+import com.netcracker.order.State;
 import com.netcracker.repository.OrderRepository;
+import com.netcracker.services.CarServices;
+import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class OrderServicesImpl implements OrderServices {
 
  private final OrderRepository orderRepository;
+ private final OrdMapper orderMapper;
+ private final CarServices carServices;
+ private final ClientServices clientServices;
+ private final Environment env;
 
+ @Lazy
  @Autowired
- private OrderServicesImpl(OrderRepository orderRepository) {
+ private OrderServicesImpl(Environment env, ClientServices clientServices, CarServices carServices, OrdMapper orderMapper, OrderRepository orderRepository) {
   this.orderRepository = orderRepository;
+  this.env=env;
+  this.orderMapper = orderMapper;
+  this.carServices = carServices;
+  this.clientServices = clientServices;
  }
-
 
  @Override
  public boolean addOrder(Order order) {
@@ -28,13 +47,25 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public boolean repairRequest(Order order, String nameUser) {
+ public boolean repairRequest(OrderDto dto, String nameUser) {
+  try {
+   Optional<CarClient> carClient = carServices.getCarByIdOnMaster(dto.getId());
+   if (carClient.isPresent()) {
+    Order order = orderMapper.toEntity(dto);
+    order.setState(State.REQUEST);
+    order.setCarClient(carClient.get());
+    orderRepository.save(order);
+    return true;
+   }
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+  }
   return false;
  }
 
  @Override
- public List<Order> getAllOrderClientsWithState(String login, String state) {
-  return null;
+ public List<OrderDto> getAllOrderClientsWithState(String login, State state) {
+  return orderRepository.getAllOrderClient(login,state).stream().map(orderMapper::toDto).collect(Collectors.toList());
  }
 
  @Override
@@ -43,18 +74,19 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
- public List<Order> getOrderWithRequestState() {
-  return null;
- }
-
- @Override
- public boolean cancelRequest(UUID uuidCar) {
-  return false;
- }
-
- @Override
- public Optional<Order> getOrderByIdCar(UUID car) {
-  return Optional.empty();
+ public String cancelRequest(UUID uuid, String login) {
+  try {
+   Optional<Order> order = orderRepository.getAllById(uuid);
+   if (order.isPresent() && order.get().getState().equals(State.REQUEST)) {
+    order.get().setState(State.CANCELED);
+    orderRepository.save(order.get());
+    return env.getProperty("messages.cancel.request");
+   }
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+   return env.getProperty("messages.cancel.err");
+  }
+  return env.getProperty("messages.cancel.false");
  }
 
  @Override

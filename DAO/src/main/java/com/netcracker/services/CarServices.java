@@ -1,5 +1,6 @@
 package com.netcracker.services;
 
+import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.car.CarClient;
 import com.netcracker.order.State;
 
@@ -10,20 +11,16 @@ import java.util.UUID;
 
 public interface CarServices {
 
- List<CarClient> getCarByIdClient(UUID uuidClient);
+ Optional<CarClient> getCarByIdOnMaster(UUID uuidCar);
 
- List<CarClient> getCarByLoginClient(String login);
+ List<CarClientDto> getCarByLoginClient(String login);
 
- Optional<CarClient> getCarByIdCar(UUID uuidCar);
+ boolean createCarOnClient(CarClient carClient, String nameClients);
 
- List<CarClient> getAllCar() ;
+ Optional<CarClientDto> getCarByIdCarOnClient(UUID uuidCar, String login);
 
- boolean addCar(CarClient carClient,String nameClients) ;
+ boolean updateCarClientByLogin(CarClientDto carClient, String nameClients);
 
- boolean updateCarClient(CarClient carClient,String nameClients) ;
-
- List<CarClient> getAllCarClientWaitState(State state, UUID uuidClient);
-
- List<CarClient> getAllCarClientWithState(State state);
+ List<CarClientDto> getCarByIdClientOnClient(UUID uuidClient, String login);
 
 }

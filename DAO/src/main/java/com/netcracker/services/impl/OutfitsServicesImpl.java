@@ -1,66 +1,68 @@
 package com.netcracker.services.impl;
 
 
+import com.netcracker.DTO.ord.OrdMapper;
+import com.netcracker.DTO.ord.OutfitDto;
 import com.netcracker.outfit.Outfit;
+import com.netcracker.outfit.State;
 import com.netcracker.repository.OutfitsRepository;
 import com.netcracker.services.OutfitsServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-public class OutfitsServicesImpl implements  OutfitsServices{
+public class OutfitsServicesImpl implements OutfitsServices {
 
  private final OutfitsRepository outfitsRepository;
-
+ private final OrdMapper ordMapper;
 
  @Autowired
- private OutfitsServicesImpl(OutfitsRepository outfitsRepository) {
+ private OutfitsServicesImpl(OrdMapper ordMapper, OutfitsRepository outfitsRepository) {
+  this.ordMapper = ordMapper;
   this.outfitsRepository = outfitsRepository;
  }
 
  @Override
- public List<Outfit> getAllOutfits() {
-  return outfitsRepository.findAllBy();
+ public List<OutfitDto> getAllMasterOutfitWithStateAndSort(State state, String login) {
+  return outfitsRepository.getAllByStateOutfitAndMasterLogin(state, login).stream().map(ordMapper::toDto).collect(Collectors.toList());
  }
 
  @Override
- public boolean addObjectInOutfits(Outfit o) {
-   outfitsRepository.save(o);
-  return true;
+ public boolean outfitStartWork(State state, String login, UUID uuid) {
+  try {
+   Optional<Outfit> outfit = outfitsRepository.findById(uuid);
+   if (outfit.isPresent()) {
+    outfit.get().setStateOutfit(state);
+    outfitsRepository.save(outfit.get());
+    return true;
+   }
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+  }
+  return false;
  }
 
  @Override
- public boolean updateOutfit(Outfit outfit) {
-  outfitsRepository.save(outfit);
-  return true;
+ public boolean updateOutfitByMaster(OutfitDto outfitDto, String login) {
+  try {
+   Optional<Outfit> outfit = outfitsRepository.findById(outfitDto.getId());
+   if (outfit.isPresent()) {
+    outfitsRepository.save(ordMapper.toEntity(outfitDto, outfit.get()));
+    return true;
+   }
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+  }
+  return false;
  }
 
- @Override
- public List<Outfit> getAllOutfitsAndSortingByData(Date dateStart) {
-  return outfitsRepository.getOutfitsOrderByDateStart(dateStart);
- }
 
- @Override
- public List<Outfit> getAllOutfitsByData(String start, String end) {
-  return null;
- }
-
- @Override
- public List<Outfit> getAllByMaster(UUID uuidMaster) {
-  return null;
- }
-
- @Override
- public List<Outfit> getAllByMasterAndState(UUID uuidMaster, UUID state) {
-  return null;
- }
-
- @Override
- public List<Outfit> getAllByState(UUID state) {
-  return null;
- }
 }

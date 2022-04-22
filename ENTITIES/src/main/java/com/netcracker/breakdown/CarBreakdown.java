@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Range;
 
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -24,17 +25,19 @@ public class CarBreakdown {
  @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
- @ManyToOne
- @JsonIgnore
+ @ManyToOne(fetch = FetchType.LAZY)
  @JoinColumn(name = "id_car")
  private CarClient carClient;
 
- @Column(name = "description",columnDefinition = "VARCHAR(250) NOT NULL")
+ @Column(name = "description", columnDefinition = "VARCHAR(250) NOT NULL")
  private String description;
 
  @Range(min = 0, max = 1000000)
  @Column(name = "run_car_size")
- private int  runCarSize;
+ private int runCarSize;
+
+ @Column(name = "update_date")
+ private Date updateDate;
 
  private State state;
 

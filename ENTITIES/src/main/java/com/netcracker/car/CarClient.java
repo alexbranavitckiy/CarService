@@ -22,7 +22,7 @@ import java.util.UUID;
 public class CarClient {
 
  @Id
- @org.hibernate.annotations.Type(type="pg-uuid")
+ @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
  @Column(name = "summary")
@@ -34,7 +34,7 @@ public class CarClient {
  @Column(name = "ear")
  private Date ear;
 
- @Column(name = "metadata_car")
+ @Column(name = "metadata_car", columnDefinition = "VARCHAR(80) not null unique")
  private String metadataCar;
 
  @Column(name = "run")
@@ -42,17 +42,16 @@ public class CarClient {
  private int run;
 
  @ManyToOne(fetch = FetchType.LAZY)
- @JsonIgnore
  @JoinColumn(name = "id_clients")
  private Client client;
 
- @OneToMany(mappedBy = "carClient",fetch = FetchType.LAZY)
+ @OneToMany(mappedBy = "carClient", fetch = FetchType.LAZY)
  private List<Order> order;
 
- @OneToMany(mappedBy = "carClient",fetch = FetchType.LAZY)
+ @OneToMany(mappedBy = "carClient", fetch = FetchType.LAZY)
  private List<CarBreakdown> carBreakdowns;
 
- @ManyToOne(fetch = FetchType.LAZY)
+ @ManyToOne
  @JoinColumn(name = "id_mark")
  private Mark mark;
 

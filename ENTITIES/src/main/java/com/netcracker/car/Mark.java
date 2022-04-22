@@ -23,15 +23,12 @@ public class Mark  {
  @Id
  private UUID id;
 
- private String generation;
+ private String name;
 
  @Column(name = "year_start")
  private Date yearStart;
 
  @Column(name = "year_end")
  private Date yearEnd;
-
- @OneToMany(mappedBy = "mark",fetch = FetchType.LAZY)
- private List<CarClient> carClients;
 
 }
