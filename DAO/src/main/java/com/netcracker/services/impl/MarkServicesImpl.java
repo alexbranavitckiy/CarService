@@ -2,7 +2,6 @@ package com.netcracker.services.impl;
 
 import com.netcracker.car.Mark;
 import com.netcracker.repository.MarkRepository;
-import com.netcracker.repository.OrderRepository;
 import com.netcracker.services.MarkServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

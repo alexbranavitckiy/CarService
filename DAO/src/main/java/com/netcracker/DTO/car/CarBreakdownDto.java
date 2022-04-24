@@ -28,4 +28,7 @@ public class CarBreakdownDto {
  private State state;
 
  private String location;
+
+ private UUID idCar;
 }
+

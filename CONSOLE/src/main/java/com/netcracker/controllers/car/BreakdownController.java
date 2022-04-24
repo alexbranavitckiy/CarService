@@ -2,7 +2,6 @@ package com.netcracker.controllers.car;
 
 
 import com.netcracker.DTO.car.CarBreakdownDto;
-import com.netcracker.DTO.car.CarBreakdownForm;
 import com.netcracker.annotations.ClientLabel;
 import com.netcracker.annotations.SwaggerLabelMaster;
 import com.netcracker.breakdown.State;
@@ -69,7 +68,7 @@ public class BreakdownController {
  @SwaggerLabelMaster
  @ApiOperation("Add car breakdown")
  @PostMapping(value = "/aut/add/carBreakdown")
- public ResponseEntity<Boolean> addBreakdownOnMaster(@RequestBody CarBreakdownForm carBreakdownForm) {
+ public ResponseEntity<Boolean> addBreakdownOnMaster(@RequestBody CarBreakdownDto carBreakdownForm) {
   return ResponseEntity.ok(carBreakdownServices.addBreakdownOnMaster(carBreakdownForm));
  }
 
@@ -83,7 +82,7 @@ public class BreakdownController {
  @SwaggerLabelMaster
  @ApiOperation("Update car breakdown")
  @PostMapping(value = "/aut/update/carBreakdown")
- public ResponseEntity<Boolean> updateBreakdownOnMaster(@RequestBody CarBreakdownForm carBreakdownForm) {
+ public ResponseEntity<Boolean> updateBreakdownOnMaster(@RequestBody CarBreakdownDto carBreakdownForm) {
   return ResponseEntity.ok(carBreakdownServices.updateBreakdownOnMaster(carBreakdownForm));
  }
 

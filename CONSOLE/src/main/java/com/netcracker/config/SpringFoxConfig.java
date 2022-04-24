@@ -4,12 +4,15 @@ import com.netcracker.annotations.ClientLabel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 import java.util.Arrays;
@@ -19,13 +22,13 @@ import java.util.List;
 
 @Slf4j
 @Configuration
+@EnableSwagger2
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
-
-
 
  @Bean
  public Docket client() {
-  return new Docket(DocumentationType.SWAGGER_2)
+  return new Docket(DocumentationType.OAS_30)
    .groupName("Client")
    .select()
    .apis(RequestHandlerSelectors.withMethodAnnotation(ClientLabel.class))
@@ -54,7 +57,7 @@ public class SpringFoxConfig {
 
  @Bean
  public Docket master() {
-  return new Docket(DocumentationType.SWAGGER_2)
+  return new Docket(DocumentationType.OAS_30)
    .groupName("Master")
    .select()
    .paths(PathSelectors.ant("/aut/**"))
@@ -64,7 +67,7 @@ public class SpringFoxConfig {
 
  @Bean
  public Docket registration() {
-  return new Docket(DocumentationType.SWAGGER_2)
+  return new Docket(DocumentationType.OAS_30)
    .groupName("Registration")
    .select()
    .paths(PathSelectors.ant("/registration/**"))
@@ -74,7 +77,7 @@ public class SpringFoxConfig {
 
  @Bean
  public Docket masterReceiver() {
-  return new Docket(DocumentationType.SWAGGER_2)
+  return new Docket(DocumentationType.OAS_30)
    .groupName("MasterReceiver")
    .select()
    .paths(PathSelectors.ant("/pivot/**"))

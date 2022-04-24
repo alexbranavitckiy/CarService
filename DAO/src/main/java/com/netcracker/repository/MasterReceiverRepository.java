@@ -1,7 +1,6 @@
 package com.netcracker.repository;
 
 import com.netcracker.user.MasterReceiver;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

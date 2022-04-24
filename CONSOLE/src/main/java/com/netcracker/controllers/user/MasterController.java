@@ -51,7 +51,7 @@ public class MasterController {
   return ResponseEntity.ok(masterServices.updateMasterData(client, principal.getName()));
  }
 
- @ClientLabel
+ @SwaggerLabelMaster
  @ApiOperation("Updating logged in master data")
  @PostMapping(value = "aut/update/personDate", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +68,7 @@ public class MasterController {
 
 
 
- @ClientLabel
+ @SwaggerLabelMaster
  @GetMapping("aut/getMaster")
  @ApiOperation("Get the details of the master  logged in")
  public ResponseEntity<List<MasterDto>> getClientsOnline(@ApiIgnore @CookieValue(name = "token", required = false) String token) {

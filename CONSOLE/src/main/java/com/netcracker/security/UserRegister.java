@@ -1,5 +1,7 @@
 package com.netcracker.security;
 
+import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
 import com.netcracker.security.jwt.JWTUtil;
@@ -42,7 +44,7 @@ public class UserRegister {
 
  public ContactConfirmationResponse jwtLogin(ContactConfirmationPayload payload) {
   authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(payload.getPassword(),
-   payload.getUsername()));
+   payload.getLogin()));
   UserDetails userDetails = myUserDetailsService.loadUserByUsername(payload.getPassword());
   String jwtToken = jwtUtil.generateToken(userDetails);
   ContactConfirmationResponse response = new ContactConfirmationResponse();
@@ -54,8 +56,7 @@ public class UserRegister {
   return passwordEncoder.encode(password);
  }
 
-
- public boolean registerNewUser(Client client) {
+ public boolean registerNewUser(ClientDto client) throws SaveErrorException {
   if (clientServices.getClientDtoByLogin(client.getLogin()).isEmpty()) {
    client.setPassword(passwordEncoder.encode(client.getPassword()));
    client.setId(UUID.randomUUID());
@@ -63,7 +64,7 @@ public class UserRegister {
    clientServices.registrationClient(client);
    return true;
   }
-  return false;
+  throw new SaveErrorException("The login you entered is in use by other users");
  }
 
  public boolean registerNewMaster(Master master) {

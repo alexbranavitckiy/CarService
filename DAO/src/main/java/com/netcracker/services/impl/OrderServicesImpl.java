@@ -1,6 +1,7 @@
 package com.netcracker.services.impl;
 
 
+import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.ord.OrdMapper;
 import com.netcracker.DTO.ord.OrderDto;
 import com.netcracker.car.CarClient;
@@ -30,12 +31,14 @@ public class OrderServicesImpl implements OrderServices {
  private final CarServices carServices;
  private final ClientServices clientServices;
  private final Environment env;
+ private final MapperDto<OrderDto, Order> orderMapperDto;
 
  @Lazy
  @Autowired
- private OrderServicesImpl(Environment env, ClientServices clientServices, CarServices carServices, OrdMapper orderMapper, OrderRepository orderRepository) {
+ private OrderServicesImpl(MapperDto<OrderDto, Order> orderMapperDto, Environment env, ClientServices clientServices, CarServices carServices, OrdMapper orderMapper, OrderRepository orderRepository) {
   this.orderRepository = orderRepository;
-  this.env=env;
+  this.orderMapperDto = orderMapperDto;
+  this.env = env;
   this.orderMapper = orderMapper;
   this.carServices = carServices;
   this.clientServices = clientServices;
@@ -46,17 +49,13 @@ public class OrderServicesImpl implements OrderServices {
   return false;
  }
 
+
  @Override
  public boolean repairRequest(OrderDto dto, String nameUser) {
   try {
-   Optional<CarClient> carClient = carServices.getCarByIdOnMaster(dto.getId());
-   if (carClient.isPresent()) {
-    Order order = orderMapper.toEntity(dto);
-    order.setState(State.REQUEST);
-    order.setCarClient(carClient.get());
-    orderRepository.save(order);
-    return true;
-   }
+   dto.setState(State.REQUEST);
+   orderRepository.insertOrder(UUID.randomUUID().toString(), dto.getCreatedDate(), dto.getState().getCode(), dto.getUpdatedDate(), dto.getCarClient().toString(), dto.getDescription());
+   return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
   }
@@ -65,7 +64,7 @@ public class OrderServicesImpl implements OrderServices {
 
  @Override
  public List<OrderDto> getAllOrderClientsWithState(String login, State state) {
-  return orderRepository.getAllOrderClient(login,state).stream().map(orderMapper::toDto).collect(Collectors.toList());
+  return orderRepository.getAllOrderClient(login, state).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
  }
 
  @Override

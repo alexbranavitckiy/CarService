@@ -1,7 +1,6 @@
 package com.netcracker.services;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
-import com.netcracker.DTO.car.CarBreakdownForm;
 import com.netcracker.breakdown.State;
 
 import java.util.List;
@@ -20,11 +19,11 @@ public interface CarBreakdownServices {
  //--Client--//
 
  //--Master--//
- boolean addBreakdownOnMaster(CarBreakdownForm carBreakdownForm);
+ boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownForm);
 
  List<CarBreakdownDto> getAllBreakDownByCarIdOnMaster(UUID carId);
 
- boolean updateBreakdownOnMaster(CarBreakdownForm carBreakdownForm);
+ boolean updateBreakdownOnMaster(CarBreakdownDto carBreakdownForm);
  //--Master--//
 
 

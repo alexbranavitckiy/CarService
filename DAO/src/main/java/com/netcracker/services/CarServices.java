@@ -15,7 +15,7 @@ public interface CarServices {
 
  List<CarClientDto> getCarByLoginClient(String login);
 
- boolean createCarOnClient(CarClient carClient, String nameClients);
+ boolean createCarOnClient(CarClientDto carClient, String nameClients);
 
  Optional<CarClientDto> getCarByIdCarOnClient(UUID uuidCar, String login);
 

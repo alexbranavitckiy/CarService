@@ -1,13 +1,11 @@
 package com.netcracker.services.impl;
 
-import com.netcracker.DTO.MapperCar;
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.car.CarClient;
 import com.netcracker.repository.CarClientRepository;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
-import com.netcracker.user.Client;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,14 +24,12 @@ public class CarServicesImpl implements CarServices {
 
  private final CarClientRepository carClientRepository;
  private final ClientServices clientServices;
- private final MapperCar mapperCar;
  private final MapperDto<CarClientDto, CarClient> clientMapperDto;
 
  @Autowired
- private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto, MapperCar mapperCar, ClientServices clientServices, CarClientRepository carClientRepository) {
+ private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto, ClientServices clientServices, CarClientRepository carClientRepository) {
   this.clientServices = clientServices;
   this.clientMapperDto = clientMapperDto;
-  this.mapperCar = mapperCar;
   this.carClientRepository = carClientRepository;
  }
 
@@ -55,18 +51,13 @@ public class CarServicesImpl implements CarServices {
  }
 
  @Override
- public boolean createCarOnClient(CarClient carClient, String login) {
+ public boolean createCarOnClient(CarClientDto carClient, String login) {
   try {
-   Optional<Client> client = clientServices.getClientByLogin(login);
-   if (client.isPresent()) {
-    carClient.setClient(client.get());
-    carClient.setId(UUID.randomUUID());
-    carClientRepository.save(carClient);
-    return true;
-   }
+   carClient.setId(UUID.randomUUID());
+   carClientRepository.insertCarClient(carClient.getId().toString(), carClient.getDescription(),carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), carClient.getIdClient().toString(), carClient.getMark().getId().toString());
+   return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
-   return false;
   }
   return false;
  }
@@ -74,14 +65,7 @@ public class CarServicesImpl implements CarServices {
  @Override
  public boolean updateCarClientByLogin(CarClientDto carClient, String login) {
   try {
-   Optional<Client> client = clientServices.getClientByLogin(login);
-   if (client.isPresent()) {
-    Optional<CarClient> oldCar = client.get().getCars().stream().filter(x -> x.getId().equals(carClient.getId())).findFirst();
-    if (oldCar.isPresent()) {
-     carClientRepository.save(mapperCar.toEntityUpdate(carClient, oldCar.get()));
-     return true;
-    }
-   }
+   carClientRepository.updateCarClientById(carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), carClient.getId().toString());
   } catch (Exception e) {
    log.warn(e.getMessage());
    return false;

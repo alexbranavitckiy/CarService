@@ -20,7 +20,7 @@
         <form th:action="@{/perform_login}" method="POST">
             <div class="form-group">
                 <label for="exampleInputEmail1">Login</label>
-                <input name="username" type="text" class="form-control" id="exampleInputEmail1"
+                <input name="login" type="text" class="form-control" id="exampleInputEmail1"
                        aria-describedby="emailHelp" placeholder="Enter login">
             </div>
             <div class="form-group">
@@ -33,7 +33,7 @@
                 <div class="col-sm">
                     <button type="submit" class="btn btn-primary mt-1 mb-1">Submit</button>
                     <div th:if="${param.error}" style="color: red; font-size: medium;">
-                        Invalid username and password.
+                        Invalid login and password.
                     </div>
                     <!--  </div>  <div th:if="${param.logout}"><span
                                 style="color: red; font-size: medium; ">You have been logged out.</span>-->

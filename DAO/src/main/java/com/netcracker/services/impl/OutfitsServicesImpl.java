@@ -1,8 +1,11 @@
 package com.netcracker.services.impl;
 
 
+import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.ord.OrdMapper;
+import com.netcracker.DTO.ord.OrderDto;
 import com.netcracker.DTO.ord.OutfitDto;
+import com.netcracker.order.Order;
 import com.netcracker.outfit.Outfit;
 import com.netcracker.outfit.State;
 import com.netcracker.repository.OutfitsRepository;
@@ -23,16 +26,19 @@ public class OutfitsServicesImpl implements OutfitsServices {
 
  private final OutfitsRepository outfitsRepository;
  private final OrdMapper ordMapper;
+ private final MapperDto<OutfitDto, Outfit> outfitMapperDto;
+
 
  @Autowired
- private OutfitsServicesImpl(OrdMapper ordMapper, OutfitsRepository outfitsRepository) {
+ private OutfitsServicesImpl(  MapperDto<OutfitDto, Outfit> outfitMapperDto,OrdMapper ordMapper, OutfitsRepository outfitsRepository) {
   this.ordMapper = ordMapper;
+  this.outfitMapperDto=outfitMapperDto;
   this.outfitsRepository = outfitsRepository;
  }
 
  @Override
  public List<OutfitDto> getAllMasterOutfitWithStateAndSort(State state, String login) {
-  return outfitsRepository.getAllByStateOutfitAndMasterLogin(state, login).stream().map(ordMapper::toDto).collect(Collectors.toList());
+  return outfitsRepository.getAllByStateOutfitAndMasterLogin(state, login).stream().map(outfitMapperDto::toDto).collect(Collectors.toList());
  }
 
  @Override

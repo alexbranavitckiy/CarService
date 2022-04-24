@@ -41,11 +41,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .csrf()
    .disable()
    .authorizeRequests()
-   .antMatchers("/registration").not().fullyAuthenticated()
-   .antMatchers( "/person/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
+   .antMatchers("/swagger-ui/**", "/person/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
    .antMatchers("/aut/**").hasAnyAuthority("MASTER","REGISTERED", "RECEPTIONIST")
    .antMatchers("/pivot/details/**").hasAnyAuthority("RECEPTIONIST")
-   .antMatchers("/swagger-ui/**","/**"
+   .antMatchers("/**"
    ).permitAll()
    .anyRequest().authenticated()
    .and()

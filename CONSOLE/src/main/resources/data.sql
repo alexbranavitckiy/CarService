@@ -67,7 +67,7 @@ insert into mark (id, name, year_start, year_end) values ('148e8b66-9a2b-46eb-ac
 
 
 INSERT INTO public.car_client
-(id, description, ear, metadata_car, run, summary, id_clients, id_mark)
+(id, description, year, metadata_car, run, summary, id_clients, id_mark)
 VALUES('799cc78b-2691-4410-a6c6-a5ad6442db44','description', '4/11/2020', 'metadata_car', 0, 'summary', '799cc78b-2691-4410-a6c6-a5ad6442db44', 'a7af47e4-962b-44c8-9214-37bbea111532');
 
 INSERT INTO public.orders

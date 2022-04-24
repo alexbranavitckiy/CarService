@@ -3,6 +3,7 @@ package com.netcracker.services.impl;
 import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.DTO.convectror.ClientConvectorImpl;
 import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.repository.CarClientRepository;
 import com.netcracker.repository.ClientsRepository;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,29 +50,57 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public boolean registrationClient(Client client) {
+ public boolean registrationClient(ClientDto client) throws SaveErrorException {
   try {
-   Optional<Client> optionalClient = clientsRepository.getByName(client.getLogin());
-   if (optionalClient.isEmpty()) {
-    clientsRepository.save(client);
+   client.setId(UUID.randomUUID());
+   Client clientNew = mapperDto.toEntity(client);
+   if (clientsRepository.insertClient(clientNew.getId(), clientNew.getDescription(), clientNew.getEmail(), clientNew.getLogin(), clientNew.getName(), clientNew.getPassword(), clientNew.getPhone(), clientNew.getRoleUser().name()) == 1) {
     return true;
    }
   } catch (Exception e) {
    log.warn(e.getMessage());
-   return false;
+   throw new SaveErrorException(e.getMessage());
   }
-  return false;
+  throw new SaveErrorException("The entered data is in use by other users.");
  }
 
  @Override
- public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login) {
+ public boolean passwordChek(String password) throws SaveErrorException {
+  if (clientsRepository.getAllByPassword(password).isEmpty())
+   return true;
+  throw new SaveErrorException("Invalid password entered.","password");
+ }
+
+ @Override
+ public boolean loginChek(String login) throws SaveErrorException {
+  if (clientsRepository.getAllByLogin(login).isEmpty())
+   return true;
+  throw new SaveErrorException("The login you entered is in use by another user.","login");
+ }
+
+ @Override
+ public boolean emailChek(String email) throws SaveErrorException {
+  if (clientsRepository.getAllByEmail(email).isEmpty())
+   return true;
+  throw new SaveErrorException("The entered mail is busy by another user.","email");
+ }
+
+ @Override
+ public boolean phoneChek(String phone) throws SaveErrorException {
+  if (clientsRepository.getAllByPhone(phone).isEmpty())
+   return true;
+  throw new SaveErrorException("The entered phone number is already registered.","phone");
+ }
+
+ @Override
+ public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login) throws SaveErrorException {
   try {
-   clientsRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getUsername(), login);
+   clientsRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getLogin(), login);
    return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
+   throw new SaveErrorException("The entered data is not valid");
   }
-  return false;
  }
 
  @Override
@@ -95,14 +125,13 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public boolean updateClientByLogin(ClientDto updateClient, String login) {
+ public boolean updateClientByLogin(ClientDto updateClient, String login) throws SaveErrorException {
   try {
-   clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(), updateClient.getDescription(), login);
-   return true;
+   if (clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(), updateClient.getDescription(), login) > 0)
+    return true;
   } catch (Exception e) {
-   log.warn("{}",e);
+   throw new SaveErrorException(e.getMessage());
   }
-  return false;
+  throw new SaveErrorException("The entered data is in use by other users.");
  }
-
 }

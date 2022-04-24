@@ -3,10 +3,7 @@ package com.netcracker.breakdown;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 
@@ -18,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"carClient"})
 @Entity(name = "car_breakdown")
 public class CarBreakdown {
 

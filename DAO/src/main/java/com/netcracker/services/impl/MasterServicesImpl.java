@@ -35,7 +35,7 @@ private final MapperDto<MasterDto, Master> mapperDto;
  @Override
  public boolean updateMasterData(ContactConfirmationPayload contactConfirmationPayload, String login) {
   try {
-   masterRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getUsername(), login);
+   masterRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getLogin(), login);
    return true;
   } catch (Exception e) {
    log.warn(e.getMessage());

@@ -1,12 +1,9 @@
 package com.netcracker.services.impl;
 
-import com.netcracker.DTO.CarBreakdownMapper;
 import com.netcracker.DTO.car.CarBreakdownDto;
-import com.netcracker.DTO.car.CarBreakdownForm;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.breakdown.State;
-import com.netcracker.car.CarClient;
 import com.netcracker.repository.CarBreakdownRepository;
 import com.netcracker.services.CarBreakdownServices;
 import com.netcracker.services.CarServices;
@@ -17,7 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,17 +22,15 @@ import java.util.stream.Collectors;
 public class CarBreakdownServicesImpl implements CarBreakdownServices {
 
  private final CarBreakdownRepository breakdownRepository;
- private final CarBreakdownMapper carBreakdownMapper;
  private final CarServices carServices;
  private final MapperDto<CarBreakdownDto, CarBreakdown> mapperDto;
 
  @Lazy
  @Autowired
- private CarBreakdownServicesImpl(@Qualifier("CarBreakdownConvectorImpl") MapperDto<CarBreakdownDto, CarBreakdown> mapperDto, CarServices carServices, CarBreakdownMapper carBreakdownMapper, CarBreakdownRepository breakdownRepository) {
+ private CarBreakdownServicesImpl(@Qualifier("CarBreakdownConvectorImpl") MapperDto<CarBreakdownDto, CarBreakdown> mapperDto, CarServices carServices, CarBreakdownRepository breakdownRepository) {
   this.breakdownRepository = breakdownRepository;
-  this.mapperDto=mapperDto;
+  this.mapperDto = mapperDto;
   this.carServices = carServices;
-  this.carBreakdownMapper = carBreakdownMapper;
  }
 
  @Override
@@ -55,16 +49,17 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public boolean addBreakdownOnMaster(CarBreakdownForm carBreakdownForm) {
+ public boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownDto) {
   try {
-   Optional<CarClient> car = carServices.getCarByIdOnMaster(carBreakdownForm.getIdCar());
-   if (car.isPresent()) {
-    breakdownRepository.save(carBreakdownMapper.toEntityWithNewCar(carBreakdownForm, car.get()));
-    return true;
-   }
+   carBreakdownDto.setId(UUID.randomUUID());
+   breakdownRepository.insertCarBreakDown(carBreakdownDto.getId().toString(),
+    carBreakdownDto.getLocation(), carBreakdownDto.getDescription(),
+    carBreakdownDto.getRunCarSize(), carBreakdownDto.getUpdateDate(),
+    carBreakdownDto.getState().getCode(),
+    carBreakdownDto.getIdCar().toString());
+   return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
-   return false;
   }
   return false;
  }
@@ -75,16 +70,12 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public boolean updateBreakdownOnMaster(CarBreakdownForm carBreakdownForm) {
+ public boolean updateBreakdownOnMaster(CarBreakdownDto carBreakdownForm) {
   try {
-   Optional<CarBreakdown> carBreakdown = breakdownRepository.getAllById(carBreakdownForm.getId());
-   if (carBreakdown.isPresent()) {
-    breakdownRepository.save(carBreakdownMapper.toEntity(carBreakdownForm, carBreakdown.get()));
-    return true;
-   }
+   breakdownRepository.updateCarBreakDownById(carBreakdownForm.getDescription(), carBreakdownForm.getRunCarSize(), carBreakdownForm.getUpdateDate(), carBreakdownForm.getState().getCode(), carBreakdownForm.getLocation(), carBreakdownForm.getId().toString());
+   return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
-   return false;
   }
   return false;
  }

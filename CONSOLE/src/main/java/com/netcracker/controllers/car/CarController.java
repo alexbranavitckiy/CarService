@@ -46,7 +46,7 @@ public class CarController {
  @ClientLabel
  @ApiOperation("Car registration")
  @PostMapping(value = "/person/garage/registration")
- public ResponseEntity<Boolean> createCar(@RequestBody CarClient carClient, @ApiIgnore Principal principal) {
+ public ResponseEntity<Boolean> createCar(@RequestBody CarClientDto carClient, @ApiIgnore Principal principal) {
   return ResponseEntity.ok(carServices.createCarOnClient(carClient, principal.getName()));
  }
 
@@ -56,6 +56,7 @@ public class CarController {
  public ResponseEntity<List<CarClientDto>> getAllCarByLoginClients(@PathVariable UUID ClientUUID, @ApiIgnore Principal principal) {
   return ResponseEntity.ok(carServices.getCarByIdClientOnClient(ClientUUID, principal.getName()));
  }
+
  @ClientLabel
  @ApiOperation("Get machine of user logged in by id")
  @GetMapping("/person/Car{CarUUID}")
@@ -66,6 +67,7 @@ public class CarController {
   }
   return ResponseEntity.ok(List.of(carClient.get()));
  }
+
  @ClientLabel
  @ApiOperation("Car update")
  @PostMapping(value = "/person/car/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
