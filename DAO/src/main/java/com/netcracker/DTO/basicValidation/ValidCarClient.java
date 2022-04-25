@@ -7,10 +7,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = Clients.class)
-public @interface ValidClients {
+@Constraint(validatedBy = CarClients.class)
+public @interface ValidCarClient {
  String message() default "";
 
  Class<?>[] groups() default {};

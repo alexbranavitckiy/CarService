@@ -3,12 +3,12 @@ package com.netcracker.controllers.globalController;
 
 import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.response.ApiResponse;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.ExceptionUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,18 +18,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Date;
-
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
 
- @ExceptionHandler({ConstraintViolationException.class, SaveErrorException.class})
+ @ExceptionHandler({ConstraintViolationException.class})
  @ResponseStatus(HttpStatus.BAD_REQUEST)
  @ResponseBody
  ValidationErrorResponse onConstraintValidationException(
-  ConstraintViolationException e) {
+  ConstraintViolationException e, SaveErrorException s) {
   ValidationErrorResponse error = new ValidationErrorResponse();
   for (ConstraintViolation violation : e.getConstraintViolations()) {
    error.getViolations().add(

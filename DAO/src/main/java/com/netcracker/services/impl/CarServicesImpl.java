@@ -2,6 +2,7 @@ package com.netcracker.services.impl;
 
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.car.CarClient;
 import com.netcracker.repository.CarClientRepository;
 import com.netcracker.services.CarServices;
@@ -50,17 +51,19 @@ public class CarServicesImpl implements CarServices {
   return carClient.map(clientMapperDto::toDto);
  }
 
+
  @Override
- public boolean createCarOnClient(CarClientDto carClient, String login) {
+ public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveErrorException {
   try {
    carClient.setId(UUID.randomUUID());
-   carClientRepository.insertCarClient(carClient.getId().toString(), carClient.getDescription(),carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), carClient.getIdClient().toString(), carClient.getMark().getId().toString());
-   return true;
+   if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), login, carClient.getMark().getId()) > 0)
+    return true;
   } catch (Exception e) {
-   log.warn(e.getMessage());
+   throw new SaveErrorException(e.getMessage());
   }
-  return false;
+  throw new SaveErrorException("The entered data is in use by other users.");
  }
+
 
  @Override
  public boolean updateCarClientByLogin(CarClientDto carClient, String login) {
@@ -72,6 +75,15 @@ public class CarServicesImpl implements CarServices {
   }
   return false;
  }
+
+ @Override
+ public boolean metadataCarChek(String metadata) throws SaveErrorException {
+  if (carClientRepository.getByMetadataCar(metadata).isEmpty())
+   return true;
+  throw new SaveErrorException("This car number is already registered.","metadataCar");
+ }
+
+
 
  @Override
  public Optional<CarClient> getCarByIdOnMaster(UUID uuidCar) {

@@ -2,6 +2,7 @@ package com.netcracker.services.impl;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
 import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.breakdown.State;
 import com.netcracker.repository.CarBreakdownRepository;
@@ -33,8 +34,9 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
   this.carServices = carServices;
  }
 
+
  @Override
- public List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login) {
+ public List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login)  {
   return breakdownRepository.getAllByCarBreakdownByIdCarAndLoginSortDesc(login, carUUID).stream().map(mapperDto::toDto).collect(Collectors.toList());
  }
 
@@ -84,5 +86,6 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  public List<CarBreakdownDto> getAllBreakdownByCarSortDesc(String login) {
   return breakdownRepository.getAllByLogin(login).stream().map(mapperDto::toDto).collect(Collectors.toList());
  }
+
 
 }

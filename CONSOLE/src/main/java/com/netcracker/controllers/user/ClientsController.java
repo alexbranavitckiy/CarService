@@ -63,9 +63,9 @@ public class ClientsController {
  @ApiOperation("Login.")
  @PostMapping({"/perform_login"})
  @ResponseBody
- public RedirectView handleLogin(@ApiParam("User") @RequestParam String username, @ApiParam("Password") @RequestParam String password,
+ public RedirectView handleLogin(@ApiParam("User") @RequestParam String login, @ApiParam("Password") @RequestParam String password,
                                  HttpServletResponse httpServletResponse) {
-  ContactConfirmationResponse loginResponse = userRegister.jwtLogin(new ContactConfirmationPayload(password, username));
+  ContactConfirmationResponse loginResponse = userRegister.jwtLogin(new ContactConfirmationPayload(password, login));
   Cookie cookie = new Cookie("token", loginResponse.getResult());
   httpServletResponse.addCookie(cookie);
   return new RedirectView("/swagger-ui/");
@@ -95,7 +95,7 @@ public class ClientsController {
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "person/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateUser(@Validated({Validate.New.class}) @JsonView(Validate.New.class) @RequestBody ClientDto client, @ApiIgnore Principal principal) {
+ public ResponseEntity<ValidationErrorResponse> updateUser(@Validated({Validate.EditValue.class, Validate.UiCrossFieldChecks.class}) @JsonView(Validate.EditValue.class) @RequestBody ClientDto client, @ApiIgnore Principal principal) {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   try {
    clientServices.updateClientByLogin(client, principal.getName());

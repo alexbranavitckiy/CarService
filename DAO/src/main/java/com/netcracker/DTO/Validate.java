@@ -8,15 +8,19 @@ public interface Validate {
  interface Details {
  }
 
- interface Edit extends New {
+
+ interface New extends Edit{
  }
 
- interface New {
- }
 
- interface Registration {
+ interface EditValue extends Edit{
 
  }
+
+ interface Edit  {
+ }
+
+
 
  interface UiCrossFieldChecks {
 

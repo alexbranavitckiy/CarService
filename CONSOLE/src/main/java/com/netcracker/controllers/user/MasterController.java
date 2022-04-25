@@ -35,7 +35,7 @@ public class MasterController {
  private final JWTUtil jwtUtil;
 
  @Autowired
- private MasterController(JWTUtil jwtUtil, UserRegister userRegister, MasterServices masterServices) {
+ public MasterController(JWTUtil jwtUtil, UserRegister userRegister, MasterServices masterServices) {
   this.masterServices = masterServices;
   this.jwtUtil = jwtUtil;
   this.userRegister = userRegister;

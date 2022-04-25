@@ -1,5 +1,6 @@
 package com.netcracker.services.impl;
 
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.car.Mark;
 import com.netcracker.repository.MarkRepository;
 import com.netcracker.services.MarkServices;
@@ -33,6 +34,13 @@ public class MarkServicesImpl implements MarkServices {
   Optional<Mark> mark = markRepository.findById(uuid);
   if (mark.isEmpty()) return new ArrayList<>();
   return List.of(mark.get());
+ }
+
+ @Override
+ public boolean metadataMark(UUID uuid) throws SaveErrorException {
+  if (markRepository.getById(uuid).isEmpty())
+  throw new SaveErrorException("Entered data of a non-existent mark.", "mark");
+  return true;
  }
 
  @Override

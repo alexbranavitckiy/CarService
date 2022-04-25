@@ -2,79 +2,54 @@ package com.netcracker.DTO.response;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 
-public class ApiResponse<T> {
+@Data
+@AllArgsConstructor
+@Builder
+public class ApiResponse {
 
  private HttpStatus httpStatus;
 
  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm--yyyy hh:mm:ss")
  private LocalDateTime localDateTime;
 
- private String message;
+ private String messageUser;
 
- private String debugMessage;
+ private String stackTrace;
 
- private Collection<T> date;
+ @Builder
+ public ApiResponse(HttpStatus httpStatus, String message, String debugMessage) {
+  this.httpStatus = httpStatus;
+  this.localDateTime = LocalDateTime.now();
+  this.messageUser = message;
+  this.stackTrace = debugMessage;
+ }
 
  public ApiResponse() {
   this.localDateTime = LocalDateTime.now();
  }
 
- public ApiResponse(HttpStatus httpStatus, String message,Throwable ex) {
+ public ApiResponse(HttpStatus httpStatus, String message, Throwable ex) {
   this();
   this.httpStatus = httpStatus;
-  this.message = message;
-  debugMessage=ex.getLocalizedMessage();
+  this.messageUser = message;
+  stackTrace = ex.getLocalizedMessage();
  }
 
  @Override
  public String toString() {
   return "ApiResponse{" +
-   "message='" + message + '\'' +
-   ", debugMessage='" + debugMessage + '\'' +
+   "message='" + messageUser + '\'' +
+   ", debugMessage='" + stackTrace + '\'' +
    '}';
  }
 
- public HttpStatus getHttpStatus() {
-  return httpStatus;
- }
 
- public void setHttpStatus(HttpStatus httpStatus) {
-  this.httpStatus = httpStatus;
- }
-
- public LocalDateTime getLocalDateTime() {
-  return localDateTime;
- }
-
- public void setLocalDateTime(LocalDateTime localDateTime) {
-  this.localDateTime = localDateTime;
- }
-
- public String getMessage() {
-  return message;
- }
-
- public void setMessage(String message) {
-  this.message = message;
- }
-
- public String getDebugMessage() {
-  return debugMessage;
- }
-
- public void setDebugMessage(String debugMessage) {
-  this.debugMessage = debugMessage;
- }
-
- public Collection<T> getDate() {
-  return date;
- }
-
- public void setDate(Collection<T> date) {
-  this.date = date;
- }
 }

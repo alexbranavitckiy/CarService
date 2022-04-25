@@ -1,8 +1,11 @@
 package com.netcracker.DTO.basicValidation;
 
+import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
+import com.netcracker.services.impl.MarkServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,25 +15,25 @@ import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
 @Component
-public class ValidClient
- implements ConstraintValidator<ValidClients, ClientDto> {
+public class CarClients
+ implements ConstraintValidator<ValidCarClient, CarClientDto> {
 
- private final ClientServices clientServices;
+ private final CarServices carServices;
+ private final MarkServicesImpl markServices;
 
  @Autowired
- ValidClient(ClientServices clientServices) {
-  this.clientServices = clientServices;
+ CarClients(CarServices carServices, MarkServicesImpl markServices) {
+  this.markServices = markServices;
+  this.carServices = carServices;
  }
 
- public void initialize(ValidClients constraint) {
+ public void initialize(ValidCarClient constraint) {
  }
 
- public boolean isValid(ClientDto person, ConstraintValidatorContext context) {
+ public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
   try {
-   clientServices.passwordChek(person.getPassword());
-   clientServices.emailChek(person.getEmail());
-   clientServices.phoneChek(person.getPhone());
-   clientServices.loginChek(person.getLogin());
+   carServices.metadataCarChek(clientDto.getMetadataCar());
+   markServices.metadataMark(clientDto.getMark().getId());
   } catch (SaveErrorException e) {
    context.disableDefaultConstraintViolation();
    context.buildConstraintViolationWithTemplate(e.getMessage())

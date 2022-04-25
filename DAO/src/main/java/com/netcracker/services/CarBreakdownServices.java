@@ -1,6 +1,7 @@
 package com.netcracker.services;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
+import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.breakdown.State;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CarBreakdownServices {
 
  List<CarBreakdownDto> getAllBreakdownByCarIdLogin(UUID carUUID, String login);
 
- List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login);
+ List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login) ;
 
  List<CarBreakdownDto> getAllBreakdownByCarAndStateSortDesc(UUID carUUID, State state, String login);
  //--Client--//

@@ -1,6 +1,7 @@
 package com.netcracker.services;
 
 
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.car.Mark;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface MarkServices {
  boolean deleteMark(Mark mark);
 
  List<Mark> getMarkById(UUID uuid);
+
+ boolean metadataMark(UUID uuidMark) throws SaveErrorException;
 
 }

@@ -28,19 +28,23 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  Optional<CarClient> getAllByIdAndClient_Login(UUID uuid, String login);
 
+ Optional<CarClient> getByMetadataCar(String m);
+
  @Transactional
  @Modifying
  @Query("update car_client c set c.description = ?1, c.year = ?2 , c.metadataCar = ?3, c.run = ?4, c.summary = ?5  where c.id = ?6")
  int updateCarClientById(String description, Date year, String metadata_car, int run, String summary, String id);
 
 
+ @Transactional
  @Modifying
  @Query(
   value =
-   "insert into car_client (id,description,year,metadataCar, run,summary,id_clients,id_mark) values (:id,:description,:year, :metadataCar, :run, :summary, :id_clients, :id_mark)",
+   "insert into car_client (id,description,year,metadata_car, run,summary,id_clients,id_mark) values (:id,:description,:year, :metadata_car, :run, :summary, (SELECT public .clients.id FROM public.clients where public .clients.login=:login), :id_mark)   ",
   nativeQuery = true)
- void insertCarClient(@Param("id") String id, @Param("description") String description, @Param("year") Date year, @Param("metadataCar") String metadataCar, @Param("run") int run,
-                      @Param("summary") String summary, @Param("id_clients") String id_clients, @Param("id_mark") String id_mark);
+ int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
+                      @Param("summary") String summary, @Param("login") String login, @Param("id_mark") UUID id_mark);
+
 
 
 }

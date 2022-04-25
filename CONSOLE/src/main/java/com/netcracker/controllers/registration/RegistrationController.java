@@ -39,7 +39,7 @@ public class RegistrationController {
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> createUser(@JsonView(Validate.Registration.class) @Validated({Validate.New.class, Validate.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) {
+ public ResponseEntity<ValidationErrorResponse> createUser(@JsonView(Validate.New.class) @Validated({Validate.New.class, Validate.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   try {
    userRegister.registerNewUser(clients);

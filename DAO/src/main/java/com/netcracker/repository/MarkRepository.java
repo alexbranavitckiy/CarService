@@ -1,5 +1,6 @@
 package com.netcracker.repository;
 
+import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.car.Mark;
 import com.netcracker.user.Client;
 import org.springframework.data.repository.CrudRepository;
@@ -15,4 +16,7 @@ public interface MarkRepository  extends CrudRepository<Mark, UUID> {
  List<Mark> getAllBy();
 
  Optional<Mark> findById(UUID id);
+
+ Optional<Mark> getById(UUID uuid);
+
 }

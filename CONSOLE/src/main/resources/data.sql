@@ -3,6 +3,11 @@ INSERT INTO public.clients
 (id, description, email, login, name, password, phone, role)
 VALUES('799cc78b-2691-4410-a6c6-a5ad6442db44', 'test', 'testClients1', 'clients', 'test', '$2a$12$mD0g7g/wEmlW2MyAMtXNVOe4yIQ58EYXVKrP/eK2wzqjlMBVke8f2', 'sadasd', 'REGISTERED');
 
+INSERT INTO public.clients
+(id, description, email, login, name, password, phone, role)
+VALUES('799cc78b-2691-4410-a6c6-a5ad6442db45', 'phone22', 'email', 'login', 'test', '$2a$10$eeYxwie6S00hU4e3urIXeeTd9piOf4QhS3Xdq5Tg1vXIzfnAF0YOC', 'sadasd1', 'REGISTERED');
+
+
 INSERT INTO public.master
 (id, description, education, home_address, login, mail, name, password, phone, qualification, role)
 VALUES('cda01a34-4119-3e5e-9ab9-60b341f234fb', 'testMaster', 'test', 'test', 'master', 'test', 'test', '$2a$12$TUCevqpe70/wh2xCNiSZ9OfKj85gVtZVC2T7XSOJqIW/VufbmKETa', 'test2', 'ELECTRICIAN', 'MASTER');
