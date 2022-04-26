@@ -38,7 +38,6 @@ public interface CarBreakdownRepository extends JpaRepository<CarBreakdown, UUID
  @Query("update car_breakdown c set c.description = ?1, c.runCarSize = ?2 , c.updateDate = ?3, c.state = ?4, c.location = ?4  where c.id = ?5")
  int updateCarBreakDownById(String description, int runCarSize, Date updateDate, String state, String location, String idCarBreak);
 
-
  @Modifying
  @Query(
   value =

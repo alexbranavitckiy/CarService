@@ -38,7 +38,6 @@ import java.util.Optional;
 @ApiOperation("API for customer service")
 public class ClientsController {
 
-
  private final JWTUtil jwtUtil;
  private final ClientServices clientServices;
  private final UserRegister userRegister;

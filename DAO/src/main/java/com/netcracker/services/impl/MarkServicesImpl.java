@@ -36,11 +36,13 @@ public class MarkServicesImpl implements MarkServices {
   return List.of(mark.get());
  }
 
+
  @Override
  public boolean metadataMark(UUID uuid) throws SaveErrorException {
-  if (markRepository.getById(uuid).isEmpty())
+  if (markRepository.existsById(uuid)) {
+   return true;
+  }
   throw new SaveErrorException("Entered data of a non-existent mark.", "mark");
-  return true;
  }
 
  @Override

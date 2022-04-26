@@ -19,4 +19,5 @@ public interface MarkRepository  extends CrudRepository<Mark, UUID> {
 
  Optional<Mark> getById(UUID uuid);
 
+ boolean existsById(UUID uuid);
 }

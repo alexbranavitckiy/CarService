@@ -14,7 +14,6 @@ public interface CarServices {
 
  boolean metadataCarChek(String metadata) throws SaveErrorException;
 
-
  Optional<CarClient> getCarByIdOnMaster(UUID uuidCar);
 
  List<CarClientDto> getCarByLoginClient(String login);
@@ -23,8 +22,7 @@ public interface CarServices {
 
  Optional<CarClientDto> getCarByIdCarOnClient(UUID uuidCar, String login);
 
- boolean updateCarClientByLogin(CarClientDto carClient, String nameClients);
+ boolean updateCarClientByLogin(CarClientDto carClient, String nameClients) throws SaveErrorException;
 
- List<CarClientDto> getCarByIdClientOnClient(UUID uuidClient, String login);
-
+ boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login)throws SaveErrorException;
 }

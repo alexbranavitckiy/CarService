@@ -1,14 +1,11 @@
 package com.netcracker.controllers.globalController;
 
 
-import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.DTO.errs.SaveErrorException;
-import com.netcracker.DTO.response.ApiResponse;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +20,7 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class GlobalExceptionHandlerController {
 
- @ExceptionHandler({ConstraintViolationException.class})
+ @ExceptionHandler({ConstraintViolationException.class,SaveErrorException.class})
  @ResponseStatus(HttpStatus.BAD_REQUEST)
  @ResponseBody
  ValidationErrorResponse onConstraintValidationException(
@@ -48,8 +45,6 @@ public class GlobalExceptionHandlerController {
   }
   return error;
  }
-
-
 
 
 }

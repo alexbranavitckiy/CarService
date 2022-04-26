@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 
 import java.util.List;
 import java.util.function.Function;
@@ -27,6 +28,9 @@ public class MappingConfig {
  public static <R, E> List<R> convertList(List<E> list, Function<E, R> converter) {
   return list.stream().map(converter).collect(Collectors.toList());
  }
+
+
+
 }
 
 

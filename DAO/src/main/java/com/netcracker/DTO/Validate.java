@@ -5,7 +5,7 @@ public interface Validate {
  interface Admin extends Details {
  }
 
- interface Details {
+ interface Details extends New,Edit,EditValue{
  }
 
 

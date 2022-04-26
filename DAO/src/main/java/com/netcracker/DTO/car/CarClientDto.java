@@ -3,15 +3,12 @@ package com.netcracker.DTO.car;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.Validate;
 import com.netcracker.DTO.basicValidation.ValidCarClient;
-import com.netcracker.DTO.basicValidation.ValidClients;
-import com.netcracker.car.Mark;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -26,8 +23,8 @@ import java.util.UUID;
 @ValidCarClient(groups = {Validate.UiCrossFieldChecks.class})
 public class CarClientDto {
 
- @Null(groups = {Validate.Edit.class})
- @JsonView({Validate.Details.class})
+ @JsonView({Validate.EditValue.class, Validate.New.class,Validate.UiCrossFieldChecks.class})
+ @NotNull(groups = {Validate.EditValue.class, Validate.New.class,Validate.UiCrossFieldChecks.class}, message = "Invalid IP entered")
  @ApiModelProperty(name = "id", required = false, value = "Machine unique identifier.", position = 1)
  private UUID id;
 
@@ -47,8 +44,8 @@ public class CarClientDto {
  @ApiModelProperty(name = "ear", required = true, value = "Production year.", position = 4)
  private Date ear;
 
- @JsonView({Validate.Edit.class})
- @Size(groups = {Validate.Edit.class}, min = 4, max = 20, message = "Size violation. It must be between 4 and 20 characters")
+ @JsonView({Validate.Edit.class,Validate.UiCrossFieldChecks.class})
+ @Size(groups = {Validate.Edit.class,Validate.UiCrossFieldChecks.class}, min = 4, max = 20, message = "Size violation. It must be between 4 and 20 characters")
  @ApiModelProperty(name = "metadataCar", required = true, value = "Vehicle number.", position = 5)
  private String metadataCar;
 

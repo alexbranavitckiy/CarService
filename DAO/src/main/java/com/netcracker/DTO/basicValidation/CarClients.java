@@ -1,10 +1,8 @@
 package com.netcracker.DTO.basicValidation;
 
 import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.services.CarServices;
-import com.netcracker.services.ClientServices;
 import com.netcracker.services.impl.MarkServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,12 @@ public class CarClients
 
  public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
   try {
-   carServices.metadataCarChek(clientDto.getMetadataCar());
-   markServices.metadataMark(clientDto.getMark().getId());
+   if (clientDto.getMetadataCar() != null) {
+    carServices.metadataCarChek(clientDto.getMetadataCar());
+   }
+   if (clientDto.getMark() != null) {
+    markServices.metadataMark(clientDto.getMark().getId());
+   }
   } catch (SaveErrorException e) {
    context.disableDefaultConstraintViolation();
    context.buildConstraintViolationWithTemplate(e.getMessage())

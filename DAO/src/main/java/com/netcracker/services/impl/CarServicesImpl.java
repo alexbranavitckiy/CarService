@@ -8,11 +8,14 @@ import com.netcracker.repository.CarClientRepository;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,10 +37,6 @@ public class CarServicesImpl implements CarServices {
   this.carClientRepository = carClientRepository;
  }
 
- @Override
- public List<CarClientDto> getCarByIdClientOnClient(UUID uuidClient, String login) {
-  return null;
- }
 
  @Override
  public List<CarClientDto> getCarByLoginClient(String login) {
@@ -51,38 +50,43 @@ public class CarServicesImpl implements CarServices {
   return carClient.map(clientMapperDto::toDto);
  }
 
-
  @Override
  public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveErrorException {
   try {
    carClient.setId(UUID.randomUUID());
    if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), login, carClient.getMark().getId()) > 0)
     return true;
-  } catch (Exception e) {
-   throw new SaveErrorException(e.getMessage());
-  }
-  throw new SaveErrorException("The entered data is in use by other users.");
- }
-
-
- @Override
- public boolean updateCarClientByLogin(CarClientDto carClient, String login) {
-  try {
-   carClientRepository.updateCarClientById(carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), carClient.getId().toString());
-  } catch (Exception e) {
-   log.warn(e.getMessage());
-   return false;
+  } catch (DataAccessException e) {
+   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
   }
   return false;
  }
 
  @Override
- public boolean metadataCarChek(String metadata) throws SaveErrorException {
-  if (carClientRepository.getByMetadataCar(metadata).isEmpty())
-   return true;
-  throw new SaveErrorException("This car number is already registered.","metadataCar");
+ public boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login) throws SaveErrorException {
+  try {
+   return carClientRepository.updateCarClientById(carClient.getMetadataCar(), carClient.getId(), login) == 1;
+  } catch (DataAccessException e) {
+   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
+  }
  }
 
+ @Override
+ public boolean updateCarClientByLogin(CarClientDto carClient, String login) throws SaveErrorException {
+  try {
+   return carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(), carClient.getRun(), carClient.getId(), login) == 1;
+  } catch (DataAccessException e) {
+   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
+  }
+ }
+
+
+ @Override
+ public boolean metadataCarChek(String metadata) throws SaveErrorException {
+  if (carClientRepository.existsByMetadataCar(metadata))
+   throw new SaveErrorException("This car number is already registered.", "metadataCar");
+  return true;
+ }
 
 
  @Override

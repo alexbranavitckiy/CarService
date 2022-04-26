@@ -1,7 +1,5 @@
 package com.netcracker.repository;
 
-import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.car.CarClient;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +18,7 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  Optional<CarClient> getAllById(UUID id);
 
+
  List<CarClient> getAllByClientLogin(String login);
 
  Optional<CarClient> getCarClientByMetadataCar(String str);
@@ -30,10 +29,18 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  Optional<CarClient> getByMetadataCar(String m);
 
+ boolean existsByMetadataCar(String m);
+
  @Transactional
  @Modifying
- @Query("update car_client c set c.description = ?1, c.year = ?2 , c.metadataCar = ?3, c.run = ?4, c.summary = ?5  where c.id = ?6")
- int updateCarClientById(String description, Date year, String metadata_car, int run, String summary, String id);
+ @Query(value = "UPDATE public.car_client   SET metadata_car=?1  where car_client.id = ?2 and  car_client.id_clients in(select clients.id from clients where clients.login=?3)", nativeQuery = true)
+ int updateCarClientById( String mata, UUID uuid, String login);
+
+
+ @Transactional
+ @Modifying
+ @Query(value = "UPDATE public.car_client   SET description=?1,year=?2,run=?3  where car_client.id = ?4 and  car_client.id_clients in(select clients.id from clients where clients.login=?5)", nativeQuery = true)
+ int updateCarClientByIdWithoutMachineNumber(String description, Date date, int run, UUID uuid, String login);
 
 
  @Transactional
@@ -44,7 +51,6 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
   nativeQuery = true)
  int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
                       @Param("summary") String summary, @Param("login") String login, @Param("id_mark") UUID id_mark);
-
 
 
 }
