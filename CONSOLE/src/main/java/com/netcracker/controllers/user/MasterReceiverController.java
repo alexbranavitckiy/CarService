@@ -52,15 +52,15 @@ public class MasterReceiverController {
  }
 
 
- @GetMapping("/aut/details/getMaster/id")
- @ApiOperation("Get an ID master")
- public ResponseEntity<List<MasterDto>> getMasterById(@RequestParam("Id") UUID Id) {
-  Optional<MasterDto> master = masterServices.getMasterReceiverById(Id);
-  if (master.isEmpty()) {
-   return ResponseEntity.ok(new ArrayList<>());
-  }
-  return ResponseEntity.ok(List.of(master.get()));
- }
+// @GetMapping("/aut/details/getMaster/id")
+// @ApiOperation("Get an ID master")
+// public ResponseEntity<List<MasterDto>> getMasterById(@RequestParam("Id") UUID Id) {
+//  Optional<MasterDto> master = masterServices.getMasterReceiverById(Id);
+//  if (master.isEmpty()) {
+//   return ResponseEntity.ok(new ArrayList<>());
+//  }
+//  return ResponseEntity.ok(List.of(master.get()));
+// }
 
 
 

@@ -1,11 +1,10 @@
 package com.netcracker.services;
 
 
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface MarkServices {
@@ -18,6 +17,6 @@ public interface MarkServices {
 
  List<Mark> getMarkById(UUID uuid);
 
- boolean metadataMark(UUID uuidMark) throws SaveErrorException;
+ boolean metadataMark(UUID uuidMark) throws SaveSearchErrorException;
 
 }

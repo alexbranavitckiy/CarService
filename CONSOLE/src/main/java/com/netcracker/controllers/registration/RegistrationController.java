@@ -1,9 +1,9 @@
 package com.netcracker.controllers.registration;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.Validate;
+import com.netcracker.DTO.clients.ValidateClient;
 import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import com.netcracker.security.UserRegister;
@@ -39,14 +39,11 @@ public class RegistrationController {
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> createUser(@JsonView(Validate.New.class) @Validated({Validate.New.class, Validate.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) {
+ public ResponseEntity<ValidationErrorResponse> createUser(@JsonView(ValidateClient.New.class) @Validated({ValidateClient.New.class, ValidateClient.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  try {
-   userRegister.registerNewUser(clients);
-   validationResponse.setViolations(List.of(new Violation("true", "This user has been successfully registered")));
-  } catch (SaveErrorException s) {
-   validationResponse.setViolations(List.of(new Violation("false", s.getMessage())));
-  }
+  userRegister.registerNewUser(clients);
+  validationResponse.setViolations(List.of(new Violation("true", "This user has been successfully registered")));
   return ResponseEntity.ok(validationResponse);
  }
+
 }

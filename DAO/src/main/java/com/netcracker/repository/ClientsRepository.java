@@ -13,9 +13,15 @@ import java.util.*;
 @Repository
 public interface ClientsRepository extends CrudRepository<Client, UUID> {
 
- Optional<Client> getAllByLogin(String name);
+ boolean existsByLogin(String login);
 
- Optional<Client> getByLogin(String name);
+ boolean existsByEmail(String email);
+
+ boolean existsByPassword(String pas);
+
+ boolean existsByPhone(String phone);
+
+ Optional<Client> getAllByLogin(String name);
 
  Optional<Client> getByName(String name);
 
@@ -27,7 +33,33 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
  @Transactional
  @Modifying(clearAutomatically = true)
  @Query("update clients c set c.login = ?1, c.password = ?2 where c.login = ?3")
- int updatePassword(String newLogin, String password, String login);
+ int updatePasswordAndLogin(String newLogin, String password, String login);
+
+
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ @Query("update clients c set  c.password = ?1 where c.login = ?2")
+ int updatePassword(String password, String login);
+
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ @Query("update clients c set  c.login = ?1 where c.login = ?2")
+ int updateLogin(String password, String login);
+
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ @Query("update clients c set  c.phone = ?1 where c.login = ?2")
+ int updatePhone(String phone, String login);
+
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ @Query("update clients c set  c.email = ?1 where c.login = ?2")
+ int updateEmail(String email, String login);
+
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ @Query("update clients c set  c.name = ?1 where c.login = ?2")
+ int updateName(String name, String login);
 
  @Transactional
  @Modifying
@@ -43,10 +75,4 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
  int insertClient(@Param("id") UUID id, @Param("description") String description, @Param("email") String email, @Param("login") String login, @Param("name") String name,
                   @Param("password") String password, @Param("phone") String phone, @Param("role") String role);
 
-
- Optional<Object> getAllByPassword(String pas);
-
- Optional<Object> getAllByPhone(String pas);
-
- Optional<Object> getAllByEmail(String pas);
 }

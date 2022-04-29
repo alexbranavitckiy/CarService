@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = Clients.class)
+@Constraint(validatedBy = ClientValid.class)
 public @interface ValidClients {
  String message() default "";
 

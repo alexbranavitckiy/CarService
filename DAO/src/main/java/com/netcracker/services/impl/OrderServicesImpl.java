@@ -2,9 +2,8 @@ package com.netcracker.services.impl;
 
 
 import com.netcracker.DTO.convectror.MapperDto;
-import com.netcracker.DTO.ord.OrdMapper;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.ord.OrderDto;
-import com.netcracker.car.CarClient;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import com.netcracker.repository.OrderRepository;
@@ -17,8 +16,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -27,7 +26,6 @@ import java.util.stream.Collectors;
 public class OrderServicesImpl implements OrderServices {
 
  private final OrderRepository orderRepository;
- private final OrdMapper orderMapper;
  private final CarServices carServices;
  private final ClientServices clientServices;
  private final Environment env;
@@ -35,61 +33,57 @@ public class OrderServicesImpl implements OrderServices {
 
  @Lazy
  @Autowired
- private OrderServicesImpl(MapperDto<OrderDto, Order> orderMapperDto, Environment env, ClientServices clientServices, CarServices carServices, OrdMapper orderMapper, OrderRepository orderRepository) {
+ private OrderServicesImpl(MapperDto<OrderDto, Order> orderMapperDto, Environment env, ClientServices clientServices, CarServices carServices, OrderRepository orderRepository) {
   this.orderRepository = orderRepository;
   this.orderMapperDto = orderMapperDto;
   this.env = env;
-  this.orderMapper = orderMapper;
   this.carServices = carServices;
   this.clientServices = clientServices;
  }
 
  @Override
- public boolean addOrder(Order order) {
-  return false;
- }
-
-
- @Override
- public boolean repairRequest(OrderDto dto, String nameUser) {
+ public boolean addOrderOnClient(OrderDto dto, String nameUser) throws SaveSearchErrorException {
   try {
+   dto.setId(UUID.randomUUID());
    dto.setState(State.REQUEST);
-   orderRepository.insertOrder(UUID.randomUUID().toString(), dto.getCreatedDate(), dto.getState().getCode(), dto.getUpdatedDate(), dto.getCarClient().toString(), dto.getDescription());
-   return true;
+   dto.setUpdatedDate(new Date());
+   dto.setCreatedDate(new Date());
+   if (orderRepository.insertOrder(UUID.randomUUID(), dto.getCreatedDate(), dto.getState().getCode(), dto.getUpdatedDate(), dto.getCarClient(), dto.getDescription()) == 1)
+    return true;
+   else throw new SaveSearchErrorException("Sending request was not successful", "Save");
   } catch (Exception e) {
    log.warn(e.getMessage());
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
   }
-  return false;
  }
 
  @Override
- public List<OrderDto> getAllOrderClientsWithState(String login, State state) {
-  return orderRepository.getAllOrderClient(login, state).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
- }
-
- @Override
- public boolean updateOrder(Order order) {
-  return false;
- }
-
- @Override
- public String cancelRequest(UUID uuid, String login) {
+ public List<OrderDto> getAllOrderClientsWithState(String login, State state) throws SaveSearchErrorException {
   try {
-   Optional<Order> order = orderRepository.getAllById(uuid);
-   if (order.isPresent() && order.get().getState().equals(State.REQUEST)) {
-    order.get().setState(State.CANCELED);
-    orderRepository.save(order.get());
-    return env.getProperty("messages.cancel.request");
-   }
+   List<OrderDto> orderDto = orderRepository.getAllOrderClient(login, state.getCode()).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
+   if (orderDto.size() > 0) {
+    return orderDto;
+   } else throw new SaveSearchErrorException("The search has not given any results", "Search");
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
+  }
+ }
+
+ public boolean cancelRequest(UUID uuidOrder, String login) throws SaveSearchErrorException {
+  try {
+   if (orderRepository.updateStateOrder(State.CANCELED.getCode(), new Date(), uuidOrder, login) == 1)
+    return true;
+   else throw new SaveSearchErrorException("The operation was not successful", "Search");
   } catch (Exception e) {
    log.warn(e.getMessage());
-   return env.getProperty("messages.cancel.err");
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
   }
-  return env.getProperty("messages.cancel.false");
  }
 
  @Override
- public Optional<Order> getOrderById(UUID uuid) {
-  return Optional.empty();
+ public boolean idChek(UUID uuid) throws SaveSearchErrorException {
+  if (orderRepository.existsById(uuid))
+   return true;
+  throw new SaveSearchErrorException("Invalid id entered.", "id");
  }
 }

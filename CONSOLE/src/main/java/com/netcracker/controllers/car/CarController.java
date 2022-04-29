@@ -1,9 +1,9 @@
 package com.netcracker.controllers.car;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.Validate;
 import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.car.ValidateCar;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import com.netcracker.annotations.ClientLabel;
@@ -39,7 +39,7 @@ public class CarController {
   this.carServices = carServices;
  }
 
- @JsonView({Validate.Details.class})
+ @JsonView({ValidateCar.Details.class})
  @ClientLabel
  @ApiOperation("Get all the car of the logged in user")
  @GetMapping("/person/garage/getAll")
@@ -54,19 +54,14 @@ public class CarController {
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "/person/garage-registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> createCar(@Validated({Validate.Edit.class, Validate.UiCrossFieldChecks.class}) @JsonView(Validate.Edit.class) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) {
+ public ResponseEntity<ValidationErrorResponse> createCar(@Validated({ValidateCar.New.class, ValidateCar.UiCrossFieldChecks.class}) @JsonView(ValidateCar.New.class) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  try {
-   carServices.createCarOnClient(carClient, principal.getName());
-   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
-  } catch (SaveErrorException s) {
-   validationResponse.setViolations(List.of(new Violation("false", s.getMessage())));
-  }
+  carServices.createCarOnClient(carClient, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
-
- @JsonView({Validate.Details.class})
+ @JsonView({ValidateCar.Details.class})
  @ClientLabel
  @ApiOperation("Get machine of user logged in by id")
  @GetMapping("/person/Car{CarUUID}")
@@ -83,19 +78,12 @@ public class CarController {
  @ApiResponses(value = {
   @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
- @PostMapping(value = "/person/car-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = "/person/car-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateCar(@Validated({Validate.Edit.class, Validate.UiCrossFieldChecks.class}) @JsonView({Validate.New.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) {
+ public ResponseEntity<ValidationErrorResponse> updateCar(@Validated({ValidateCar.Edit.class, ValidateCar.UiCrossFieldChecks.class}) @JsonView({ValidateCar.Edit.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  try {
-   if (carServices.updateCarClientByLogin(carClient, principal.getName())) {
-    validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
-   } else {
-    validationResponse.setViolations(List.of(new Violation("false", "Invalid data entered")));
-   }
-  } catch (SaveErrorException s) {
-   validationResponse.setViolations(List.of(new Violation("false", s.getMessage())));
-  }
+  carServices.updateCarClientByLogin(carClient, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
@@ -104,19 +92,12 @@ public class CarController {
  @ApiResponses(value = {
   @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
- @PostMapping(value = "/person/car-update/meta", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = "/person/car-update/meta", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateCarClientByIdWithMachineNumber(@Validated({Validate.UiCrossFieldChecks.class, Validate.UiCrossFieldChecks.class}) @JsonView({Validate.UiCrossFieldChecks.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) {
+ public ResponseEntity<ValidationErrorResponse> updateCarClientByIdWithMachineNumber(@Validated({ValidateCar.UiCrossFieldChecks.class, ValidateCar.EditValue.class}) @JsonView({ValidateCar.EditValue.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  try {
-   if (carServices.updateCarClientByIdWithMachineNumber(carClient, principal.getName())) {
-    validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
-   } else {
-    validationResponse.setViolations(List.of(new Violation("false", "Invalid data entered")));
-   }
-  } catch (SaveErrorException s) {
-   validationResponse.setViolations(List.of(new Violation("false", s.getMessage())));
-  }
+  carServices.updateCarClientByIdWithMachineNumber(carClient, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 

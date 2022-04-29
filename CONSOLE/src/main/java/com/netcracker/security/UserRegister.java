@@ -1,7 +1,7 @@
 package com.netcracker.security;
 
 import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
 import com.netcracker.security.jwt.JWTUtil;
@@ -56,7 +56,7 @@ public class UserRegister {
   return passwordEncoder.encode(password);
  }
 
- public boolean registerNewUser(ClientDto client) throws SaveErrorException {
+ public boolean registerNewUser(ClientDto client) throws SaveSearchErrorException {
   if (clientServices.getClientDtoByLogin(client.getLogin()).isEmpty()) {
    client.setPassword(passwordEncoder.encode(client.getPassword()));
    client.setId(UUID.randomUUID());
@@ -64,7 +64,7 @@ public class UserRegister {
    clientServices.registrationClient(client);
    return true;
   }
-  throw new SaveErrorException("The login you entered is in use by other users");
+  throw new SaveSearchErrorException("The login you entered is in use by other users");
  }
 
  public boolean registerNewMaster(Master master) {

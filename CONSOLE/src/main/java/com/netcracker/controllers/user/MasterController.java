@@ -1,7 +1,12 @@
 package com.netcracker.controllers.user;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.clients.MasterDto;
+import com.netcracker.DTO.clients.ValidateClient;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
+import com.netcracker.DTO.response.ValidationErrorResponse;
+import com.netcracker.DTO.response.Violation;
 import com.netcracker.annotations.ClientLabel;
 import com.netcracker.annotations.SwaggerLabelMaster;
 import com.netcracker.annotations.SwaggerLabelMasterReceiver;
@@ -41,62 +46,111 @@ public class MasterController {
   this.userRegister = userRegister;
  }
 
+ //--Master--//
+ @JsonView({ValidateClient.Details.class})
  @SwaggerLabelMaster
- @ApiOperation("Update password and login master")
- @PostMapping(value = "/aut/updateDate", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-  MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<Boolean> updateClientData(@Validated @RequestBody
-                                                  ContactConfirmationPayload client, @ApiIgnore Principal principal) {
-  client.setPassword(userRegister.newDate(client.getPassword()));
-  return ResponseEntity.ok(masterServices.updateMasterData(client, principal.getName()));
- }
-
- @SwaggerLabelMaster
- @ApiOperation("Updating logged in master data")
- @PostMapping(value = "aut/update/personDate", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-  MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<Boolean> updateUser(@Validated @RequestBody MasterDto masterFormUpdate, @ApiIgnore Principal principal) {
-  return ResponseEntity.ok(masterServices.updateMasterByLogin(masterFormUpdate, principal.getName()));
- }
-
- @SwaggerLabelMasterReceiver
- @ApiOperation("Updating logged in master data")
- @PostMapping(value = "/pivot/details/master/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
- public ResponseEntity<Boolean> updateMaster(@RequestBody MasterDto master, @ApiIgnore Principal principal) {
-  return ResponseEntity.ok(masterServices.updateMaster(master, principal.getName()));
- }
-
-
-
- @SwaggerLabelMaster
- @GetMapping("aut/getMaster")
+ @GetMapping("aut/get-master")
  @ApiOperation("Get the details of the master  logged in")
- public ResponseEntity<List<MasterDto>> getClientsOnline(@ApiIgnore @CookieValue(name = "token", required = false) String token) {
-  String login = jwtUtil.extractUsername(token);
-  if (login != null) {
-   Optional<MasterDto> master = masterServices.getMasterDtoByLogin(login);
-   if (master.isPresent()) {
-    return ResponseEntity.ok(List.of(master.get()));
-   }
-  }
-  return ResponseEntity.ok(new ArrayList<>());
+ public ResponseEntity<List<MasterDto>> getClientsOnline(@ApiIgnore Principal principal) {
+  Optional<MasterDto> master = masterServices.getMasterDtoByLogin(principal.getName());
+  return master.map(masterDto -> ResponseEntity.ok(List.of(masterDto))).orElseGet(() -> ResponseEntity.ok(new ArrayList<>()));
  }
 
- @SwaggerLabelMasterReceiver
- @ApiOperation("Master registration")
- @PostMapping(value = "/pivot/details/masterRegistration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @SwaggerLabelMaster
+ @ApiOperation("Update login")
+ @PutMapping(value = "aut/update-date/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<Boolean> createMaster(@RequestBody Master master) {
-  return ResponseEntity.ok(userRegister.registerNewMaster(master));
+ public ResponseEntity<ValidationErrorResponse> updateClientData(@Validated @RequestBody
+                                                                  String login, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  masterServices.updateMasterLogin(login, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
+  return ResponseEntity.ok(validationResponse);
  }
 
- @SwaggerLabelMasterReceiver
- @GetMapping("/pivot/details/getAllMaster")
- @ApiOperation("Get a list of all masters")
- public ResponseEntity<List<MasterDto>> getAllMaster() {
-  return ResponseEntity.ok(masterServices.getAllMasterDto());
+ @SwaggerLabelMaster
+ @ApiOperation("Update email")
+ @PutMapping(value = "aut/update-date/email", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<ValidationErrorResponse> updateClientEmail(@Validated @RequestBody String email, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  masterServices.updateMasterEmail(email, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
+  return ResponseEntity.ok(validationResponse);
  }
 
 
+ @SwaggerLabelMaster
+ @ApiOperation("Update phone")
+ @PutMapping(value = "aut/update-date/phone", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<ValidationErrorResponse> updateMasterPhone(@Validated @RequestBody String phone, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  masterServices.updateMasterPhone(phone, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
+  return ResponseEntity.ok(validationResponse);
+ }
+
+ @SwaggerLabelMaster
+ @ApiOperation("Update password")
+ @PutMapping(value = "aut/update-date/pass", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<ValidationErrorResponse> updateClientPas(@Validated @RequestBody String pass, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  masterServices.updateMasterPass(pass, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
+  return ResponseEntity.ok(validationResponse);
+ }
+
+ @SwaggerLabelMaster
+
+ @ApiOperation("Updating logged in master data")
+ @PutMapping(value = "aut/update-date/person", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<ValidationErrorResponse> updateUser(@JsonView({ValidateClient.Edit.class}) @Validated({ValidateClient.Edit.class}) @RequestBody MasterDto masterFormUpdate, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  masterServices.updateMasterByLogin(masterFormUpdate, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
+  return ResponseEntity.ok(validationResponse);
+ }
+
+//--Master--//
+
+
+// @SwaggerLabelMaster
+// @ApiOperation("Update password and login master")
+// @PostMapping(value = "/aut/update-date", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+//  MediaType.APPLICATION_JSON_VALUE)
+// public ResponseEntity<Boolean> updateClientData(@Validated @RequestBody
+//                                                  ContactConfirmationPayload client, @ApiIgnore Principal principal) {
+//  client.setPassword(userRegister.newDate(client.getPassword()));
+//  return ResponseEntity.ok(masterServices.updateMasterData(client, principal.getName()));
+// }
+
+
+// @SwaggerLabelMasterReceiver
+// @ApiOperation("Master registration")
+// @PostMapping(value = "/pivot/details/masterRegistration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+//  MediaType.APPLICATION_JSON_VALUE)
+// public ResponseEntity<Boolean> createMaster(@RequestBody Master master) {
+//  return ResponseEntity.ok(userRegister.registerNewMaster(master));
+// }
+//
+// @SwaggerLabelMasterReceiver
+// @GetMapping("/pivot/details/getAllMaster")
+// @ApiOperation("Get a list of all masters")
+// public ResponseEntity<List<MasterDto>> getAllMaster() {
+//  return ResponseEntity.ok(masterServices.getAllMasterDto());
+// }
+
+// @SwaggerLabelMasterReceiver
+// @ApiOperation("Updating logged in master data")
+// @PostMapping(value = "/pivot/details/master/update", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+// public ResponseEntity<Boolean> updateMaster(@RequestBody MasterDto master, @ApiIgnore Principal principal) {
+//  return ResponseEntity.ok(masterServices.updateMaster(master, principal.getName()));
+// }
 
 }

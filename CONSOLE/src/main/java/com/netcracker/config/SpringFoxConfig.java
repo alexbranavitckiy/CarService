@@ -48,6 +48,7 @@ public class SpringFoxConfig {
    .forPaths(PathSelectors.any())
    .build();
  }
+
  private List<SecurityReference> defaultAuth() {
   AuthorizationScope authorizationScope = new AuthorizationScope("xxx", "");
   AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];

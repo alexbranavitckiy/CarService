@@ -2,20 +2,18 @@ package com.netcracker.services.impl;
 
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.convectror.MapperDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.CarClient;
 import com.netcracker.repository.CarClientRepository;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,40 +49,52 @@ public class CarServicesImpl implements CarServices {
  }
 
  @Override
- public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveErrorException {
+ public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
    carClient.setId(UUID.randomUUID());
    if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), login, carClient.getMark().getId()) > 0)
     return true;
-  } catch (DataAccessException e) {
-   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
   }
-  return false;
+  throw new SaveSearchErrorException("Invalid values entered.");
  }
 
  @Override
- public boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login) throws SaveErrorException {
+ public boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
-   return carClientRepository.updateCarClientById(carClient.getMetadataCar(), carClient.getId(), login) == 1;
+   if (carClientRepository.updateCarClientById(carClient.getMetadataCar(), carClient.getId(), login) == 1) {
+    return true;
+   } else throw new SaveSearchErrorException("Duplicate car number entered.", "MetadataCar");
   } catch (DataAccessException e) {
-   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
   }
  }
 
  @Override
- public boolean updateCarClientByLogin(CarClientDto carClient, String login) throws SaveErrorException {
+ public boolean updateCarClientByLogin(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
-   return carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(), carClient.getRun(), carClient.getId(), login) == 1;
+   if (carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(), carClient.getRun(), carClient.getId(), login) == 1)
+    return true;
+   else {
+    throw new SaveSearchErrorException("Invalid values entered.", "Save");
+   }
   } catch (DataAccessException e) {
-   throw new SaveErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
   }
  }
 
+ @Override
+ public boolean idChek(UUID uuid) throws SaveSearchErrorException {
+  if (carClientRepository.existsById(uuid))
+   return true;
+  throw new SaveSearchErrorException("Invalid id entered.", "id");
+ }
 
  @Override
- public boolean metadataCarChek(String metadata) throws SaveErrorException {
+ public boolean metadataCarChek(String metadata) throws SaveSearchErrorException {
   if (carClientRepository.existsByMetadataCar(metadata))
-   throw new SaveErrorException("This car number is already registered.", "metadataCar");
+   throw new SaveSearchErrorException("This car number is already registered.", "metadataCar");
   return true;
  }
 

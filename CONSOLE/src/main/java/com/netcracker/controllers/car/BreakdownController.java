@@ -2,7 +2,6 @@ package com.netcracker.controllers.car;
 
 
 import com.netcracker.DTO.car.CarBreakdownDto;
-import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.annotations.ClientLabel;
 import com.netcracker.annotations.SwaggerLabelMaster;

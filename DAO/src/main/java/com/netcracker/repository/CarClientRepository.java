@@ -18,6 +18,7 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  Optional<CarClient> getAllById(UUID id);
 
+ boolean existsById(UUID uuid);
 
  List<CarClient> getAllByClientLogin(String login);
 
@@ -34,7 +35,7 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
  @Transactional
  @Modifying
  @Query(value = "UPDATE public.car_client   SET metadata_car=?1  where car_client.id = ?2 and  car_client.id_clients in(select clients.id from clients where clients.login=?3)", nativeQuery = true)
- int updateCarClientById( String mata, UUID uuid, String login);
+ int updateCarClientById(String mata, UUID uuid, String login);
 
 
  @Transactional

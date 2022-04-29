@@ -1,6 +1,6 @@
 package com.netcracker.DTO.basicValidation;
 
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class ValidUpdatePass
   try {
    clientServices.passwordChek(person.getPassword());
    clientServices.loginChek(person.getLogin());
-  } catch (SaveErrorException e) {
+  } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();
    context.buildConstraintViolationWithTemplate(e.getMessage())
     .addPropertyNode(e.getField())

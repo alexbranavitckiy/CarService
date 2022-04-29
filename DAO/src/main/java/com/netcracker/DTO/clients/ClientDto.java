@@ -1,7 +1,7 @@
 package com.netcracker.DTO.clients;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.Validate;
 import com.netcracker.DTO.basicValidation.ValidClients;
 import com.netcracker.user.RoleUser;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,55 +20,55 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Schema(description = "Client entity")
-@ValidClients(groups = {Validate.UiCrossFieldChecks.class})
+@ValidClients(groups = {ValidateClient.UiCrossFieldChecks.class})
+@JsonRootName(value = " Client")
 public class ClientDto {
 
- @Null(groups = Validate.Edit.class)
- @JsonView({Validate.Details.class})
+ @Null(groups = ValidateClient.New.class)
+ @JsonView({ValidateClient.Details.class})
  private UUID id;
 
- @NotBlank(groups = {Validate.Edit.class}, message = "Name must not be blank")
- @Size(groups = {Validate.Edit.class}, min = 4, max = 30)
- @JsonView({Validate.Edit.class,Validate.Details.class})
+ @NotBlank(groups = {ValidateClient.New.class, ValidateClient.Edit.class}, message = "Name must not be blank")
+ @Size(groups = {ValidateClient.New.class, ValidateClient.Edit.class}, min = 4, max = 30)
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class, ValidateClient.Edit.class})
  @ApiModelProperty(name = "name", required = true, value = "The username of the user who is registering")
  private String name;
 
- @NotNull(groups = {Validate.Edit.class})
- @Size(groups = {Validate.Edit.class}, min = 4, max = 30)
- @JsonView({Validate.Edit.class,Validate.Details.class})
- @Pattern(groups = {Validate.Edit.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
+ @NotNull(groups = {ValidateClient.New.class})
+ @Size(groups = {ValidateClient.New.class}, min = 4, max = 30)
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class})
+ @Pattern(groups = {ValidateClient.New.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
  @ApiModelProperty(name = "phone", required = true, value = "User phone")
  private String phone;
 
- @NotNull(groups = {Validate.Edit.class})
- @Size(groups = {Validate.Edit.class}, min = 1, max = 100)
- @JsonView({Validate.Edit.class,Validate.Details.class})
+ @NotNull(groups = {ValidateClient.New.class})
+ @Size(groups = {ValidateClient.New.class}, min = 1, max = 100)
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class})
  @ApiModelProperty(name = "email", required = true, value = "User mail")
- @Pattern(groups = {Validate.Edit.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
+ @Pattern(groups = {ValidateClient.New.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
  private String email;
 
- @Null(groups = Validate.Edit.class)
+ @Null(groups = {ValidateClient.New.class,ValidateClient.Edit.class})
  @ApiParam(value = "Default value for note")
- @JsonView({Validate.Admin.class})
+ @JsonView({ValidateClient.Admin.class})
  private String description;
 
- @NotNull(groups = Validate.New.class)
- @Null(groups = Validate.EditValue.class)
- @Size(groups = Validate.New.class, min = 4, max = 30)
- @JsonView({Validate.New.class,Validate.Details.class})
+ @NotNull(groups = ValidateClient.New.class)
+ @Null(groups = ValidateClient.Edit.class)
+ @Size(groups = ValidateClient.New.class, min = 4, max = 30)
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class})
  @ApiModelProperty(name = "email", required = true, value = "Login is used to login")
  private String login;
 
-
- @Null(groups = Validate.EditValue.class)
- @NotNull(groups = Validate.New.class)
- @Size(groups = Validate.New.class, min = 4, max = 12, message = "Password must be between 4 to 15 characters")
- @JsonView({Validate.Admin.class, Validate.New.class})
+ @Null(groups = ValidateClient.Edit.class)
+ @NotNull(groups = ValidateClient.New.class)
+ @Size(groups = ValidateClient.New.class, min = 4, max = 12, message = "Password must be between 4 to 15 characters")
+ @JsonView({ValidateClient.Admin.class, ValidateClient.New.class})
  private String password;
 
  @ApiParam(value = "Default value for note")
- @Null(groups = {Validate.Edit.class})
- @JsonView({Validate.Details.class})
+ @Null(groups = {ValidateClient.New.class})
+ @JsonView({ValidateClient.Details.class})
  private RoleUser roleUser;
 
 }

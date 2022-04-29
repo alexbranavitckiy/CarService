@@ -1,7 +1,7 @@
 package com.netcracker.DTO.basicValidation;
 
 import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.impl.MarkServicesImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -13,14 +13,14 @@ import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
 @Component
-public class CarClients
+public class CarClientValid
  implements ConstraintValidator<ValidCarClient, CarClientDto> {
 
  private final CarServices carServices;
  private final MarkServicesImpl markServices;
 
  @Autowired
- CarClients(CarServices carServices, MarkServicesImpl markServices) {
+ CarClientValid(CarServices carServices, MarkServicesImpl markServices) {
   this.markServices = markServices;
   this.carServices = carServices;
  }
@@ -36,7 +36,10 @@ public class CarClients
    if (clientDto.getMark() != null) {
     markServices.metadataMark(clientDto.getMark().getId());
    }
-  } catch (SaveErrorException e) {
+   if (clientDto.getId() != null) {
+    carServices.idChek(clientDto.getId());
+   }
+  } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();
    context.buildConstraintViolationWithTemplate(e.getMessage())
     .addPropertyNode(e.getField())

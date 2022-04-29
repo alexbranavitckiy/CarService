@@ -1,8 +1,6 @@
 package com.netcracker.repository;
 
-import com.netcracker.DTO.errs.SaveErrorException;
 import com.netcracker.car.Mark;
-import com.netcracker.user.Client;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.netcracker.DTO.basicValidation;
 
 import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.DTO.errs.SaveErrorException;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
 @Component
-public class Clients
+public class ClientValid
  implements ConstraintValidator<ValidClients, ClientDto> {
 
  private final ClientServices clientServices;
 
  @Autowired
- Clients(ClientServices clientServices) {
+ ClientValid(ClientServices clientServices) {
   this.clientServices = clientServices;
  }
 
@@ -31,7 +31,7 @@ public class Clients
    clientServices.emailChek(person.getEmail());
    clientServices.phoneChek(person.getPhone());
    clientServices.loginChek(person.getLogin());
-  } catch (SaveErrorException e) {
+  } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();
    context.buildConstraintViolationWithTemplate(e.getMessage())
     .addPropertyNode(e.getField())

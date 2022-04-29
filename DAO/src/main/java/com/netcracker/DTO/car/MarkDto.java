@@ -1,8 +1,7 @@
 package com.netcracker.DTO.car;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.Validate;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,22 +18,23 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonRootName(value = " Mark")
 public class MarkDto  {
 
  @Id
- @JsonView({Validate.Edit.class})
- @Size(groups = {Validate.Edit.class}, min = 0, max = 200)
+ @JsonView({ValidateCar.Edit.class,ValidateCar.New.class,ValidateCar.Details.class})
+ @Size(groups = {ValidateCar.New.class}, min = 0, max = 200)
  @ApiModelProperty(name = "idMark", required = false, value = "Mark unique identifier.", position = 8)
  private UUID id;
 
- @JsonView({Validate.Details.class})
+ @JsonView({ValidateCar.Details.class})
  private String name;
 
- @JsonView({Validate.Details.class})
+ @JsonView({ValidateCar.Details.class})
  @Column(name = "year_start")
  private Date yearStart;
 
- @JsonView({Validate.Details.class})
+ @JsonView({ValidateCar.Details.class})
  @Column(name = "year_end")
  private Date yearEnd;
 

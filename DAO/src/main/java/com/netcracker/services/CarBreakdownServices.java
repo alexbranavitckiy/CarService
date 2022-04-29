@@ -1,7 +1,6 @@
 package com.netcracker.services;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
-import com.netcracker.DTO.errs.EmptySearchException;
 import com.netcracker.breakdown.State;
 
 import java.util.List;

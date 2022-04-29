@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = CarClientValid.class)
-public @interface ValidCarClient {
+@Constraint(validatedBy = MasterValid.class)
+public @interface ValidMaster {
  String message() default "";
 
  Class<?>[] groups() default {};
