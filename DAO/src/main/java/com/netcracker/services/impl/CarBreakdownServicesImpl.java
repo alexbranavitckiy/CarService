@@ -2,6 +2,7 @@ package com.netcracker.services.impl;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
 import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.breakdown.State;
 import com.netcracker.repository.CarBreakdownRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,7 +36,7 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login)  {
+ public List<CarBreakdownDto> getAllBreakdownByCarIdLoginSort(UUID carUUID, String login) {
   return breakdownRepository.getAllByCarBreakdownByIdCarAndLoginSortDesc(login, carUUID).stream().map(mapperDto::toDto).collect(Collectors.toList());
  }
 
@@ -49,14 +51,11 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownDto) {
+ public boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownDto, UUID orders, String login) {
   try {
-   carBreakdownDto.setId(UUID.randomUUID());
-   breakdownRepository.insertCarBreakDown(carBreakdownDto.getId().toString(),
-    carBreakdownDto.getLocation(), carBreakdownDto.getDescription(),
-    carBreakdownDto.getRunCarSize(), carBreakdownDto.getUpdateDate(),
-    carBreakdownDto.getState().getCode(),
-    carBreakdownDto.getIdCar().toString());
+   breakdownRepository.insertCarBreakDownOnMaster(UUID.randomUUID(), carBreakdownDto.getPrice(),
+    carBreakdownDto.getLocation(), carBreakdownDto.getDescription(), carBreakdownDto.getRunCarSize(),
+    new Date(), State.IMPORTANT.getCode(), orders);
    return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
@@ -70,20 +69,46 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public boolean updateBreakdownOnMaster(CarBreakdownDto carBreakdownForm) {
+ public boolean updateBreakdownOnMaster(CarBreakdownDto carBreakdownForm, String login) throws SaveSearchErrorException {
   try {
-   breakdownRepository.updateCarBreakDownById(carBreakdownForm.getDescription(), carBreakdownForm.getRunCarSize(), carBreakdownForm.getUpdateDate(), carBreakdownForm.getState().getCode(), carBreakdownForm.getLocation(), carBreakdownForm.getId().toString());
-   return true;
+   if (breakdownRepository.updateCarBreakDownByIdAndMasterLogin(carBreakdownForm.getDescription(), carBreakdownForm.getRunCarSize(), new Date(), carBreakdownForm.getState().getCode(), carBreakdownForm.getLocation(), carBreakdownForm.getId(), login) == 1)
+    return true;
   } catch (Exception e) {
-   log.warn(e.getMessage());
+   throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
   }
-  return false;
+  throw new SaveSearchErrorException("Invalid data entered.", "err");
+ }
+
+ @Override
+ public List<CarBreakdownDto> getAllBreakDownBOnMaster(String name) throws SaveSearchErrorException {
+  try {
+   return breakdownRepository.getAllByMaster(name).stream().map(mapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
+  }
+ }
+
+ @Override
+ public List<CarBreakdownDto> getAllBreakDownBOnMaster(String name, UUID id) throws SaveSearchErrorException {
+  try {
+   return breakdownRepository.getAllByIdOnMaster(name, id).stream().map(mapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
+  }
+ }
+
+ @Override
+ public List<CarBreakdownDto> getAllBreakDownOnCar(UUID id) throws SaveSearchErrorException {
+  try {
+   return breakdownRepository.getAllByCarClientId(id).stream().map(mapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
+  }
  }
 
  @Override
  public List<CarBreakdownDto> getAllBreakdownByCarSortDesc(String login) {
   return breakdownRepository.getAllByLogin(login).stream().map(mapperDto::toDto).collect(Collectors.toList());
  }
-
 
 }

@@ -1,12 +1,14 @@
 package com.netcracker.repository;
 
 import com.netcracker.user.Master;
-import com.netcracker.user.MasterReceiver;
+import com.netcracker.user.Role;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.management.relation.RoleResult;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +20,15 @@ public interface MasterRepository extends CrudRepository<Master, UUID> {
 
  Optional<Master> getAllByLogin(String name);
 
+
  @Transactional
  @Modifying(clearAutomatically = true)
  @Query("update master c set c.login = ?1, c.password = ?2 where c.login = ?3")
  int updatePassword(String newLogin, String password, String login);
 
  List<Master> getAllBy();
+
+ List<Master> getAllByRole(Role role);
 
  @Transactional
  @Modifying
@@ -62,5 +67,16 @@ public interface MasterRepository extends CrudRepository<Master, UUID> {
  @Modifying(clearAutomatically = true)
  @Query("update master c set  c.mail = ?1 where c.login = ?2")
  int updateEmail(String email, String login);
+
+
+ @Transactional
+ @Modifying
+ @Query(value =
+  "insert into master (id,description,education,home_address,login, mail,name,password,phone,qualification,role) values (:id,:description,:education, :home_address, :login, :mail, :name, :password, :phone, :qualification, :role)", nativeQuery = true)
+ int createMaster(@Param("id") UUID id, @Param("mail") String mail, @Param("description") String description, @Param("education") String education,
+                  @Param("home_address") String home_address, @Param("login") String login,
+                  @Param("name") String name, @Param("password") String password, @Param("phone") String phone,
+                  @Param("qualification") String qualification, @Param("role") String role);
+
 
 }

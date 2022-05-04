@@ -43,7 +43,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .authorizeRequests()
    .antMatchers("/swagger-ui/**", "/person/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
    .antMatchers("/aut/**").hasAnyAuthority("MASTER","REGISTERED", "RECEPTIONIST")
-   .antMatchers("/pivot/details/**").hasAnyAuthority("RECEPTIONIST")
+   .antMatchers("/details/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
    .antMatchers("/**"
    ).permitAll()
    .anyRequest().authenticated()

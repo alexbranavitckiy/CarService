@@ -1,9 +1,7 @@
 package com.netcracker.DTO.convectror;
 
 import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.DTO.clients.ClientDto;
 import com.netcracker.car.CarClient;
-import com.netcracker.user.Client;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

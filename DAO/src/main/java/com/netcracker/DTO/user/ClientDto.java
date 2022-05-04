@@ -1,4 +1,4 @@
-package com.netcracker.DTO.clients;
+package com.netcracker.DTO.user;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -28,16 +28,16 @@ public class ClientDto {
  @JsonView({ValidateClient.Details.class})
  private UUID id;
 
- @NotBlank(groups = {ValidateClient.New.class, ValidateClient.Edit.class}, message = "Name must not be blank")
+ @NotBlank(groups = {ValidateClient.New.class, ValidateClient.Edit.class, ValidateClient.masterRequest.class}, message = "Name must not be blank")
  @Size(groups = {ValidateClient.New.class, ValidateClient.Edit.class}, min = 4, max = 30)
- @JsonView({ValidateClient.New.class, ValidateClient.Details.class, ValidateClient.Edit.class})
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class, ValidateClient.Edit.class, ValidateClient.masterRequest.class})
  @ApiModelProperty(name = "name", required = true, value = "The username of the user who is registering")
  private String name;
 
  @NotNull(groups = {ValidateClient.New.class})
- @Size(groups = {ValidateClient.New.class}, min = 4, max = 30)
- @JsonView({ValidateClient.New.class, ValidateClient.Details.class})
- @Pattern(groups = {ValidateClient.New.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
+ @Size(groups = {ValidateClient.New.class, ValidateClient.masterRequest.class}, min = 4, max = 30)
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class, ValidateClient.masterRequest.class})
+ @Pattern(groups = {ValidateClient.New.class, ValidateClient.masterRequest.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
  @ApiModelProperty(name = "phone", required = true, value = "User phone")
  private String phone;
 
@@ -48,15 +48,15 @@ public class ClientDto {
  @Pattern(groups = {ValidateClient.New.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
  private String email;
 
- @Null(groups = {ValidateClient.New.class,ValidateClient.Edit.class})
+ @Null(groups = {ValidateClient.New.class, ValidateClient.Edit.class})
  @ApiParam(value = "Default value for note")
- @JsonView({ValidateClient.Admin.class})
+ @JsonView({ValidateClient.Admin.class, ValidateClient.masterRequest.class})
  private String description;
 
  @NotNull(groups = ValidateClient.New.class)
  @Null(groups = ValidateClient.Edit.class)
  @Size(groups = ValidateClient.New.class, min = 4, max = 30)
- @JsonView({ValidateClient.New.class, ValidateClient.Details.class})
+ @JsonView({ValidateClient.New.class, ValidateClient.Details.class, ValidateClient.masterRequest.class})
  @ApiModelProperty(name = "email", required = true, value = "Login is used to login")
  private String login;
 

@@ -1,6 +1,6 @@
 package com.netcracker.DTO.response;
 
-import com.netcracker.DTO.clients.ValidateClient;
+import com.netcracker.DTO.user.ValidateClient;
 import com.netcracker.DTO.basicValidation.ValidPasswordLogin;
 import lombok.AllArgsConstructor;
 import lombok.Data;

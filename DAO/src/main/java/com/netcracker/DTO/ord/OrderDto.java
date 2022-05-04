@@ -1,12 +1,8 @@
 package com.netcracker.DTO.ord;
 
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.basicValidation.ValidCarClient;
 import com.netcracker.DTO.basicValidation.ValidOrder;
-import com.netcracker.DTO.car.ValidateCar;
-import com.netcracker.DTO.clients.ValidateClient;
 import com.netcracker.order.State;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,20 +19,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ValidOrder(groups = {ValidateOrd.EditValue.class,ValidateOrd.New.class})
+@ValidOrder(groups = {ValidateOrd.EditValue.class, ValidateOrd.New.class})
 public class OrderDto {
 
  @Null(groups = {ValidateOrd.New.class})
  @NotNull(groups = {ValidateOrd.EditValue.class})
- @JsonView({ValidateOrd.Details.class,ValidateOrd.EditValue.class})
+ @JsonView({ValidateOrd.Details.class, ValidateOrd.EditValue.class})
  private UUID id;
 
- @NotNull(groups = {ValidateOrd.New.class})
- @JsonView({ValidateOrd.Details.class, ValidateOrd.New.class})
+ @NotNull(groups = {ValidateOrd.New.class, ValidateOrd.NewAdmin.class})
+ @JsonView({ValidateOrd.Details.class, ValidateOrd.New.class, ValidateOrd.NewAdmin.class})
  private String description;
 
- @NotNull(groups = {ValidateOrd.New.class})
- @JsonView({ValidateOrd.Details.class, ValidateOrd.New.class})
+ @NotNull(groups = {ValidateOrd.New.class, ValidateOrd.NewAdmin.class})
+ @JsonView({ValidateOrd.Details.class, ValidateOrd.New.class, ValidateOrd.NewAdmin.class})
  private UUID carClient;
 
  @Null(groups = {ValidateOrd.New.class})

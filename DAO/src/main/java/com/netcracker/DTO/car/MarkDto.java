@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.UUID;
@@ -19,11 +20,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @JsonRootName(value = " Mark")
-public class MarkDto  {
+public class MarkDto {
 
- @Id
- @JsonView({ValidateCar.Edit.class,ValidateCar.New.class,ValidateCar.Details.class})
- @Size(groups = {ValidateCar.New.class}, min = 0, max = 200)
+ @NotNull(groups = {ValidateCar.NewAdmin.class})
+ @JsonView({ValidateCar.Edit.class, ValidateCar.New.class, ValidateCar.Details.class, ValidateCar.NewAdmin.class})
+ @Size(groups = {ValidateCar.New.class, ValidateCar.NewAdmin.class}, min = 0, max = 200)
  @ApiModelProperty(name = "idMark", required = false, value = "Mark unique identifier.", position = 8)
  private UUID id;
 

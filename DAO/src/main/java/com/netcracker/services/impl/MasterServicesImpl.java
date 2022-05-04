@@ -1,13 +1,13 @@
 package com.netcracker.services.impl;
 
 
-import com.netcracker.DTO.clients.MasterDto;
+import com.netcracker.DTO.user.MasterDto;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
-import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.repository.MasterRepository;
 import com.netcracker.services.MasterServices;
 import com.netcracker.user.Master;
+import com.netcracker.user.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -124,11 +125,40 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  @Override
+ public boolean createMasterOnMasterReceiver(MasterDto masterDto, String name) throws SaveSearchErrorException {
+  try {
+   masterDto.setId(UUID.randomUUID());
+   Master master = mapperDto.toEntity(masterDto);
+   if (masterRepository.createMaster(master.getId(), master.getMail(), master.getDescription(),
+    master.getEducation(), master.getHomeAddress(), master.getLogin(),
+    master.getName(), master.getPassword(), master.getPhone(),
+    master.getQualification().getCode(), master.getRole().getCode()) == 1) {
+    return true;
+   }
+  } catch (DataIntegrityViolationException e) {
+   throw new SaveSearchErrorException("Registration was not successful");
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
+  }
+  throw new SaveSearchErrorException("The entered data is in use by other users.");
+ }
+
+ @Override
+ public List<MasterDto> getMasterDtoOnMaster() throws SaveSearchErrorException {
+  try {
+   return masterRepository.getAllByRole(Role.MASTER).stream().map(mapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
+  }
+ }
+
+
+ @Override
  public boolean updateMasterByLogin(MasterDto masterDto, String login) throws SaveSearchErrorException {
   try {
-   if (masterRepository.updateDate(masterDto.getName(), masterDto.getDescription(), masterDto.getHomeAddress(), masterDto.getEducation(), login)==1)
-   return true;
-   throw new SaveSearchErrorException("Data update was not successful","Save");
+   if (masterRepository.updateDate(masterDto.getName(), masterDto.getDescription(), masterDto.getHomeAddress(), masterDto.getEducation(), login) == 1)
+    return true;
+   throw new SaveSearchErrorException("Data update was not successful", "Save");
   } catch (DataIntegrityViolationException e) {
    throw new SaveSearchErrorException("Data update was not successful");
   } catch (Exception e) {
@@ -137,30 +167,6 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  //--Master--//
-
-
- @Override
- public boolean updateMasterData(ContactConfirmationPayload contactConfirmationPayload, String login) {
-  try {
-   masterRepository.updatePassword(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getLogin(), login);
-   return true;
-  } catch (Exception e) {
-   log.warn(e.getMessage());
-  }
-  return false;
- }
-
-
- @Override
- public boolean updateMaster(MasterDto masterDto, String login) {
-  try {
-   masterRepository.updateMaster(masterDto.getName(), masterDto.getPhone(), masterDto.getMail(), masterDto.getDescription(), masterDto.getHomeAddress(), masterDto.getEducation(), login);
-   return true;
-  } catch (Exception e) {
-   log.warn(e.getMessage());
-  }
-  return false;
- }
 
 
  @Override
@@ -177,11 +183,6 @@ public class MasterServicesImpl implements MasterServices {
    log.warn(e.getMessage());
   }
   return false;
- }
-
- @Override
- public List<MasterDto> getAllMasterDto() {
-  return masterRepository.getAllBy().stream().map(mapperDto::toDto).collect(Collectors.toList());
  }
 
 

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface MarkServices {
 
- List<Mark> getAllMark();
+ List<Mark> getAllMark() throws SaveSearchErrorException;
 
  boolean addMark(Mark mark);
 
@@ -17,6 +17,7 @@ public interface MarkServices {
 
  List<Mark> getMarkById(UUID uuid);
 
- boolean metadataMark(UUID uuidMark) throws SaveSearchErrorException;
+ void metadataMark(UUID uuidMark) throws SaveSearchErrorException;
 
+ List<Mark> getSearchMark(String regex)  throws SaveSearchErrorException;
 }

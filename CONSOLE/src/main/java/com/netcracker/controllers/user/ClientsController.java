@@ -2,8 +2,8 @@ package com.netcracker.controllers.user;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.clients.ValidateClient;
-import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.user.ValidateClient;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
@@ -14,23 +14,25 @@ import com.netcracker.security.UserRegister;
 import com.netcracker.security.jwt.JWTUtil;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
-import com.netcracker.user.Client;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Api(tags = "Clients")
@@ -62,8 +64,9 @@ public class ClientsController {
  @ApiOperation("Login.")
  @PostMapping({"/perform_login"})
  @ResponseBody
- public RedirectView handleLogin(@ApiParam("User") @RequestParam String login, @ApiParam("Password") @RequestParam String password,
-                                 HttpServletResponse httpServletResponse) {
+ public RedirectView handleLogin(@ApiParam("User") @RequestBody String login, @ApiParam("Password") @RequestBody String password,
+                                 HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+  log.info("{}", httpServletRequest.getHeader("token"));
   ContactConfirmationResponse loginResponse = userRegister.jwtLogin(new ContactConfirmationPayload(password, login));
   Cookie cookie = new Cookie("token", loginResponse.getResult());
   httpServletResponse.addCookie(cookie);
@@ -141,21 +144,29 @@ public class ClientsController {
   return dto.map(clientDto -> ResponseEntity.ok(List.of(clientDto))).orElseGet(() -> ResponseEntity.ok(new ArrayList<>()));
  }
 
-// @GetMapping("/pivot/get-all")
-// @ApiOperation("Users list getting operation")
-// public ResponseEntity<List<Client>> getAllClients() {
-//  return ResponseEntity.ok(clientServices.getAllClient());
-// }
+ @ApiOperation(value = "Clients registration")
+ @ApiResponses(value = {
+  @ApiResponse(code = 200, message = "This user has been successfully registered", response = ValidationErrorResponse.class, responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
+ @PostMapping(value = "details/registration-client", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> createUser(@JsonView(ValidateClient.masterRequest.class) @Validated({ValidateClient.masterRequest.class}) @RequestBody ClientDto clients) throws SaveSearchErrorException {
+  clients.setPassword(userRegister.newDate(clients.getPhone()));
+  return ResponseEntity.ok(clientServices.registrationMaster(clients));
+ }
 
-// @GetMapping("/pivot/byName")
-// @ApiOperation(value = "Getting a user by name", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-//  MediaType.APPLICATION_JSON_VALUE)
-// public ResponseEntity<List<ClientDto>> getClientsByName(@RequestParam("name") String name) {
-//  Optional<ClientDto> client = clientServices.getClientsByName(name);
-//  if (client.isEmpty()) {
-//   return ResponseEntity.ok(new ArrayList<>());
-//  }
-//  return ResponseEntity.ok(List.of(client.get()));
-// }
+ @JsonView(ValidateClient.Details.class)
+ @ApiOperation(value = "Get all clients")
+ @GetMapping(value = "details/clients/get-all")
+ public ResponseEntity<List<ClientDto>> getAllClient() throws SaveSearchErrorException {
+  return ResponseEntity.ok(clientServices.getAllClientOnMaster());
+ }
+
+ @JsonView(ValidateClient.Details.class)
+ @ApiOperation(value = "Client search")
+ @GetMapping(value = "details/clients-search")
+ public ResponseEntity<List<ClientDto>> searchClient(@RequestParam String search) throws SaveSearchErrorException {
+  return ResponseEntity.ok(clientServices.getAllClientOnMaster(search));
+ }
 
 }

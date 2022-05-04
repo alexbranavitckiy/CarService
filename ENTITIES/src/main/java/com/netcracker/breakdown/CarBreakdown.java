@@ -1,11 +1,10 @@
 package com.netcracker.breakdown;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
+import com.netcracker.outfit.Outfit;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
-
 
 import javax.persistence.*;
 import java.util.Date;
@@ -27,7 +26,7 @@ public class CarBreakdown {
  @JoinColumn(name = "id_car")
  private CarClient carClient;
 
- @Column(name = "description", columnDefinition = "VARCHAR(250) NOT NULL")
+ @Column(name = "description", columnDefinition = "VARCHAR(250)")
  private String description;
 
  @Range(min = 0, max = 1000000)
@@ -39,7 +38,14 @@ public class CarBreakdown {
 
  private State state;
 
- @Column(columnDefinition = "VARCHAR(150) NOT NULL")
+ @Range(min = 0, max = 10000)
+ private double price;
+
+ @Column(columnDefinition = "VARCHAR(150)")
  private String location;
+
+ @ManyToOne(fetch = FetchType.LAZY)
+ @JoinColumn(name = "id_outfit")
+ private Outfit outfit;
 
 }

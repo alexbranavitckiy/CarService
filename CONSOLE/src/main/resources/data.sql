@@ -7,16 +7,13 @@ INSERT INTO public.clients
 (id, description, email, login, name, password, phone, role)
 VALUES('799cc78b-2691-4410-a6c6-a5ad6442db45', 'phone22', 'email', 'login', 'test', '$2a$10$eeYxwie6S00hU4e3urIXeeTd9piOf4QhS3Xdq5Tg1vXIzfnAF0YOC', 'sadasd1', 'REGISTERED');
 
-
 INSERT INTO public.master
 (id, description, education, home_address, login, mail, name, password, phone, qualification, role)
 VALUES('cda01a34-4119-3e5e-9ab9-60b341f234fb', 'testMaster', 'test', 'test', 'master', 'test', 'test', '$2a$12$TUCevqpe70/wh2xCNiSZ9OfKj85gVtZVC2T7XSOJqIW/VufbmKETa', 'test2', 'ELECTRICIAN', 'MASTER');
 
-INSERT INTO public.master_receiver
+INSERT INTO public.master
 (id, description, education, home_address, login, mail, name, password, phone, qualification, role)
-VALUES('cda01a34-4119-3e5e-9ab9-60b341f233fb', 'test_master_receiver', 'test', 'test', 'master_receiver', 'test', 'test', '$2a$12$PmWq.VYiP0QcInGwi0Leme3Ud50oNQC2D1/ZxdnH9Q01zt5ZXOJqO', 'test3', 'ELECTRICIAN', 'RECEPTIONIST');
-
-
+VALUES('cda01a34-4119-3e5e-9ab9-60b341f235fb', 'string', 'string', 'string', 'string', 'string', 'string', '$2a$10$wV4mx.jAWH6Sa.2L2mALaueNW03kT9LtflpWLPCuX0LSEELkn3Rva', 'test3', 'ELECTRICIAN', 'RECEPTIONIST');
 
 insert into mark (id, name, year_start, year_end) values ('a7af47e4-962b-44c8-9214-37bbea111532', 'Escalade EXT', '4/11/2020', '10/6/2021');
 insert into mark (id, name, year_start, year_end) values ('0800532b-c748-49ff-93e0-9bd511aa906a', 'Camry', '8/8/2021', '9/27/2019');
@@ -80,11 +77,11 @@ INSERT INTO public.orders
 VALUES('799cc78b-2691-4410-a6c6-a5ad6442db44', '4/11/2020', '4/11/2020', 'REQUEST', '4/11/2020', '799cc78b-2691-4410-a6c6-a5ad6442db44');
 
 INSERT INTO public.car_breakdown
-(id, description, location, run_car_size, state, id_car,update_date)
-VALUES('799cc78b-2691-4410-a6c6-a5ad6442db43', 'description', 'location', 0, 'CORRECTED', '799cc78b-2691-4410-a6c6-a5ad6442db44','4/11/2019');
+(id, price,description, location, run_car_size, state, id_car,update_date)
+VALUES('799cc78b-2691-4410-a6c6-a5ad6442db43',22, 'description', 'location', 0, 'CORRECTED', '799cc78b-2691-4410-a6c6-a5ad6442db44','4/11/2019');
 
 INSERT INTO public.car_breakdown
-(id, description, location, run_car_size, state, id_car,update_date)
-VALUES('799cc78b-2691-4410-a6c6-a5ad6442db42', 'description', 'location', 0, 'CORRECTED', '799cc78b-2691-4410-a6c6-a5ad6442db44','4/11/2020');
+(id,price, description, location, run_car_size, state, id_car,update_date)
+VALUES('799cc78b-2691-4410-a6c6-a5ad6442db42',22, 'description', 'location', 0, 'CORRECTED', '799cc78b-2691-4410-a6c6-a5ad6442db44','4/11/2020');
 
 

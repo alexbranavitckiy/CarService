@@ -1,8 +1,8 @@
 package com.netcracker.controllers.registration;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.clients.ValidateClient;
-import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.user.ValidateClient;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;

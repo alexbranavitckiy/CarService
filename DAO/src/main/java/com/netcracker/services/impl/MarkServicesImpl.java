@@ -24,10 +24,16 @@ public class MarkServicesImpl implements MarkServices {
   this.markRepository = markRepository;
  }
 
+
  @Override
- public List<Mark> getAllMark() {
-  return markRepository.getAllBy();
+ public List<Mark> getAllMark() throws SaveSearchErrorException {
+  try {
+   return markRepository.getAllBy();
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "search");
+  }
  }
+
 
  @Override
  public List<Mark> getMarkById(UUID uuid) {
@@ -38,11 +44,20 @@ public class MarkServicesImpl implements MarkServices {
 
 
  @Override
- public boolean metadataMark(UUID uuid) throws SaveSearchErrorException {
+ public void metadataMark(UUID uuid) throws SaveSearchErrorException {
   if (markRepository.existsById(uuid)) {
-   return true;
+   return;
   }
   throw new SaveSearchErrorException("Entered data of a non-existent mark.", "mark");
+ }
+
+ @Override
+ public List<Mark> getSearchMark(String regex) throws SaveSearchErrorException {
+  try {
+   return markRepository.searchMark("%" + regex + "%");
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "regex");
+  }
  }
 
  @Override

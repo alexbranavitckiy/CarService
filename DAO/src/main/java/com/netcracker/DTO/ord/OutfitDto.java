@@ -27,22 +27,24 @@ public class OutfitDto {
  @ApiModelProperty(name = "id", required = false, value = "Outfit unique identifier.", position = 1)
  private UUID id;
 
- @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class})
+ @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private String name;
 
- @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class})
+ @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private String description;
 
- @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class})
+ @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private Date dateStart;
 
- @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class})
+ @JsonView({ValidateOrd.Details.class, ValidateCar.NewAdmin.class})
  private Date dateEnt;
 
  @JsonView({ValidateOrd.Details.class})
- private double price;
-
- @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class})
  private State stateOutfit;
 
+ @JsonView({ValidateOrd.Details.class, ValidateCar.NewAdmin.class})
+ private UUID idMaster;
+
+ @JsonView({ValidateCar.NewAdmin.class})
+ private UUID order;
 }

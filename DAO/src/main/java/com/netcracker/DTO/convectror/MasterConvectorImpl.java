@@ -1,8 +1,6 @@
 package com.netcracker.DTO.convectror;
 
-import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.DTO.clients.MasterDto;
-import com.netcracker.user.Client;
+import com.netcracker.DTO.user.MasterDto;
 import com.netcracker.user.Master;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

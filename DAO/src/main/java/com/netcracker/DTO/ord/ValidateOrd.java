@@ -9,11 +9,13 @@ public interface ValidateOrd {
  interface New {
  }
 
+
  interface UiCrossFieldChecks {
  }
 
  interface EditValue {
  }
-
+ interface NewAdmin {
+ }
 
 }

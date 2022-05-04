@@ -9,6 +9,9 @@ public interface ValidateCar {
  interface Details extends New, Edit, EditValue {
  }
 
+ interface NewAdmin {
+ }
+
  interface New {
  }
 

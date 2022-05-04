@@ -1,6 +1,7 @@
 package com.netcracker.repository;
 
 import com.netcracker.car.CarClient;
+import com.netcracker.user.Client;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,15 +23,16 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  List<CarClient> getAllByClientLogin(String login);
 
- Optional<CarClient> getCarClientByMetadataCar(String str);
-
  Optional<CarClient> getById(UUID uuid);
 
  Optional<CarClient> getAllByIdAndClient_Login(UUID uuid, String login);
 
- Optional<CarClient> getByMetadataCar(String m);
-
  boolean existsByMetadataCar(String m);
+
+ @Query(value = "SELECT * FROM car_client  WHERE (description like :searchCar) OR (metadata_car like :searchCar) OR (summary like :searchCar)", nativeQuery = true)
+ List<CarClient> getAllByLike(@Param("searchCar") String searchCar);
+
+ List<CarClient> getAllBy();
 
  @Transactional
  @Modifying
@@ -52,6 +54,15 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
   nativeQuery = true)
  int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
                       @Param("summary") String summary, @Param("login") String login, @Param("id_mark") UUID id_mark);
+
+ @Transactional
+ @Modifying
+ @Query(
+  value =
+   "insert into car_client (id,description,year,metadata_car, run,summary,id_mark) values (:id,:description,:year, :metadata_car, :run, :summary, :id_mark)   ",
+  nativeQuery = true)
+ int createCarOnMaster(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
+                       @Param("summary") String summary, @Param("id_mark") UUID id_mark);
 
 
 }

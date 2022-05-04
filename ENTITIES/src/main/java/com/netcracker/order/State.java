@@ -9,6 +9,7 @@ public enum State {
  WAIT_CLIENT("WAIT_CLIENT"),
  REQUEST("REQUEST"),
  BID("BID"),
+ CREATED("CREATED"),
  CANCELED("CANCELED");
 
  private String code;

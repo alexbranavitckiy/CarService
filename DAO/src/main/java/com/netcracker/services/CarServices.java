@@ -24,5 +24,11 @@ public interface CarServices {
 
  boolean updateCarClientByLogin(CarClientDto carClient, String nameClients) throws SaveSearchErrorException;
 
- boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login)throws SaveSearchErrorException;
+ boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login) throws SaveSearchErrorException;
+
+ UUID createCarOnMaster(CarClientDto carClient) throws SaveSearchErrorException;
+
+ List<CarClientDto> getAllCarOnMaster() throws SaveSearchErrorException;
+
+ List<CarClientDto> getSearchCarOnMaster(String search) throws SaveSearchErrorException;
 }

@@ -1,6 +1,6 @@
 package com.netcracker.DTO.basicValidation;
 
-import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +27,6 @@ public class ClientValid
 
  public boolean isValid(ClientDto person, ConstraintValidatorContext context) {
   try {
-   clientServices.passwordChek(person.getPassword());
-   clientServices.emailChek(person.getEmail());
-   clientServices.phoneChek(person.getPhone());
    clientServices.loginChek(person.getLogin());
   } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();

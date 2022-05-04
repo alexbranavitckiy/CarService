@@ -35,10 +35,10 @@ public class CarClient {
  @Column(name = "year")
  private Date year;
 
- @Column(name = "metadata_car", columnDefinition = "VARCHAR(80) not null unique")
+ @Column(name = "metadata_car", columnDefinition = "VARCHAR(80) not null ")
  private String metadataCar;
 
- @Column(name = "run")
+ @Column(name = "run",columnDefinition = "int DEFAULT 0")
  @Range(min = 0, max = 1000000)
  private int run;
 

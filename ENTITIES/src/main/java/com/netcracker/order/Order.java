@@ -1,9 +1,9 @@
 package com.netcracker.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.car.CarClient;
 import com.netcracker.outfit.Outfit;
-import com.netcracker.user.MasterReceiver;
+import com.netcracker.user.Master;
 import lombok.*;
 
 
@@ -31,7 +31,7 @@ public class Order {
 
  @ManyToMany
  @JoinColumn(name = "id_masters")
- private List<MasterReceiver> masterReceiver;
+ private List<Master> masterReceiver;
 
  @ManyToOne
  @JoinColumn(name = "id_car")

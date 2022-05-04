@@ -33,15 +33,38 @@ public interface CarBreakdownRepository extends JpaRepository<CarBreakdown, UUID
 
  @Transactional
  @Modifying
- @Query("update car_breakdown c set c.description = ?1, c.runCarSize = ?2 , c.updateDate = ?3, c.state = ?4, c.location = ?4  where c.id = ?5")
- int updateCarBreakDownById(String description, int runCarSize, Date updateDate, String state, String location, String idCarBreak);
+ @Query(value = "update car_breakdown  set description =:description, run_car_size = :runCarSize ,update_date = :updateDate,state = :state,location = :location  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
+ int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("runCarSize") int runCarSize, @Param("updateDate") Date updateDate, @Param("state") String state, @Param("location") String location, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
 
+ @Transactional
+ @Modifying
+ @Query(value = "update car_breakdown  set  run_car_size = :runCarSize ,update_date = :updateDate where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
+ int updateCarBreakDownByIdAndMasterLogin(@Param("runCarSize") int runCarSize, @Param("updateDate") Date updateDate, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+
+ @Transactional
+ @Modifying
+ @Query(value = "update car_breakdown  set description =:description ,update_date = :updateDate,state = :state  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
+ int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("updateDate") Date updateDate, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+
+ @Transactional
+ @Modifying
+ @Query(value = "update car_breakdown  set update_date = :updateDate,state = :state  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
+ int updateCarBreakDownByIdAndMasterLogin(@Param("updateDate") Date updateDate, @Param("state") String state, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+
+ @Query(value = "SELECT * FROM public.car_breakdown   where car_breakdown.id_outfit   in (  SELECT id FROM public.outfit where outfit.state_outfit='WORK' and outfit.id_master in( SELECT id FROM public.master where login=:login))", nativeQuery = true)
+ List<CarBreakdown> getAllByMaster(String login);
+
+ @Query(value = "SELECT * FROM public.car_breakdown   where car_breakdown.id=:id and car_breakdown.id_outfit   in (  SELECT id FROM public.outfit where outfit.state_outfit='WORK' and outfit.id_master in( SELECT id FROM public.master where login=:login))", nativeQuery = true)
+ List<CarBreakdown> getAllByIdOnMaster(String login, UUID id);
+
+
+ @Transactional
  @Modifying
  @Query(
   value =
-   "insert into car_breakdown (id,location,description,run_car_size , update_date, state,id_car) values (:id,:location,:description, :run_car_size, :update_date, :state,:id_car)",
+   "insert into car_breakdown (id,price,location,description,run_car_size,update_date, state,id_car,id_outfit) values (:id,:price,:location,:description, :run_car_size, :update_date, :state,(SELECT  id_car FROM public.orders where id =:id_orders),(SELECT  id_outfits FROM public.orders where id =:id_orders))",
   nativeQuery = true)
- void insertCarBreakDown(@Param("id") String id, @Param("location") String location, @Param("description") String description, @Param("run_car_size") int run_car_size,
-                         @Param("update_date") Date update_date, @Param("state") String state, @Param("id_car") String id_car);
+ void insertCarBreakDownOnMaster(@Param("id") UUID id, @Param("price") double price, @Param("location") String location, @Param("description") String description, @Param("run_car_size") int run_car_size,
+                                 @Param("update_date") Date update_date, @Param("state") String state, @Param("id_orders") UUID id_orders);
 
 }

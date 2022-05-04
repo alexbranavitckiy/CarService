@@ -4,9 +4,11 @@ package com.netcracker.services.impl;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.ord.OrderDto;
+import com.netcracker.DTO.ord.OrderForm;
 import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import com.netcracker.repository.OrderRepository;
+import com.netcracker.repository.OutfitsRepository;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -23,22 +26,21 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@Transactional
 public class OrderServicesImpl implements OrderServices {
 
  private final OrderRepository orderRepository;
- private final CarServices carServices;
- private final ClientServices clientServices;
  private final Environment env;
  private final MapperDto<OrderDto, Order> orderMapperDto;
+ private final OutfitsRepository outfitsRepository;
 
  @Lazy
  @Autowired
- private OrderServicesImpl(MapperDto<OrderDto, Order> orderMapperDto, Environment env, ClientServices clientServices, CarServices carServices, OrderRepository orderRepository) {
+ public OrderServicesImpl(OutfitsRepository outfitsRepository, MapperDto<OrderDto, Order> orderMapperDto, Environment env, OrderRepository orderRepository) {
   this.orderRepository = orderRepository;
+  this.outfitsRepository = outfitsRepository;
   this.orderMapperDto = orderMapperDto;
   this.env = env;
-  this.carServices = carServices;
-  this.clientServices = clientServices;
  }
 
  @Override
@@ -85,5 +87,34 @@ public class OrderServicesImpl implements OrderServices {
   if (orderRepository.existsById(uuid))
    return true;
   throw new SaveSearchErrorException("Invalid id entered.", "id");
+ }
+
+ @Override
+ public UUID addOrderOnMaster(OrderForm dto, String login) throws SaveSearchErrorException {
+  try {
+   UUID id_outfits = UUID.randomUUID();
+   UUID dtoId = UUID.randomUUID();
+   if (outfitsRepository.getAllOutfit(dto.getDateStartOutfit(), dto.getDateEntOutfit(), dto.getIdMasterOutfit()).size() != 0) {
+    throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
+   }
+   if (orderRepository.insertOrder(id_outfits, dtoId, new Date(), State.CREATED.getCode(), new Date(),
+    dto.getCarClient(), login, dto.getCarClient(), UUID.randomUUID(),
+    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEntOutfit(), dto.getDateStartOutfit(), dto.getIdMasterOutfit(),
+    dto.getDescription(), dto.getNameOutfit(), com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, dto.getPriceBreakdown(), dto.getRun()) == 1)
+    return dtoId;
+   else throw new SaveSearchErrorException("Sending request was not successful", "Save");
+  } catch (Exception e) {
+   log.warn("{}", e);
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
+  }
+ }
+
+ @Override
+ public List<OrderDto> getAllOrderWithStateOnMaster(String login, State state) throws SaveSearchErrorException {
+  try {
+   return orderRepository.getAllByState(state).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
+  }
  }
 }

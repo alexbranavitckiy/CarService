@@ -1,28 +1,19 @@
 package com.netcracker.services;
 
-import com.netcracker.DTO.clients.MasterDto;
+import com.netcracker.DTO.user.MasterDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
-import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.user.Master;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface MasterServices {
-
- boolean updateMasterData(ContactConfirmationPayload clientFormUpdate, String login);
 
  boolean updateMasterByLogin(MasterDto masterDto, String name) throws SaveSearchErrorException;
 
  Optional<Master> getMasterByLogin(String login);
 
  boolean addMaster(Master master);
-
- List<MasterDto> getAllMasterDto();
-
- boolean updateMaster(MasterDto master, String login);
 
  //--Master--//
  Optional<MasterDto> getMasterDtoByLogin(String login);
@@ -44,6 +35,10 @@ public interface MasterServices {
  boolean emailChek(String password) throws SaveSearchErrorException;
 
  boolean phoneChek(String password) throws SaveSearchErrorException;
+
+ boolean createMasterOnMasterReceiver(MasterDto master, String name) throws SaveSearchErrorException;
+
+ List<MasterDto> getMasterDtoOnMaster() throws SaveSearchErrorException;
  //--validate--/
 
 }

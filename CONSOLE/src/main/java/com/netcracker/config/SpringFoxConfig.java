@@ -81,7 +81,7 @@ public class SpringFoxConfig {
   return new Docket(DocumentationType.OAS_30)
    .groupName("MasterReceiver")
    .select()
-   .paths(PathSelectors.ant("/pivot/**"))
+   .paths(PathSelectors.ant("/details/**"))
    .build()
    .apiInfo(apiInfo());
  }

@@ -1,10 +1,8 @@
 package com.netcracker.DTO.convectror;
 
-import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.user.Client;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

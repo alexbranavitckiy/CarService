@@ -3,6 +3,7 @@ package com.netcracker.DTO.basicValidation;
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.services.CarServices;
+import com.netcracker.services.ClientServices;
 import com.netcracker.services.impl.MarkServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,13 @@ public class CarClientValid
 
  private final CarServices carServices;
  private final MarkServicesImpl markServices;
+ private final ClientServices clientServices;
 
  @Autowired
- CarClientValid(CarServices carServices, MarkServicesImpl markServices) {
+ CarClientValid(ClientServices clientServices, CarServices carServices, MarkServicesImpl markServices) {
   this.markServices = markServices;
   this.carServices = carServices;
+  this.clientServices = clientServices;
  }
 
  public void initialize(ValidCarClient constraint) {
@@ -30,14 +33,14 @@ public class CarClientValid
 
  public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
   try {
-   if (clientDto.getMetadataCar() != null) {
-    carServices.metadataCarChek(clientDto.getMetadataCar());
-   }
    if (clientDto.getMark() != null) {
     markServices.metadataMark(clientDto.getMark().getId());
    }
    if (clientDto.getId() != null) {
     carServices.idChek(clientDto.getId());
+   }
+   if (clientDto.getIdClient() != null) {
+    clientServices.idChek(clientDto.getIdClient());
    }
   } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();

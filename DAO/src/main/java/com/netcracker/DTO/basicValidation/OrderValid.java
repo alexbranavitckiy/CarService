@@ -30,13 +30,13 @@ public class OrderValid implements ConstraintValidator<ValidOrder, OrderDto> {
  public void initialize(ValidOrder constraint) {
  }
 
- public boolean isValid(OrderDto person, ConstraintValidatorContext context) {
+ public boolean isValid(OrderDto orderDto, ConstraintValidatorContext context) {
   try {
-   if (person.getCarClient() != null) {
-    carServices.idChek(person.getCarClient());
+   if (orderDto.getCarClient() != null) {
+    carServices.idChek(orderDto.getCarClient());
    }
-   if (person.getId() != null) {
-    orderServices.idChek(person.getId());
+   if (orderDto.getId() != null) {
+    orderServices.idChek(orderDto.getId());
    }
   } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();

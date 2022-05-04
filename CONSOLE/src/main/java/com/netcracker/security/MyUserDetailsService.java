@@ -1,7 +1,6 @@
 package com.netcracker.security;
 
 import com.netcracker.services.ClientServices;
-import com.netcracker.services.MasterReceiverServices;
 import com.netcracker.services.MasterServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,13 @@ import java.util.stream.Collectors;
 public class MyUserDetailsService implements UserDetailsService {
 
  private final ClientServices clientServices;
- private final MasterReceiverServices masterReceiverServices;
+
  private final MasterServices masterServices;
 
  @Autowired
- private MyUserDetailsService(MasterReceiverServices masterReceiverServices, MasterServices masterServices, ClientServices clientServices) {
+ private MyUserDetailsService( MasterServices masterServices, ClientServices clientServices) {
   this.clientServices = clientServices;
   this.masterServices = masterServices;
-  this.masterReceiverServices = masterReceiverServices;
  }
 
  @Override

@@ -101,4 +101,30 @@ public class CarController {
   return ResponseEntity.ok(validationResponse);
  }
 
+ @ApiOperation("Car registration")
+ @ApiResponses(value = {
+  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created", response = ValidationErrorResponse.class, responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
+ @PostMapping(value = "/details/garage-registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> createCarOnMaster(@Validated({ValidateCar.UiCrossFieldChecks.class}) @JsonView(ValidateCar.NewAdmin.class) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.createCarOnMaster(carClient));
+ }
+
+ @JsonView({ValidateCar.Details.class})
+ @ClientLabel
+ @ApiOperation("Show all cars")
+ @GetMapping("/details/garage/get-all")
+ public ResponseEntity<List<CarClientDto>> getAllCar() throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.getAllCarOnMaster());
+ }
+
+ @JsonView({ValidateCar.Details.class})
+ @ClientLabel
+ @ApiOperation("Search by car")
+ @GetMapping("/details/garage-search")
+ public ResponseEntity<List<CarClientDto>> searchCar(@RequestParam String search) throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.getSearchCarOnMaster(search));
+ }
+
 }

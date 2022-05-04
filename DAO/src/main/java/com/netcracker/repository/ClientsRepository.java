@@ -15,6 +15,8 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
 
  boolean existsByLogin(String login);
 
+ boolean existsById(String login);
+
  boolean existsByEmail(String email);
 
  boolean existsByPassword(String pas);
@@ -27,14 +29,19 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
 
  List<Client> getAllBy();
 
- @Query(value = "SELECT  role ,login,password  FROM clients  where clients.login=?1 union SELECT  role ,login,password  FROM master   where master .login=?2 union SELECT  role ,login,password  FROM master_receiver  where master_receiver .login=?3", nativeQuery = true)
- Map<String, Object> getMyUser(String login, String login2, String login3);
+ @Query(value = "SELECT * FROM clients  WHERE (email like :searchClient) OR (name like :searchClient) OR  (phone like :searchClient) or (login like :searchClient) ", nativeQuery = true)
+ List<Client> getAllByLike(@Param("searchClient") String searchClient);
+
+ @Query(value = "SELECT (COUNT(clients.login)+COUNT(master.login)) FROM clients  join master on clients.login=?1 or master.login=?2", nativeQuery = true)
+ int existsByLoginClientAndMaster(String login, String login2);
+
+ @Query(value = "SELECT  role ,login,password  FROM clients  where clients.login=?1 union SELECT  role ,login,password  FROM master   where master .login=?2", nativeQuery = true)
+ Map<String, Object> getMyUser(String login, String login2);
 
  @Transactional
  @Modifying(clearAutomatically = true)
  @Query("update clients c set c.login = ?1, c.password = ?2 where c.login = ?3")
  int updatePasswordAndLogin(String newLogin, String password, String login);
-
 
  @Transactional
  @Modifying(clearAutomatically = true)

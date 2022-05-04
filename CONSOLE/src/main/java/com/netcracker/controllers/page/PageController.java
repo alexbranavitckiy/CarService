@@ -1,8 +1,7 @@
 package com.netcracker.controllers.page;
 
 import com.netcracker.DTO.car.CarClientDto;
-import com.netcracker.DTO.clients.ClientDto;
-import com.netcracker.car.CarClient;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.security.UserRegister;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;

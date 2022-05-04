@@ -31,14 +31,14 @@ public class User implements PrincipalEntity {
  @org.hibernate.annotations.Type(type = "pg-uuid")
  private UUID id;
 
- @Column(name = "name", columnDefinition = "VARCHAR NOT NULL ")
+ @Column(name = "name", columnDefinition = "VARCHAR NOT NULL")
  private String name;
 
- @Column(name = "phone", columnDefinition = "VARCHAR not null unique")
+ @Column(name = "phone", columnDefinition = "VARCHAR not null")
  private String phone;
 
  @Email
- @Column(name = "email", columnDefinition = "VARCHAR not null unique")
+ @Column(name = "email", columnDefinition = "VARCHAR")
  private String email;
 
  @Column(name = "description", columnDefinition = "VARCHAR")

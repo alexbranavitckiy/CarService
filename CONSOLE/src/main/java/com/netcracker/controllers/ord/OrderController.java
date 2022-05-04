@@ -1,19 +1,15 @@
 package com.netcracker.controllers.ord;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.clients.ValidateClient;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.ord.OrderDto;
+import com.netcracker.DTO.ord.OrderForm;
 import com.netcracker.DTO.ord.ValidateOrd;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import com.netcracker.annotations.ClientLabel;
 import com.netcracker.annotations.RegistrationLabel;
 import com.netcracker.order.State;
-import com.netcracker.DTO.response.ContactConfirmationResponse;
-import com.netcracker.order.Order;
-import com.netcracker.security.jwt.JWTUtil;
 import com.netcracker.services.OrderServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -74,6 +68,24 @@ public class OrderController {
   orderServices.cancelRequest(orderDto.getId(), principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Request canceled successfully")));
   return ResponseEntity.ok(validationResponse);
+ }
+
+
+ @ApiOperation("Create of an order by the master receiver")
+ @PostMapping(value = "/details/new-order", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> addOrderOnMaster(@Validated({ValidateOrd.NewAdmin.class}) @RequestBody @JsonView(ValidateOrd.NewAdmin.class)
+                                                OrderForm orderDto, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  return ResponseEntity.ok(orderServices.addOrderOnMaster(orderDto, principal.getName()));
+ }
+
+
+ @GetMapping("/details/order-request/getAll")
+ @JsonView(ValidateOrd.Details.class)
+ @ApiOperation("Get a list of all created orders")
+ public ResponseEntity<List<OrderDto>> getOrderOnMasterStateByCreated(@RequestParam State state , @Validated @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  return ResponseEntity.ok(orderServices.getAllOrderWithStateOnMaster(principal.getName(), state));
  }
 
 

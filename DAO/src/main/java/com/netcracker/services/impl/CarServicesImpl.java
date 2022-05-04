@@ -29,7 +29,8 @@ public class CarServicesImpl implements CarServices {
  private final MapperDto<CarClientDto, CarClient> clientMapperDto;
 
  @Autowired
- private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto, ClientServices clientServices, CarClientRepository carClientRepository) {
+ private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto,
+                         ClientServices clientServices, CarClientRepository carClientRepository) {
   this.clientServices = clientServices;
   this.clientMapperDto = clientMapperDto;
   this.carClientRepository = carClientRepository;
@@ -49,10 +50,48 @@ public class CarServicesImpl implements CarServices {
  }
 
  @Override
+ public UUID createCarOnMaster(CarClientDto carClient) throws SaveSearchErrorException {
+  try {
+   carClient.setId(UUID.randomUUID());
+   if (carClientRepository.createCarOnMaster(carClient.getId(), carClient.getDescription(),
+    carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
+    carClient.getMark().getId()) > 0)
+    return carClient.getId();
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
+  }
+  throw new SaveSearchErrorException("Invalid values entered.");
+ }
+
+ @Override
+ public List<CarClientDto> getAllCarOnMaster() throws SaveSearchErrorException {
+  try {
+   return carClientRepository.getAllBy().stream().map(clientMapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error." + e.getMessage());
+  }
+ }
+
+ @Override
+ public List<CarClientDto> getSearchCarOnMaster(String search) throws SaveSearchErrorException {
+  try {
+   return carClientRepository.getAllByLike("%" + search + "%")
+    .stream()
+    .map(clientMapperDto::toDto)
+    .collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error." + e.getMessage());
+  }
+ }
+
+
+ @Override
  public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
    carClient.setId(UUID.randomUUID());
-   if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(), carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(), login, carClient.getMark().getId()) > 0)
+   if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(),
+    carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
+    login, carClient.getMark().getId()) > 0)
     return true;
   } catch (Exception e) {
    throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
@@ -61,7 +100,8 @@ public class CarServicesImpl implements CarServices {
  }
 
  @Override
- public boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login) throws SaveSearchErrorException {
+ public boolean updateCarClientByIdWithMachineNumber(CarClientDto carClient, String login)
+  throws SaveSearchErrorException {
   try {
    if (carClientRepository.updateCarClientById(carClient.getMetadataCar(), carClient.getId(), login) == 1) {
     return true;
@@ -74,7 +114,8 @@ public class CarServicesImpl implements CarServices {
  @Override
  public boolean updateCarClientByLogin(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
-   if (carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(), carClient.getRun(), carClient.getId(), login) == 1)
+   if (carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(),
+    carClient.getRun(), carClient.getId(), login) == 1)
     return true;
    else {
     throw new SaveSearchErrorException("Invalid values entered.", "Save");

@@ -1,8 +1,11 @@
-package com.netcracker.DTO.clients;
+package com.netcracker.DTO.user;
 
 public interface ValidateClient {
 
  interface Admin extends Details {
+ }
+
+ interface NewAdmin {
  }
 
  interface Details  {
@@ -11,7 +14,7 @@ public interface ValidateClient {
  interface New {
  }
 
- interface EditValue {
+ interface masterRequest {
 
  }
 

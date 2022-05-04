@@ -1,7 +1,7 @@
 package com.netcracker.services;
 
 
-import com.netcracker.DTO.clients.ClientDto;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.user.Client;
@@ -12,14 +12,16 @@ public interface ClientServices {
  //--validate--/
  boolean passwordChek(String password) throws SaveSearchErrorException;
 
- boolean loginChek(String password) throws SaveSearchErrorException;
+ boolean loginChek(String login) throws SaveSearchErrorException;
 
- boolean emailChek(String password) throws SaveSearchErrorException;
+ boolean idChek(UUID login) throws SaveSearchErrorException;
 
- boolean phoneChek(String password) throws SaveSearchErrorException;
+ boolean emailChek(String email) throws SaveSearchErrorException;
+
+ boolean phoneChek(String phone) throws SaveSearchErrorException;
  //--validate--/
 
-//--client--//
+ //--client--//
  boolean updateClientData(ContactConfirmationPayload clientFormUpdate, String login) throws SaveSearchErrorException;
 
  boolean updateClientPass(String clientFormUpdate, String login) throws SaveSearchErrorException;
@@ -30,7 +32,7 @@ public interface ClientServices {
 
  boolean updateClientPhone(String newLogin, String oldLogin) throws SaveSearchErrorException;
 
- boolean updateClientName(ClientDto client, String name)throws SaveSearchErrorException;
+ boolean updateClientName(ClientDto client, String name) throws SaveSearchErrorException;
 
  List<Client> getAllClient();
 
@@ -46,7 +48,12 @@ public interface ClientServices {
 
  boolean updateClientByLogin(ClientDto client, String login) throws SaveSearchErrorException;
 
-
-
  //--client--//
+
+ UUID registrationMaster(ClientDto clients) throws SaveSearchErrorException;
+
+ List<ClientDto> getAllClientOnMaster() throws SaveSearchErrorException;
+
+ //--search--//
+ List<ClientDto> getAllClientOnMaster(String search) throws SaveSearchErrorException;
 }
