@@ -1,5 +1,6 @@
 package com.netcracker.security.jwt;
 
+import com.netcracker.DTO.response.ContactConfirmationPayload;
 import io.jsonwebtoken.*;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,11 @@ public class JWTUtil {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
+    }
+
+    public String generateToken(ContactConfirmationPayload userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getLogin());
     }
 
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){

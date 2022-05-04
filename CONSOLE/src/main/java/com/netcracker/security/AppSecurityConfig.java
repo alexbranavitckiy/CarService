@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 @Slf4j
 @Configuration(value = "AppSecurityConfig")
@@ -41,17 +43,22 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .csrf()
    .disable()
    .authorizeRequests()
-   .antMatchers("/swagger-ui/**", "/person/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
-   .antMatchers("/aut/**").hasAnyAuthority("MASTER","REGISTERED", "RECEPTIONIST")
-   .antMatchers("/details/**").hasAnyAuthority("REGISTERED","MASTER","RECEPTIONIST")
-   .antMatchers("/**"
-   ).permitAll()
+   .antMatchers("/person/**").hasAnyAuthority("REGISTERED", "MASTER", "RECEPTIONIST")
+   .antMatchers("/aut/**").hasAnyAuthority("MASTER", "REGISTERED", "RECEPTIONIST")
+   .antMatchers("/details/**").hasAnyAuthority("REGISTERED", "MASTER", "RECEPTIONIST")
+   .antMatchers("/**", "/swagger-ui/**").permitAll()
    .anyRequest().authenticated()
+   .and().userDetailsService(myUserDetailsService)
+   .exceptionHandling()
+   .authenticationEntryPoint(
+    (request, response, authException) ->
+     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+   )
    .and()
    .formLogin()
    .loginPage("/login").failureUrl("/login")
    .defaultSuccessUrl("/swagger-ui/")
-   .and().logout().logoutUrl("/person/logout").logoutSuccessUrl("/").deleteCookies("token");
+   .and().logout().logoutUrl("/person/logout").logoutSuccessUrl("/");
   http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
  }
@@ -62,18 +69,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
   return new BCryptPasswordEncoder();
  }
 
- @Override
- protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-  auth
-   .userDetailsService(myUserDetailsService)
-   .passwordEncoder(getPasswordEncoder());
- }
-
  @Bean
  @Override
  public AuthenticationManager authenticationManagerBean() throws Exception {
   return super.authenticationManagerBean();
  }
-
 
 }

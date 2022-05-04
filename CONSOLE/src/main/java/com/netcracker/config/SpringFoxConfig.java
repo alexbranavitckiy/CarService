@@ -63,7 +63,9 @@ public class SpringFoxConfig {
    .select()
    .paths(PathSelectors.ant("/aut/**"))
    .build()
-   .apiInfo(apiInfo());
+   .apiInfo(apiInfo())
+   .securityContexts(Arrays.asList(securityContexts()))
+   .securitySchemes(Arrays.asList(securitySchemes()));
  }
 
  @Bean
@@ -83,7 +85,9 @@ public class SpringFoxConfig {
    .select()
    .paths(PathSelectors.ant("/details/**"))
    .build()
-   .apiInfo(apiInfo());
+   .apiInfo(apiInfo())
+   .securityContexts(Arrays.asList(securityContexts()))
+   .securitySchemes(Arrays.asList(securitySchemes()));
  }
 
  private ApiInfo apiInfo() {

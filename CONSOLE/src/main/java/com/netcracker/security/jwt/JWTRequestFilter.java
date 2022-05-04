@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@Component//OncePerRequest Filterguarantees that the filter will be called 1 time
+@Component
 public class JWTRequestFilter extends OncePerRequestFilter {
 
  private final MyUserDetailsService myUserDetailsService;
@@ -31,25 +31,26 @@ public class JWTRequestFilter extends OncePerRequestFilter {
  @Override
  protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
                                  FilterChain filterChain) throws ServletException, IOException {
-  String token = null;
-  String username = null;
-  Cookie[] cookies = httpServletRequest.getCookies();
-  String tokenHeader = httpServletRequest.getHeader("token");
-  if (cookies != null) {
-   for (Cookie cookie : cookies) {
-    if (cookie.getName().equals("token")) {
-     token = cookie.getValue();
-     username = jwtUtil.extractUsername(token);
-    }
-    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-     UserDetails userDetails = myUserDetailsService.loadUserByUsername(username);
-     if (jwtUtil.validateToken(token, userDetails)) {
-      UsernamePasswordAuthenticationToken authenticationToken =
-       new UsernamePasswordAuthenticationToken(
-        userDetails, null, userDetails.getAuthorities());
-      authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-      SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+  String authHeader = httpServletRequest.getHeader("Authorization");
+  if (authHeader != null && !authHeader.isBlank()&& authHeader.startsWith("Bearer")) {
+   String jwt = authHeader.substring(7);
+   if (jwt.isBlank()) {
+    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
+   } else {
+    try {
+     String login = jwtUtil.extractUsername(jwt);
+     if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+      UserDetails userDetails = myUserDetailsService.loadUserByUsername(login);
+      if (jwtUtil.validateToken(jwt, userDetails)) {
+       UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(
+         userDetails, null, userDetails.getAuthorities());
+       authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+      }
      }
+    } catch (Exception exc) {
+     httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
     }
    }
   }

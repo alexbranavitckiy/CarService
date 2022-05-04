@@ -10,6 +10,7 @@ import com.netcracker.DTO.response.Violation;
 import com.netcracker.annotations.ClientLabel;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.DTO.response.ContactConfirmationResponse;
+import com.netcracker.security.MyUserDetailsService;
 import com.netcracker.security.UserRegister;
 import com.netcracker.security.jwt.JWTUtil;
 import com.netcracker.services.ClientServices;
@@ -19,6 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.*;
@@ -29,10 +34,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Api(tags = "Clients")
@@ -43,34 +45,32 @@ public class ClientsController {
  private final JWTUtil jwtUtil;
  private final ClientServices clientServices;
  private final UserRegister userRegister;
- private final OrderServices orderServices;
+ private AuthenticationManager authManager;
+ private final MyUserDetailsService myUserDetailsService;
 
  @Autowired
- ClientsController(JWTUtil jwtUtil, OrderServices orderServices, UserRegister userRegister, ClientServices clientServices) {
+ ClientsController(MyUserDetailsService myUserDetailsService, JWTUtil jwtUtil, AuthenticationManager authManager, UserRegister userRegister, ClientServices clientServices) {
   this.userRegister = userRegister;
+  this.myUserDetailsService = myUserDetailsService;
   this.jwtUtil = jwtUtil;
-  this.orderServices = orderServices;
+  this.authManager = authManager;
   this.clientServices = clientServices;
- }
-
- @ClientLabel
- @ApiOperation("Logout.")
- @GetMapping("/person/logout")
- public void fakeLogout() {
-  throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
  }
 
  @ClientLabel
  @ApiOperation("Login.")
  @PostMapping({"/perform_login"})
  @ResponseBody
- public RedirectView handleLogin(@ApiParam("User") @RequestBody String login, @ApiParam("Password") @RequestBody String password,
-                                 HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-  log.info("{}", httpServletRequest.getHeader("token"));
-  ContactConfirmationResponse loginResponse = userRegister.jwtLogin(new ContactConfirmationPayload(password, login));
-  Cookie cookie = new Cookie("token", loginResponse.getResult());
-  httpServletResponse.addCookie(cookie);
-  return new RedirectView("/swagger-ui/");
+ public Map<String, Object> handleLogin(@RequestBody ContactConfirmationPayload login) {
+  try {
+   UsernamePasswordAuthenticationToken authInputToken =
+    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPassword());
+   authManager.authenticate(authInputToken);
+   String token = "Bearer:" + jwtUtil.generateToken(login);
+   return Collections.singletonMap("Authorization", token);
+  } catch (AuthenticationException authExc) {
+   throw new RuntimeException("Invalid Login Credentials");
+  }
  }
 
  @ClientLabel

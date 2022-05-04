@@ -46,7 +46,6 @@ public abstract class Employer implements PrincipalEntity {
  @Column(name = "login",columnDefinition = "VARCHAR(50) not null unique")
  private String login;
 
- @NotNull
  @Column(name = "password",unique=true)
  private String password;
 
