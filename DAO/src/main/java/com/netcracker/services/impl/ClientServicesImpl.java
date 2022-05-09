@@ -124,7 +124,7 @@ public class ClientServicesImpl implements ClientServices {
    clientsRepository.updatePassword(clientFormUpdate, login);
    return true;
   } catch (DataIntegrityViolationException e) {
-   throw new SaveSearchErrorException("Invalid password entered");
+   throw new SaveSearchErrorException("Invalid password entered"+e.getMessage());
   } catch (Exception e) {
    throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
   }
@@ -136,7 +136,7 @@ public class ClientServicesImpl implements ClientServices {
    clientsRepository.updateLogin(newLogin, oldLogin);
    return true;
   } catch (DataIntegrityViolationException e) {
-   throw new SaveSearchErrorException("Invalid login entered", "login");
+   throw new SaveSearchErrorException("Invalid login entered" + e.getMessage(), "login");
   } catch (Exception e) {
    throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
   }

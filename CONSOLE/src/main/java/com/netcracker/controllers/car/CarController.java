@@ -6,7 +6,6 @@ import com.netcracker.DTO.car.ValidateCar;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
-import com.netcracker.annotations.ClientLabel;
 import com.netcracker.services.CarServices;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -40,14 +39,14 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
- @ClientLabel
+
  @ApiOperation("Get all the car of the logged in user")
  @GetMapping("/person/garage/getAll")
  public ResponseEntity<List<CarClientDto>> getAllCarByIdClients(@ApiIgnore Principal principal) {
   return ResponseEntity.ok(carServices.getCarByLoginClient(principal.getName()));
  }
 
- @ClientLabel
+
  @ApiOperation("Car registration")
  @ApiResponses(value = {
   @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created", response = ValidationErrorResponse.class, responseContainer = "List"),
@@ -62,7 +61,7 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
- @ClientLabel
+
  @ApiOperation("Get machine of user logged in by id")
  @GetMapping("/person/Car{CarUUID}")
  public ResponseEntity<List<CarClientDto>> getCarByIdCar(@PathVariable UUID CarUUID, @ApiIgnore Principal principal) {
@@ -73,7 +72,7 @@ public class CarController {
   return ResponseEntity.ok(List.of(carClient.get()));
  }
 
- @ClientLabel
+
  @ApiOperation("Car update")
  @ApiResponses(value = {
   @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
@@ -87,7 +86,7 @@ public class CarController {
   return ResponseEntity.ok(validationResponse);
  }
 
- @ClientLabel
+
  @ApiOperation("Update car number")
  @ApiResponses(value = {
   @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
@@ -112,7 +111,7 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
- @ClientLabel
+
  @ApiOperation("Show all cars")
  @GetMapping("/details/garage/get-all")
  public ResponseEntity<List<CarClientDto>> getAllCar() throws SaveSearchErrorException {
@@ -120,7 +119,7 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
- @ClientLabel
+
  @ApiOperation("Search by car")
  @GetMapping("/details/garage-search")
  public ResponseEntity<List<CarClientDto>> searchCar(@RequestParam String search) throws SaveSearchErrorException {

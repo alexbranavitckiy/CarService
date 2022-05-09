@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -45,5 +47,6 @@ public class RegistrationController {
   validationResponse.setViolations(List.of(new Violation("true", "This user has been successfully registered")));
   return ResponseEntity.ok(validationResponse);
  }
+
 
 }

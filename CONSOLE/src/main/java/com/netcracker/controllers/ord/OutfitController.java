@@ -9,9 +9,7 @@ import com.netcracker.DTO.ord.OutfitDto;
 import com.netcracker.DTO.ord.ValidateOrd;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
-import com.netcracker.annotations.ClientLabel;
-import com.netcracker.annotations.SwaggerLabelMaster;
-import com.netcracker.outfit.Outfit;
+import com.netcracker.DTO.time.TimeDto;
 import com.netcracker.outfit.State;
 import com.netcracker.services.OutfitsServices;
 import io.swagger.annotations.ApiOperation;
@@ -67,9 +65,7 @@ public class OutfitController {
   return ResponseEntity.ok(validationResponse);
  }
 
- @Operation(
-  summary = "Outfit Update",
-  description = "")
+ @Operation(summary = "Outfit Update", description = "")
  @PostMapping(value = "/aut/outfit-update")
  public ResponseEntity<ValidationErrorResponse> updateOutfitByMaster(@JsonView({ValidateCar.Edit.class}) @Validated(ValidateCar.Edit.class) @RequestBody OutfitDto outfitDto, @ApiIgnore Principal principal) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
@@ -77,5 +73,23 @@ public class OutfitController {
   validationResponse.setViolations(List.of(new Violation("true", "Request passed successfully")));
   return ResponseEntity.ok(validationResponse);
  }
+
+
+ @ApiOperation(value = "Get all clients")
+ @GetMapping(value = "details/time/get-all")
+ public ResponseEntity<List<TimeDto>> getAllClient() throws SaveSearchErrorException {
+  return ResponseEntity.ok(outfitsServices.getAllOutfitByTime());
+ }
+
+
+ @Operation(summary = "Outfit Update", description = "")
+ @PostMapping(value = "/details/outfit-update")
+ public ResponseEntity<ValidationErrorResponse> updateOutfit(@JsonView({ValidateOrd.Details.class}) @Validated(ValidateOrd.Details.class) @RequestBody OutfitDto outfitDto, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  outfitsServices.updateOutfitByMasterR(outfitDto, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Request passed successfully")));
+  return ResponseEntity.ok(validationResponse);
+ }
+
 
 }

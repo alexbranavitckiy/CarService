@@ -23,4 +23,5 @@ public interface OrderServices {
 
  List<OrderDto> getAllOrderWithStateOnMaster(String login, State state) throws SaveSearchErrorException;
 
+ boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException;
 }

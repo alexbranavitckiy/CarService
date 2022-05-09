@@ -104,12 +104,24 @@ public class OutfitsServicesImpl implements OutfitsServices {
  @Override
  public List<TimeDto> getAllOutfitByTime() throws SaveSearchErrorException {
   try {
-   List<TimeDto> outfits = outfitsRepository.getAllByOrderByDateStartDesc().stream().map(timeMapper::toDto).collect(Collectors.toList());
-   if (outfits.size() > 0) return outfits;
+   return outfitsRepository.getAllByOutfitByDateStartDesc().stream().map(timeMapper::toDto).collect(Collectors.toList());
   } catch (Exception e) {
-   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage(), "err");
+   log.warn("{}", e.getMessage());
+   throw new SaveSearchErrorException("The result did not return any results. ", "err");
   }
-  throw new SaveSearchErrorException("The search has not given any results.", "search");
+ }
+
+
+ @Override
+ public boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException {
+  try {
+   outfitDto.setStateOutfit(State.WORK);
+   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnt(), outfitDto.getDateStart(), outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), outfitDto.getIdMaster(), outfitDto.getId()) == 1)
+    return true;
+   throw new SaveSearchErrorException("Active outfit master ane not found", "save");
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
+  }
  }
 
 }

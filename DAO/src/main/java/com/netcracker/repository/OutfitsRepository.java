@@ -16,7 +16,8 @@ import java.util.UUID;
 public interface OutfitsRepository extends PagingAndSortingRepository<Outfit, UUID> {
 
 
- List<Outfit> getAllByOrderByDateStartDesc();
+ @Query(value = "SELECT * FROM public.outfit order by outfit.date_start desc;", nativeQuery = true)
+ List<Outfit> getAllByOutfitByDateStartDesc();
 
  @Query(value = "SELECT o.id, o.date_end, o.date_start, o.description, o.name, o.state_outfit, o.id_master FROM public.outfit o  right join public.master m on (m.login=?1 and o.state_outfit=?2) where  o.id is not null order by o.date_start desc;", nativeQuery = true)
  List<Outfit> getAllByStateOutfitAndMasterLogin(String login, String state);
@@ -40,6 +41,12 @@ public interface OutfitsRepository extends PagingAndSortingRepository<Outfit, UU
  @Modifying
  @Query(value = "UPDATE public.outfit SET  date_end=?1,date_start=?2,  description=?3, name=?4  where outfit.state_outfit=?5  and outfit.id_master in(select id from master  where login=?6)", nativeQuery = true)
  int updateWorkMaster(Date dateEnd, Date dateStart, String description, String name, String state, String login);
+
+ @Transactional
+ @Modifying
+ @Query(value = "UPDATE public.outfit SET  date_end=?1,date_start=?2,  description=?3, name=?4,state_outfit=?5 ,id_master=?6 where id=?7)", nativeQuery = true)
+ int updateWorkMasterR(Date dateEnd, Date dateStart, String description, String name, String state, UUID id_master, UUID id);
+
 
  @Transactional
  @Modifying

@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional
 public class OrderServicesImpl implements OrderServices {
 
  private final OrderRepository orderRepository;
@@ -117,4 +116,18 @@ public class OrderServicesImpl implements OrderServices {
    throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
   }
  }
+
+ @Override
+ public boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException {
+  try {
+   if (orderRepository.updateOrderOnMaster(orderDto.getId(), orderDto.getDescription(), orderDto.getState().getCode(), new Date(), orderDto.getCarClient()) == 1)
+    return true;
+   else throw new SaveSearchErrorException("The operation was not successful", "Search");
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
+  }
+ }
+
+
 }

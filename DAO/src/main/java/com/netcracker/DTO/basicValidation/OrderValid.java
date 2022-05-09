@@ -20,7 +20,6 @@ public class OrderValid implements ConstraintValidator<ValidOrder, OrderDto> {
  private final OrderServices orderServices;
  private final CarServices carServices;
 
-
  @Autowired
  OrderValid(CarServices carServices, OrderServices orderServices) {
   this.carServices = carServices;

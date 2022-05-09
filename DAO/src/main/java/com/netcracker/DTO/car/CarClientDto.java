@@ -9,10 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -55,6 +52,7 @@ public class CarClientDto {
 
  @Max(value = 1000000, groups = {ValidateCar.New.class, ValidateCar.Edit.class}, message = "Size violation. It must be between 0 and 20 characters")
  @JsonView({ValidateCar.Edit.class, ValidateCar.New.class})
+ @Min(value = 1, groups = {ValidateCar.New.class, ValidateCar.Edit.class}, message = "Size violation. It must be between 1 and 20 characters")
  @ApiModelProperty(name = "run", required = true, value = "Car mileage.", position = 6)
  private int run;
 

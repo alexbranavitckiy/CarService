@@ -1,12 +1,15 @@
 package com.netcracker.DTO.convectror;
 
 import com.netcracker.DTO.car.CarBreakdownDto;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.breakdown.CarBreakdown;
+import com.netcracker.user.Client;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 
@@ -20,6 +23,7 @@ public class CarBreakdownConvectorImpl implements MapperDto<CarBreakdownDto, Car
  CarBreakdownConvectorImpl(ModelMapper modelMapper) {
   this.mapper = modelMapper;
  }
+
 
  @Override
  public CarBreakdown toEntity(CarBreakdownDto dto) {

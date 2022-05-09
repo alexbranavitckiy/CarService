@@ -36,10 +36,10 @@ public class OutfitDto {
  @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private Date dateStart;
 
- @JsonView({ValidateOrd.Details.class, ValidateCar.NewAdmin.class})
+ @JsonView({ValidateOrd.Details.class,ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private Date dateEnt;
 
- @JsonView({ValidateOrd.Details.class})
+ @JsonView({ValidateOrd.Details.class,ValidateCar.Edit.class})
  private State stateOutfit;
 
  @JsonView({ValidateOrd.Details.class, ValidateCar.NewAdmin.class})

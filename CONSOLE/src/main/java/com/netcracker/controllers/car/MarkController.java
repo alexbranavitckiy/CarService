@@ -1,7 +1,6 @@
 package com.netcracker.controllers.car;
 
 import com.netcracker.DTO.errs.SaveSearchErrorException;
-import com.netcracker.annotations.ClientLabel;
 import com.netcracker.car.Mark;
 import com.netcracker.services.MarkServices;
 import io.swagger.annotations.ApiOperation;
@@ -24,21 +23,18 @@ public class MarkController {
   this.markServices = markServices;
  }
 
- @ClientLabel
  @ApiOperation("Get all car brands")
  @GetMapping({"/person/mark/get-all", "/details/mark/get-all"})
  public ResponseEntity<List<Mark>> getAllMark() throws SaveSearchErrorException {
   return ResponseEntity.ok(markServices.getAllMark());
  }
 
- @ClientLabel
  @ApiOperation("Get all car brands with regex")
  @GetMapping({"/person/mark-search", "/details/mark-search"})
  public ResponseEntity<List<Mark>> getAllMark(@RequestParam String regex) throws SaveSearchErrorException {
   return ResponseEntity.ok(markServices.getSearchMark(regex));
  }
 
- @ClientLabel
  @ApiOperation("Get all car brands")
  @GetMapping({"/person/mark/get-by-id", "/details/mark/get-by-id"})
  public ResponseEntity<List<Mark>> getMarkById(@RequestParam UUID id) {
@@ -46,17 +42,18 @@ public class MarkController {
  }
 
  @ApiOperation("Delete car brands")
- @PostMapping(value = "/pivot/details/delete/mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces =
+ @DeleteMapping(value = "/details/delete/mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces =
   MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<Boolean> deleteMark(@Validated @RequestBody Mark mark) {
   return ResponseEntity.ok(markServices.deleteMark(mark));
  }
 
  @ApiOperation("Add car brands")
- @PostMapping(value = "/pivot/details/add/mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces =
+ @PostMapping(value = "/details/add/mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE}, produces =
   MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<Boolean> addMark(@Validated @RequestBody Mark mark) {
   return ResponseEntity.ok(markServices.addMark(mark));
  }
+
 
 }

@@ -34,9 +34,11 @@ public class TimeConvector implements MapperDto<TimeDto, Outfit> {
  @Override
  public TimeDto toDto(Outfit entity) {
   TimeDto timeDto = Objects.isNull(entity) ? null : mapper.map(entity, TimeDto.class);
-  timeDto.setMasterName(entity.getMaster().getName());
-  timeDto.setMasterId(entity.getMaster().getId());
-  timeDto.setOrderId(entity.getOrder().getId());
+//  if (entity!=null&&entity.getMaster().getName()!=null&& entity.getMaster().getId()!=null&&entity.getOrder().getId()!=null){
+//  timeDto.setMasterName(entity.getMaster().getName());
+//  timeDto.setMasterId(entity.getMaster().getId());
+//  timeDto.setOrderId(entity.getOrder().getId());
+//  }
   return timeDto;
  }
 

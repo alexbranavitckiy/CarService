@@ -24,7 +24,7 @@ public class OrderDto {
 
  @Null(groups = {ValidateOrd.New.class})
  @NotNull(groups = {ValidateOrd.EditValue.class})
- @JsonView({ValidateOrd.Details.class, ValidateOrd.EditValue.class})
+ @JsonView({ValidateOrd.Details.class, ValidateOrd.EditValue.class,ValidateOrd.EditAdmin.class})
  private UUID id;
 
  @NotNull(groups = {ValidateOrd.New.class, ValidateOrd.NewAdmin.class})
@@ -36,7 +36,7 @@ public class OrderDto {
  private UUID carClient;
 
  @Null(groups = {ValidateOrd.New.class})
- @JsonView({ValidateOrd.Details.class})
+ @JsonView({ValidateOrd.Details.class,ValidateOrd.NewAdmin.class})
  private State state;
 
  @Null(groups = {ValidateOrd.New.class})

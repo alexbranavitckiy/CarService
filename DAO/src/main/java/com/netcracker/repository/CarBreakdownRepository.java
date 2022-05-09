@@ -17,16 +17,16 @@ import java.util.UUID;
 @Repository
 public interface CarBreakdownRepository extends JpaRepository<CarBreakdown, UUID> {
 
- @Query(value = "SELECT car_breakdown.id, car_breakdown.description, location, run_car_size, state, update_date, id_car FROM public.car_breakdown  right join public.clients c  on (c.login=?1)  where  car_breakdown.id is not null  order by update_date desc", nativeQuery = true)
+ @Query(value = "SELECT * FROM public.car_breakdown  right join public.clients c  on (c.login=?1)  where  car_breakdown.id is not null  order by update_date desc", nativeQuery = true)
  List<CarBreakdown> getAllByLogin(String login);
 
- @Query(value = "SELECT car_breakdown.id, car_breakdown.description, location, run_car_size, state, update_date, id_car FROM public.car_breakdown   right join public.clients  on ( public.car_breakdown.id_car =?1 and public.clients.login=?2 and public.car_breakdown.state=?3 ) where  car_breakdown.id is not null order by update_date desc  ", nativeQuery = true)
+ @Query(value = "SELECT * FROM public.car_breakdown   right join public.clients  on ( public.car_breakdown.id_car =?1 and public.clients.login=?2 and public.car_breakdown.state=?3 ) where  car_breakdown.id is not null order by update_date desc  ", nativeQuery = true)
  List<CarBreakdown> getAllByCarBreakdownByStateAndSortDesc(UUID uuidCar, String login, String state);
 
- @Query(value = "SELECT car_breakdown.id, car_breakdown.description, location, run_car_size, state, update_date, id_car FROM public.car_breakdown  right join public.clients c  on (c.login=?1 and  car_breakdown.id_car =?2 )  where  car_breakdown.id is not null order by update_date desc", nativeQuery = true)
+ @Query(value = "SELECT * FROM public.car_breakdown  right join public.clients c  on (c.login=?1 and  car_breakdown.id_car =?2 )  where  car_breakdown.id is not null order by update_date desc", nativeQuery = true)
  List<CarBreakdown> getAllByCarBreakdownByIdCarAndLoginSortDesc(String login, UUID uuidCar);
 
- @Query(value = "SELECT car_breakdown.id, car_breakdown.description, location, run_car_size, state, update_date, id_car FROM public.car_breakdown  right join public.clients  on (public.clients.login=?1 and  car_breakdown.id_car =?2 )  where  car_breakdown.id is not null", nativeQuery = true)
+ @Query(value = "SELECT * FROM public.car_breakdown  right join public.clients  on (clients.login=?1 and  car_breakdown.id_car =?2 )  where  car_breakdown.id is not null", nativeQuery = true)
  List<CarBreakdown> getAllByCarBreakdownByIdCarAndLogin(String login, UUID uuidCar);
 
  List<CarBreakdown> getAllByCarClientId(UUID uuidCar);
@@ -35,6 +35,12 @@ public interface CarBreakdownRepository extends JpaRepository<CarBreakdown, UUID
  @Modifying
  @Query(value = "update car_breakdown  set description =:description, run_car_size = :runCarSize ,update_date = :updateDate,state = :state,location = :location  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
  int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("runCarSize") int runCarSize, @Param("updateDate") Date updateDate, @Param("state") String state, @Param("location") String location, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+
+ @Transactional
+ @Modifying
+ @Query(value = "update car_breakdown  set price=:price description =:description, run_car_size = :runCarSize ,update_date = :updateDate,state = :state,location = :location  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
+ int updateCarBreakDownByIdAndMasterOnR(@Param("description") double price,@Param("description") String description, @Param("runCarSize") int runCarSize, @Param("updateDate") Date updateDate, @Param("state") String state, @Param("location") String location, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+
 
  @Transactional
  @Modifying

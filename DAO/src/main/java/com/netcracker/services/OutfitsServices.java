@@ -25,4 +25,5 @@ public interface OutfitsServices {
 
  List<TimeDto> getAllOutfitByTime() throws SaveSearchErrorException;
 
+ boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException;
 }

@@ -13,7 +13,7 @@ public interface ValidateBreakdown {
 
  interface Edit {
  }
- interface DetailAdmin {
+ interface DetailAdmin extends Edit {
  }
 
 }

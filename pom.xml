@@ -23,7 +23,6 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -134,6 +133,7 @@
         <!--Test-->
 
     </dependencies>
+    <!--
     <build>
          <pluginManagement>
             <plugins>
@@ -162,7 +162,7 @@
             </plugins>
         </pluginManagement>
     </build>
-
+-->
 
 </project>
 

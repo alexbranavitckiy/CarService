@@ -28,7 +28,7 @@ public class CarBreakdownDto {
  @ApiModelProperty(name = "id", required = false, value = "Unique breakdown identifier.", position = 1)
  private UUID id;
 
- @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class,ValidateBreakdown.New.class})
+ @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class, ValidateBreakdown.New.class})
  @Size(min = 0, max = 250, message = "Maximum length 250")
  @ApiModelProperty(name = "description", required = false, value = "Breakdown descriptions.", position = 2)
  private String description;
@@ -47,7 +47,7 @@ public class CarBreakdownDto {
  @ApiModelProperty(name = "State", required = false, value = "Breakdown condition.", position = 5)
  private State state;
 
- @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class,ValidateBreakdown.New.class})
+ @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class, ValidateBreakdown.New.class})
  @Size(min = 0, max = 250, message = "Maximum length 250")
  @ApiModelProperty(name = "location", required = false, value = "Breakdown location.", position = 6)
  private String location;
@@ -59,7 +59,7 @@ public class CarBreakdownDto {
  @JsonIgnore
  private OutfitDto outfitDto;
 
- @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class,ValidateBreakdown.New.class})
+ @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.New.class, ValidateBreakdown.DetailAdmin.class})
  private double price;
 }
 

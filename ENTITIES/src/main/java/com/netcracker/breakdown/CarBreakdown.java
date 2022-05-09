@@ -1,6 +1,7 @@
 package com.netcracker.breakdown;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.car.CarClient;
 import com.netcracker.outfit.Outfit;
 import lombok.*;

@@ -7,6 +7,7 @@ public enum State {
  NOT_FIXED("NOT_FIXED"),
  IMPORTANT("IMPORTANT"),
  RECORDED("RECORDED"),
+ DRAFT("DRAFT"),
  NEEDS_CORRECTED("NEEDS_CORRECTED");
 
  private String code;
