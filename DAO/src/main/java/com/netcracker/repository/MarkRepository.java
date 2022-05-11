@@ -1,22 +1,23 @@
 package com.netcracker.repository;
 
 import com.netcracker.car.Mark;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Repository
-public interface MarkRepository extends CrudRepository<Mark, UUID> {
+public interface MarkRepository extends PagingAndSortingRepository<Mark, UUID> {
 
  @Query(value = "SELECT * FROM mark WHERE(name like :regex)", nativeQuery = true)
- List<Mark> searchMark(String regex);
+ Page<Mark> searchMark(String regex,Pageable nextPage);
 
- List<Mark> getAllBy();
+ Page<Mark> getAllBy(Pageable nextPage);
 
  Optional<Mark> findById(UUID id);
 

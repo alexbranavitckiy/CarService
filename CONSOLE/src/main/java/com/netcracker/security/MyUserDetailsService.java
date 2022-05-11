@@ -1,7 +1,6 @@
 package com.netcracker.security;
 
 import com.netcracker.services.ClientServices;
-import com.netcracker.services.MasterServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,12 +22,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
  private final ClientServices clientServices;
 
- private final MasterServices masterServices;
 
  @Autowired
- private MyUserDetailsService( MasterServices masterServices, ClientServices clientServices) {
+ private MyUserDetailsService( ClientServices clientServices) {
   this.clientServices = clientServices;
-  this.masterServices = masterServices;
  }
 
  @Override

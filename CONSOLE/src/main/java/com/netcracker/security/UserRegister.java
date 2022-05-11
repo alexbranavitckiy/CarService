@@ -53,13 +53,13 @@ public class UserRegister {
   return passwordEncoder.encode(password);
  }
 
- public void registerNewUser(ClientDto client) throws SaveSearchErrorException {
-   client.setPassword(passwordEncoder.encode(client.getPassword()));
-   client.setId(UUID.randomUUID());
-   client.setRoleUser(RoleUser.REGISTERED);
-   clientServices.registrationClient(client);
+ public UUID registerNewUser(ClientDto client) throws SaveSearchErrorException {
+  client.setPassword(passwordEncoder.encode(client.getPassword()));
+  client.setId(UUID.randomUUID());
+  client.setRoleUser(RoleUser.REGISTERED);
+  clientServices.registrationClient(client);
+  return client.getId();
  }
-
 
 
 }

@@ -32,23 +32,24 @@ public class CarClientValid
  }
 
  public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
-  try {
-   if (clientDto.getMark() != null) {
-    markServices.metadataMark(clientDto.getMark().getId());
-   }
-   if (clientDto.getId() != null) {
-    carServices.idChek(clientDto.getId());
-   }
-   if (clientDto.getIdClient() != null) {
-    clientServices.idChek(clientDto.getIdClient());
-   }
-  } catch (SaveSearchErrorException e) {
-   context.disableDefaultConstraintViolation();
-   context.buildConstraintViolationWithTemplate(e.getMessage())
-    .addPropertyNode(e.getField())
-    .addConstraintViolation();
-   return false;
-  }
+
+  //  try {
+  //   if (clientDto.getMark() != null) {
+  //    markServices.metadataMark(clientDto.getMark().getId());
+  //   }
+  //   if (clientDto.getId() != null) {
+  //    carServices.idChek(clientDto.getId());
+  //   }
+  //   if (clientDto.getIdClient() != null) {
+  //    clientServices.idChek(clientDto.getIdClient());
+  //   }
+  //  } catch (SaveSearchErrorException e) {
+  //   context.disableDefaultConstraintViolation();
+  //   context.buildConstraintViolationWithTemplate(e.getMessage())
+  //    .addPropertyNode(e.getField())
+  //    .addConstraintViolation();
+  // return false;
+  // }
   return true;
  }
 

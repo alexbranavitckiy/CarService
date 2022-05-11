@@ -2,9 +2,12 @@ package com.netcracker.repository;
 
 import com.netcracker.car.CarClient;
 import com.netcracker.user.Client;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,13 +18,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
+public interface CarClientRepository extends PagingAndSortingRepository<CarClient, UUID> {
 
  Optional<CarClient> getAllById(UUID id);
 
  boolean existsById(UUID uuid);
 
  List<CarClient> getAllByClientLogin(String login);
+
 
  Optional<CarClient> getById(UUID uuid);
 
@@ -31,6 +35,8 @@ public interface CarClientRepository extends CrudRepository<CarClient, UUID> {
 
  @Query(value = "SELECT * FROM car_client  WHERE (description like :searchCar) OR (metadata_car like :searchCar) OR (summary like :searchCar)", nativeQuery = true)
  List<CarClient> getAllByLike(@Param("searchCar") String searchCar);
+
+ Page<CarClient> getAllByDescriptionLike(String search, Pageable nextPage);
 
  List<CarClient> getAllBy();
 

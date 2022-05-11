@@ -16,17 +16,13 @@ import java.util.UUID;
 
 @Repository
 public interface MasterRepository extends CrudRepository<Master, UUID> {
- Optional<Master> getAllById(UUID id);
 
  Optional<Master> getAllByLogin(String name);
-
 
  @Transactional
  @Modifying(clearAutomatically = true)
  @Query("update master c set c.login = ?1, c.password = ?2 where c.login = ?3")
  int updatePassword(String newLogin, String password, String login);
-
- List<Master> getAllBy();
 
  List<Master> getAllByRole(Role role);
 
@@ -67,7 +63,6 @@ public interface MasterRepository extends CrudRepository<Master, UUID> {
  @Modifying(clearAutomatically = true)
  @Query("update master c set  c.mail = ?1 where c.login = ?2")
  int updateEmail(String email, String login);
-
 
  @Transactional
  @Modifying

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -34,18 +35,14 @@ public class RegistrationController {
   this.userRegister = userRegister;
  }
 
-
  @ApiOperation(value = "Clients registration")
  @ApiResponses(value = {
   @ApiResponse(code = 200, message = "This user has been successfully registered", response = ValidationErrorResponse.class, responseContainer = "List"),
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> createUser(@JsonView(ValidateClient.New.class) @Validated({ValidateClient.New.class, ValidateClient.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) throws SaveSearchErrorException {
-  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  userRegister.registerNewUser(clients);
-  validationResponse.setViolations(List.of(new Violation("true", "This user has been successfully registered")));
-  return ResponseEntity.ok(validationResponse);
+ public ResponseEntity<UUID> createUser(@JsonView({ValidateClient.New.class}) @Validated({ValidateClient.New.class, ValidateClient.UiCrossFieldChecks.class}) @RequestBody ClientDto clients) throws SaveSearchErrorException {
+  return ResponseEntity.ok(userRegister.registerNewUser(clients));
  }
 
 

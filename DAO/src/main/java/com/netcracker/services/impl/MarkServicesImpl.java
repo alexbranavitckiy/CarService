@@ -1,34 +1,43 @@
 package com.netcracker.services.impl;
 
+import com.netcracker.DTO.car.MarkDto;
+import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
 import com.netcracker.repository.MarkRepository;
 import com.netcracker.services.MarkServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class MarkServicesImpl implements MarkServices {
 
  private final MarkRepository markRepository;
+ private final MapperDto<MarkDto, Mark> mapper;
 
  @Autowired
- MarkServicesImpl(MarkRepository markRepository) {
+ MarkServicesImpl(MapperDto<MarkDto, Mark> mapper, MarkRepository markRepository) {
   this.markRepository = markRepository;
+  this.mapper = mapper;
  }
 
-
  @Override
- public List<Mark> getAllMark() throws SaveSearchErrorException {
+ public List<MarkDto> getAllMark(Integer offset, Integer limit) throws SaveSearchErrorException {
   try {
-   return markRepository.getAllBy();
+   Pageable nextPage = PageRequest.of(offset, limit);
+   return markRepository.getAllBy(nextPage).stream()
+    .map(mapper::toDto)
+    .collect(Collectors.toList());
   } catch (Exception e) {
    throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "search");
   }
@@ -52,9 +61,12 @@ public class MarkServicesImpl implements MarkServices {
  }
 
  @Override
- public List<Mark> getSearchMark(String regex) throws SaveSearchErrorException {
+ public List<MarkDto> getSearchMark(String regex, Integer offset, Integer limit) throws SaveSearchErrorException {
   try {
-   return markRepository.searchMark("%" + regex + "%");
+   Pageable nextPage = PageRequest.of(offset, limit);
+   return markRepository.searchMark("%" + regex + "%", nextPage).stream()
+    .map(mapper::toDto)
+    .collect(Collectors.toList());
   } catch (Exception e) {
    throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "regex");
   }
@@ -72,9 +84,9 @@ public class MarkServicesImpl implements MarkServices {
  }
 
  @Override
- public boolean deleteMark(Mark mark) {
+ public boolean deleteMark(UUID mark) {
   try {
-   markRepository.delete(mark);
+   markRepository.deleteById(mark);
    return true;
   } catch (Exception e) {
    log.info(e.getMessage());

@@ -30,5 +30,6 @@ public interface CarServices {
 
  List<CarClientDto> getAllCarOnMaster() throws SaveSearchErrorException;
 
- List<CarClientDto> getSearchCarOnMaster(String search) throws SaveSearchErrorException;
+ List<CarClientDto> getSearchCarOnMaster(String search, Integer offset, Integer limit) throws SaveSearchErrorException;
+
 }

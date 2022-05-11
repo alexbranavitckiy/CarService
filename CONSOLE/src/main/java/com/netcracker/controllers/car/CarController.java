@@ -41,7 +41,7 @@ public class CarController {
  @JsonView({ValidateCar.Details.class})
 
  @ApiOperation("Get all the car of the logged in user")
- @GetMapping("/person/garage/getAll")
+ @GetMapping("/person/garage/get-all")
  public ResponseEntity<List<CarClientDto>> getAllCarByIdClients(@ApiIgnore Principal principal) {
   return ResponseEntity.ok(carServices.getCarByLoginClient(principal.getName()));
  }
@@ -63,8 +63,8 @@ public class CarController {
  @JsonView({ValidateCar.Details.class})
 
  @ApiOperation("Get machine of user logged in by id")
- @GetMapping("/person/Car{CarUUID}")
- public ResponseEntity<List<CarClientDto>> getCarByIdCar(@PathVariable UUID CarUUID, @ApiIgnore Principal principal) {
+ @GetMapping("/person/Car")
+ public ResponseEntity<List<CarClientDto>> getCarByIdCar(@RequestParam UUID CarUUID, @ApiIgnore Principal principal) {
   Optional<CarClientDto> carClient = carServices.getCarByIdCarOnClient(CarUUID, principal.getName());
   if (carClient.isEmpty()) {
    return ResponseEntity.ok(new ArrayList<>());
@@ -119,11 +119,11 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
-
  @ApiOperation("Search by car")
  @GetMapping("/details/garage-search")
- public ResponseEntity<List<CarClientDto>> searchCar(@RequestParam String search) throws SaveSearchErrorException {
-  return ResponseEntity.ok(carServices.getSearchCarOnMaster(search));
+ public ResponseEntity<List<CarClientDto>> searchCar(@RequestParam("offset") Integer offset,
+                                                     @RequestParam("limit") Integer limit, @RequestParam String search) throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.getSearchCarOnMaster(search, offset, limit));
  }
 
 }

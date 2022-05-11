@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -67,7 +68,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
      response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
    .and()
    .formLogin()
-   .loginPage("/login").failureUrl("/login")
+   .loginPage("/swagger-ui/").failureUrl("/swagger-ui/")
    .defaultSuccessUrl("/swagger-ui/")
    .and().logout().logoutUrl("/person/logout").logoutSuccessUrl("/");
   http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

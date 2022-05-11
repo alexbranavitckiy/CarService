@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,9 +75,10 @@ public class CarServicesImpl implements CarServices {
  }
 
  @Override
- public List<CarClientDto> getSearchCarOnMaster(String search) throws SaveSearchErrorException {
+ public List<CarClientDto> getSearchCarOnMaster(String search, Integer offset, Integer limit) throws SaveSearchErrorException {
   try {
-   return carClientRepository.getAllByLike("%" + search + "%")
+   Pageable nextPage = PageRequest.of(offset, limit);
+   return carClientRepository.getAllByDescriptionLike("%" + search + "%",nextPage)
     .stream()
     .map(clientMapperDto::toDto)
     .collect(Collectors.toList());
@@ -83,7 +86,6 @@ public class CarServicesImpl implements CarServices {
    throw new SaveSearchErrorException("Unknown error." + e.getMessage());
   }
  }
-
 
  @Override
  public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveSearchErrorException {

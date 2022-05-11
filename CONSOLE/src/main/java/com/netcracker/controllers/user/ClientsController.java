@@ -158,8 +158,8 @@ public class ClientsController {
    response = ValidationErrorResponse.class, responseContainer = "List")})
  @PostMapping(value = "/details/registration-client", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<UUID> createUser(@JsonView(ValidateClient.masterRequest.class)
-                                        @Validated({ValidateClient.masterRequest.class})
+ public ResponseEntity<UUID> createUser(@JsonView(ValidateClient.New.class)
+                                        @Validated({ValidateClient.New.class})
                                         @RequestBody ClientDto clients) throws SaveSearchErrorException {
   clients.setPassword(userRegister.newDate(clients.getPhone()));
   return ResponseEntity.ok(clientServices.registrationMaster(clients));
