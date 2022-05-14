@@ -19,6 +19,8 @@ public interface MarkRepository extends PagingAndSortingRepository<Mark, UUID> {
 
  Page<Mark> getAllBy(Pageable nextPage);
 
+ List<Mark> getAllBy();
+
  Optional<Mark> findById(UUID id);
 
  boolean existsById(UUID uuid);

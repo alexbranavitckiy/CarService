@@ -36,7 +36,8 @@ public class ClientDto {
  @NotNull(groups = {ValidateClient.Phone.class} , message = "Name must not be blank")
  @Size(groups = {ValidateClient.Phone.class, ValidateClient.masterRequest.class}, min = 4, max = 30)
  @JsonView({ValidateClient.Phone.class, ValidateClient.Details.class, ValidateClient.masterRequest.class})
- @Pattern(groups = {ValidateClient.Phone.class, ValidateClient.masterRequest.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
+ @Pattern(groups = {ValidateClient.Phone.class, ValidateClient.masterRequest.class},
+  regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
  @ApiModelProperty(name = "phone", required = true, value = "User phone")
  private String phone;
 
@@ -44,7 +45,8 @@ public class ClientDto {
  @Size(groups = {ValidateClient.Email.class}, min = 1, max = 100)
  @JsonView({ValidateClient.Email.class, ValidateClient.Details.class})
  @ApiModelProperty(name = "email", required = true, value = "User mail")
- @Pattern(groups = {ValidateClient.Email.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
+ @Pattern(groups = {ValidateClient.Email.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$",
+  message = "Email should be valid")
  private String email;
 
  @ApiParam(value = "Default value for note")
@@ -58,7 +60,8 @@ public class ClientDto {
  private String login;
 
  @NotNull(groups = ValidateClient.Password.class , message = "Must not be blank")
- @Size(groups = ValidateClient.Password.class, min = 4, max = 12, message = "Password must be between 4 to 15 characters")
+ @Size(groups = ValidateClient.Password.class, min = 4, max = 12,
+  message = "Password must be between 4 to 15 characters")
  @JsonView({ValidateClient.Admin.class, ValidateClient.Password.class})
  private String password;
 

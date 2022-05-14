@@ -37,31 +37,26 @@ public class ClientsController {
  private final ClientServices clientServices;
  private final UserRegister userRegister;
  private AuthenticationManager authManager;
- private final MyUserDetailsService myUserDetailsService;
 
  @Autowired
- ClientsController(MyUserDetailsService myUserDetailsService, JWTUtil jwtUtil,
+ ClientsController(JWTUtil jwtUtil,
                    AuthenticationManager authManager, UserRegister userRegister,
                    ClientServices clientServices) {
   this.userRegister = userRegister;
-  this.myUserDetailsService = myUserDetailsService;
   this.jwtUtil = jwtUtil;
   this.authManager = authManager;
   this.clientServices = clientServices;
  }
 
  @ApiOperation("Method for authentication.")
- @PostMapping({"/registration/perform_login"})
+ @PostMapping({"/registration/perform-login"})
  @ResponseBody
  public Map<String, Object> handleLogin(@Validated({ValidateClient.UiCrossFieldChecks.class})
                                         @RequestBody ContactConfirmationPayload login)
   throws SaveSearchErrorException {
   try {
-   UsernamePasswordAuthenticationToken authInputToken =
-    new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPassword());
-   authManager.authenticate(authInputToken);
-   String token = "Bearer:" + jwtUtil.generateToken(login);
-   return Collections.singletonMap("Authorization", token);
+   authManager.authenticate(new UsernamePasswordAuthenticationToken(login.getLogin(), login.getPassword()));
+   return Collections.singletonMap("Authorization", "Bearer " + jwtUtil.generateToken(login));
   } catch (AuthenticationException authExc) {
    throw new SaveSearchErrorException("Invalid Login Credentials", "Login");
   }

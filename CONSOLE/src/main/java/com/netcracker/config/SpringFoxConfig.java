@@ -37,7 +37,8 @@ public class SpringFoxConfig {
  }
 
  private SecurityScheme securitySchemes() {
-  return new ApiKey("Authorization", "token", "header");
+  return new ApiKey("Authorization",
+   "token", "header");
  }
 
  private SecurityContext securityContexts() {

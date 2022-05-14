@@ -16,11 +16,13 @@ import javax.validation.constraints.Size;
 public class ContactConfirmationPayload {
 
  @NotNull(groups = {ValidateClient.UiCrossFieldChecks.class})
- @Size(groups = {ValidateClient.UiCrossFieldChecks.class}, min = 4, max = 12, message = "Password must be between 4 to 15 characters")
+ @Size(groups = {ValidateClient.UiCrossFieldChecks.class}, min = 4, max = 12,
+  message = "Password must be between 4 to 15 characters")
  private String password;
 
  @NotNull(groups = {ValidateClient.UiCrossFieldChecks.class})
- @Size(groups = {ValidateClient.UiCrossFieldChecks.class}, min = 4, max = 30,message = "login must be between 4 to 15 characters")
+ @Size(groups = {ValidateClient.UiCrossFieldChecks.class}, min = 4, max = 30,
+  message = "login must be between 4 to 15 characters")
  private String login;
 
 }

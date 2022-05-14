@@ -13,9 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,7 +27,8 @@ public class OutfitsServicesImpl implements OutfitsServices {
 
 
  @Autowired
- private OutfitsServicesImpl(MapperDto<TimeDto, Outfit> timeMapper, MapperDto<OutfitDto, Outfit> outfitMapperDto, OutfitsRepository outfitsRepository) {
+ private OutfitsServicesImpl(MapperDto<TimeDto, Outfit> timeMapper,
+                             MapperDto<OutfitDto, Outfit> outfitMapperDto, OutfitsRepository outfitsRepository) {
   this.outfitMapperDto = outfitMapperDto;
   this.timeMapper = timeMapper;
   this.outfitsRepository = outfitsRepository;
@@ -38,7 +37,8 @@ public class OutfitsServicesImpl implements OutfitsServices {
  @Override
  public List<OutfitDto> getAllMasterOutfitWithStateAndSort(State state, String login) throws SaveSearchErrorException {
   try {
-   List<OutfitDto> outfits = outfitsRepository.getAllByStateOutfitAndMasterLogin(login, state.getCode()).stream().map(outfitMapperDto::toDto).collect(Collectors.toList());
+   List<OutfitDto> outfits = outfitsRepository.getAllByStateOutfitAndMasterLogin(login, state.getCode()).
+    stream().map(outfitMapperDto::toDto).collect(Collectors.toList());
    if (outfits.size() > 0) return outfits;
   } catch (Exception e) {
    throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage(), "err");
@@ -93,7 +93,8 @@ public class OutfitsServicesImpl implements OutfitsServices {
  public boolean updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException {
   try {
    outfitDto.setStateOutfit(State.WORK);
-   if (outfitsRepository.updateWorkMaster(outfitDto.getDateEnt(), outfitDto.getDateStart(), outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), login) == 1)
+   if (outfitsRepository.updateWorkMaster(outfitDto.getDateEnt(), outfitDto.getDateStart(), outfitDto.getDescription(),
+    outfitDto.getName(), State.WORK.getCode(), login) == 1)
     return true;
    throw new SaveSearchErrorException("Active outfit master ane not found", "save");
   } catch (Exception e) {
@@ -116,7 +117,9 @@ public class OutfitsServicesImpl implements OutfitsServices {
  public boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException {
   try {
    outfitDto.setStateOutfit(State.WORK);
-   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnt(), outfitDto.getDateStart(), outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), outfitDto.getIdMaster(), outfitDto.getId()) == 1)
+   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnt(), outfitDto.getDateStart(),
+    outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), outfitDto.getIdMaster(),
+    outfitDto.getId()) == 1)
     return true;
    throw new SaveSearchErrorException("Active outfit master ane not found", "save");
   } catch (Exception e) {

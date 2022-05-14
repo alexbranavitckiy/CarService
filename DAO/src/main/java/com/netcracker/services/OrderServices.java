@@ -11,7 +11,8 @@ import java.util.UUID;
 
 public interface OrderServices {
 
- List<OrderDto> getAllOrderClientsWithState(String login, State state) throws SaveSearchErrorException;
+ List<OrderDto> getAllOrderClientsWithState(String login, State state, int offset, int limit)
+  throws SaveSearchErrorException;
 
  boolean addOrderOnClient(OrderDto orderDto, String name) throws SaveSearchErrorException;
 
@@ -24,4 +25,6 @@ public interface OrderServices {
  List<OrderDto> getAllOrderWithStateOnMaster(String login, State state) throws SaveSearchErrorException;
 
  boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException;
+
+ UUID updateRequestFromClient(OrderForm orderDto, String name) throws SaveSearchErrorException;
 }

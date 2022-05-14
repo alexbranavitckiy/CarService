@@ -24,8 +24,7 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
 
  boolean existsById(UUID uuid);
 
- List<CarClient> getAllByClientLogin(String login);
-
+ Page<CarClient> getAllByClientLogin(String login, Pageable nextPage);
 
  Optional<CarClient> getById(UUID uuid);
 
@@ -33,7 +32,8 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
 
  boolean existsByMetadataCar(String m);
 
- @Query(value = "SELECT * FROM car_client  WHERE (description like :searchCar) OR (metadata_car like :searchCar) OR (summary like :searchCar)", nativeQuery = true)
+ @Query(value = "SELECT * FROM car_client  WHERE (description like :searchCar) OR (metadata_car like :searchCar)" +
+  " OR (summary like :searchCar)", nativeQuery = true)
  List<CarClient> getAllByLike(@Param("searchCar") String searchCar);
 
  Page<CarClient> getAllByDescriptionLike(String search, Pageable nextPage);
@@ -42,13 +42,15 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
 
  @Transactional
  @Modifying
- @Query(value = "UPDATE public.car_client   SET metadata_car=?1  where car_client.id = ?2 and  car_client.id_clients in(select clients.id from clients where clients.login=?3)", nativeQuery = true)
+ @Query(value = "UPDATE public.car_client   SET metadata_car=?1  where car_client.id = ?2 and" +
+  "  car_client.id_clients in(select clients.id from clients where clients.login=?3)", nativeQuery = true)
  int updateCarClientById(String mata, UUID uuid, String login);
 
 
  @Transactional
  @Modifying
- @Query(value = "UPDATE public.car_client   SET description=?1,year=?2,run=?3  where car_client.id = ?4 and  car_client.id_clients in(select clients.id from clients where clients.login=?5)", nativeQuery = true)
+ @Query(value = "UPDATE public.car_client   SET description=?1,year=?2,run=?3  where car_client.id = ?4 and " +
+  " car_client.id_clients in(select clients.id from clients where clients.login=?5)", nativeQuery = true)
  int updateCarClientByIdWithoutMachineNumber(String description, Date date, int run, UUID uuid, String login);
 
 
@@ -56,7 +58,9 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
  @Modifying
  @Query(
   value =
-   "insert into car_client (id,description,year,metadata_car, run,summary,id_clients,id_mark) values (:id,:description,:year, :metadata_car, :run, :summary, (SELECT public .clients.id FROM public.clients where public .clients.login=:login), :id_mark)   ",
+   "insert into car_client (id,description,year,metadata_car, run,summary,id_clients,id_mark) values" +
+    " (:id,:description,:year, :metadata_car, :run, :summary, (SELECT public .clients.id " +
+    "FROM public.clients where public .clients.login=:login), :id_mark)   ",
   nativeQuery = true)
  int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
                       @Param("summary") String summary, @Param("login") String login, @Param("id_mark") UUID id_mark);
@@ -65,7 +69,8 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
  @Modifying
  @Query(
   value =
-   "insert into car_client (id,description,year,metadata_car, run,summary,id_mark) values (:id,:description,:year, :metadata_car, :run, :summary, :id_mark)   ",
+   "insert into car_client (id,description,year,metadata_car, run,summary,id_mark) values " +
+    "(:id,:description,:year, :metadata_car, :run, :summary, :id_mark)   ",
   nativeQuery = true)
  int createCarOnMaster(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
                        @Param("summary") String summary, @Param("id_mark") UUID id_mark);

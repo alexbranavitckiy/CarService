@@ -29,25 +29,31 @@ public class MasterDto {
 
  @ApiModelProperty(name = "name", required = true, value = "The username of the user who is registering")
  @JsonView({ValidateClient.Details.class, ValidateClient.Edit.class,ValidateClient.NewAdmin.class})
- @NotBlank(groups = {ValidateClient.New.class,ValidateClient.NewAdmin.class}, message = "Size violation. It must be between 4 and 30 characters")
- @Size(groups = {ValidateClient.Edit.class,ValidateClient.NewAdmin.class}, min = 4, max = 30, message = "Size violation. It must be between 4 and 30 characters")
+ @NotBlank(groups = {ValidateClient.New.class,ValidateClient.NewAdmin.class},
+  message = "Size violation. It must be between 4 and 30 characters")
+ @Size(groups = {ValidateClient.Edit.class,ValidateClient.NewAdmin.class},
+  min = 4, max = 30, message = "Size violation. It must be between 4 and 30 characters")
  private String name;
 
- @Pattern(groups = {ValidateClient.NewAdmin.class}, regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
+ @Pattern(groups = {ValidateClient.NewAdmin.class},
+  regexp = "^(\\+375|80)(29|25|44|33)(\\d{3})(\\d{2})(\\d{2})$", message = "Phone should be valid")
  @JsonView({ValidateClient.Details.class,ValidateClient.NewAdmin.class})
  private String phone;
 
- @Pattern(groups = {ValidateClient.NewAdmin.class}, regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
+ @Pattern(groups = {ValidateClient.NewAdmin.class},
+  regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "Email should be valid")
  @JsonView({ValidateClient.Details.class,ValidateClient.NewAdmin.class})
  private String mail;
 
  @NotNull(groups = {ValidateClient.Edit.class})
- @Size(groups = {ValidateCar.Edit.class}, min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
+ @Size(groups = {ValidateCar.Edit.class}, min = 0, max = 250,
+  message = "Size violation. It must be between 0 and 250 characters")
  @JsonView({ValidateClient.Details.class, ValidateClient.Edit.class,ValidateClient.NewAdmin.class})
  private String description;
 
  @NotNull(groups = {ValidateClient.Edit.class})
- @Size(groups = {ValidateCar.Edit.class}, min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
+ @Size(groups = {ValidateCar.Edit.class}, min = 0, max = 250,
+  message = "Size violation. It must be between 0 and 250 characters")
  @JsonView({ValidateClient.Details.class, ValidateClient.Edit.class,ValidateClient.NewAdmin.class})
  private String homeAddress;
 
@@ -55,14 +61,16 @@ public class MasterDto {
  private Qualification qualification;
 
  @NotNull(groups = {ValidateClient.Edit.class,ValidateClient.NewAdmin.class})
- @Size(groups = {ValidateCar.Edit.class,ValidateClient.NewAdmin.class}, min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
+ @Size(groups = {ValidateCar.Edit.class,ValidateClient.NewAdmin.class},
+  min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
  @JsonView({ValidateClient.Details.class, ValidateClient.Edit.class,ValidateClient.NewAdmin.class})
  private String education;
 
  @JsonView({ValidateClient.Details.class,ValidateClient.NewAdmin.class})
  private String login;
 
- @Size(groups = {ValidateClient.NewAdmin.class}, min = 4, max = 20, message = "Size violation. It must be between 4 and 20 characters")
+ @Size(groups = {ValidateClient.NewAdmin.class}, min = 4, max = 20,
+  message = "Size violation. It must be between 4 and 20 characters")
  @JsonView({ValidateClient.Admin.class,ValidateClient.NewAdmin.class})
  private String password;
 

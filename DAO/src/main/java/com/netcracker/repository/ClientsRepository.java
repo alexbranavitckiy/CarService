@@ -4,6 +4,7 @@ import com.netcracker.user.Client;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @Repository
-public interface ClientsRepository extends CrudRepository<Client, UUID> {
+public interface ClientsRepository extends PagingAndSortingRepository<Client, UUID> {
 
  boolean existsByLogin(String login);
 
@@ -29,13 +30,16 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
 
  List<Client> getAllBy();
 
- @Query(value = "SELECT * FROM clients  WHERE (email like :searchClient) OR (name like :searchClient) OR  (phone like :searchClient) or (login like :searchClient) ", nativeQuery = true)
+ @Query(value = "SELECT * FROM clients  WHERE (email like :searchClient) OR (name like :searchClient) " +
+  "OR  (phone like :searchClient) or (login like :searchClient) ", nativeQuery = true)
  List<Client> getAllByLike(@Param("searchClient") String searchClient);
 
- @Query(value = "SELECT (COUNT(clients.login)+COUNT(master.login)) FROM clients  join master on clients.login=?1 or master.login=?2", nativeQuery = true)
+ @Query(value = "SELECT (COUNT(clients.login)+COUNT(master.login)) FROM clients  join master on" +
+  " clients.login=?1 or master.login=?2", nativeQuery = true)
  int existsByLoginClientAndMaster(String login, String login2);
 
- @Query(value = "SELECT  role ,login,password  FROM clients  where clients.login=?1 union SELECT  role ,login,password  FROM master   where master .login=?2", nativeQuery = true)
+ @Query(value = "SELECT  role ,login,password  FROM clients  where clients.login=?1 union SELECT" +
+  "  role ,login,password  FROM master   where master .login=?2", nativeQuery = true)
  Map<String, Object> getMyUser(String login, String login2);
 
  @Transactional
@@ -77,9 +81,11 @@ public interface ClientsRepository extends CrudRepository<Client, UUID> {
  @Modifying
  @Query(
   value =
-   "insert into clients (id,description,email,login, name,password,phone,role) values (:id,:description,:email, :login, :name, :password, :phone, :role)",
+   "insert into clients (id,description,email,login, name,password,phone,role) values" +
+    " (:id,:description,:email, :login, :name, :password, :phone, :role)",
   nativeQuery = true)
- int insertClient(@Param("id") UUID id, @Param("description") String description, @Param("email") String email, @Param("login") String login, @Param("name") String name,
+ int insertClient(@Param("id") UUID id, @Param("description") String description, @Param("email") String email,
+                  @Param("login") String login, @Param("name") String name,
                   @Param("password") String password, @Param("phone") String phone, @Param("role") String role);
 
 }

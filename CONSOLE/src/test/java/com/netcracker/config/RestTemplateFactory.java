@@ -21,7 +21,7 @@ public class RestTemplateFactory {
  public RestTemplate rapidApiRestTemplate() {
   RestTemplate restTemplate = new RestTemplate();
   List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
-  interceptors.add(new HeaderRequestInterceptor("Authorization", "Bearer:"
+  interceptors.add(new HeaderRequestInterceptor("Authorization", "Bearer "
    + jwtUtil.generateToken(new ContactConfirmationPayload("clients", "clients"))));
   restTemplate.setInterceptors(interceptors);
   return restTemplate;

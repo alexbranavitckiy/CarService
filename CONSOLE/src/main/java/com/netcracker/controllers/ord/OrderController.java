@@ -34,17 +34,21 @@ public class OrderController {
   this.orderServices = orderServices;
  }
 
- @GetMapping("person/order-request/getAll")
+ @GetMapping("/person/order-request/getAll")
  @JsonView(ValidateOrd.Details.class)
  @ApiOperation("Get all requests of a logged in client")
- public ResponseEntity<List<OrderDto>> getOrderOnClient(@ApiIgnore Principal principal) throws SaveSearchErrorException {
-  return ResponseEntity.ok(orderServices.getAllOrderClientsWithState(principal.getName(), State.REQUEST));
+ public ResponseEntity<List<OrderDto>> getOrderOnClient(@RequestParam("offset") int offset,
+                                                        @RequestParam("limit") int limit,
+                                                        @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  return ResponseEntity.ok(orderServices.getAllOrderClientsWithState(principal.getName(), State.REQUEST, offset, limit));
  }
 
  @ApiOperation("Create an order for a customer")
- @PostMapping(value = "person/order-request/newOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PostMapping(value = "/person/order-request/newOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> addOrder(@Validated({ValidateOrd.New.class}) @RequestBody @JsonView(ValidateOrd.New.class)
+ public ResponseEntity<ValidationErrorResponse> addOrder(@Validated({ValidateOrd.New.class})
+                                                         @RequestBody @JsonView(ValidateOrd.New.class)
                                                           OrderDto orderDto, @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
@@ -53,12 +57,15 @@ public class OrderController {
   return ResponseEntity.ok(validationResponse);
  }
 
-
  @ApiOperation("Close request")
  @PutMapping(value = "/person/order-close", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> closeOrderRequest(@Validated({ValidateOrd.EditValue.class, ValidateOrd.EditValue.class}) @RequestBody @JsonView(ValidateOrd.EditValue.class)
-                                                                   OrderDto orderDto, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> closeOrderRequest(@Validated({ValidateOrd.EditValue.class,
+  ValidateOrd.EditValue.class})
+                                                                  @RequestBody @JsonView(ValidateOrd.EditValue.class)
+                                                                   OrderDto orderDto,
+                                                                  @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   orderServices.cancelRequest(orderDto.getId(), principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Request canceled successfully")));
@@ -68,25 +75,42 @@ public class OrderController {
  @ApiOperation("Create of an order by the master receiver")
  @PostMapping(value = "/details/new-order", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<UUID> addOrderOnMaster(@Validated({ValidateOrd.NewAdmin.class}) @RequestBody @JsonView(ValidateOrd.NewAdmin.class)
+ public ResponseEntity<UUID> addOrderOnMaster(@Validated({ValidateOrd.NewAdmin.class})
+                                              @RequestBody @JsonView(ValidateOrd.NewAdmin.class)
                                                OrderForm orderDto, @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   return ResponseEntity.ok(orderServices.addOrderOnMaster(orderDto, principal.getName()));
+ }
+
+ @ApiOperation("Update request from client")
+ @PutMapping(value = "/details/request-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> updateRequestFromClient(@Validated({ValidateOrd.EditValue.class})
+                                                     @RequestBody @JsonView(ValidateOrd.EditValue.class)
+                                                      OrderForm orderDto, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  return ResponseEntity.ok(orderServices.updateRequestFromClient(orderDto, principal.getName()));
  }
 
 
  @GetMapping("/details/order-request/getAll")
  @JsonView(ValidateOrd.Details.class)
  @ApiOperation("Get a list of all created orders")
- public ResponseEntity<List<OrderDto>> getOrderOnMasterStateByCreated(@RequestParam State state, @Validated @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<List<OrderDto>> getOrderOnMasterStateByCreated(@RequestParam State state,
+                                                                      @Validated @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   return ResponseEntity.ok(orderServices.getAllOrderWithStateOnMaster(principal.getName(), state));
  }
 
  @ApiOperation("Order update")
  @PutMapping(value = "/details/order-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateOrderRequestMasterR(@Validated({ValidateOrd.EditAdmin.class}) @RequestBody @JsonView(ValidateOrd.EditAdmin.class)
-                                                                           OrderDto orderDto, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> updateOrderRequestMasterR(@Validated({ValidateOrd.EditAdmin.class})
+                                                                          @RequestBody
+                                                                          @JsonView(ValidateOrd.EditAdmin.class)
+                                                                           OrderDto orderDto,
+                                                                          @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   orderServices.updateOrderOnMasterR(orderDto, principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Request canceled successfully")));

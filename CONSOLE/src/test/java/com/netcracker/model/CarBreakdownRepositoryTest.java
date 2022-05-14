@@ -7,6 +7,7 @@ import com.netcracker.repository.CarClientRepository;
 import com.netcracker.repository.ClientsRepository;
 import com.netcracker.repository.MarkRepository;
 import com.netcracker.user.RoleUser;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,8 @@ class CarBreakdownRepositoryTest {
  void getAllByLogin() {
   UUID uuid = UUID.randomUUID();
   clientsRepository.insertClient(uuid, "description",
-   "email", "UUID.randomUUID()", "name", "password", "phone", RoleUser.REGISTERED.getCode());
+   "email", "UUID.randomUUID()", "name", "password",
+   "phone", RoleUser.REGISTERED.getCode());
   assertThat(clientsRepository.existsById(uuid)).isTrue();
   Mark mark = Mark.builder()
    .id(uuid)
@@ -51,38 +53,41 @@ class CarBreakdownRepositoryTest {
    .yearEnd(new Date())
    .yearEnd(new Date()).build();
   markRepository.save(mark);
-  carClientRepository.createCarOnLogin(uuid, "description", new Date(), "asdads", 12, "summary", "login", uuid);
+  Assertions.assertEquals(1, carClientRepository.createCarOnLogin(uuid,
+   "description", new Date(), "asdads", 12, "summary", "login", uuid));
  }
 
  @Test
  void getAllByCarBreakdownByStateAndSortDesc() {
-  carBreakdownRepository.getAllByCarBreakdownByStateAndSortDesc(UUID.randomUUID(), "", "");
+  Assertions.assertNotNull(carBreakdownRepository.
+   getAllByCarBreakdownByStateAndSortDesc(UUID.randomUUID(), "", ""));
  }
 
  @Test
  void getAllByCarBreakdownByIdCarAndLoginSortDesc() {
-  carBreakdownRepository.getAllByCarBreakdownByIdCarAndLoginSortDesc("", UUID.randomUUID());
+  Assertions.assertNotNull(carBreakdownRepository.
+   getAllByCarBreakdownByIdCarAndLoginSortDesc("", UUID.randomUUID()));
  }
 
  @Test
  void getAllByCarBreakdownByIdCarAndLogin() {
-  carBreakdownRepository.getAllByCarBreakdownByIdCarAndLogin("", UUID.randomUUID());
+  Assertions.assertNotNull(carBreakdownRepository.getAllByCarBreakdownByIdCarAndLogin("", UUID.randomUUID()));
  }
 
  @Test
  void getAllByCarClientId() {
-  carBreakdownRepository.getAllByCarClientId(UUID.randomUUID());
+  Assertions.assertNotNull(carBreakdownRepository.getAllByCarClientId(UUID.randomUUID()));
  }
 
 
  @Test
  void getAllByMaster() {
-  carBreakdownRepository.getAllByMaster("Master");
+  Assertions.assertNotNull(carBreakdownRepository.getAllByMaster("Master"));
  }
 
  @Test
  void getAllByIdOnMaster() {
-  carBreakdownRepository.getAllByIdOnMaster("Master", UUID.randomUUID());
+  Assertions.assertNotNull(carBreakdownRepository.getAllByIdOnMaster("Master", UUID.randomUUID()));
  }
 
 

@@ -2,18 +2,18 @@ package com.netcracker.services.impl;
 
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.convectror.MapperDto;
+import com.netcracker.DTO.errs.ApiError;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.CarClient;
 import com.netcracker.repository.CarClientRepository;
 import com.netcracker.services.CarServices;
-import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,28 +27,36 @@ import java.util.stream.Collectors;
 public class CarServicesImpl implements CarServices {
 
  private final CarClientRepository carClientRepository;
- private final ClientServices clientServices;
  private final MapperDto<CarClientDto, CarClient> clientMapperDto;
 
  @Autowired
  private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto,
-                         ClientServices clientServices, CarClientRepository carClientRepository) {
-  this.clientServices = clientServices;
+                       CarClientRepository carClientRepository) {
   this.clientMapperDto = clientMapperDto;
   this.carClientRepository = carClientRepository;
  }
 
 
  @Override
- public List<CarClientDto> getCarByLoginClient(String login) {
-  List<CarClient> carClients = carClientRepository.getAllByClientLogin(login);
-  return carClients.stream().map(clientMapperDto::toDto).collect(Collectors.toList());
+ public List<CarClientDto> getCarByLoginClient(String login, Integer offset, Integer limit)
+  throws SaveSearchErrorException {
+  try {
+   return carClientRepository.getAllByClientLogin(login, PageRequest.of(offset, limit))
+    .stream().map(clientMapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   log.error(e.getMessage());
+   throw new SaveSearchErrorException("Unknown error.{}", e.getMessage());
+  }
  }
 
  @Override
- public Optional<CarClientDto> getCarByIdCarOnClient(UUID uuidCar, String login) {
-  Optional<CarClient> carClient = carClientRepository.getAllByIdAndClient_Login(uuidCar, login);
-  return carClient.map(clientMapperDto::toDto);
+ public Optional<CarClientDto> getCarByIdCarOnClient(UUID uuidCar, String login) throws SaveSearchErrorException {
+  try {
+   return carClientRepository.getAllByIdAndClient_Login(uuidCar, login).map(clientMapperDto::toDto);
+  } catch (Exception e) {
+   log.error(e.getMessage());
+   throw new SaveSearchErrorException("Unknown error.{}", e.getMessage());
+  }
  }
 
  @Override
@@ -60,7 +68,7 @@ public class CarServicesImpl implements CarServices {
     carClient.getMark().getId()) > 0)
     return carClient.getId();
   } catch (Exception e) {
-   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users.{}", e.getMessage());
   }
   throw new SaveSearchErrorException("Invalid values entered.");
  }
@@ -70,33 +78,34 @@ public class CarServicesImpl implements CarServices {
   try {
    return carClientRepository.getAllBy().stream().map(clientMapperDto::toDto).collect(Collectors.toList());
   } catch (Exception e) {
-   throw new SaveSearchErrorException("Unknown error." + e.getMessage());
+   throw new SaveSearchErrorException("Unknown error. {}", e.getMessage());
   }
  }
 
  @Override
- public List<CarClientDto> getSearchCarOnMaster(String search, Integer offset, Integer limit) throws SaveSearchErrorException {
+ public List<CarClientDto> getSearchCarOnMaster(String search, Integer offset, Integer limit)
+  throws SaveSearchErrorException {
   try {
-   Pageable nextPage = PageRequest.of(offset, limit);
-   return carClientRepository.getAllByDescriptionLike("%" + search + "%",nextPage)
+   return carClientRepository.getAllByDescriptionLike("%" + search + "%",
+     PageRequest.of(offset, limit))
     .stream()
     .map(clientMapperDto::toDto)
     .collect(Collectors.toList());
   } catch (Exception e) {
-   throw new SaveSearchErrorException("Unknown error." + e.getMessage());
+   throw new SaveSearchErrorException("Unknown error.{}", e.getMessage());
   }
  }
 
  @Override
- public boolean createCarOnClient(CarClientDto carClient, String login) throws SaveSearchErrorException {
+ public UUID createCarOnClient(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
    carClient.setId(UUID.randomUUID());
    if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(),
     carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
     login, carClient.getMark().getId()) > 0)
-    return true;
+    return carClient.getId();
   } catch (Exception e) {
-   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users.{}", e.toString());
   }
   throw new SaveSearchErrorException("Invalid values entered.");
  }
@@ -109,7 +118,7 @@ public class CarServicesImpl implements CarServices {
     return true;
    } else throw new SaveSearchErrorException("Duplicate car number entered.", "MetadataCar");
   } catch (DataAccessException e) {
-   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users.{}", e.getMessage());
   }
  }
 
@@ -123,7 +132,7 @@ public class CarServicesImpl implements CarServices {
     throw new SaveSearchErrorException("Invalid values entered.", "Save");
    }
   } catch (DataAccessException e) {
-   throw new SaveSearchErrorException("The entered data is in use by other users." + e.getMessage());
+   throw new SaveSearchErrorException("The entered data is in use by other users. {}", e.getMessage());
   }
  }
 
@@ -136,14 +145,23 @@ public class CarServicesImpl implements CarServices {
 
  @Override
  public boolean metadataCarChek(String metadata) throws SaveSearchErrorException {
-  if (carClientRepository.existsByMetadataCar(metadata))
-   throw new SaveSearchErrorException("This car number is already registered.", "metadataCar");
-  return true;
+  try {
+   if (carClientRepository.existsByMetadataCar(metadata))
+    throw new SaveSearchErrorException("This car number is already registered.", "metadataCar");
+   return true;
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("This car number is already registered.", e.getMessage());
+  }
  }
 
 
  @Override
- public Optional<CarClient> getCarByIdOnMaster(UUID uuidCar) {
-  return carClientRepository.getById(uuidCar);
+ public Optional<CarClient> getCarByIdOnMaster(UUID uuidCar) throws ApiError {
+  try {
+   return carClientRepository.getById(uuidCar);
+  } catch (Exception e) {
+   throw new ApiError(HttpStatus.BAD_REQUEST, e.getMessage(), e.toString());
+  }
+
  }
 }

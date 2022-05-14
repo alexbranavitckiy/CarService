@@ -34,7 +34,8 @@ public class MasterValid implements ConstraintValidator<ValidMaster, MasterDto> 
   try {
    if (person.getLogin() != null)
     clientServices.loginChek(person.getLogin());
-   if (person.getRole() != null && Arrays.stream(Role.values()).filter(x -> x.equals(person.getRole())).findFirst().isEmpty())
+   if (person.getRole() != null && Arrays.stream(Role.values()).filter(x ->
+    x.equals(person.getRole())).findFirst().isEmpty())
     throw new SaveSearchErrorException("Introduced non-existent role", "Role");
   } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();

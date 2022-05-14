@@ -30,7 +30,8 @@ public class MasterServicesImpl implements MasterServices {
 
  @Lazy
  @Autowired
- private MasterServicesImpl(@Qualifier("MasterConvectorImpl") MapperDto<MasterDto, Master> mapperDto, MasterRepository masterRepository) {
+ private MasterServicesImpl(@Qualifier("MasterConvectorImpl") MapperDto<MasterDto, Master> mapperDto,
+                            MasterRepository masterRepository) {
   this.mapperDto = mapperDto;
   this.masterRepository = masterRepository;
  }
@@ -156,7 +157,8 @@ public class MasterServicesImpl implements MasterServices {
  @Override
  public boolean updateMasterByLogin(MasterDto masterDto, String login) throws SaveSearchErrorException {
   try {
-   if (masterRepository.updateDate(masterDto.getName(), masterDto.getDescription(), masterDto.getHomeAddress(), masterDto.getEducation(), login) == 1)
+   if (masterRepository.updateDate(masterDto.getName(), masterDto.getDescription(), masterDto.getHomeAddress(),
+    masterDto.getEducation(), login) == 1)
     return true;
    throw new SaveSearchErrorException("Data update was not successful", "Save");
   } catch (DataIntegrityViolationException e) {
@@ -167,7 +169,6 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  //--Master--//
-
 
  @Override
  public Optional<Master> getMasterByLogin(String login) {

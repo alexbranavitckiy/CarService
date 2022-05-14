@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(authorities = "RECEPTIONIST")
 @SpringBootTest(classes = CarServiceApplication.class)
-public class CarControllerMockTest {
+public class CarControllerMock {
 
  @Autowired
  private MockMvc mockMvc;
@@ -36,49 +36,16 @@ public class CarControllerMockTest {
  @Autowired
  private ObjectMapper mapper;
 
- @Test
- void getAllCarByIdClients() throws Exception {
-  List<CarClientDto> cars = new ArrayList<>();
-  CarClientDto car = new CarClientDto();
-  car.setId(UUID.randomUUID());
-  car.setSummary("summary");
-  Mockito.when(carServices.getCarByLoginClient("")).thenReturn(cars);
-  mockMvc.perform(get("/person/garage/get-all")).andExpect(status().isOk());
- }
 
  @Test
  void createCarError() throws Exception {
   CarClientDto car = new CarClientDto();
-  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(true);
+  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(UUID.randomUUID());
   String json = mapper.writeValueAsString(car);
   mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
  }
 
- @Test
- void createCar() throws Exception {
-  CarClientDto car = new CarClientDto();
-  car.setSummary("summary");
-  car.setRun(12);
-  car.setMetadataCar("summary");
-  car.setIdClient(UUID.randomUUID());
-  car.setMark(MarkDto.builder().id(UUID.fromString("cda01a34-4119-3e5e-9ab9-60b341f234fb")).build());
-  car.setEar(new Date());
-  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(true);
-  String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-
- }
-
- @Test
- void getCarByIdCar() throws Exception {
-  CarClientDto car = new CarClientDto();
-  car.setId(UUID.randomUUID());
-  car.setSummary("summary");
-  Mockito.when(carServices.getCarByIdCarOnClient(UUID.randomUUID(), "")).thenReturn(Optional.of(car));
-  mockMvc.perform(get("/person/Car").param("CarUUID", UUID.randomUUID().toString())).andExpect(status().isOk());
- }
 
  @Test
  void updateCar() throws Exception {
@@ -121,9 +88,8 @@ public class CarControllerMockTest {
   CarClientDto car = new CarClientDto();
   cars.add(car);
   Mockito.when(carServices.getAllCarOnMaster()).thenReturn(cars);
-  String json = mapper.writeValueAsString(car);
   mockMvc.perform(post("/details/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+   .content(mapper.writeValueAsString(car)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
  @Test

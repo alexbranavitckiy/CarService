@@ -1,6 +1,7 @@
 package com.netcracker.controllers.globalController;
 
 
+import com.netcracker.DTO.errs.ApiError;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
@@ -8,14 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDateTime;
 
 @Slf4j
 @ControllerAdvice
@@ -54,6 +56,12 @@ public class ConstraintValidationException {
   return ResponseEntity.ok(error);
  }
 
-
+ @ResponseBody
+ @ResponseStatus(HttpStatus.BAD_REQUEST)
+ @ExceptionHandler({ApiError.class})
+ ResponseEntity<ApiError> onApiException(ApiError s) {
+  s.setLocalDateTime(LocalDateTime.now());
+  return ResponseEntity.ok(s);
+ }
 
 }

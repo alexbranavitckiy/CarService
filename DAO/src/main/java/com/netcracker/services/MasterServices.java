@@ -22,7 +22,7 @@ public interface MasterServices {
 
  boolean updateMasterLogin(String newLogin, String oldLogin) throws SaveSearchErrorException;
 
- boolean updateMasterEmail(String newLogin, String oldLogin) throws SaveSearchErrorException;
+ boolean updateMasterEmail(String email, String oldLogin) throws SaveSearchErrorException;
 
  boolean updateMasterPhone(String newLogin, String oldLogin) throws SaveSearchErrorException;
  //--Master--//

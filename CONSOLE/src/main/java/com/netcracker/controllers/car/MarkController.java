@@ -34,7 +34,8 @@ public class MarkController {
  @ApiOperation("Get all car brands with regex")
  @GetMapping({"/person/mark-search", "/details/mark-search"})
  public ResponseEntity<List<MarkDto>> getAllMark(@RequestParam("offset") Integer offset,
-                                              @RequestParam("limit") Integer limit, @RequestParam String regex) throws SaveSearchErrorException {
+                                              @RequestParam("limit") Integer limit, @RequestParam String regex)
+  throws SaveSearchErrorException {
   return ResponseEntity.ok(markServices.getSearchMark(regex,offset,limit));
  }
 

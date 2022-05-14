@@ -1,7 +1,6 @@
 package com.netcracker.services.impl;
 
 import com.netcracker.DTO.user.ClientDto;
-import com.netcracker.DTO.convectror.ClientConvectorImpl;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
@@ -28,18 +27,15 @@ import java.util.stream.Collectors;
 public class ClientServicesImpl implements ClientServices {
 
  private final ClientsRepository clientsRepository;
- private final CarClientRepository carClientRepository;
- private final ClientConvectorImpl clientConvector;
  private final MapperDto<ClientDto, Client> mapperDto;
 
 
  @Lazy
  @Autowired
- private ClientServicesImpl(@Qualifier("ClientConvectorImpl") MapperDto<ClientDto, Client> mapperDto, ClientConvectorImpl clientConvector, CarClientRepository carClientRepository, ClientsRepository clientsRepository) {
+ private ClientServicesImpl(@Qualifier("ClientConvectorImpl") MapperDto<ClientDto, Client> mapperDto,
+                            ClientsRepository clientsRepository) {
   this.clientsRepository = clientsRepository;
   this.mapperDto = mapperDto;
-  this.clientConvector = clientConvector;
-  this.carClientRepository = carClientRepository;
  }
 
  @Override
@@ -56,7 +52,8 @@ public class ClientServicesImpl implements ClientServices {
  public boolean registrationClient(ClientDto client) throws SaveSearchErrorException {
   try {
    client.setId(UUID.randomUUID());
-   if (clientsRepository.insertClient(client.getId(), client.getDescription(), client.getEmail(), client.getLogin(), client.getName(), client.getPassword(), client.getPhone(), client.getRoleUser().name()) == 1) {
+   if (clientsRepository.insertClient(client.getId(), client.getDescription(), client.getEmail(), client.getLogin(),
+    client.getName(), client.getPassword(), client.getPhone(), client.getRoleUser().name()) == 1) {
     return true;
    }
   } catch (DataIntegrityViolationException e) {
@@ -108,9 +105,11 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login) throws SaveSearchErrorException {
+ public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login)
+  throws SaveSearchErrorException {
   try {
-   clientsRepository.updatePasswordAndLogin(contactConfirmationPayload.getPassword(), contactConfirmationPayload.getLogin(), login);
+   clientsRepository.updatePasswordAndLogin(contactConfirmationPayload.getPassword(),
+    contactConfirmationPayload.getLogin(), login);
    return true;
   } catch (Exception e) {
    log.warn(e.getMessage());
@@ -124,7 +123,7 @@ public class ClientServicesImpl implements ClientServices {
    clientsRepository.updatePassword(clientFormUpdate, login);
    return true;
   } catch (DataIntegrityViolationException e) {
-   throw new SaveSearchErrorException("Invalid password entered"+e.getMessage());
+   throw new SaveSearchErrorException("Invalid password entered" + e.getMessage());
   } catch (Exception e) {
    throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
   }
@@ -203,7 +202,8 @@ public class ClientServicesImpl implements ClientServices {
  @Override
  public boolean updateClientByLogin(ClientDto updateClient, String login) throws SaveSearchErrorException {
   try {
-   if (clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(), updateClient.getDescription(), login) > 0)
+   if (clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(),
+    updateClient.getDescription(), login) > 0)
     return true;
   } catch (Exception e) {
    throw new SaveSearchErrorException(e.getMessage());
@@ -216,13 +216,14 @@ public class ClientServicesImpl implements ClientServices {
   try {
    clients.setRoleUser(RoleUser.UNREGISTERED);
    clients.setId(UUID.randomUUID());
-   if (clientsRepository.insertClient(clients.getId(), clients.getDescription(), clients.getEmail(), clients.getLogin(), clients.getName(), clients.getPassword(), clients.getPhone(), clients.getRoleUser().name()) == 1) {
+   if (clientsRepository.insertClient(clients.getId(), clients.getDescription(), clients.getEmail(), clients.getLogin(),
+    clients.getName(), clients.getPassword(), clients.getPhone(), clients.getRoleUser().name()) == 1) {
     return clients.getId();
    }
   } catch (DataIntegrityViolationException e) {
    throw new SaveSearchErrorException("Registration was not successful", e.getMessage());
   } catch (Exception e) {
-
+   log.error(e.getMessage());
   }
   throw new SaveSearchErrorException("The entered data is in use by other users.");
  }
@@ -239,9 +240,11 @@ public class ClientServicesImpl implements ClientServices {
  @Override
  public List<ClientDto> getAllClientOnMaster(String search) throws SaveSearchErrorException {
   try {
-   return clientsRepository.getAllByLike("%" + search + "%").stream().map(mapperDto::toDto).collect(Collectors.toList());
+   return clientsRepository.getAllByLike("%" + search + "%").stream().map(mapperDto::toDto)
+    .collect(Collectors.toList());
   } catch (Exception e) {
    throw new SaveSearchErrorException("Unknown error:" + e.getMessage());
   }
  }
+
 }

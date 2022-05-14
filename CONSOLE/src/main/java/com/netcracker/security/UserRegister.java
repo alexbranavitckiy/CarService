@@ -30,7 +30,9 @@ public class UserRegister {
  private final MyUserDetailsService myUserDetailsService;
 
  @Autowired
- public UserRegister(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager, JWTUtil jwtUtil, MasterServices masterServices, PasswordEncoder passwordEncoder, ClientServices clientServices) {
+ public UserRegister(MyUserDetailsService myUserDetailsService, AuthenticationManager authenticationManager,
+                     JWTUtil jwtUtil, MasterServices masterServices, PasswordEncoder passwordEncoder,
+                     ClientServices clientServices) {
   this.passwordEncoder = passwordEncoder;
   this.myUserDetailsService = myUserDetailsService;
   this.authenticationManager = authenticationManager;

@@ -1,5 +1,6 @@
 package com.netcracker.DTO.car;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.basicValidation.ValidCarClient;
@@ -29,14 +30,18 @@ public class CarClientDto {
  private UUID id;
 
  @JsonView({ValidateCar.Admin.class, ValidateCar.NewAdmin.class})
- @Size(groups = {ValidateCar.Admin.class}, min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
+ @Size(groups = {ValidateCar.Admin.class}, min = 0, max = 250, message =
+  "Size violation. It must be between 0 and 250 characters")
  @Null(groups = {ValidateCar.Edit.class})
- @ApiModelProperty(name = "summary", required = false, value = "Description of the breakdown and data for the receiver master. Data is hidden from the client", position = 2)
+ @ApiModelProperty(name = "summary", required = false,
+  value = "Description of the breakdown and data for the receiver master. Data is hidden from the client", position = 2)
  private String summary;
 
  @JsonView({ValidateCar.New.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
- @Size(groups = {ValidateCar.New.class, ValidateCar.Edit.class}, min = 0, max = 250, message = "Size violation. It must be between 0 and 250 characters")
- @ApiModelProperty(name = "description", required = false, value = "Description of the breakdown and data for the Client.", position = 3)
+ @Size(groups = {ValidateCar.New.class, ValidateCar.Edit.class}, min = 0, max = 250,
+  message = "Size violation. It must be between 0 and 250 characters")
+ @ApiModelProperty(name = "description", required = false,
+  value = "Description of the breakdown and data for the Client.", position = 3)
  private String description;
 
  @JsonView({ValidateCar.New.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
@@ -45,14 +50,17 @@ public class CarClientDto {
  private Date ear;
 
  @JsonView({ValidateCar.EditValue.class, ValidateCar.New.class, ValidateCar.NewAdmin.class})
- @Size(groups = {ValidateCar.EditValue.class}, min = 4, max = 20, message = "Size violation. It must be between 4 and 20 characters")
+ @Size(groups = {ValidateCar.EditValue.class}, min = 4, max = 20,
+  message = "Size violation. It must be between 4 and 20 characters")
  @Null(groups = {ValidateCar.Edit.class})
  @ApiModelProperty(name = "metadataCar", required = true, value = "Vehicle number.", position = 5)
  private String metadataCar;
 
- @Max(value = 1000000, groups = {ValidateCar.New.class, ValidateCar.Edit.class}, message = "Size violation. It must be between 0 and 20 characters")
+ @Max(value = 1000000, groups = {ValidateCar.New.class, ValidateCar.Edit.class},
+  message = "Size violation. It must be between 0 and 20 characters")
  @JsonView({ValidateCar.Edit.class, ValidateCar.New.class})
- @Min(value = 1, groups = {ValidateCar.New.class, ValidateCar.Edit.class}, message = "Size violation. It must be between 1 and 20 characters")
+ @Min(value = 1, groups = {ValidateCar.New.class, ValidateCar.Edit.class},
+  message = "Size violation. It must be between 1 and 20 characters")
  @ApiModelProperty(name = "run", required = true, value = "Car mileage.", position = 6)
  private int run;
 

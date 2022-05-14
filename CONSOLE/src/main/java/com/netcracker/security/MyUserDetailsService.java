@@ -32,7 +32,8 @@ public class MyUserDetailsService implements UserDetailsService {
  public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
   Map<String, Object> user = clientServices.getRoleClientByLogin(s);
   if (user != null && user.get("role") != null && user.get("login") != null && user.get("password") != null) {
-   return new User(user.get("login").toString(), user.get("password").toString(), grantedAuthorities(List.of(user.get("role").toString())));
+   return new User(user.get("login").toString(), user.get("password").toString(),
+    grantedAuthorities(List.of(user.get("role").toString())));
   }
   throw new UsernameNotFoundException("user not found doh!");
  }

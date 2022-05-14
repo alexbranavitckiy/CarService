@@ -11,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 @Slf4j
 @Component
@@ -32,24 +36,17 @@ public class CarClientValid
  }
 
  public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
-
-  //  try {
-  //   if (clientDto.getMark() != null) {
-  //    markServices.metadataMark(clientDto.getMark().getId());
-  //   }
-  //   if (clientDto.getId() != null) {
-  //    carServices.idChek(clientDto.getId());
-  //   }
-  //   if (clientDto.getIdClient() != null) {
-  //    clientServices.idChek(clientDto.getIdClient());
-  //   }
-  //  } catch (SaveSearchErrorException e) {
-  //   context.disableDefaultConstraintViolation();
-  //   context.buildConstraintViolationWithTemplate(e.getMessage())
-  //    .addPropertyNode(e.getField())
-  //    .addConstraintViolation();
-  // return false;
-  // }
+  try {
+   if (clientDto.getMark() != null) {
+    markServices.metadataMark(clientDto.getMark().getId());
+   }
+  } catch (SaveSearchErrorException e) {
+   context.disableDefaultConstraintViolation();
+   context.buildConstraintViolationWithTemplate(e.getMessage())
+    .addPropertyNode(e.getField())
+    .addConstraintViolation();
+   return false;
+  }
   return true;
  }
 

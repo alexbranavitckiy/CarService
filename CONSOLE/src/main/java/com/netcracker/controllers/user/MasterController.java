@@ -1,6 +1,7 @@
 package com.netcracker.controllers.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.DTO.user.MasterDto;
 import com.netcracker.DTO.user.ValidateClient;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
@@ -46,46 +47,60 @@ public class MasterController {
  @ApiOperation("Get the details of the master logged in")
  public ResponseEntity<List<MasterDto>> getClientsOnline(@ApiIgnore Principal principal) {
   Optional<MasterDto> master = masterServices.getMasterDtoByLogin(principal.getName());
-  return master.map(masterDto -> ResponseEntity.ok(List.of(masterDto))).orElseGet(() -> ResponseEntity.ok(new ArrayList<>()));
+  return master.map(masterDto -> ResponseEntity.ok(List.of(masterDto))).orElseGet(() ->
+   ResponseEntity.ok(new ArrayList<>()));
  }
 
  @ApiOperation("Update login")
- @PutMapping(value = {"/aut/update-date/login", "/details/update-date/login"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = {"/aut/update-date/login", "/details/update-date/login"},
+  consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateClientData(@Validated @RequestBody
-                                                                  String login, @ApiIgnore Principal principal)
+ public ResponseEntity<ValidationErrorResponse> updateClientData(@Validated({ValidateClient.Login.class})
+                                                                  @JsonView(ValidateClient.Login.class)
+                                                                  @RequestBody ClientDto login, @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  masterServices.updateMasterLogin(login, principal.getName());
+  masterServices.updateMasterLogin(login.getLogin(), principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
  @ApiOperation("Update email")
- @PutMapping(value = {"/aut/update-date/email", "/details/update-date/email"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = {"/aut/update-date/email", "/details/update-date/email"},
+  consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateClientEmail(@Validated @RequestBody String email, @ApiIgnore Principal principal)
+ public ResponseEntity<ValidationErrorResponse> updateClientEmail(@Validated({ValidateClient.Email.class})
+                                                                   @JsonView(ValidateClient.Email.class)
+                                                                   @RequestBody ClientDto clientDto,
+                                                                  @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  masterServices.updateMasterEmail(email, principal.getName());
+  masterServices.updateMasterEmail(clientDto.getEmail(), principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
  @ApiOperation("Update phone")
- @PutMapping(value = {"/aut/update-date/phone", "/details/update-date/phone"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = {"/aut/update-date/phone", "/details/update-date/phone"},
+  consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateMasterPhone(@Validated @RequestBody String phone, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> updateMasterPhone(@Validated({ValidateClient.Phone.class})
+                                                                   @JsonView(ValidateClient.Phone.class)
+                                                                   @RequestBody ClientDto phone,
+                                                                  @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  masterServices.updateMasterPhone(phone, principal.getName());
+  masterServices.updateMasterPhone(phone.getPhone(), principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
  @ApiOperation("Update password")
- @PutMapping(value = {"/aut/update-date/pass", "/details/update-date/pass"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = {"/aut/update-date/pass", "/details/update-date/pass"},
+  consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateClientPas(@Validated @RequestBody String pass, @ApiIgnore Principal principal)
+ public ResponseEntity<ValidationErrorResponse> updateClientPas(@Validated @RequestBody String pass,
+                                                                @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   masterServices.updateMasterPass(pass, principal.getName());
@@ -94,9 +109,14 @@ public class MasterController {
  }
 
  @ApiOperation("Updating logged in master data")
- @PutMapping(value = {"aut/update-date/person", "details/update-date/person"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+ @PutMapping(value = {"/aut/update-date/person", "/details/update-date/person"},
+  consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateUser(@JsonView({ValidateClient.Edit.class}) @Validated({ValidateClient.Edit.class}) @RequestBody MasterDto masterFormUpdate, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> updateUser(@JsonView({ValidateClient.Edit.class})
+                                                           @Validated({ValidateClient.Edit.class})
+                                                           @RequestBody MasterDto masterFormUpdate,
+                                                           @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   masterServices.updateMasterByLogin(masterFormUpdate, principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
@@ -106,7 +126,11 @@ public class MasterController {
  @ApiOperation("Create master")
  @PostMapping(value = {"/details/create-person"}, consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> addUser(@JsonView({ValidateClient.NewAdmin.class}) @Validated({ValidateClient.NewAdmin.class, ValidateClient.NewAdmin.class}) @RequestBody MasterDto master, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> addUser(@JsonView({ValidateClient.NewAdmin.class})
+                                                        @Validated({ValidateClient.NewAdmin.class,
+                                                         ValidateClient.NewAdmin.class})
+                                                        @RequestBody MasterDto master, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   master.setPassword(userRegister.newDate(master.getPassword()));
   masterServices.createMasterOnMasterReceiver(master, principal.getName());
@@ -115,7 +139,7 @@ public class MasterController {
  }
 
  @JsonView({ValidateClient.Details.class})
- @GetMapping({"/details/get-masters", })
+ @GetMapping({"/details/get-masters",})
  @ApiOperation("Get a list of all masters")
  public ResponseEntity<List<MasterDto>> getClientsOnMaster() throws SaveSearchErrorException {
   List<MasterDto> master = masterServices.getMasterDtoOnMaster();

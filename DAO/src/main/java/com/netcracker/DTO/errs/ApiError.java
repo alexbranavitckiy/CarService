@@ -1,4 +1,4 @@
-package com.netcracker.DTO.response;
+package com.netcracker.DTO.errs;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -6,15 +6,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
-import java.util.Collection;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Builder
-public class ApiResponse {
+public class ApiError extends Exception {
 
  @JsonInclude(JsonInclude.Include.NON_NULL)
  private HttpStatus httpStatus;
@@ -24,7 +24,7 @@ public class ApiResponse {
 
  @JsonInclude(JsonInclude.Include.NON_NULL)
  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm--yyyy hh:mm:ss")
- private LocalDateTime localDateTime=LocalDateTime.now();
+ private LocalDateTime localDateTime;
 
  @JsonInclude(JsonInclude.Include.NON_NULL)
  private String error_code;
@@ -33,34 +33,28 @@ public class ApiResponse {
  private String messageUser;
 
  @JsonInclude(JsonInclude.Include.NON_NULL)
- private String stackTrace;
+ private String stack;
 
  @Builder
- public ApiResponse(HttpStatus httpStatus, String message, String debugMessage) {
+ public ApiError(HttpStatus httpStatus, String message, String debugMessage) {
+  super(message);
   this.httpStatus = httpStatus;
   this.localDateTime = LocalDateTime.now();
   this.messageUser = message;
-  this.stackTrace = debugMessage;
+  this.stack = stack;
  }
 
- public ApiResponse() {
+ public ApiError(String message) {
+  super(message);
   this.localDateTime = LocalDateTime.now();
- }
-
- public ApiResponse(HttpStatus httpStatus, String message, Throwable ex) {
-  this();
-  this.httpStatus = httpStatus;
-  this.messageUser = message;
-  stackTrace = ex.getLocalizedMessage();
  }
 
  @Override
  public String toString() {
   return "ApiResponse{" +
    "message='" + messageUser + '\'' +
-   ", debugMessage='" + stackTrace + '\'' +
+   ", debugMessage='" + stack + '\'' +
    '}';
  }
-
 
 }

@@ -1,38 +1,28 @@
 package com.netcracker.security;
 
-import com.netcracker.security.jwt.ExceptionHandlerFilter;
 import com.netcracker.security.jwt.JWTRequestFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 @Slf4j
 @Configuration(value = "AppSecurityConfig")
 @EnableWebSecurity
+@Order(1)
 @EnableGlobalMethodSecurity(
  prePostEnabled = true,
  securedEnabled = true,
@@ -41,14 +31,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
  private MyUserDetailsService myUserDetailsService;
  private JWTRequestFilter filter;
- private ExceptionHandlerFilter exceptionHandlerFilter;
 
  @Autowired
- public void setMyUserDetailsService(ExceptionHandlerFilter exceptionHandlerFilter, JWTRequestFilter filter, MyUserDetailsService myUserDetailsService) {
+ public void setMyUserDetailsService(JWTRequestFilter filter, MyUserDetailsService myUserDetailsService) {
   this.myUserDetailsService = myUserDetailsService;
-  this.exceptionHandlerFilter = exceptionHandlerFilter;
   this.filter = filter;
  }
+
 
  @Override
  protected void configure(HttpSecurity http) throws Exception {
@@ -56,8 +45,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .csrf()
    .disable()
    .authorizeRequests()
-   .antMatchers("/person/**").hasAnyAuthority("REGISTERED","RECEPTIONIST")
-   .antMatchers("/aut/**").hasAnyAuthority("MASTER","RECEPTIONIST")
+   .antMatchers("/person/**").hasAnyAuthority("REGISTERED", "RECEPTIONIST")
+   .antMatchers("/aut/**").hasAnyAuthority("MASTER", "RECEPTIONIST")
    .antMatchers("/details/**").hasAnyAuthority("RECEPTIONIST")
    .antMatchers("/registration/**", "/**", "/swagger-ui/**").permitAll()
    .anyRequest().authenticated()
@@ -73,8 +62,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .and().logout().logoutUrl("/person/logout").logoutSuccessUrl("/");
   http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-  http.addFilterBefore(exceptionHandlerFilter, JWTRequestFilter.class);
-
  }
 
  @Bean

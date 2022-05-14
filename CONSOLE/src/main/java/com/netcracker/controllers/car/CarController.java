@@ -39,32 +39,35 @@ public class CarController {
  }
 
  @JsonView({ValidateCar.Details.class})
-
  @ApiOperation("Get all the car of the logged in user")
  @GetMapping("/person/garage/get-all")
- public ResponseEntity<List<CarClientDto>> getAllCarByIdClients(@ApiIgnore Principal principal) {
-  return ResponseEntity.ok(carServices.getCarByLoginClient(principal.getName()));
+ public ResponseEntity<List<CarClientDto>> getAllCarByIdClients(@ApiIgnore Principal principal,
+                                                                @RequestParam("offset") Integer offset,
+                                                                @RequestParam("limit") Integer limit)
+  throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.getCarByLoginClient(principal.getName(), offset, limit));
  }
-
 
  @ApiOperation("Car registration")
  @ApiResponses(value = {
-  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created", response = ValidationErrorResponse.class, responseContainer = "List"),
-  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
- @PostMapping(value = "/person/garage-registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
-  MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> createCar(@Validated({ValidateCar.New.class, ValidateCar.UiCrossFieldChecks.class}) @JsonView(ValidateCar.New.class) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
-  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  carServices.createCarOnClient(carClient, principal.getName());
-  validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
-  return ResponseEntity.ok(validationResponse);
+  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created",
+   response = ValidationErrorResponse.class, responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class,
+   responseContainer = "List")})
+ @PostMapping(value = "/person/garage-registration", consumes = MediaType.APPLICATION_JSON_VALUE,
+  produces =
+   MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> createCar(@Validated({ValidateCar.New.class, ValidateCar.UiCrossFieldChecks.class})
+                                       @JsonView(ValidateCar.New.class) @RequestBody CarClientDto carClient,
+                                       @ApiIgnore Principal principal) throws SaveSearchErrorException {
+  return ResponseEntity.ok(carServices.createCarOnClient(carClient, principal.getName()));
  }
 
  @JsonView({ValidateCar.Details.class})
-
  @ApiOperation("Get machine of user logged in by id")
- @GetMapping("/person/Car")
- public ResponseEntity<List<CarClientDto>> getCarByIdCar(@RequestParam UUID CarUUID, @ApiIgnore Principal principal) {
+ @GetMapping("/person/get-car")
+ public ResponseEntity<List<CarClientDto>> getCarByIdCar(@RequestParam UUID CarUUID, @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   Optional<CarClientDto> carClient = carServices.getCarByIdCarOnClient(CarUUID, principal.getName());
   if (carClient.isEmpty()) {
    return ResponseEntity.ok(new ArrayList<>());
@@ -72,28 +75,38 @@ public class CarController {
   return ResponseEntity.ok(List.of(carClient.get()));
  }
 
-
  @ApiOperation("Car update")
  @ApiResponses(value = {
-  @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
-  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
+  @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class,
+   responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class,
+   responseContainer = "List")})
  @PutMapping(value = "/person/car-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateCar(@Validated({ValidateCar.Edit.class, ValidateCar.UiCrossFieldChecks.class}) @JsonView({ValidateCar.Edit.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> updateCar(@Validated({ValidateCar.Edit.class,
+  ValidateCar.UiCrossFieldChecks.class}) @JsonView({ValidateCar.Edit.class})
+                                                          @RequestBody CarClientDto carClient,
+                                                          @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   carServices.updateCarClientByLogin(carClient, principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
   return ResponseEntity.ok(validationResponse);
  }
 
-
  @ApiOperation("Update car number")
  @ApiResponses(value = {
-  @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class, responseContainer = "List"),
-  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
+  @ApiResponse(code = 200, message = "Data updated successfully", response = ValidationErrorResponse.class,
+   responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class,
+   responseContainer = "List")})
  @PutMapping(value = "/person/car-update/meta", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateCarClientByIdWithMachineNumber(@Validated({ValidateCar.UiCrossFieldChecks.class, ValidateCar.EditValue.class}) @JsonView({ValidateCar.EditValue.class}) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<ValidationErrorResponse> updateCarClientByIdWithMachineNumber(
+  @Validated({ValidateCar.UiCrossFieldChecks.class, ValidateCar.EditValue.class})
+  @JsonView({ValidateCar.EditValue.class})
+  @RequestBody CarClientDto carClient,
+  @ApiIgnore Principal principal) throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
   carServices.updateCarClientByIdWithMachineNumber(carClient, principal.getName());
   validationResponse.setViolations(List.of(new Violation("true", "Updates successfully committed")));
@@ -102,19 +115,26 @@ public class CarController {
 
  @ApiOperation("Car registration")
  @ApiResponses(value = {
-  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created", response = ValidationErrorResponse.class, responseContainer = "List"),
-  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class, responseContainer = "List")})
+  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created",
+   response = ValidationErrorResponse.class, responseContainer = "List"),
+  @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class,
+   responseContainer = "List")})
  @PostMapping(value = "/details/garage-registration", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<UUID> createCarOnMaster(@Validated({ValidateCar.UiCrossFieldChecks.class}) @JsonView(ValidateCar.NewAdmin.class) @RequestBody CarClientDto carClient, @ApiIgnore Principal principal) throws SaveSearchErrorException {
+ public ResponseEntity<UUID> createCarOnMaster(@Validated({ValidateCar.UiCrossFieldChecks.class})
+                                               @JsonView(ValidateCar.NewAdmin.class)
+                                               @RequestBody CarClientDto carClient,
+                                               @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
   return ResponseEntity.ok(carServices.createCarOnMaster(carClient));
  }
 
  @JsonView({ValidateCar.Details.class})
-
  @ApiOperation("Show all cars")
  @GetMapping("/details/garage/get-all")
- public ResponseEntity<List<CarClientDto>> getAllCar() throws SaveSearchErrorException {
+ public ResponseEntity<List<CarClientDto>> getAllCar(@RequestParam("offset") Integer offset,
+                                                     @RequestParam("limit") Integer limit)
+  throws SaveSearchErrorException {
   return ResponseEntity.ok(carServices.getAllCarOnMaster());
  }
 
@@ -122,7 +142,8 @@ public class CarController {
  @ApiOperation("Search by car")
  @GetMapping("/details/garage-search")
  public ResponseEntity<List<CarClientDto>> searchCar(@RequestParam("offset") Integer offset,
-                                                     @RequestParam("limit") Integer limit, @RequestParam String search) throws SaveSearchErrorException {
+                                                     @RequestParam("limit") Integer limit,
+                                                     @RequestParam String search) throws SaveSearchErrorException {
   return ResponseEntity.ok(carServices.getSearchCarOnMaster(search, offset, limit));
  }
 

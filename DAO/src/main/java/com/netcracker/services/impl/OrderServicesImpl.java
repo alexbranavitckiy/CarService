@@ -9,15 +9,13 @@ import com.netcracker.order.Order;
 import com.netcracker.order.State;
 import com.netcracker.repository.OrderRepository;
 import com.netcracker.repository.OutfitsRepository;
-import com.netcracker.services.CarServices;
-import com.netcracker.services.ClientServices;
 import com.netcracker.services.OrderServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -35,7 +33,8 @@ public class OrderServicesImpl implements OrderServices {
 
  @Lazy
  @Autowired
- public OrderServicesImpl(OutfitsRepository outfitsRepository, MapperDto<OrderDto, Order> orderMapperDto, Environment env, OrderRepository orderRepository) {
+ public OrderServicesImpl(OutfitsRepository outfitsRepository, MapperDto<OrderDto, Order> orderMapperDto,
+                          Environment env, OrderRepository orderRepository) {
   this.orderRepository = orderRepository;
   this.outfitsRepository = outfitsRepository;
   this.orderMapperDto = orderMapperDto;
@@ -49,24 +48,28 @@ public class OrderServicesImpl implements OrderServices {
    dto.setState(State.REQUEST);
    dto.setUpdatedDate(new Date());
    dto.setCreatedDate(new Date());
-   if (orderRepository.insertOrder(UUID.randomUUID(), dto.getCreatedDate(), dto.getState().getCode(), dto.getUpdatedDate(), dto.getCarClient(), dto.getDescription()) == 1)
+   if (orderRepository.insertOrder(UUID.randomUUID(), dto.getCreatedDate(), dto.getState().getCode(),
+    dto.getUpdatedDate(), dto.getCarClient(), dto.getDescription()) == 1)
     return true;
-   else throw new SaveSearchErrorException("Sending request was not successful", "Save");
+   else throw new SaveSearchErrorException("A request for this machine already exists", "Save");
   } catch (Exception e) {
    log.warn(e.getMessage());
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
 
  @Override
- public List<OrderDto> getAllOrderClientsWithState(String login, State state) throws SaveSearchErrorException {
+ public List<OrderDto> getAllOrderClientsWithState(String login, State state, int offset, int limit)
+  throws SaveSearchErrorException {
   try {
-   List<OrderDto> orderDto = orderRepository.getAllOrderClient(login, state.getCode()).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
+   List<OrderDto> orderDto = orderRepository.getAllOrderClient(login, state.getCode(), PageRequest.of(offset, limit))
+    .stream()
+    .map(orderMapperDto::toDto).collect(Collectors.toList());
    if (orderDto.size() > 0) {
     return orderDto;
    } else throw new SaveSearchErrorException("The search has not given any results", "Search");
   } catch (Exception e) {
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
 
@@ -77,7 +80,7 @@ public class OrderServicesImpl implements OrderServices {
    else throw new SaveSearchErrorException("The operation was not successful", "Search");
   } catch (Exception e) {
    log.warn(e.getMessage());
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
 
@@ -93,18 +96,20 @@ public class OrderServicesImpl implements OrderServices {
   try {
    UUID id_outfits = UUID.randomUUID();
    UUID dtoId = UUID.randomUUID();
-   if (outfitsRepository.getAllOutfit(dto.getDateStartOutfit(), dto.getDateEntOutfit(), dto.getIdMasterOutfit()).size() != 0) {
+   if (outfitsRepository.getAllOutfit(dto.getDateStartOutfit(), dto.getDateEntOutfit(),
+    dto.getIdMasterOutfit()).size() != 0) {
     throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
    }
    if (orderRepository.insertOrder(id_outfits, dtoId, new Date(), State.CREATED.getCode(), new Date(),
     dto.getCarClient(), login, dto.getCarClient(), UUID.randomUUID(),
-    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEntOutfit(), dto.getDateStartOutfit(), dto.getIdMasterOutfit(),
-    dto.getDescription(), dto.getNameOutfit(), com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, dto.getPriceBreakdown(), dto.getRun()) == 1)
+    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEntOutfit(),
+    dto.getDateStartOutfit(), dto.getIdMasterOutfit(), dto.getDescription(), dto.getNameOutfit(),
+    com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, dto.getPriceBreakdown(), dto.getRun()) == 1)
     return dtoId;
    else throw new SaveSearchErrorException("Sending request was not successful", "Save");
   } catch (Exception e) {
    log.warn("{}", e);
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
 
@@ -113,19 +118,41 @@ public class OrderServicesImpl implements OrderServices {
   try {
    return orderRepository.getAllByState(state).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
   } catch (Exception e) {
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Save");
+   throw new SaveSearchErrorException("Unknown error:", " e.getMessage()");
   }
  }
 
  @Override
  public boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException {
   try {
-   if (orderRepository.updateOrderOnMaster(orderDto.getId(), orderDto.getDescription(), orderDto.getState().getCode(), new Date(), orderDto.getCarClient()) == 1)
+   if (orderRepository.updateOrderOnMaster(orderDto.getId(), orderDto.getDescription(), orderDto.getState().getCode(),
+    new Date(), orderDto.getCarClient()) == 1)
     return true;
    else throw new SaveSearchErrorException("The operation was not successful", "Search");
   } catch (Exception e) {
    log.warn(e.getMessage());
-   throw new SaveSearchErrorException("Unknown error:" + e.getMessage(), "Search");
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
+  }
+ }
+
+ @Override
+ public UUID updateRequestFromClient(OrderForm orderDto, String login) throws SaveSearchErrorException {
+  try {
+   UUID id_outfits = UUID.randomUUID();
+   if (outfitsRepository.getAllOutfit(orderDto.getDateStartOutfit(), orderDto.getDateEntOutfit(),
+    orderDto.getIdMasterOutfit()).size() != 0) {
+    throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
+   }
+   if (orderRepository.updateOrderFromREQUEST(id_outfits, orderDto.getIdOrder(), new Date(),
+    State.CREATED.getCode(), new Date(), login, UUID.randomUUID(),
+    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), orderDto.getDateEntOutfit(),
+    orderDto.getDateStartOutfit(), orderDto.getIdMasterOutfit(), orderDto.getDescription(), orderDto.getNameOutfit(),
+    com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, orderDto.getPriceBreakdown(), orderDto.getRun()) == 1)
+    return orderDto.getIdOrder();
+   else throw new SaveSearchErrorException("Sending request was not successful", "Save");
+  } catch (Exception e) {
+   log.warn("{}", e);
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
 

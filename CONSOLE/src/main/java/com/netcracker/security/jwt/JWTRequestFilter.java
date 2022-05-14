@@ -33,14 +33,9 @@ public class JWTRequestFilter extends OncePerRequestFilter {
   String authHeader = httpServletRequest.getHeader("Authorization");
   if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer")) {
    String jwt = authHeader.substring(7);
-   try {
-    jwtUtil.validateToken(jwt);
-   } catch (Exception e) {
-    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
-    return;
-   }
    if (jwt.isBlank()) {
-    httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token in Bearer Header");
+    httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token in Bearer Header");
+    return;
    } else {
     try {
      String login = jwtUtil.extractUsername(jwt);
@@ -55,11 +50,11 @@ public class JWTRequestFilter extends OncePerRequestFilter {
       }
      }
     } catch (Exception exc) {
-     httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+     httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+     return;
     }
    }
   }
   filterChain.doFilter(httpServletRequest, httpServletResponse);
  }
-
 }
