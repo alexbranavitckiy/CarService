@@ -1,0 +1,4 @@
+FROM adoptopenjdk/openjdk11:alpine-jre
+ARG JAR_FILE=CONSOLE-1.0-SNAPSHOT.jar
+COPY CONSOLE-1.0-SNAPSHOT.jar CONSOLE-1.0-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/CONSOLE-1.0-SNAPSHOT.jar"]

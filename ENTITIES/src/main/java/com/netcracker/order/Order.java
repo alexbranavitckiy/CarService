@@ -1,39 +1,49 @@
 package com.netcracker.order;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.EntityId;
-import lombok.*;
+import com.netcracker.car.CarClient;
+import com.netcracker.outfit.Outfit;
+import com.netcracker.user.Master;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order implements EntityId<UUID> {
+@Entity(name = "orders")
+public class Order {
 
+ @Id
  private UUID id;
 
+ @Column(name = "description")
  private String description;
 
- private List<UUID> outfits;
+ @OneToOne
+ @JoinColumn(name = "id_outfits")
+ private Outfit outfit;
 
- private UUID masterReceiver;
+ @ManyToMany
+ @JoinColumn(name = "id_masters")
+ private List<Master> masterReceiver;
 
- private UUID idCar;
+ @ManyToOne
+ @JoinColumn(name = "id_car")
+ private CarClient carClient;
 
- private UUID clientUUID;
+ private State state;
 
- private UUID stateOrder;
-
- private List<UUID> label;
-
+ @Column(name = "created_date")
  private Date createdDate;
 
+ @Column(name = "updated_date")
  private Date updatedDate;
 
 }

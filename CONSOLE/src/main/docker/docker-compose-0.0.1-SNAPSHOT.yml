@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    ports:
+      - "8085:8085"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: java -jar ./app.jar
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal/car_services
+      - SPRING_DATASOURCE_USERNAME=docker
+      - SPRING_DATASOURCE_PASSWORD=docker
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+  db:
+    image:  'postgres:13.1-alpine'
+    ports:
+      - "5432:5432"
+    container_name: db
+    environment:
+      - PG_URL=jdbc:postgresql://5432:5432/car_services
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=car_services
+
+
+

@@ -1,19 +1,18 @@
 package com.netcracker.user;
 
 
-import com.netcracker.EntityId;
+public enum Qualification  {
+ ELECTRICIAN("ELECTRICIAN"),
+ DISC_EDITING("DISC_EDITING");
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+ private String code;
 
-public enum Qualification implements EntityId<UUID> {
- ELECTRICIAN,
- DISC_EDITING;
-
- @Override
- public UUID getId() {
-  return UUID.nameUUIDFromBytes(this.name().getBytes(
-   StandardCharsets.UTF_8));
+ Qualification(String code) {
+  this.code = code;
  }
 
+ public String getCode() {
+  return code;
+ }
 }
+

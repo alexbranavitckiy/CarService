@@ -1,47 +1,36 @@
 package com.netcracker.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.EntityId;
 
-import java.util.List;
-
+import com.netcracker.car.CarClient;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @AllArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Client extends User implements EntityId<UUID>, Cloneable {
+@Entity(name = "clients")
+public class Client extends User  {
 
- private List<UUID> carClients;
+ @ApiModelProperty(hidden = true)
+ @OneToMany(mappedBy = "client",fetch = FetchType.LAZY)
+ private List<CarClient> cars;
 
  public Client() {
   super();
  }
 
  @Builder
- public Client(UUID id, String name, String phone, String email, String description, String login,
-               String password, UUID roleUser, List<UUID> carClients) {
+ public Client(UUID id, String name, String phone, String email, String description, @NotNull @Size(min = 4, max = 14) String login, @NotNull String password, RoleUser roleUser) {
   super(id, name, phone, email, description, login, password, roleUser);
-  this.carClients = carClients;
  }
 
- @Override
- public String toString() {
-  return super.toString();
- }
-
- @Override
- public int hashCode() {
-  return Objects.hash(super.hashCode());
- }
-
- @Override
- public Client clone() throws CloneNotSupportedException {
-  return (Client) super.clone();
- }
 }

@@ -1,22 +1,25 @@
 package com.netcracker.order;
 
-import com.netcracker.EntityId;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+public enum State {
+ TEMPLATE("TEMPLATE"),
+ RECORDED("RECORDED"),
+ IN_WORK("IN_WORK"),
+ CAR_GIVEN("CAR_GIVEN"),
+ CAR_ACCEPTED("CAR_ACCEPTED"),
+ WAIT_CLIENT("WAIT_CLIENT"),
+ REQUEST("REQUEST"),
+ BID("BID"),
+ CREATED("CREATED"),
+ CANCELED("CANCELED");
 
-public enum State implements EntityId<UUID> {
-  TEMPLATE,
-  RECORDED,
-  IN_WORK,
-  CAR_GIVEN,
-  CAR_ACCEPTED,
-  WAIT_CLIENT,
-  REQUEST,
-  BID;
+ private String code;
 
-  @Override
-  public UUID getId() {
-    return UUID.nameUUIDFromBytes(this.name().getBytes(
-      StandardCharsets.UTF_8));
-  }
+ State(String code) {
+  this.code = code;
+ }
+
+ public String getCode() {
+  return code;
+ }
 }
+

@@ -1,18 +1,18 @@
 package com.netcracker.user;
 
-import com.netcracker.EntityId;
+import com.netcracker.EnumRole;
 
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+public enum RoleUser implements EnumRole {
+ REGISTERED("REGISTERED"),
+ UNREGISTERED("UNREGISTERED");
+ private String code;
 
-public enum RoleUser implements EntityId<UUID> {
- REGISTERED,
- UNREGISTERED;
-
- @Override
- public UUID getId() {
-  return UUID.nameUUIDFromBytes(this.name().getBytes(
-   StandardCharsets.UTF_8));
+ RoleUser(String code) {
+  this.code = code;
  }
 
+ public String getCode() {
+  return code;
+ }
 }
+
