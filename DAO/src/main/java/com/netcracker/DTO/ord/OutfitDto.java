@@ -37,7 +37,7 @@ public class OutfitDto {
  private Date dateStart;
 
  @JsonView({ValidateOrd.Details.class,ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
- private Date dateEnt;
+ private Date dateEnd;
 
  @JsonView({ValidateOrd.Details.class,ValidateCar.Edit.class})
  private State stateOutfit;

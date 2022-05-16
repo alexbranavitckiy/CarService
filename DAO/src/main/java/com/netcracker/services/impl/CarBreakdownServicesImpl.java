@@ -167,7 +167,7 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  public List<CarBreakdownDto> getAllBreakdownByCarSortDesc(int offset, int limit, String login)
   throws SaveSearchErrorException {
   try {
-   return breakdownRepository.getAllByLogin(PageRequest.of(offset, limit), login)
+   return breakdownRepository.getAllByLoginOnClients(login, PageRequest.of(offset, limit))
     .stream().map(mapperDto::toDto).collect(Collectors.toList());
   } catch (Exception e) {
    log.error("Message:{}. Error:{}", e.getMessage(), e);

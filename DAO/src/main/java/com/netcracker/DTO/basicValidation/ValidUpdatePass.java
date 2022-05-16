@@ -1,6 +1,5 @@
 package com.netcracker.DTO.basicValidation;
 
-import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
 import com.netcracker.services.ClientServices;
 import lombok.extern.slf4j.Slf4j;
@@ -26,17 +25,16 @@ public class ValidUpdatePass
  }
 
  public boolean isValid(ContactConfirmationPayload person, ConstraintValidatorContext context) {
-  try {
- if (person.getLogin().equals(person.getPassword())){
-  throw new SaveSearchErrorException("Password and username must not be the same value","password");
- }
-  } catch (SaveSearchErrorException e) {
-  context.disableDefaultConstraintViolation();
-   context.buildConstraintViolationWithTemplate(e.getMessage())
-    .addPropertyNode(e.getField())
-   .addConstraintViolation();
-   return false;
-  }
+  // try {
+  //
+  //  } catch (SaveSearchErrorException e) {
+  //  context.disableDefaultConstraintViolation();
+  //   context.buildConstraintViolationWithTemplate(e.getMessage())
+  //    .addPropertyNode(e.getField())
+  //   .addConstraintViolation();
+  //   return false;
+  //  }
+
   return true;
  }
 

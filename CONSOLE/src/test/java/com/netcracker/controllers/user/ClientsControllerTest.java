@@ -7,7 +7,6 @@ import com.netcracker.DTO.user.ClientDto;
 import com.netcracker.security.UserRegister;
 import com.netcracker.security.jwt.JWTUtil;
 import com.netcracker.services.ClientServices;
-import com.netcracker.user.Role;
 import com.netcracker.user.RoleUser;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -20,8 +19,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

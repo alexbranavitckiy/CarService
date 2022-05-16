@@ -8,7 +8,6 @@ import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import com.netcracker.DTO.response.ContactConfirmationPayload;
-import com.netcracker.security.MyUserDetailsService;
 import com.netcracker.security.UserRegister;
 import com.netcracker.security.jwt.JWTUtil;
 import com.netcracker.services.ClientServices;
@@ -132,8 +131,7 @@ public class ClientsController {
                                              @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   clientServices.updateClientLogin(login.getLogin(), principal.getName());
-  String token = "Bearer:" + jwtUtil.generateToken(login.getLogin());
-  return Collections.singletonMap("Authorization", token);
+  return Collections.singletonMap("Authorization", "Bearer:" + jwtUtil.generateToken(login.getLogin()));
  }
 
  @GetMapping("/person/get-clients")

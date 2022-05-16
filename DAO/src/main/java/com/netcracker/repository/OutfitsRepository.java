@@ -25,8 +25,8 @@ public interface OutfitsRepository extends PagingAndSortingRepository<Outfit, UU
 
  @Transactional
  @Modifying
- @Query(value = "UPDATE public.outfit SET state_outfit =?1  where outfit.id = ?2 and outfit.id_master " +
-  "in( select master.id from master  where master.login=?3)", nativeQuery = true)
+ @Query(value = "UPDATE public.outfit SET state_outfit =?1  where id = ?2 and id_master " +
+  "in(select id from master  where login=?3)", nativeQuery = true)
  int startWorkMaster(String work, UUID uuid, String login);
 
  @Transactional

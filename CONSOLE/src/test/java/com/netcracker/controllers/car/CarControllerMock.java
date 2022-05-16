@@ -36,7 +36,6 @@ public class CarControllerMock {
  @Autowired
  private ObjectMapper mapper;
 
-
  @Test
  void createCarError() throws Exception {
   CarClientDto car = new CarClientDto();
@@ -78,7 +77,8 @@ public class CarControllerMock {
   car.setEar(new Date());
   Mockito.when(carServices.createCarOnMaster(car)).thenReturn(UUID.randomUUID());
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/details/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(post("/details/garage-registration")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
@@ -88,7 +88,8 @@ public class CarControllerMock {
   CarClientDto car = new CarClientDto();
   cars.add(car);
   Mockito.when(carServices.getAllCarOnMaster()).thenReturn(cars);
-  mockMvc.perform(post("/details/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(post("/details/garage-registration")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(car)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
@@ -99,7 +100,9 @@ public class CarControllerMock {
   cars.add(car);
   Mockito.when(carServices.getSearchCarOnMaster("", 0, 1)).thenReturn(cars);
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/details/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(post("/details/garage-registration")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
+
 }

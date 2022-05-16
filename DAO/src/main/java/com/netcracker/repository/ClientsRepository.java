@@ -16,6 +16,10 @@ public interface ClientsRepository extends PagingAndSortingRepository<Client, UU
 
  boolean existsByLogin(String login);
 
+ @Transactional
+ @Modifying(clearAutomatically = true)
+ void deleteAllByLogin(String login);
+
  boolean existsById(String login);
 
  boolean existsByEmail(String email);
@@ -44,37 +48,38 @@ public interface ClientsRepository extends PagingAndSortingRepository<Client, UU
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set c.login = ?1, c.password = ?2 where c.login = ?3")
+ @Query("update clients c set c.roleUser = 'REGISTERED', c.login = ?1, c.password = ?2 where c.login = ?3")
  int updatePasswordAndLogin(String newLogin, String password, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set  c.password = ?1 where c.login = ?2")
+ @Query("update clients c set c.roleUser = 'REGISTERED',  c.password = ?1 where c.login = ?2")
  int updatePassword(String password, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set  c.login = ?1 where c.login = ?2")
+ @Query("update clients c set c.roleUser = 'REGISTERED',  c.login = ?1 where c.login = ?2")
  int updateLogin(String password, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set  c.phone = ?1 where c.login = ?2")
+ @Query("update clients c set c.roleUser = 'REGISTERED',  c.phone = ?1 where c.login = ?2")
  int updatePhone(String phone, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set  c.email = ?1 where c.login = ?2")
+ @Query("update clients c set c.roleUser = 'REGISTERED',  c.email = ?1 where c.login = ?2")
  int updateEmail(String email, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
- @Query("update clients c set  c.name = ?1 where c.login = ?2")
+ @Query("update clients c set c.roleUser = 'REGISTERED',  c.name = ?1 where c.login = ?2")
  int updateName(String name, String login);
 
  @Transactional
  @Modifying
- @Query("update clients c set c.name = ?1, c.phone = ?2 , c.email = ?3, c.description = ?4 where c.login = ?5")
+ @Query("update clients c set c.roleUser = 'REGISTERED', c.name = ?1, c.phone = ?2 , c.email = ?3, " +
+  "c.description = ?4 where c.login = ?5")
  int updateClient(String name, String phone, String email, String description, String login);
 
  @Transactional

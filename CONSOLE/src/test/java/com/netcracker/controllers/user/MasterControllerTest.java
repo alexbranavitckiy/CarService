@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -94,7 +95,7 @@ class MasterControllerTest {
   MasterDto masterDto = MasterDto.builder().mail("alex03@hotmail.com")
    .role(Role.RECEPTIONIST)
    .name("Alex").education("Edsdfd").login("Alex").password("asdasdsdad").phone("+375333308979").build();
-  Mockito.when(masterServices.createMasterOnMasterReceiver(masterDto, "")).thenReturn(true);
+  Mockito.when(masterServices.createMasterOnMasterReceiver(masterDto, "")).thenReturn(UUID.randomUUID());
   mockMvc.perform(post("/details/create-person").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
@@ -102,7 +103,7 @@ class MasterControllerTest {
  @Test
  void addUserError() throws Exception {
   MasterDto masterDto = new MasterDto();
-  Mockito.when(masterServices.createMasterOnMasterReceiver(masterDto, "")).thenReturn(true);
+  Mockito.when(masterServices.createMasterOnMasterReceiver(masterDto, "")).thenReturn(UUID.randomUUID());
   mockMvc.perform(post("/details/create-person").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
  }

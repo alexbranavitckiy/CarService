@@ -6,6 +6,7 @@ import com.netcracker.user.Master;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MasterServices {
 
@@ -36,7 +37,7 @@ public interface MasterServices {
 
  boolean phoneChek(String password) throws SaveSearchErrorException;
 
- boolean createMasterOnMasterReceiver(MasterDto master, String name) throws SaveSearchErrorException;
+ UUID createMasterOnMasterReceiver(MasterDto master, String name) throws SaveSearchErrorException;
 
  List<MasterDto> getMasterDtoOnMaster() throws SaveSearchErrorException;
  //--validate--/

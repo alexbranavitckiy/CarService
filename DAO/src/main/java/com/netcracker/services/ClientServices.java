@@ -36,7 +36,7 @@ public interface ClientServices {
 
  List<Client> getAllClient();
 
- boolean registrationClient(ClientDto client) throws SaveSearchErrorException;
+ UUID registrationClient(ClientDto client) throws SaveSearchErrorException;
 
  Optional<Client> getClientByLogin(String name);
 

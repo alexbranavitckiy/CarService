@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +50,7 @@ public class BreakdownController {
  public ResponseEntity<List<CarBreakdownDto>> getAllBreakdownByIdCarClientAndSortByDate(
   @PathVariable @NotNull UUID carUUID, @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  List<CarBreakdownDto> list = carBreakdownServices.getAllBreakdownByCarIdLoginSort(carUUID, principal.getName());
-  if (list.size() > 1) return new ResponseEntity<>(list, HttpStatus.OK);
-  return ResponseEntity.badRequest()
-   .body(new ArrayList<>());
+  return ResponseEntity.ok(carBreakdownServices.getAllBreakdownByCarIdLoginSort(carUUID, principal.getName()));
  }
 
  @ApiOperation("Get user car history")
@@ -64,10 +62,7 @@ public class BreakdownController {
  public ResponseEntity<List<CarBreakdownDto>> getAllBreakdownByIdCarClient(@PathVariable @NotNull UUID carUUID,
                                                                            @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  List<CarBreakdownDto> list = carBreakdownServices.getAllBreakdownByCarIdLogin(carUUID, principal.getName());
-  if (list.size() > 1) return new ResponseEntity<>(list, HttpStatus.OK);
-  return ResponseEntity.badRequest()
-   .body(new ArrayList<>());
+  return ResponseEntity.ok(carBreakdownServices.getAllBreakdownByCarIdLogin(carUUID, principal.getName()));
  }
 
  @ApiOperation("Get all breakdowns by car ID, state")
@@ -78,13 +73,9 @@ public class BreakdownController {
  @GetMapping("/person/breakdown/carBreakdown{carUUID}/{state}")
  public ResponseEntity<List<CarBreakdownDto>> getAllBreakdownByIdCarAndState(@PathVariable @NotNull UUID carUUID,
                                                                              @PathVariable(value = "state") State state,
-                                                                             @ApiIgnore Principal principal)
+                                                                             @ApiIgnore Principal principal, HttpRequest httpRequest)
   throws SaveSearchErrorException {
-  List<CarBreakdownDto> list = carBreakdownServices.getAllBreakdownByCarAndStateSortDesc(carUUID, state,
-   principal.getName());
-  if (list.size() > 1) return new ResponseEntity<>(list, HttpStatus.OK);
-  return ResponseEntity.badRequest()
-   .body(new ArrayList<>());
+  return ResponseEntity.ok(carBreakdownServices.getAllBreakdownByCarAndStateSortDesc(carUUID, state, principal.getName()));
  }
 
  @ApiOperation("Get all breakdowns")
@@ -97,10 +88,7 @@ public class BreakdownController {
                                                                              @RequestParam("limit") int limit,
                                                                              @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  List<CarBreakdownDto> list = carBreakdownServices.getAllBreakdownByCarSortDesc(offset, limit, principal.getName());
-  if (list.size() > 1) return new ResponseEntity<>(list, HttpStatus.OK);
-  return ResponseEntity.badRequest()
-   .body(new ArrayList<>());
+  return ResponseEntity.ok(carBreakdownServices.getAllBreakdownByCarSortDesc(offset, limit, principal.getName()));
  }
 
  //--Client--//
@@ -171,7 +159,7 @@ public class BreakdownController {
 
 
  @ApiOperation("Get car repair history")
- @GetMapping(value = {"/aut/get-history/car{id},/details/get-history/car{id}"})
+ @GetMapping(value = {"/aut/get-history/car{id}", "/details/get-history/car{id}"})
  public ResponseEntity<List<CarBreakdownDto>> getCarHistory(@PathVariable UUID id,
                                                             @Validated({ValidateBreakdown.Details.class})
                                                             @JsonView({ValidateBreakdown.Details.class})

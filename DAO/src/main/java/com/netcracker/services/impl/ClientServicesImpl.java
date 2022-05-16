@@ -49,12 +49,12 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public boolean registrationClient(ClientDto client) throws SaveSearchErrorException {
+ public UUID registrationClient(ClientDto client) throws SaveSearchErrorException {
   try {
    client.setId(UUID.randomUUID());
    if (clientsRepository.insertClient(client.getId(), client.getDescription(), client.getEmail(), client.getLogin(),
     client.getName(), client.getPassword(), client.getPhone(), client.getRoleUser().name()) == 1) {
-    return true;
+    return client.getId();
    }
   } catch (DataIntegrityViolationException e) {
    throw new SaveSearchErrorException("Registration was not successful:", e.getMessage());

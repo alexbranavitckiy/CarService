@@ -24,9 +24,11 @@ public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBr
 
  Page<CarBreakdown> getAllByOrderByUpdateDate(Pageable nextPage);
 
- @Query(value = "SELECT * FROM public.car_breakdown  right join public.clients c  on (c.login=?1)  where  " +
-  "car_breakdown.id is not null  order by update_date desc", nativeQuery = true)
- Page<CarBreakdown> getAllByLogin(Pageable nextPage,String login);
+ @Query(value = "SELECT  id, description, location, price, run_car_size, state, update_date, id_car, id_outfit " +
+  " FROM public.car_breakdown  where id_car in" +
+  " (select id from car_client where  id_clients in(select id  from clients where  login=?1 )) " +
+  " order by update_date desc", nativeQuery = true)
+ List<CarBreakdown> getAllByLoginOnClients(String login,Pageable nextPage);
 
  @Query(value = "SELECT * FROM public.car_breakdown   right join public.clients  on ( public.car_breakdown.id_car =?1 " +
   "and public.clients.login=?2 and public.car_breakdown.state=?3 ) where  car_breakdown.id is not null order by " +
@@ -56,11 +58,11 @@ public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBr
 
  @Transactional
  @Modifying
- @Query(value = "update car_breakdown  set price=:price description =:description, run_car_size =" +
+ @Query(value = "update car_breakdown  set price=:price, description =:description, run_car_size =" +
   " :runCarSize ,update_date = :updateDate,state = :state,location = :location  where" +
   " id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' " +
   "and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
- int updateCarBreakDownByIdAndMasterOnR(@Param("description") double price,@Param("description")
+ int updateCarBreakDownByIdAndMasterOnR(@Param("price") double price, @Param("description")
   String description, @Param("runCarSize") int runCarSize, @Param("updateDate") Date updateDate,
                                         @Param("state") String state, @Param("location") String location,
                                         @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
@@ -79,7 +81,8 @@ public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBr
  @Query(value = "update car_breakdown  set description =:description ,update_date = :updateDate," +
   "state = :state  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK'" +
   " and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
- int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("updateDate") Date updateDate, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
+ int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("updateDate") Date updateDate,
+                                          @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
 
  @Transactional
  @Modifying

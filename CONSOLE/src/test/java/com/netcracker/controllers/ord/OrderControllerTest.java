@@ -5,6 +5,7 @@ import com.netcracker.CarServiceApplication;
 import com.netcracker.DTO.ord.OrderDto;
 import com.netcracker.DTO.ord.OrderForm;
 import com.netcracker.order.State;
+import com.netcracker.services.OutfitsServices;
 import org.springframework.test.web.servlet.MockMvc;
 import com.netcracker.services.OrderServices;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ class OrderControllerTest {
  @MockBean
  private OrderServices orderServices;
 
+ @MockBean
+ private OutfitsServices outfitsServices;
+
  @Autowired
  private ObjectMapper mapper;
 
@@ -39,7 +43,8 @@ class OrderControllerTest {
  void getOrderOnClient() throws Exception {
   List<OrderDto> masterDto = new ArrayList<>();
   Mockito.when(orderServices.getAllOrderClientsWithState("name", State.REQUEST, 1, 1)).thenReturn(masterDto);
-  mockMvc.perform(get("/person/order-request/getAll").param("offset", "1").param("limit", "1")
+  mockMvc.perform(get("/person/order-request/get-all").param("offset", "1")
+   .param("limit", "1").param("state", State.REQUEST.getCode())
    .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
@@ -80,7 +85,7 @@ class OrderControllerTest {
  }
 
  @Test
- void updateRequestFromClient()  throws Exception {
+ void updateRequestFromClient() throws Exception {
   OrderForm masterDto = new OrderForm();
   masterDto.setIdMasterOutfit(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
@@ -95,7 +100,7 @@ class OrderControllerTest {
  }
 
  @Test
- void updateOrderRequestMasterR() throws Exception{
+ void updateOrderRequestMasterR() throws Exception {
   OrderDto masterDto = new OrderDto();
   masterDto.setId(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());

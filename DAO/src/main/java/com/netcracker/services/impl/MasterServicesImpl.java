@@ -126,7 +126,7 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  @Override
- public boolean createMasterOnMasterReceiver(MasterDto masterDto, String name) throws SaveSearchErrorException {
+ public UUID createMasterOnMasterReceiver(MasterDto masterDto, String name) throws SaveSearchErrorException {
   try {
    masterDto.setId(UUID.randomUUID());
    Master master = mapperDto.toEntity(masterDto);
@@ -134,7 +134,7 @@ public class MasterServicesImpl implements MasterServices {
     master.getEducation(), master.getHomeAddress(), master.getLogin(),
     master.getName(), master.getPassword(), master.getPhone(),
     master.getQualification().getCode(), master.getRole().getCode()) == 1) {
-    return true;
+    return master.getId();
    }
   } catch (DataIntegrityViolationException e) {
    throw new SaveSearchErrorException("Registration was not successful");

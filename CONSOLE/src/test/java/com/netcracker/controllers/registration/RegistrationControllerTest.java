@@ -14,9 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -35,20 +36,20 @@ public class RegistrationControllerTest {
  private ClientsRepository clientsRepository;
 
  @AfterEach
- public void resetDb() {
-  clientsRepository.deleteAll();
+ public void resetDbAfter() {
+  clientsRepository.deleteAllByLogin("LoginLAlexA");
  }
 
  @Test
  void createUser() throws Exception {
   ClientDto client = ClientDto.builder()
-   .name("Alex")
-   .description("")
-   .password("password")
-   .email("alex0377@hotmail.com")
+   .name("AlexA")
+   .description("AlexA")
+   .password("AlexA")
+   .email("alex0371@hotmail.com")
    .roleUser(RoleUser.UNREGISTERED)
-   .login("LoginL")
-   .phone("+375333308979").build();
+   .login("LoginLAlexA")
+   .phone("+375333208979").build();
   mockMvc.perform(
     post("/registration")
      .content(objectMapper.writeValueAsString(client))

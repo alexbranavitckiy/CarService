@@ -6,6 +6,7 @@ import com.netcracker.order.Order;
 import com.netcracker.outfit.Outfit;
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -22,7 +23,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity(name = "master")
-
 public class Master extends Employer {
 
  @OneToMany(mappedBy = "master")

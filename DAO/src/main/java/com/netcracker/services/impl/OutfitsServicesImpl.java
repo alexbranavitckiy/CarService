@@ -24,12 +24,13 @@ public class OutfitsServicesImpl implements OutfitsServices {
  private final OutfitsRepository outfitsRepository;
  private final MapperDto<OutfitDto, Outfit> outfitMapperDto;
  private final MapperDto<TimeDto, Outfit> timeMapper;
-
+ private final OrderServicesImpl orderServices;
 
  @Autowired
- private OutfitsServicesImpl(MapperDto<TimeDto, Outfit> timeMapper,
+ private OutfitsServicesImpl(OrderServicesImpl orderServices, MapperDto<TimeDto, Outfit> timeMapper,
                              MapperDto<OutfitDto, Outfit> outfitMapperDto, OutfitsRepository outfitsRepository) {
   this.outfitMapperDto = outfitMapperDto;
+  this.orderServices = orderServices;
   this.timeMapper = timeMapper;
   this.outfitsRepository = outfitsRepository;
  }
@@ -79,7 +80,7 @@ public class OutfitsServicesImpl implements OutfitsServices {
   try {
    outfitDto.setStateOutfit(State.NO_STATE);
    outfitDto.setId(UUID.randomUUID());
-   if (outfitsRepository.createOutfit(outfitDto.getId(), outfitDto.getDateEnt(), outfitDto.getDateStart(),
+   if (outfitsRepository.createOutfit(outfitDto.getId(), outfitDto.getDateEnd(), outfitDto.getDateStart(),
     outfitDto.getIdMaster(), outfitDto.getDescription(), outfitDto.getName(),
     outfitDto.getStateOutfit().getCode(), outfitDto.getId(), outfitDto.getOrder()) == 1)
     return outfitDto.getId();
@@ -92,8 +93,9 @@ public class OutfitsServicesImpl implements OutfitsServices {
  @Override
  public boolean updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException {
   try {
+   orderServices.checkTime(outfitDto.getDateStart(), outfitDto.getDateEnd(), outfitDto.getIdMaster());
    outfitDto.setStateOutfit(State.WORK);
-   if (outfitsRepository.updateWorkMaster(outfitDto.getDateEnt(), outfitDto.getDateStart(), outfitDto.getDescription(),
+   if (outfitsRepository.updateWorkMaster(outfitDto.getDateEnd(), outfitDto.getDateStart(), outfitDto.getDescription(),
     outfitDto.getName(), State.WORK.getCode(), login) == 1)
     return true;
    throw new SaveSearchErrorException("Active outfit master ane not found", "save");
@@ -117,7 +119,7 @@ public class OutfitsServicesImpl implements OutfitsServices {
  public boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException {
   try {
    outfitDto.setStateOutfit(State.WORK);
-   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnt(), outfitDto.getDateStart(),
+   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnd(), outfitDto.getDateStart(),
     outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), outfitDto.getIdMaster(),
     outfitDto.getId()) == 1)
     return true;
@@ -126,5 +128,6 @@ public class OutfitsServicesImpl implements OutfitsServices {
    throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
   }
  }
+
 
 }

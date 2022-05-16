@@ -12,12 +12,16 @@ import com.netcracker.services.OrderServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -34,14 +38,15 @@ public class OrderController {
   this.orderServices = orderServices;
  }
 
- @GetMapping("/person/order-request/getAll")
+ @GetMapping("/person/order-request/get-all")
  @JsonView(ValidateOrd.Details.class)
  @ApiOperation("Get all requests of a logged in client")
  public ResponseEntity<List<OrderDto>> getOrderOnClient(@RequestParam("offset") int offset,
                                                         @RequestParam("limit") int limit,
+                                                        @RequestParam("state") State state,
                                                         @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  return ResponseEntity.ok(orderServices.getAllOrderClientsWithState(principal.getName(), State.REQUEST, offset, limit));
+  return ResponseEntity.ok(orderServices.getAllOrderClientsWithState(principal.getName(), state, offset, limit));
  }
 
  @ApiOperation("Create an order for a customer")
@@ -85,15 +90,14 @@ public class OrderController {
  @ApiOperation("Update request from client")
  @PutMapping(value = "/details/request-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<UUID> updateRequestFromClient(@Validated({ValidateOrd.EditValue.class})
-                                                     @RequestBody @JsonView(ValidateOrd.EditValue.class)
-                                                      OrderForm orderDto, @ApiIgnore Principal principal)
-  throws SaveSearchErrorException {
+ public ResponseEntity<UUID> updateRequestFromClient(@Validated({ValidateOrd.EditValue.class}) @RequestBody
+                                                     @JsonView({ValidateOrd.EditValue.class}) OrderForm orderDto,
+                                                     @ApiIgnore Principal principal) throws SaveSearchErrorException {
   return ResponseEntity.ok(orderServices.updateRequestFromClient(orderDto, principal.getName()));
  }
 
 
- @GetMapping("/details/order-request/getAll")
+ @GetMapping("/details/order-request/get-all")
  @JsonView(ValidateOrd.Details.class)
  @ApiOperation("Get a list of all created orders")
  public ResponseEntity<List<OrderDto>> getOrderOnMasterStateByCreated(@RequestParam State state,

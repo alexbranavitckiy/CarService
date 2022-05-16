@@ -75,17 +75,16 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
  @Query(
   value =
    "insert into outfit(id,date_end,date_start,id_master,description,name,state_outfit)" +
-    "values(:id_outfit,:date_end,:date_start,:id_master,:description,:name,:state_outfit);" +
+    "values(:id_outfits,:date_end,:date_start,:id_master,:description,:name,:state_outfit);" +
     "UPDATE orders set created_date=:created_date,description=:description,state=:state," +
-    "updated_date=:updated_date,id_outfits=:id_outfits where id=:id_orders" +
-    "INSERT INTO public.orders_master_receiver (orders_id, master_receiver_id)" +
+    "updated_date=:updated_date,id_outfits=:id_outfits where id=:id_orders ; " +
+    "INSERT INTO public.orders_master_receiver (orders_id, master_receiver_id) " +
     "VALUES(:id_orders, (SELECT id FROM public.master where master.login=:login)); " +
-    "insert into car_breakdown(id,(SELECT id_car from orders where id=:id_orders)," +
-    "state,run_car_size,description,update_date,id_outfit,price)" +
+    "insert into car_breakdown(id, id_car ,state,run_car_size,description,update_date,id_outfit,price) " +
     "values(:breakdown,(SELECT id_car from orders where id=:id_orders),:stateBreakdown," +
-    ":run_car_size,:description,:update_dateBreakdown,:id_outfit,:price)",
+    ":run_car_size,:description,:update_dateBreakdown,:id_outfits,:price)",
   nativeQuery = true)
- int updateOrderFromREQUEST(@Param("id_outfit") UUID id_outfit, @Param("id_orders") UUID id_orders,
+ int updateOrderFromREQUEST(@Param("id_outfits") UUID id_outfits, @Param("id_orders") UUID id_orders,
                             @Param("created_date") Date created_date, @Param("state") String state,
                             @Param("updated_date") Date updated_date,
                             @Param("login") String login, @Param("breakdown") UUID breakdown,
@@ -94,7 +93,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
                             @Param("date_start") Date date_start, @Param("id_master") UUID id_master,
                             @Param("description") String description, @Param("name") String name,
                             @Param("state_outfit") String state_outfit,
-                            @Param("id_outfits") UUID id_outfits, @Param("price") double price,
+                            @Param("price") double price,
                             @Param("run_car_size") int run_car_size);
 
  @Transactional
@@ -103,5 +102,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
   " id_car=:id_car WHERE id=:Id", nativeQuery = true)
  int updateOrderOnMaster(@Param("Id") UUID id, @Param("description") String description, @Param("state") String state,
                          @Param("updated_date") Date updated_date, @Param("id_car") UUID id_car);
+
 
 }

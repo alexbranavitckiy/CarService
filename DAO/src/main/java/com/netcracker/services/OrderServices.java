@@ -6,6 +6,7 @@ import com.netcracker.DTO.ord.OrderDto;
 import com.netcracker.DTO.ord.OrderForm;
 import com.netcracker.order.State;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,4 +28,6 @@ public interface OrderServices {
  boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException;
 
  UUID updateRequestFromClient(OrderForm orderDto, String name) throws SaveSearchErrorException;
+
+ void checkTime(Date dateStart, Date end, UUID master) throws SaveSearchErrorException;
 }

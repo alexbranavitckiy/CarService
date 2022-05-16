@@ -58,6 +58,12 @@ public class OrderServicesImpl implements OrderServices {
   }
  }
 
+ public void checkTime(Date dateStart, Date end, UUID master) throws SaveSearchErrorException {
+  if (outfitsRepository.getAllOutfit(dateStart, end, master).size() != 0) {
+   throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
+  }
+ }
+
  @Override
  public List<OrderDto> getAllOrderClientsWithState(String login, State state, int offset, int limit)
   throws SaveSearchErrorException {
@@ -91,15 +97,13 @@ public class OrderServicesImpl implements OrderServices {
   throw new SaveSearchErrorException("Invalid id entered.", "id");
  }
 
+
  @Override
  public UUID addOrderOnMaster(OrderForm dto, String login) throws SaveSearchErrorException {
   try {
    UUID id_outfits = UUID.randomUUID();
    UUID dtoId = UUID.randomUUID();
-   if (outfitsRepository.getAllOutfit(dto.getDateStartOutfit(), dto.getDateEntOutfit(),
-    dto.getIdMasterOutfit()).size() != 0) {
-    throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
-   }
+   this.checkTime(dto.getDateStartOutfit(), dto.getDateEntOutfit(), dto.getIdMasterOutfit());
    if (orderRepository.insertOrder(id_outfits, dtoId, new Date(), State.CREATED.getCode(), new Date(),
     dto.getCarClient(), login, dto.getCarClient(), UUID.randomUUID(),
     com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEntOutfit(),
@@ -121,6 +125,7 @@ public class OrderServicesImpl implements OrderServices {
    throw new SaveSearchErrorException("Unknown error:", " e.getMessage()");
   }
  }
+
 
  @Override
  public boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException {
@@ -147,7 +152,7 @@ public class OrderServicesImpl implements OrderServices {
     State.CREATED.getCode(), new Date(), login, UUID.randomUUID(),
     com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), orderDto.getDateEntOutfit(),
     orderDto.getDateStartOutfit(), orderDto.getIdMasterOutfit(), orderDto.getDescription(), orderDto.getNameOutfit(),
-    com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, orderDto.getPriceBreakdown(), orderDto.getRun()) == 1)
+    com.netcracker.outfit.State.NO_STATE.getCode(), orderDto.getPriceBreakdown(), orderDto.getRun()) == 1)
     return orderDto.getIdOrder();
    else throw new SaveSearchErrorException("Sending request was not successful", "Save");
   } catch (Exception e) {

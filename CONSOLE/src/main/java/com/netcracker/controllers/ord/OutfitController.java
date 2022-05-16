@@ -18,12 +18,16 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -50,8 +54,7 @@ public class OutfitController {
  }
 
  @ApiOperation("Start working with the outfit")
- @PutMapping(value = "/aut/outfit-start" ,consumes = MediaType.APPLICATION_JSON_VALUE,
-  produces = MediaType.APPLICATION_JSON_VALUE)
+ @PutMapping(value = "/aut/outfit-start")
  public ResponseEntity<ValidationErrorResponse> outfitStartMaster(@RequestParam UUID uuidOutfit,
                                                                   @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
@@ -62,9 +65,7 @@ public class OutfitController {
  }
 
  @ApiOperation("End working with the outfit")
- @PutMapping(value = "/aut/outfit-end",consumes = MediaType.APPLICATION_JSON_VALUE,
-  produces =
-   MediaType.APPLICATION_JSON_VALUE)
+ @PutMapping(value = "/aut/outfit-end")
  public ResponseEntity<ValidationErrorResponse> outfitEndMaster(@ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
@@ -74,7 +75,7 @@ public class OutfitController {
  }
 
  @Operation(summary = "Outfit Update", description = "")
- @PostMapping(value = "/aut/outfit-update",consumes = MediaType.APPLICATION_JSON_VALUE,
+ @PostMapping(value = "/aut/outfit-update", consumes = MediaType.APPLICATION_JSON_VALUE,
   produces = MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<ValidationErrorResponse> updateOutfitByMaster(@JsonView({ValidateCar.Edit.class})
                                                                      @Validated(ValidateCar.Edit.class)
@@ -96,7 +97,7 @@ public class OutfitController {
 
 
  @Operation(summary = "Outfit Update", description = "")
- @PostMapping(value = "/details/outfit-update",consumes = MediaType.APPLICATION_JSON_VALUE,
+ @PostMapping(value = "/details/outfit-update", consumes = MediaType.APPLICATION_JSON_VALUE,
   produces = MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<ValidationErrorResponse> updateOutfit(@JsonView({ValidateOrd.Details.class})
                                                              @Validated(ValidateOrd.Details.class)
