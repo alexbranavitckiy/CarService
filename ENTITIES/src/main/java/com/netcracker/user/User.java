@@ -2,20 +2,19 @@ package com.netcracker.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.UUID;
-
 import com.netcracker.PrincipalEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import org.hibernate.validator.constraints.UniqueElements;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.UUID;
 
 
 @Data

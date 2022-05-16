@@ -1,11 +1,12 @@
 package com.netcracker.order;
 
-import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.car.CarClient;
 import com.netcracker.outfit.Outfit;
 import com.netcracker.user.Master;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
