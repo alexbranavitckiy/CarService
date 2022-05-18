@@ -1,5 +1,6 @@
 package com.netcracker.DTO.time;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.car.CarBreakdownDto;
 import com.netcracker.DTO.car.ValidateBreakdown;
@@ -8,6 +9,7 @@ import com.netcracker.DTO.user.MasterDto;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.order.Order;
 import com.netcracker.outfit.State;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,9 +45,11 @@ public class TimeDto {
  private UUID masterId;
 
  @JsonView({ValidateTime.class})
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
  private Date dateStart;
 
  @JsonView({ValidateTime.class})
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
  private Date dateEnd;
 
  @JsonView({ValidateTime.class})

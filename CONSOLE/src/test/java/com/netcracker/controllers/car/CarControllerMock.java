@@ -2,6 +2,7 @@ package com.netcracker.controllers.car;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netcracker.CarServiceApplication;
+import com.netcracker.DTO.basicValidation.CarClientValid;
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.car.MarkDto;
 import com.netcracker.services.CarServices;
@@ -45,14 +46,13 @@ public class CarControllerMock {
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
  }
 
-
  @Test
  void updateCar() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
   car.setIdClient(UUID.randomUUID());
   car.setMark(MarkDto.builder().id(UUID.fromString("cda01a34-4119-3e5e-9ab9-60b341f234fb")).build());
-  car.setEar(new Date());
+  car.setYear(new Date());
   Mockito.when(carServices.updateCarClientByLogin(car, "")).thenReturn(true);
   String json = mapper.writeValueAsString(car);
   mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -63,7 +63,7 @@ public class CarControllerMock {
  void updateCarClientByIdWithMachineNumber() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
-  car.setEar(new Date());
+  car.setYear(new Date());
   Mockito.when(carServices.updateCarClientByIdWithMachineNumber(car, "")).thenReturn(true);
   String json = mapper.writeValueAsString(car);
   mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -74,7 +74,7 @@ public class CarControllerMock {
  void createCarOnMaster() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
-  car.setEar(new Date());
+  car.setYear(new Date());
   Mockito.when(carServices.createCarOnMaster(car)).thenReturn(UUID.randomUUID());
   String json = mapper.writeValueAsString(car);
   mockMvc.perform(post("/details/garage-registration")

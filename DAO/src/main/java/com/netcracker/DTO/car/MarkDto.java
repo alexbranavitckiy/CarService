@@ -1,5 +1,6 @@
 package com.netcracker.DTO.car;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,12 +32,16 @@ public class MarkDto {
  @JsonView({ValidateCar.Details.class})
  private String name;
 
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
  @JsonView({ValidateCar.Details.class})
- @Column(name = "year_start")
+ @ApiModelProperty(dataType = "java.sql.Date", name = "yearStart", required = true,
+  value = "Model start date.", position = 3)
  private Date yearStart;
 
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
  @JsonView({ValidateCar.Details.class})
- @Column(name = "year_end")
+ @ApiModelProperty(dataType = "java.sql.Date", name = "yearStart", required = true,
+  value = "Model end date.", position = 3)
  private Date yearEnd;
 
 }

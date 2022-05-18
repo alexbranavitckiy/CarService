@@ -49,6 +49,7 @@ public class OrderController {
   return ResponseEntity.ok(orderServices.getAllOrderClientsWithState(principal.getName(), state, offset, limit));
  }
 
+
  @ApiOperation("Create an order for a customer")
  @PostMapping(value = "/person/order-request/newOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
   MediaType.APPLICATION_JSON_VALUE)
@@ -120,5 +121,21 @@ public class OrderController {
   validationResponse.setViolations(List.of(new Violation("true", "Request canceled successfully")));
   return ResponseEntity.ok(validationResponse);
  }
+
+ @ApiOperation("Order update")
+ @PutMapping(value = "/details/order-update/car", consumes = MediaType.APPLICATION_JSON_VALUE, produces =
+  MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<ValidationErrorResponse> updateOrdeCarMasterR(@Validated({ValidateOrd.CarClient.class})
+                                                                     @RequestBody
+                                                                     @JsonView(ValidateOrd.CarClient.class)
+                                                                      OrderDto orderDto,
+                                                                     @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
+  orderServices.updateOrderCarMasterR(orderDto, principal.getName());
+  validationResponse.setViolations(List.of(new Violation("true", "Request canceled successfully")));
+  return ResponseEntity.ok(validationResponse);
+ }
+
 
 }

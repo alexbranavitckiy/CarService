@@ -44,10 +44,12 @@ public class CarClientDto {
   value = "Description of the breakdown and data for the Client.", position = 3)
  private String description;
 
+
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
  @JsonView({ValidateCar.New.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  @NotNull(groups = {ValidateCar.New.class, ValidateCar.Edit.class}, message = "Invalid car year entered")
- @ApiModelProperty(name = "ear", required = true, value = "Production year.", position = 4)
- private Date ear;
+ @ApiModelProperty(dataType = "java.sql.Date", name = "year", required = true, value = "Production year.", position = 4)
+ private Date year;
 
  @JsonView({ValidateCar.EditValue.class, ValidateCar.New.class, ValidateCar.NewAdmin.class})
  @Size(groups = {ValidateCar.EditValue.class}, min = 4, max = 20,

@@ -22,7 +22,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
  private final ClientServices clientServices;
 
-
  @Autowired
  private MyUserDetailsService( ClientServices clientServices) {
   this.clientServices = clientServices;

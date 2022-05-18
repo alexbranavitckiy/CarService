@@ -25,15 +25,7 @@ public class ValidUpdatePass
  }
 
  public boolean isValid(ContactConfirmationPayload person, ConstraintValidatorContext context) {
-  // try {
-  //
-  //  } catch (SaveSearchErrorException e) {
-  //  context.disableDefaultConstraintViolation();
-  //   context.buildConstraintViolationWithTemplate(e.getMessage())
-  //    .addPropertyNode(e.getField())
-  //   .addConstraintViolation();
-  //   return false;
-  //  }
+
 
   return true;
  }

@@ -5,6 +5,7 @@ import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
 import com.netcracker.services.MarkServices;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 public class MarkController {
 
@@ -56,8 +58,15 @@ public class MarkController {
  @PostMapping(value = "/details/add-mark", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
   MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<Boolean> addMark(@Validated @RequestBody Mark mark) {
+  log.info("addMark");
   return ResponseEntity.ok(markServices.addMark(mark));
  }
 
+ @ApiOperation("Add car brands")
+ @PostMapping(value = "/details/add-mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+ public ResponseEntity<Boolean> addMarkPage(@Validated @RequestBody Mark mark) {
+  log.info("addMarkPage");
+  return ResponseEntity.ok(markServices.addMark(mark));
+ }
 
 }

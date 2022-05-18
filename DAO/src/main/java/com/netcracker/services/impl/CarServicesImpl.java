@@ -64,7 +64,7 @@ public class CarServicesImpl implements CarServices {
   try {
    carClient.setId(UUID.randomUUID());
    if (carClientRepository.createCarOnMaster(carClient.getId(), carClient.getDescription(),
-    carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
+    carClient.getYear(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
     carClient.getMark().getId()) > 0)
     return carClient.getId();
   } catch (Exception e) {
@@ -101,7 +101,7 @@ public class CarServicesImpl implements CarServices {
   try {
    carClient.setId(UUID.randomUUID());
    if (carClientRepository.createCarOnLogin(carClient.getId(), carClient.getDescription(),
-    carClient.getEar(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
+    carClient.getYear(), carClient.getMetadataCar(), carClient.getRun(), carClient.getSummary(),
     login, carClient.getMark().getId()) > 0)
     return carClient.getId();
   } catch (Exception e) {
@@ -125,7 +125,7 @@ public class CarServicesImpl implements CarServices {
  @Override
  public boolean updateCarClientByLogin(CarClientDto carClient, String login) throws SaveSearchErrorException {
   try {
-   if (carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getEar(),
+   if (carClientRepository.updateCarClientByIdWithoutMachineNumber(carClient.getDescription(), carClient.getYear(),
     carClient.getRun(), carClient.getId(), login) == 1)
     return true;
    else {

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -81,9 +82,9 @@ public class OrderServicesImpl implements OrderServices {
 
  public boolean cancelRequest(UUID uuidOrder, String login) throws SaveSearchErrorException {
   try {
-   if (orderRepository.updateStateOrder(State.CANCELED.getCode(), new Date(), uuidOrder, login) == 1)
+   if (orderRepository.closeStateOrder(new Date(), uuidOrder, login) == 1)
     return true;
-   else throw new SaveSearchErrorException("The operation was not successful", "Search");
+   else throw new SaveSearchErrorException("Request accepted for processing", "Search");
   } catch (Exception e) {
    log.warn(e.getMessage());
    throw new SaveSearchErrorException("Unknown error:", e.getMessage());
@@ -112,7 +113,7 @@ public class OrderServicesImpl implements OrderServices {
     return dtoId;
    else throw new SaveSearchErrorException("Sending request was not successful", "Save");
   } catch (Exception e) {
-   log.warn("{}", e);
+   log.warn("{}", e.getMessage());
    throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
@@ -126,12 +127,11 @@ public class OrderServicesImpl implements OrderServices {
   }
  }
 
-
  @Override
  public boolean updateOrderOnMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException {
   try {
    if (orderRepository.updateOrderOnMaster(orderDto.getId(), orderDto.getDescription(), orderDto.getState().getCode(),
-    new Date(), orderDto.getCarClient()) == 1)
+    new Date()) == 1)
     return true;
    else throw new SaveSearchErrorException("The operation was not successful", "Search");
   } catch (Exception e) {
@@ -141,12 +141,33 @@ public class OrderServicesImpl implements OrderServices {
  }
 
  @Override
+ public boolean updateOrderCarMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException {
+  try {
+   if (orderRepository.updateOrderOnMaster(orderDto.getId(),
+    new Date(), orderDto.getCarClient()) == 1)
+    return true;
+   else throw new SaveSearchErrorException("The operation was not successful", "Search");
+  } catch (Exception e) {
+   log.warn(e.getMessage());
+   throw new SaveSearchErrorException("Unknown error:", e.getMessage());
+  }
+ }
+
+
+ @Override
  public UUID updateRequestFromClient(OrderForm orderDto, String login) throws SaveSearchErrorException {
   try {
    UUID id_outfits = UUID.randomUUID();
    if (outfitsRepository.getAllOutfit(orderDto.getDateStartOutfit(), orderDto.getDateEntOutfit(),
     orderDto.getIdMasterOutfit()).size() != 0) {
     throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
+   }
+   Optional<Order> order = orderRepository.findById(orderDto.getIdOrder());
+   if (order.isEmpty()) {
+    throw new SaveSearchErrorException("The selected order does not exist", "Time");
+   }
+   if (!order.get().getState().equals(State.REQUEST)) {
+    throw new SaveSearchErrorException("The selected outfit is already in progress", "Time");
    }
    if (orderRepository.updateOrderFromREQUEST(id_outfits, orderDto.getIdOrder(), new Date(),
     State.CREATED.getCode(), new Date(), login, UUID.randomUUID(),
@@ -156,10 +177,8 @@ public class OrderServicesImpl implements OrderServices {
     return orderDto.getIdOrder();
    else throw new SaveSearchErrorException("Sending request was not successful", "Save");
   } catch (Exception e) {
-   log.warn("{}", e);
+   log.warn("{}", e.getMessage());
    throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
-
-
 }

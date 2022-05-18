@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -21,6 +22,8 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
 
  List<Order> getAllByState(State state);
 
+ Optional<Order> findById(UUID id);
+
  @Query(value = " SELECT * FROM public.orders where orders.id_car " +
   "in(select id from car_client where car_client.id_clients in(select id from clients    where clients.login =?1)) " +
   "and state =?2", nativeQuery = true)
@@ -28,10 +31,10 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
 
  @Transactional
  @Modifying
- @Query(value = "UPDATE public.orders   SET state =?1,updated_date=?2 where orders.id = ?3 and orders.id_car" +
-  " in( select car_client.id from car_client where id_clients  " +
-  "in(select id from clients where login=?4))", nativeQuery = true)
- int updateStateOrder(String state, Date date, UUID uuidOrder, String login);
+ @Query(value = "UPDATE public.orders   SET state ='CANCELED',updated_date=?1 where state='REQUEST' and id = ?2" +
+  " and id_car in( select id from car_client where id_clients  " +
+  "in(select id from clients where login=?3))", nativeQuery = true)
+ int closeStateOrder(Date date, UUID uuidOrder, String login);
 
  @Transactional
  @Modifying
@@ -44,6 +47,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
  int insertOrder(@Param("id") UUID id, @Param("created_date") Date created_date,
                  @Param("state") String state, @Param("updated_date") Date updated_date,
                  @Param("id_car") UUID id_car, @Param("description") String description);
+
 
  @Transactional
  @Modifying
@@ -100,8 +104,13 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
  @Modifying
  @Query(value = "UPDATE  public.orders SET description=:description, state=:state, updated_date=:updated_date," +
   " id_car=:id_car WHERE id=:Id", nativeQuery = true)
+ int updateOrderOnMaster(@Param("Id") UUID id, @Param("updated_date") Date updated_date, @Param("id_car") UUID id_car);
+
+
+ @Transactional
+ @Modifying
+ @Query(value = "UPDATE  public.orders SET description=:description, state=:state, updated_date=:updated_date" +
+  " WHERE id=:Id", nativeQuery = true)
  int updateOrderOnMaster(@Param("Id") UUID id, @Param("description") String description, @Param("state") String state,
-                         @Param("updated_date") Date updated_date, @Param("id_car") UUID id_car);
-
-
+                         @Param("updated_date") Date updated_date);
 }

@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Configuration(value = "AppSecurityConfig")
 @EnableWebSecurity
-@Order(1)
 @EnableGlobalMethodSecurity(
  prePostEnabled = true,
  securedEnabled = true,
@@ -45,8 +44,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
    .csrf()
    .disable()
    .authorizeRequests()
-   .antMatchers("/person/**").hasAnyAuthority("REGISTERED", "RECEPTIONIST")
-   .antMatchers("/aut/**").hasAnyAuthority("MASTER", "RECEPTIONIST")
+   .antMatchers("/person/**").hasAnyAuthority("REGISTERED")
+   .antMatchers("/aut/**").hasAnyAuthority("MASTER")
    .antMatchers("/details/**").hasAnyAuthority("RECEPTIONIST")
    .antMatchers("/registration/**", "/**", "/swagger-ui/**").permitAll()
    .anyRequest().authenticated()

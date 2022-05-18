@@ -30,23 +30,13 @@ import static java.util.UUID.randomUUID;
 @Transactional
 public class CarClientRepositoryTest {
 
-
- private final CarBreakdownRepository carBreakdownRepository;
- private final ClientsRepository clientsRepository;
- private final CarClientRepository carClientRepository;
- private final MarkRepository markRepository;
-
  @Autowired
- CarClientRepositoryTest(MarkRepository markRepository, CarClientRepository carClientRepository, CarBreakdownRepository carBreakdownRepository, ClientsRepository clientsRepository) {
-  this.carBreakdownRepository = carBreakdownRepository;
-  this.markRepository = markRepository;
-  this.clientsRepository = clientsRepository;
-  this.carClientRepository = carClientRepository;
- }
-
+ private CarClientRepository carClientRepository;
+ @Autowired
+ private MarkRepository markRepository;
 
  @Test
- void getAllByLike() {
+ void testGetAllByLike() {
   Assertions.assertNotNull(carClientRepository.getAllByLike(""));
  }
 

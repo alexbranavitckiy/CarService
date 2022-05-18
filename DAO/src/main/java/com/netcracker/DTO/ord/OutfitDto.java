@@ -1,5 +1,6 @@
 package com.netcracker.DTO.ord;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.car.ValidateCar;
@@ -33,9 +34,11 @@ public class OutfitDto {
  @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private String description;
 
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="dd-MM-yyyy hh:mm:ss")
  @JsonView({ValidateOrd.Details.class, ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private Date dateStart;
 
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
  @JsonView({ValidateOrd.Details.class,ValidateCar.Edit.class, ValidateCar.NewAdmin.class})
  private Date dateEnd;
 

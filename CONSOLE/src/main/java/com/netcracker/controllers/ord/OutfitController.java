@@ -1,8 +1,6 @@
 package com.netcracker.controllers.ord;
 
-
 import com.fasterxml.jackson.annotation.JsonView;
-import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.car.ValidateCar;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.DTO.ord.OutfitDto;
@@ -13,21 +11,15 @@ import com.netcracker.DTO.time.TimeDto;
 import com.netcracker.outfit.State;
 import com.netcracker.services.OutfitsServices;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -89,7 +81,7 @@ public class OutfitController {
  }
 
 
- @ApiOperation(value = "Get all clients")
+ @ApiOperation(value = "Get all")
  @GetMapping(value = "details/time/get-all")
  public ResponseEntity<List<TimeDto>> getAllClient() throws SaveSearchErrorException {
   return ResponseEntity.ok(outfitsServices.getAllOutfitByTime());

@@ -43,6 +43,10 @@ public class MarkServicesImpl implements MarkServices {
   }
  }
 
+ @Override
+ public Optional<Mark> markById(UUID uuid) {
+  return markRepository.findById(uuid);
+ }
 
  @Override
  public List<Mark> getMarkById(UUID uuid) {

@@ -30,4 +30,6 @@ public interface OrderServices {
  UUID updateRequestFromClient(OrderForm orderDto, String name) throws SaveSearchErrorException;
 
  void checkTime(Date dateStart, Date end, UUID master) throws SaveSearchErrorException;
+
+ boolean updateOrderCarMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException;
 }

@@ -2,6 +2,7 @@ package com.netcracker.DTO.basicValidation;
 
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
+import com.netcracker.car.Mark;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
 import com.netcracker.services.impl.MarkServicesImpl;
@@ -14,6 +15,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.TimeZone;
 
 @Slf4j
@@ -21,15 +23,11 @@ import java.util.TimeZone;
 public class CarClientValid
  implements ConstraintValidator<ValidCarClient, CarClientDto> {
 
- private final CarServices carServices;
  private final MarkServicesImpl markServices;
- private final ClientServices clientServices;
 
  @Autowired
- CarClientValid(ClientServices clientServices, CarServices carServices, MarkServicesImpl markServices) {
+ CarClientValid(MarkServicesImpl markServices) {
   this.markServices = markServices;
-  this.carServices = carServices;
-  this.clientServices = clientServices;
  }
 
  public void initialize(ValidCarClient constraint) {
@@ -37,8 +35,12 @@ public class CarClientValid
 
  public boolean isValid(CarClientDto clientDto, ConstraintValidatorContext context) {
   try {
-   if (clientDto.getMark() != null) {
-    markServices.metadataMark(clientDto.getMark().getId());
+   if (clientDto.getMark().getId() != null) {
+    Optional<Mark> mark = markServices.markById(clientDto.getMark().getId());
+    if (mark.isPresent() && this.isWithinRange(clientDto.getYear(), mark.get().getYearStart(), mark.get().getYearEnd())) {
+     return true;
+    } else
+     throw new SaveSearchErrorException("Year of manufacture of the brand does not match the year of the car.", "year");
    }
   } catch (SaveSearchErrorException e) {
    context.disableDefaultConstraintViolation();
@@ -48,6 +50,10 @@ public class CarClientValid
    return false;
   }
   return true;
+ }
+
+ boolean isWithinRange(Date testDate, Date startDate, Date endDate) {
+  return !(testDate.before(startDate) || testDate.after(endDate));
  }
 
 }

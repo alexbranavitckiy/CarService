@@ -1,5 +1,6 @@
 package com.netcracker.DTO.car;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.DTO.ord.OutfitDto;
@@ -40,7 +41,8 @@ public class CarBreakdownDto {
  private int runCarSize;
 
  @JsonView({ValidateBreakdown.Details.class})
- @ApiModelProperty(name = "updateDate", required = false, value = "Update time.", position = 4)
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+ @ApiModelProperty(dataType = "java.sql.Date",name = "updateDate", required = false, value = "Update time.", position = 4)
  private Date updateDate;
 
  @JsonView({ValidateBreakdown.Details.class, ValidateBreakdown.Edit.class})

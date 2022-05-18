@@ -6,6 +6,7 @@ import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface MarkServices {
@@ -21,4 +22,6 @@ public interface MarkServices {
  void metadataMark(UUID uuidMark) throws SaveSearchErrorException;
 
  List<MarkDto> getSearchMark(String regex,Integer offset,Integer limit)  throws SaveSearchErrorException;
+
+ Optional<Mark> markById(UUID uuid);
 }

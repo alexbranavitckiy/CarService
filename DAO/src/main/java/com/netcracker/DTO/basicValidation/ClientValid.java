@@ -12,8 +12,7 @@ import javax.validation.ConstraintValidatorContext;
 
 @Slf4j
 @Component
-public class ClientValid
- implements ConstraintValidator<ValidClients, ClientDto> {
+public class ClientValid implements ConstraintValidator<ValidClients, ClientDto> {
 
  private final ClientServices clientServices;
 

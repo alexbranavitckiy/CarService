@@ -3,6 +3,7 @@ package com.netcracker.DTO.ord;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.netcracker.order.State;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,12 +32,12 @@ public class OrderForm {
  @JsonView({ValidateOrd.NewAdmin.class})
  private UUID carClient;
 
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm")
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
  @NotNull(groups = {ValidateOrd.NewAdmin.class,ValidateOrd.EditValue.class})
  @JsonView({ValidateOrd.NewAdmin.class,ValidateOrd.EditValue.class})
  private Date dateEntOutfit;
 
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm")
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
  @NotNull(groups = {ValidateOrd.NewAdmin.class,ValidateOrd.EditValue.class})
  @JsonView({ValidateOrd.NewAdmin.class,ValidateOrd.EditValue.class})
  private Date dateStartOutfit;

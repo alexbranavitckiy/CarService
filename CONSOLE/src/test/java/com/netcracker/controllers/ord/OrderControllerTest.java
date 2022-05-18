@@ -42,7 +42,8 @@ class OrderControllerTest {
  @Test
  void getOrderOnClient() throws Exception {
   List<OrderDto> masterDto = new ArrayList<>();
-  Mockito.when(orderServices.getAllOrderClientsWithState("name", State.REQUEST, 1, 1)).thenReturn(masterDto);
+  Mockito.when(orderServices.getAllOrderClientsWithState("name", State.REQUEST, 1, 1))
+   .thenReturn(masterDto);
   mockMvc.perform(get("/person/order-request/get-all").param("offset", "1")
    .param("limit", "1").param("state", State.REQUEST.getCode())
    .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")

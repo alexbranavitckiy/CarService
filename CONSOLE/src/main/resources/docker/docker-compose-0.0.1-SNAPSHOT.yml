@@ -6,7 +6,7 @@ services:
     ports:
       - "8085:8085"
     build:
-      context: .
+      context: ""
       dockerfile: Dockerfile
     command: java -jar ./app.jar
     depends_on:
