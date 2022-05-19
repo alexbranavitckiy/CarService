@@ -1,12 +1,8 @@
 package com.netcracker.user;
 
 
-import java.util.List;
-import java.util.UUID;
-
 import com.netcracker.car.CarClient;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.CascadeType;
@@ -15,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter

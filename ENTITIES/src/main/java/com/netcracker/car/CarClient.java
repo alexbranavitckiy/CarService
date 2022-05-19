@@ -1,13 +1,11 @@
 package com.netcracker.car;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.breakdown.CarBreakdown;
 import com.netcracker.order.Order;
 import com.netcracker.user.Client;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
-
 
 import javax.persistence.*;
 import java.util.Date;

@@ -7,10 +7,10 @@ import javax.persistence.Converter;
 import java.util.stream.Stream;
 
 @Converter(autoApply = true)
-public class StateConverter implements AttributeConverter<com.netcracker.outfit.State, String> {
+public class StateConverter implements AttributeConverter<State, String> {
 
  @Override
- public String convertToDatabaseColumn(com.netcracker.outfit.State state) {
+ public String convertToDatabaseColumn(State state) {
   if (state == null) {
    return null;
   }
@@ -19,7 +19,7 @@ public class StateConverter implements AttributeConverter<com.netcracker.outfit.
 
 
  @Override
- public com.netcracker.outfit.State convertToEntityAttribute(String code) {
+ public State convertToEntityAttribute(String code) {
   if (code == null) {
    return null;
   }

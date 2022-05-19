@@ -1,8 +1,6 @@
 package com.netcracker.outfit;
 
 
-import java.util.function.Supplier;
-
 public enum State  {
  WORK("WORK"),
  END("END"),
