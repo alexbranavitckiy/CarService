@@ -25,7 +25,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@WithMockUser(authorities = "RECEPTIONIST")
 @SpringBootTest(classes = CarServiceApplication.class)
 class MasterControllerTest {
 
@@ -40,7 +39,8 @@ class MasterControllerTest {
  private ObjectMapper mapper;
 
  @Test
- void getClientsOnline() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void getClientsOnlineTest() throws Exception {
   MasterDto masterDto = new MasterDto();
   Mockito.when(masterServices.getMasterDtoByLogin("")).thenReturn(Optional.of(masterDto));
   mockMvc.perform(get("/aut/get-master").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -48,7 +48,8 @@ class MasterControllerTest {
  }
 
  @Test
- void updateClientData() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void updateClientDataTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().login("alex").build();
   Mockito.when(masterServices.updateMasterLogin(clientDto.getLogin(), "")).thenReturn(true);
   mockMvc.perform(put("/aut/update-date/login")
@@ -57,7 +58,8 @@ class MasterControllerTest {
  }
 
  @Test
- void updateClientEmail() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void updateClientEmailTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().email("").build();
   Mockito.when(masterServices.updateMasterEmail(clientDto.getEmail(), "")).thenReturn(true);
   mockMvc.perform(put("/aut/update-date/email")
@@ -71,7 +73,8 @@ class MasterControllerTest {
  }
 
  @Test
- void updateMasterPhone() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void updateMasterPhoneTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().phone("+375333308979").build();
   Mockito.when(masterServices.updateMasterPhone(clientDto.getPhone(), "")).thenReturn(true);
   mockMvc.perform(put("/aut/update-date/phone")
@@ -80,7 +83,8 @@ class MasterControllerTest {
  }
 
  @Test
- void updateUser() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void updateUserTest() throws Exception {
   MasterDto masterDto = MasterDto.builder().mail("alex03@hotmail.com")
    .role(Role.RECEPTIONIST).description("asdasd")
    .homeAddress("asdsadasd")
@@ -91,7 +95,8 @@ class MasterControllerTest {
  }
 
  @Test
- void addUser() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void addUserTest() throws Exception {
   MasterDto masterDto = MasterDto.builder().mail("alex03@hotmail.com")
    .role(Role.RECEPTIONIST)
    .name("Alex").education("Edsdfd").login("Alex").password("asdasdsdad").phone("+375333308979").build();
@@ -101,7 +106,8 @@ class MasterControllerTest {
  }
 
  @Test
- void addUserError() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void addUserErrorTest() throws Exception {
   MasterDto masterDto = new MasterDto();
   Mockito.when(masterServices.createMasterOnMasterReceiver(masterDto, "")).thenReturn(UUID.randomUUID());
   mockMvc.perform(post("/details/create-person").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -109,7 +115,8 @@ class MasterControllerTest {
  }
 
  @Test
- void getClientsOnMaster() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void getClientsOnMasterTest() throws Exception {
   List masterDto = new ArrayList<>();
   Mockito.when(masterServices.getMasterDtoOnMaster()).thenReturn(new ArrayList<>());
   mockMvc.perform(get("/details/get-masters").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")

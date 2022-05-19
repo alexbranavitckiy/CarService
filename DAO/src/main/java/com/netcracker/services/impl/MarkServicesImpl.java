@@ -4,18 +4,18 @@ import com.netcracker.DTO.car.MarkDto;
 import com.netcracker.DTO.convectror.MapperDto;
 import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
+import com.netcracker.DTO.page.Paged;
+import com.netcracker.DTO.page.Paging;
 import com.netcracker.repository.MarkRepository;
 import com.netcracker.services.MarkServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,6 +41,20 @@ public class MarkServicesImpl implements MarkServices {
   } catch (Exception e) {
    throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "search");
   }
+ }
+
+ @Override
+ public Page<Mark> getPageMark(Pageable pageable) throws SaveSearchErrorException {
+  try {
+   return markRepository.getAllBy(pageable);
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "search");
+  }
+ }
+ @Override
+ public Paged<Mark> getPage(int pageNumber, int size) {
+  Page<Mark> postPage = markRepository.getAllBy( PageRequest.of(pageNumber - 1, size));;
+  return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
  }
 
  @Override

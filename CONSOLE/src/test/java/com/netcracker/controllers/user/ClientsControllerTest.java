@@ -46,7 +46,7 @@ class ClientsControllerTest {
  private ObjectMapper mapper;
 
  @Test
- void handleLogin() throws Exception {
+ void handleLoginTest() throws Exception {
   ContactConfirmationPayload masterDto = new ContactConfirmationPayload("passsss", "login");
   Mockito.when(authManager.authenticate(new UsernamePasswordAuthenticationToken(masterDto.getLogin(), masterDto.getPassword()))).thenReturn(null);
   mockMvc.perform(post("/registration/perform-login").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -54,7 +54,7 @@ class ClientsControllerTest {
  }
 
  @Test
- void handleLoginError() throws Exception {
+ void handleLoginErrorTest() throws Exception {
   ContactConfirmationPayload masterDto = new ContactConfirmationPayload("", "");
   Mockito.when(authManager.authenticate(new UsernamePasswordAuthenticationToken(masterDto.getLogin(), masterDto.getPassword()))).thenReturn(null);
   mockMvc.perform(post("/registration/perform-login").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -62,7 +62,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void updateClientEmail() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateClientEmailTest() throws Exception {
   ClientDto clientDto = new ClientDto();
   Mockito.when(clientServices.updateClientEmail("", "")).thenReturn(true);
   mockMvc.perform(put("/person/update-date/email")
@@ -79,7 +80,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void updateUser() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateUserTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().name("Alex").build();
   Mockito.when(clientServices.updateClientName(clientDto, "")).thenReturn(true);
   mockMvc.perform(post("/person/update")
@@ -88,7 +90,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void updateClientPhone() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateClientPhoneTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().phone("+375333308979").build();
   Mockito.when(clientServices.updateClientPhone("", "")).thenReturn(true);
   mockMvc.perform(put("/person/update-date/phone")
@@ -97,7 +100,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void updateClientPas() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateClientPasTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().password("375333308979").build();
   Mockito.when(clientServices.updateClientPass("", "")).thenReturn(true);
   mockMvc.perform(put("/person/update-date/pass")
@@ -106,7 +110,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void updateClientData() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateClientDataTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().login("75333308979").build();
   Mockito.when(clientServices.updateClientLogin("", "")).thenReturn(true);
   mockMvc.perform(put("/person/update-date/login")
@@ -115,7 +120,8 @@ class ClientsControllerTest {
  }
 
  @Test
- void getClientsOnline() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void getClientsOnlineTest() throws Exception {
   ClientDto clientDto = ClientDto.builder().login("75333308979").build();
   Mockito.when(clientServices.updateClientLogin("", "")).thenReturn(true);
   mockMvc.perform(put("/person/update-date/login")
@@ -124,7 +130,7 @@ class ClientsControllerTest {
  }
 
  @Test
- void createUser() throws Exception {
+ void createUserTest() throws Exception {
   UUID ud = UUID.randomUUID();
   ClientDto clientDto = ClientDto.builder()
    .email("alex0377@hotmail.com")

@@ -36,24 +36,26 @@ class OutfitControllerTest {
  @Autowired
  private ObjectMapper mapper;
 
-
  @Test
- void outfitEndMaster() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void outfitEndMasterTest() throws Exception {
   Mockito.when(outfitsServices.outfitEndWork("name")).thenReturn(true);
   mockMvc.perform(put("/aut/outfit-end").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
   .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
  @Test
- void updateOutfit() throws Exception {
+ void updateOutfitTest() throws Exception {
   OutfitDto masterDto = new OutfitDto();
   Mockito.when(outfitsServices.updateOutfitByMasterR(masterDto, "")).thenReturn(true);
   mockMvc.perform(post("/details/outfit-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
+
  @Test
- void updateOutfitByMaster() throws Exception {
+ @WithMockUser(authorities = "MASTER")
+ void updateOutfitByMasterTest() throws Exception {
   OutfitDto masterDto = new OutfitDto();
   Mockito.when(outfitsServices.updateOutfitByMaster(masterDto, "")).thenReturn(true);
   mockMvc.perform(post("/aut/outfit-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")

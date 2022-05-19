@@ -40,7 +40,8 @@ class OrderControllerTest {
  private ObjectMapper mapper;
 
  @Test
- void getOrderOnClient() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void getOrderOnClientTest() throws Exception {
   List<OrderDto> masterDto = new ArrayList<>();
   Mockito.when(orderServices.getAllOrderClientsWithState("name", State.REQUEST, 1, 1))
    .thenReturn(masterDto);
@@ -52,7 +53,8 @@ class OrderControllerTest {
 
 
  @Test
- void closeOrderRequest() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void closeOrderRequestTest() throws Exception {
   OrderDto masterDto = new OrderDto();
   masterDto.setCarClient(UUID.randomUUID());
   masterDto.setId(UUID.randomUUID());
@@ -63,7 +65,7 @@ class OrderControllerTest {
 
 
  @Test
- void addOrderOnMasterError() throws Exception {
+ void addOrderOnMasterErrorTest() throws Exception {
   OrderForm masterDto = new OrderForm();
   Mockito.when(orderServices.addOrderOnMaster(masterDto, "")).thenReturn(UUID.randomUUID());
   mockMvc.perform(post("/details/new-order").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
@@ -71,7 +73,7 @@ class OrderControllerTest {
  }
 
  @Test
- void addOrderOnMaster() throws Exception {
+ void addOrderOnMasterTest() throws Exception {
   OrderForm masterDto = new OrderForm();
   masterDto.setIdMasterOutfit(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
@@ -86,7 +88,7 @@ class OrderControllerTest {
  }
 
  @Test
- void updateRequestFromClient() throws Exception {
+ void updateRequestFromClientTest() throws Exception {
   OrderForm masterDto = new OrderForm();
   masterDto.setIdMasterOutfit(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
@@ -101,7 +103,7 @@ class OrderControllerTest {
  }
 
  @Test
- void updateOrderRequestMasterR() throws Exception {
+ void updateOrderRequestMasterRTest() throws Exception {
   OrderDto masterDto = new OrderDto();
   masterDto.setId(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
@@ -110,4 +112,5 @@ class OrderControllerTest {
   mockMvc.perform(put("/details/order-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
+
 }

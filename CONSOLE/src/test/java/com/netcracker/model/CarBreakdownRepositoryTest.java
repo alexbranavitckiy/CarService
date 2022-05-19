@@ -41,7 +41,7 @@ class CarBreakdownRepositoryTest {
  }
 
  @Test
- void getAllByLogin() {
+ void getAllByLoginTest() {
   UUID uuid = UUID.randomUUID();
   clientsRepository.insertClient(uuid, "description",
    "email", "UUID.randomUUID()", "name", "password",

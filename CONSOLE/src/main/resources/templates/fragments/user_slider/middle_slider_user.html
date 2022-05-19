@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="middle_user">
+    <div class="container-fluid">
+        <div class="row">
+            <header class="col-md-3">
+                <div class=" border-right">
+                    <div class="d-flex flex-column align-items-center text-center "><img
+                            class="rounded-circle " width="150px"
+                            src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
+                            class="font-weight-bold">Eedogaru@mail.com.my</span><span> </span>
+                    </div>
+                    <nav class="mt-2 ">
+                        <div class="list-group">
+                            <a th:href="@{/index/myRequest}"
+                               class="list-group-item list-group-item-action  list-group-flush">Profile</a>
+                            <a th:href="@{/index/cars}" class="list-group-item list-group-item-action ">Cars</a>
+                            <a th:href="@{/index/profile}" class="list-group-item list-group-item-action ">My
+                                request</a>
+                            <a th:href="@{/index/atWork}" class="list-group-item list-group-item-action -flush">Machines
+                                at work</a>
+                            <a th:href="@{/index/myEntries}" class="list-group-item list-group-item-action  ">My
+                                entries</a>
+                        </div>
+                    </nav>
+                </div>
+
+            </header>
+            <main class="col-md-9">
+                <div th:switch="${pathVariable}">
+                    <div th:case="'myRequest'">
+                        <div th:replace="~{fragments/user_slider/profile_fragment::profile}"></div>
+                    </div>
+                    <div th:case="'cars'">car</div>
+                    <div th:case="'profile'">profile</div>
+                    <div th:case="'atWork'">atWork</div>
+                    <div th:case="'myEntries'">MyEntries</div>
+                    <div th:case="*">
+                        <div th:replace="~{fragments/user_slider/profile_fragment::profile}"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</html>
+</div>

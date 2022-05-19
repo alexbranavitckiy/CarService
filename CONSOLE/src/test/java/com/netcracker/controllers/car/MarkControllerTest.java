@@ -31,7 +31,7 @@ public class MarkControllerTest {
  private ObjectMapper objectMapper;
 
  @Test
- void getAllMark() throws Exception {
+ void getAllMarkTest() throws Exception {
   mockMvc.perform(
    get("/person/mark/get-all").param("offset","1").param("limit","1")
     .contentType(MediaType.APPLICATION_JSON)
@@ -40,7 +40,7 @@ public class MarkControllerTest {
 
 
  @Test
- void getAllMarkOnMaster() throws Exception {
+ void getAllMarkOnMasterTest() throws Exception {
   mockMvc.perform(
    get("/details/mark/get-all").param("offset","1").param("limit","1")
     .contentType(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ public class MarkControllerTest {
 
 
  @Test
- void getMarkById() throws Exception {
+ void getMarkByIdTest() throws Exception {
   mockMvc.perform(
    get("/person/mark/get-by-id").param("id", UUID.randomUUID().toString())
     .contentType(MediaType.APPLICATION_JSON)
@@ -57,7 +57,7 @@ public class MarkControllerTest {
  }
 
  @Test
- void deleteMark() throws Exception {
+ void deleteMarkTest() throws Exception {
   mockMvc.perform(
    delete("/details/delete-mark")
     .param("id", UUID.randomUUID().toString())
@@ -66,7 +66,7 @@ public class MarkControllerTest {
  }
 
  @Test
- void addMark() throws Exception {
+ void addMarkTest() throws Exception {
   mockMvc.perform(
    post("/details/add-mark")
     .content(objectMapper.writeValueAsString(Mark.builder()
@@ -77,7 +77,7 @@ public class MarkControllerTest {
  }
 
  @Test
- void getAllMarkError() throws Exception {
+ void getAllMarkErrorTest() throws Exception {
   mockMvc.perform(
     get("/person/mark/1")
      .contentType(MediaType.APPLICATION_JSON).param("offset","1").param("limit","1")

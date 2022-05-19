@@ -24,9 +24,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@WithMockUser(authorities = "RECEPTIONIST")
 @SpringBootTest(classes = CarServiceApplication.class)
-public class CarControllerMock {
+public class CarControllerTest {
 
  @Autowired
  private MockMvc mockMvc;
@@ -34,20 +33,27 @@ public class CarControllerMock {
  @MockBean
  private CarServices carServices;
 
+ @MockBean
+ private CarClientValid carClientValid;
+
  @Autowired
  private ObjectMapper mapper;
 
  @Test
- void createCarError() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void createCarTest() throws Exception {
   CarClientDto car = new CarClientDto();
   Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(UUID.randomUUID());
+  Mockito.when(carClientValid.isValid(car, null)).thenReturn(true);
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON)
+   .characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
  }
 
  @Test
- void updateCar() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateCarTest() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
   car.setIdClient(UUID.randomUUID());
@@ -55,23 +61,27 @@ public class CarControllerMock {
   car.setYear(new Date());
   Mockito.when(carServices.updateCarClientByLogin(car, "")).thenReturn(true);
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON)
+   .characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
  @Test
- void updateCarClientByIdWithMachineNumber() throws Exception {
+ @WithMockUser(authorities = "REGISTERED")
+ void updateCarClientByIdWithMachineNumberTest() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
   car.setYear(new Date());
   Mockito.when(carServices.updateCarClientByIdWithMachineNumber(car, "")).thenReturn(true);
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON)
+   .characterEncoding("utf-8")
    .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
  @Test
- void createCarOnMaster() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void createCarOnMasterTest() throws Exception {
   CarClientDto car = new CarClientDto();
   car.setId(UUID.randomUUID());
   car.setYear(new Date());
@@ -83,7 +93,8 @@ public class CarControllerMock {
  }
 
  @Test
- void getAllCar() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void getAllCarTest() throws Exception {
   List<CarClientDto> cars = new ArrayList<>();
   CarClientDto car = new CarClientDto();
   cars.add(car);
@@ -94,7 +105,8 @@ public class CarControllerMock {
  }
 
  @Test
- void searchCar() throws Exception {
+ @WithMockUser(authorities = "RECEPTIONIST")
+ void searchCarTest() throws Exception {
   List<CarClientDto> cars = new ArrayList<>();
   CarClientDto car = new CarClientDto();
   cars.add(car);

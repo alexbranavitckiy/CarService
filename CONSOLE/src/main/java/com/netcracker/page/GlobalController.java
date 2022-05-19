@@ -1,4 +1,4 @@
-package com.netcracker.controllers.page;
+package com.netcracker.page;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

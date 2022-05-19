@@ -41,7 +41,7 @@ public class RegistrationControllerTest {
  }
 
  @Test
- void createUser() throws Exception {
+ void createUserTest() throws Exception {
   ClientDto client = ClientDto.builder()
    .name("AlexA")
    .description("AlexA")
