@@ -40,14 +40,15 @@ public class OrderDto {
  @JsonView({ValidateOrd.Details.class, ValidateOrd.NewAdmin.class, ValidateOrd.State.class})
  private State state;
 
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
  @Null(groups = {ValidateOrd.New.class})
  @JsonView({ValidateOrd.Details.class, ValidateOrd.CreatedDate.class})
  private Date createdDate;
 
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
  @Null(groups = {ValidateOrd.New.class})
  @JsonView({ValidateOrd.Details.class, ValidateOrd.UpdatedDate.class})
  private Date updatedDate;
+
 
 }

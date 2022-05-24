@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -58,7 +59,8 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public List<CarBreakdownDto> getAllBreakdownByCarAndStateSortDesc(UUID carUUID, State state, String login) throws SaveSearchErrorException {
+ public List<CarBreakdownDto> getAllBreakdownByCarAndStateSortDesc(UUID carUUID, State state, String login)
+  throws SaveSearchErrorException {
   try {
    return breakdownRepository.getAllByCarBreakdownByStateAndSortDesc(carUUID, login, state.getCode()).stream()
     .map(mapperDto::toDto).collect(Collectors.toList());
@@ -70,25 +72,17 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
 
 
  @Override
- public boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownDto, UUID orders, String login) {
+ public UUID addBreakdownOnMaster(CarBreakdownDto carBreakdownDto, UUID orders, String login)
+  throws SaveSearchErrorException {
   try {
-   breakdownRepository.insertCarBreakDownOnMaster(UUID.randomUUID(), carBreakdownDto.getPrice(),
+   carBreakdownDto.setIdCar(UUID.randomUUID());
+   breakdownRepository.insertCarBreakDownOnMaster(carBreakdownDto.getId(), carBreakdownDto.getPrice(),
     carBreakdownDto.getLocation(), carBreakdownDto.getDescription(), carBreakdownDto.getRunCarSize(),
     new Date(), State.IMPORTANT.getCode(), orders);
-   return true;
+   return carBreakdownDto.getId();
   } catch (Exception e) {
    log.error("Message:{}. Error:{}", e.getMessage(), e);
-  }
-  return false;
- }
-
- @Override
- public List<CarBreakdownDto> getAllBreakDownByCarIdOnMaster(UUID carId) throws SaveSearchErrorException {
-  try {
-   return breakdownRepository.getAllByCarClientId(carId).stream().map(mapperDto::toDto).collect(Collectors.toList());
-  } catch (Exception e) {
-   log.error("Message:{}. Error:{}", e.getMessage(), e);
-   throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
+   throw new SaveSearchErrorException("Invalid data entered.", "err");
   }
  }
 
@@ -108,13 +102,13 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  }
 
  @Override
- public boolean updateBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String login)
+ public UUID updateBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String login)
   throws SaveSearchErrorException {
   try {
    if (breakdownRepository.updateCarBreakDownByIdAndMasterOnR(carBreakdownForm.getPrice(),
     carBreakdownForm.getDescription(), carBreakdownForm.getRunCarSize(), new Date(),
     carBreakdownForm.getState().getCode(), carBreakdownForm.getLocation(), carBreakdownForm.getId(), login) == 1)
-    return true;
+    return carBreakdownForm.getId();
   } catch (Exception e) {
    log.error("Message:{}. Error:{}", e.getMessage(), e);
    throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
@@ -125,18 +119,39 @@ public class CarBreakdownServicesImpl implements CarBreakdownServices {
  @Override
  public List<CarBreakdownDto> getAllBreakDownBOnMasterR(String name, int offset, int limit) throws SaveSearchErrorException {
   try {
-   return breakdownRepository.getAllByOrderByUpdateDate(PageRequest.of(offset, limit)).stream().map(mapperDto::toDto).collect(Collectors.toList());
+   return breakdownRepository.getAllByOrderByUpdateDateDesc(PageRequest.of(offset, limit)).stream().map(mapperDto::toDto).
+    collect(Collectors.toList());
   } catch (Exception e) {
    log.error("Message:{}. Error:{}", e.getMessage(), e);
    throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());
   }
  }
 
+ @Override
+ public UUID updatePartBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String name) throws SaveSearchErrorException {
+  try {
+   Optional<CarBreakdown> carBreakdown = breakdownRepository.findById(carBreakdownForm.getId());
+   if (carBreakdown.isEmpty()) throw new SaveSearchErrorException("Invalid id entered.", "Id");
+   if (carBreakdownForm.getDescription() != null) carBreakdown.get().setDescription(carBreakdownForm.getDescription());
+   if (carBreakdownForm.getLocation() != null) carBreakdown.get().setLocation(carBreakdownForm.getLocation());
+   if (carBreakdownForm.getUpdateDate() != null) carBreakdown.get().setUpdateDate(new Date());
+   if (carBreakdownForm.getRunCarSize() > carBreakdown.get().getRunCarSize()) carBreakdown.get()
+    .setRunCarSize(carBreakdownForm.getRunCarSize());
+   if (carBreakdownForm.getPrice() > 0) carBreakdown.get().setPrice(carBreakdownForm.getPrice());
+   if (carBreakdownForm.getState() != null) carBreakdown.get().setState(carBreakdownForm.getState());
+   breakdownRepository.save(carBreakdown.get());
+   return carBreakdown.get().getId();
+  } catch (Exception e) {
+   log.error("Message:{}. Error:{}", e.getMessage(), e);
+   throw new SaveSearchErrorException("Save data error.", "Save");
+  }
+ }
 
  @Override
  public List<CarBreakdownDto> getAllBreakDownBOnMaster(String name) throws SaveSearchErrorException {
   try {
-   return breakdownRepository.getAllByMaster(name).stream().map(mapperDto::toDto).collect(Collectors.toList());
+   return breakdownRepository.getAllByMaster(name)
+    .stream().map(mapperDto::toDto).collect(Collectors.toList());
   } catch (Exception e) {
    log.error("Message:{}. Error:{}", e.getMessage(), e);
    throw new SaveSearchErrorException("The search has not given any results." + e.getMessage());

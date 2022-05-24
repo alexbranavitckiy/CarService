@@ -17,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.time.Duration;
 import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,7 +46,7 @@ class OrderControllerTest {
   List<OrderDto> masterDto = new ArrayList<>();
   Mockito.when(orderServices.getAllOrderClientsWithState("name", State.REQUEST, 1, 1))
    .thenReturn(masterDto);
-  mockMvc.perform(get("/person/order-request/get-all").param("offset", "1")
+  mockMvc.perform(get("/person/orders").param("offset", "1")
    .param("limit", "1").param("state", State.REQUEST.getCode())
    .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
@@ -59,7 +60,7 @@ class OrderControllerTest {
   masterDto.setCarClient(UUID.randomUUID());
   masterDto.setId(UUID.randomUUID());
   Mockito.when(orderServices.cancelRequest(masterDto.getId(), "")).thenReturn(true);
-  mockMvc.perform(put("/person/order-close").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(put("/person/close-order").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 
@@ -78,8 +79,10 @@ class OrderControllerTest {
   masterDto.setIdMasterOutfit(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
   masterDto.setIdOrder(UUID.randomUUID());
-  masterDto.setDateEntOutfit(new Date());
-  masterDto.setDateStartOutfit(new Date());
+  masterDto.setDateEndOutfit(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(6))));
+  masterDto.setDateStartOutfit(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(2))));
   masterDto.setNameOutfit("asdd");
   masterDto.setDescription("UUID.randomUUID()");
   Mockito.when(orderServices.addOrderOnMaster(masterDto, "")).thenReturn(UUID.randomUUID());
@@ -93,12 +96,14 @@ class OrderControllerTest {
   masterDto.setIdMasterOutfit(UUID.randomUUID());
   masterDto.setCarClient(UUID.randomUUID());
   masterDto.setIdOrder(UUID.randomUUID());
-  masterDto.setDateEntOutfit(new Date());
-  masterDto.setDateStartOutfit(new Date());
+  masterDto.setDateEndOutfit(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(6))));
+  masterDto.setDateStartOutfit(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(2))));
   masterDto.setNameOutfit("asdd");
   masterDto.setDescription("UUID.randomUUID()");
   Mockito.when(orderServices.updateRequestFromClient(masterDto, "")).thenReturn(UUID.randomUUID());
-  mockMvc.perform(put("/details/request-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(put("/details/update-order").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 

@@ -2,10 +2,10 @@ package com.netcracker.repository;
 
 
 import com.netcracker.breakdown.CarBreakdown;
-import com.netcracker.car.CarClient;
+import com.netcracker.breakdown.StateConverter;
+import com.netcracker.outfit.State;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,14 +15,13 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBreakdown, UUID> {
 
 
- Page<CarBreakdown> getAllByOrderByUpdateDate(Pageable nextPage);
+ Page<CarBreakdown> getAllByOrderByUpdateDateDesc(Pageable nextPage);
 
  @Query(value = "SELECT  id, description, location, price, run_car_size, state, update_date, id_car, id_outfit " +
   " FROM public.car_breakdown  where id_car in" +
@@ -49,7 +48,7 @@ public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBr
  @Modifying
  @Query(value = "update car_breakdown  set description =:description, run_car_size = :runCarSize " +
   ",update_date = :updateDate,state = :state,location = :location  where id = :idCarBreak and" +
-  " id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master" +
+  " id_outfit in (SELECT id FROM outfit where state_outfit='WORK' and id_master" +
   " in( SELECT id FROM master where login=:login))", nativeQuery = true)
  int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("runCarSize") int runCarSize,
                                           @Param("updateDate") Date updateDate, @Param("state") String state,
@@ -68,40 +67,16 @@ public interface CarBreakdownRepository extends PagingAndSortingRepository<CarBr
                                         @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
 
 
- @Transactional
- @Modifying
- @Query(value = "update car_breakdown  set  run_car_size = :runCarSize ,update_date = :updateDate" +
-  " where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK'" +
-  " and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
- int updateCarBreakDownByIdAndMasterLogin(@Param("runCarSize") int runCarSize, @Param("updateDate")
-  Date updateDate, @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
-
- @Transactional
- @Modifying
- @Query(value = "update car_breakdown  set description =:description ,update_date = :updateDate," +
-  "state = :state  where id = :idCarBreak and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK'" +
-  " and id_master in( SELECT id FROM master where login=:login))", nativeQuery = true)
- int updateCarBreakDownByIdAndMasterLogin(@Param("description") String description, @Param("updateDate") Date updateDate,
-                                          @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
-
- @Transactional
- @Modifying
- @Query(value = "update car_breakdown  set update_date = :updateDate,state = :state  where id = :idCarBreak " +
-  "and id_outfit in (  SELECT id FROM outfit where state_outfit='WORK' and id_master" +
-  " in( SELECT id FROM master where login=:login))", nativeQuery = true)
- int updateCarBreakDownByIdAndMasterLogin(@Param("updateDate") Date updateDate, @Param("state") String state,
-                                          @Param("idCarBreak") UUID idCarBreak, @Param("login") String login);
-
- @Query(value = "SELECT * FROM public.car_breakdown   where car_breakdown.id_outfit  " +
-  " in (  SELECT id FROM public.outfit where outfit.state_outfit='WORK' and outfit.id_master " +
-  "in( SELECT id FROM public.master where login=:login))", nativeQuery = true)
+ @Query(value = "SELECT * FROM car_breakdown   where id_outfit  " +
+  " in ( SELECT id FROM public.outfit where  state_outfit='WORK' and  id_master " +
+  "in( SELECT id FROM  master where login=:login))", nativeQuery = true)
  List<CarBreakdown> getAllByMaster(String login);
 
- @Query(value = "SELECT * FROM public.car_breakdown   where car_breakdown.id=:id and car_breakdown.id_outfit" +
-  "   in (  SELECT id FROM public.outfit where outfit.state_outfit='WORK' and outfit.id_master" +
-  " in( SELECT id FROM public.master where login=:login))", nativeQuery = true)
- List<CarBreakdown> getAllByIdOnMaster(String login, UUID id);
 
+ @Query(value = "SELECT * FROM  car_breakdown   where id=:id and id_outfit" +
+  "   in (SELECT id FROM outfit where state_outfit='WORK' and id_master" +
+  " in(SELECT id FROM master where login=:login))", nativeQuery = true)
+ List<CarBreakdown> getAllByIdOnMaster(String login, UUID id);
 
  @Transactional
  @Modifying

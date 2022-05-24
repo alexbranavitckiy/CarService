@@ -10,19 +10,11 @@ import java.util.*;
 
 public interface ClientServices {
  //--validate--/
- boolean passwordChek(String password) throws SaveSearchErrorException;
-
  boolean loginChek(String login) throws SaveSearchErrorException;
 
- boolean idChek(UUID login) throws SaveSearchErrorException;
-
- boolean emailChek(String email) throws SaveSearchErrorException;
-
- boolean phoneChek(String phone) throws SaveSearchErrorException;
  //--validate--/
 
  //--client--//
- boolean updateClientData(ContactConfirmationPayload clientFormUpdate, String login) throws SaveSearchErrorException;
 
  boolean updateClientPass(String clientFormUpdate, String login) throws SaveSearchErrorException;
 
@@ -34,19 +26,13 @@ public interface ClientServices {
 
  boolean updateClientName(ClientDto client, String name) throws SaveSearchErrorException;
 
- List<Client> getAllClient();
 
  UUID registrationClient(ClientDto client) throws SaveSearchErrorException;
 
- Optional<Client> getClientByLogin(String name);
-
- Optional<ClientDto> getClientsByName(String name);
 
  Optional<ClientDto> getClientDtoByLogin(String name);
 
  Map<String, Object> getRoleClientByLogin(String name);
-
- boolean updateClientByLogin(ClientDto client, String login) throws SaveSearchErrorException;
 
  //--client--//
 

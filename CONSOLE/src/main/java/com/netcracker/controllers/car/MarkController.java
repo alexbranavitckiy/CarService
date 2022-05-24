@@ -7,11 +7,13 @@ import com.netcracker.services.MarkServices;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,30 +29,30 @@ public class MarkController {
  }
 
  @ApiOperation("Get all car brands")
- @GetMapping({"/person/mark/get-all", "/details/mark/get-all"})
+ @GetMapping({"/person/marks", "/details/marks"})
  public ResponseEntity<List<MarkDto>> getAllMark(@RequestParam("offset") Integer offset,
-                                              @RequestParam("limit") Integer limit) throws SaveSearchErrorException {
-  return ResponseEntity.ok(markServices.getAllMark(offset,limit));
+                                                 @RequestParam("limit") Integer limit) throws SaveSearchErrorException {
+  return ResponseEntity.ok(markServices.getAllMark(offset, limit));
  }
 
  @ApiOperation("Get all car brands with regex")
  @GetMapping({"/person/mark-search", "/details/mark-search"})
  public ResponseEntity<List<MarkDto>> getAllMark(@RequestParam("offset") Integer offset,
-                                              @RequestParam("limit") Integer limit, @RequestParam String regex)
+                                                 @RequestParam("limit") Integer limit, @RequestParam String regex)
   throws SaveSearchErrorException {
-  return ResponseEntity.ok(markServices.getSearchMark(regex,offset,limit));
+  return ResponseEntity.ok(markServices.getSearchMark(regex, offset, limit));
  }
 
  @ApiOperation("Get all car brands")
- @GetMapping({"/person/mark/get-by-id", "/details/mark/get-by-id"})
+ @GetMapping({"/person/mark/id", "/details/mark/id"})
  public ResponseEntity<List<Mark>> getMarkById(@RequestParam UUID id) {
-  return ResponseEntity.ok(markServices.getMarkById(id));
+  return ResponseEntity.status(200).body(markServices.getMarkById(id));
  }
 
  @ApiOperation("Delete car brands")
- @DeleteMapping(value = "/details/delete-mark", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
+ @DeleteMapping(value = "/details/mark", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
   MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<Boolean> deleteMark(@Validated @RequestParam UUID id) {
+ public ResponseEntity<Boolean> deleteMark(@Validated @NotNull @RequestParam UUID id) {
   return ResponseEntity.ok(markServices.deleteMark(id));
  }
 
@@ -58,15 +60,7 @@ public class MarkController {
  @PostMapping(value = "/details/add-mark", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces =
   MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<Boolean> addMark(@Validated @RequestBody Mark mark) {
-  log.info("addMark");
-  return ResponseEntity.ok(markServices.addMark(mark));
- }
-
- @ApiOperation("Add car brands")
- @PostMapping(value = "/details/add-mark", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
- public ResponseEntity<Boolean> addMarkPage(@Validated @RequestBody Mark mark) {
-  log.info("addMarkPage");
-  return ResponseEntity.ok(markServices.addMark(mark));
+  return ResponseEntity.status(HttpStatus.CREATED).body(markServices.addMark(mark));
  }
 
 }

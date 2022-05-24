@@ -15,11 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Date;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -40,24 +39,15 @@ class OutfitControllerTest {
  @WithMockUser(authorities = "MASTER")
  void outfitEndMasterTest() throws Exception {
   Mockito.when(outfitsServices.outfitEndWork("name")).thenReturn(true);
-  mockMvc.perform(put("/aut/outfit-end").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(patch("/aut/outfit-end").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
   .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
-
- @Test
- void updateOutfitTest() throws Exception {
-  OutfitDto masterDto = new OutfitDto();
-  Mockito.when(outfitsServices.updateOutfitByMasterR(masterDto, "")).thenReturn(true);
-  mockMvc.perform(post("/details/outfit-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
- }
-
 
  @Test
  @WithMockUser(authorities = "MASTER")
  void updateOutfitByMasterTest() throws Exception {
   OutfitDto masterDto = new OutfitDto();
-  Mockito.when(outfitsServices.updateOutfitByMaster(masterDto, "")).thenReturn(true);
+  Mockito.when(outfitsServices.updateOutfitByMaster(masterDto, "")).thenReturn(UUID.randomUUID());
   mockMvc.perform(post("/aut/outfit-update").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }

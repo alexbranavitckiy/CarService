@@ -119,7 +119,7 @@ class MasterControllerTest {
  void getClientsOnMasterTest() throws Exception {
   List masterDto = new ArrayList<>();
   Mockito.when(masterServices.getMasterDtoOnMaster()).thenReturn(new ArrayList<>());
-  mockMvc.perform(get("/details/get-masters").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+  mockMvc.perform(get("/details/masters").contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
    .content(mapper.writeValueAsString(masterDto)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
  }
 

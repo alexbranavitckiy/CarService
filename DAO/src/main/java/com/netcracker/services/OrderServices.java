@@ -32,4 +32,6 @@ public interface OrderServices {
  void checkTime(Date dateStart, Date end, UUID master) throws SaveSearchErrorException;
 
  boolean updateOrderCarMasterR(OrderDto orderDto, String login) throws SaveSearchErrorException;
+
+ List<OrderDto> getAllOrderById(String name, UUID uuid) throws SaveSearchErrorException;
 }

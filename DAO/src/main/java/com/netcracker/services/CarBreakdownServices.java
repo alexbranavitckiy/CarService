@@ -23,9 +23,7 @@ public interface CarBreakdownServices {
  //--Client--//
 
  //--Master--//
- boolean addBreakdownOnMaster(CarBreakdownDto carBreakdownForm, UUID idOrders, String login);
-
- List<CarBreakdownDto> getAllBreakDownByCarIdOnMaster(UUID carId) throws SaveSearchErrorException;
+ UUID addBreakdownOnMaster(CarBreakdownDto carBreakdownForm, UUID idOrders, String login) throws SaveSearchErrorException;
 
  boolean updateBreakdownOnMaster(CarBreakdownDto carBreakdownForm, String name) throws SaveSearchErrorException;
 
@@ -36,7 +34,9 @@ public interface CarBreakdownServices {
  List<CarBreakdownDto> getAllBreakDownOnCar(UUID id) throws SaveSearchErrorException;
  //--Master--//
 
- boolean updateBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String login) throws SaveSearchErrorException;
+ UUID updateBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String login) throws SaveSearchErrorException;
 
  List<CarBreakdownDto> getAllBreakDownBOnMasterR(String name, int offset, int limit) throws SaveSearchErrorException;
+
+ UUID updatePartBreakdownOnMasterR(CarBreakdownDto carBreakdownForm, String name) throws SaveSearchErrorException;
 }

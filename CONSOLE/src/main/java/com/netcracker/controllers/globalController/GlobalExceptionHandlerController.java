@@ -20,8 +20,8 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-
  @Override
+ @ResponseBody
  protected ResponseEntity<Object> handleHttpMessageNotReadable
   (HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
   ApiError response = ApiError.builder()
@@ -33,6 +33,7 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
    .build();
   return new ResponseEntity<>(response, status);
  }
+
 
  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
  protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, HttpStatus status,
@@ -57,7 +58,6 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
  @ResponseStatus(HttpStatus.BAD_REQUEST)
  @ExceptionHandler(Exception.class)
  protected ResponseEntity<Object> handleCustomAPIException(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-  log.warn(ex.getMessage());
   ApiError response = ApiError.builder()
    .httpStatus(status)
    .localDateTime(LocalDateTime.now())

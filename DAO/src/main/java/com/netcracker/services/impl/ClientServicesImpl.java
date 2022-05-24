@@ -29,7 +29,6 @@ public class ClientServicesImpl implements ClientServices {
  private final ClientsRepository clientsRepository;
  private final MapperDto<ClientDto, Client> mapperDto;
 
-
  @Lazy
  @Autowired
  private ClientServicesImpl(@Qualifier("ClientConvectorImpl") MapperDto<ClientDto, Client> mapperDto,
@@ -38,15 +37,6 @@ public class ClientServicesImpl implements ClientServices {
   this.mapperDto = mapperDto;
  }
 
- @Override
- public Optional<Client> getClientByLogin(String name) {
-  return clientsRepository.getAllByLogin(name);
- }
-
- @Override
- public List<Client> getAllClient() {
-  return clientsRepository.getAllBy();
- }
 
  @Override
  public UUID registrationClient(ClientDto client) throws SaveSearchErrorException {
@@ -65,14 +55,6 @@ public class ClientServicesImpl implements ClientServices {
  }
 
  @Override
- public boolean passwordChek(String password) throws SaveSearchErrorException {
-  if (!clientsRepository.existsByPassword(password)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("Invalid password entered.", "password");
- }
-
- @Override
  public boolean loginChek(String login) throws SaveSearchErrorException {
   if (clientsRepository.existsByLoginClientAndMaster(login, login) == 0) {
    return false;
@@ -80,42 +62,7 @@ public class ClientServicesImpl implements ClientServices {
   throw new SaveSearchErrorException("The login you entered is in use by another user.", "login");
  }
 
- @Override
- public boolean idChek(UUID uuid) throws SaveSearchErrorException {
-  if (clientsRepository.existsById(uuid)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The client id you entered does not exist..", "Id");
- }
 
- @Override
- public boolean emailChek(String email) throws SaveSearchErrorException {
-  if (!clientsRepository.existsByEmail(email)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The entered mail is busy by another user.", "email");
- }
-
- @Override
- public boolean phoneChek(String phone) throws SaveSearchErrorException {
-  if (!clientsRepository.existsByPhone(phone)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The entered phone number is already registered.", "phone");
- }
-
- @Override
- public boolean updateClientData(ContactConfirmationPayload contactConfirmationPayload, String login)
-  throws SaveSearchErrorException {
-  try {
-   clientsRepository.updatePasswordAndLogin(contactConfirmationPayload.getPassword(),
-    contactConfirmationPayload.getLogin(), login);
-   return true;
-  } catch (Exception e) {
-   log.warn(e.getMessage());
-   throw new SaveSearchErrorException("The entered data is not valid");
-  }
- }
 
  @Override
  public boolean updateClientPass(String clientFormUpdate, String login) throws SaveSearchErrorException {
@@ -186,29 +133,10 @@ public class ClientServicesImpl implements ClientServices {
   } else return Optional.of(mapperDto.toDto(client.get()));
  }
 
- @Override
- public Optional<ClientDto> getClientsByName(String name) {
-  Optional<Client> client = clientsRepository.getByName(name);
-  if (client.isEmpty()) {
-   return Optional.empty();
-  } else return Optional.of(mapperDto.toDto(client.get()));
- }
 
  @Override
  public Map<String, Object> getRoleClientByLogin(String login) {
   return clientsRepository.getMyUser(login, login);
- }
-
- @Override
- public boolean updateClientByLogin(ClientDto updateClient, String login) throws SaveSearchErrorException {
-  try {
-   if (clientsRepository.updateClient(updateClient.getName(), updateClient.getPhone(), updateClient.getEmail(),
-    updateClient.getDescription(), login) > 0)
-    return true;
-  } catch (Exception e) {
-   throw new SaveSearchErrorException(e.getMessage());
-  }
-  throw new SaveSearchErrorException("The entered data is in use by other users.");
  }
 
  @Override

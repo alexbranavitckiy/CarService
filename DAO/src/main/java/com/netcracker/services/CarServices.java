@@ -13,10 +13,6 @@ public interface CarServices {
 
  boolean idChek(UUID uuid) throws SaveSearchErrorException;
 
- boolean metadataCarChek(String metadata) throws SaveSearchErrorException, ApiError;
-
- Optional<CarClient> getCarByIdOnMaster(UUID uuidCar) throws ApiError;
-
  List<CarClientDto> getCarByLoginClient(String login,Integer offset,Integer limit) throws SaveSearchErrorException;
 
  List<CarClientDto> getAllCarOnMaster() throws SaveSearchErrorException;

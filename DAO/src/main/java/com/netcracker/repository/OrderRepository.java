@@ -22,6 +22,8 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, UUID>
 
  List<Order> getAllByState(State state);
 
+ List<Order> getById(UUID state);
+
  Optional<Order> findById(UUID id);
 
  @Query(value = " SELECT * FROM public.orders where orders.id_car " +

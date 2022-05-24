@@ -5,6 +5,7 @@ import com.netcracker.DTO.errs.SaveSearchErrorException;
 import com.netcracker.car.Mark;
 import com.netcracker.services.CarServices;
 import com.netcracker.services.ClientServices;
+import com.netcracker.services.MarkServices;
 import com.netcracker.services.impl.MarkServicesImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,14 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.TimeZone;
 
-@Slf4j
 @Component
 public class CarClientValid
  implements ConstraintValidator<ValidCarClient, CarClientDto> {
 
- private final MarkServicesImpl markServices;
+ private final MarkServices markServices;
 
  @Autowired
- CarClientValid(MarkServicesImpl markServices) {
+ CarClientValid(MarkServices markServices) {
   this.markServices = markServices;
  }
 

@@ -16,9 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Lazy
@@ -31,7 +29,7 @@ public class CarServicesImpl implements CarServices {
 
  @Autowired
  private CarServicesImpl(@Qualifier("CarConvectorImpl") MapperDto<CarClientDto, CarClient> clientMapperDto,
-                       CarClientRepository carClientRepository) {
+                         CarClientRepository carClientRepository) {
   this.clientMapperDto = clientMapperDto;
   this.carClientRepository = carClientRepository;
  }
@@ -143,25 +141,7 @@ public class CarServicesImpl implements CarServices {
   throw new SaveSearchErrorException("Invalid id entered.", "id");
  }
 
- @Override
- public boolean metadataCarChek(String metadata) throws SaveSearchErrorException {
-  try {
-   if (carClientRepository.existsByMetadataCar(metadata))
-    throw new SaveSearchErrorException("This car number is already registered.", "metadataCar");
-   return true;
-  } catch (Exception e) {
-   throw new SaveSearchErrorException("This car number is already registered.", e.getMessage());
-  }
- }
 
-
- @Override
- public Optional<CarClient> getCarByIdOnMaster(UUID uuidCar) throws ApiError {
-  try {
-   return carClientRepository.getById(uuidCar);
-  } catch (Exception e) {
-   throw new ApiError(HttpStatus.BAD_REQUEST, e.getMessage(), e.toString());
-  }
-
- }
 }
+
+

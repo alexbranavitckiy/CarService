@@ -12,10 +12,6 @@ public interface MasterServices {
 
  boolean updateMasterByLogin(MasterDto masterDto, String name) throws SaveSearchErrorException;
 
- Optional<Master> getMasterByLogin(String login);
-
- boolean addMaster(Master master);
-
  //--Master--//
  Optional<MasterDto> getMasterDtoByLogin(String login);
 
@@ -29,13 +25,6 @@ public interface MasterServices {
  //--Master--//
 
  //--validate--/
- boolean passwordChek(String password) throws SaveSearchErrorException;
-
- boolean loginChek(String password) throws SaveSearchErrorException;
-
- boolean emailChek(String password) throws SaveSearchErrorException;
-
- boolean phoneChek(String password) throws SaveSearchErrorException;
 
  UUID createMasterOnMasterReceiver(MasterDto master, String name) throws SaveSearchErrorException;
 

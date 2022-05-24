@@ -104,10 +104,10 @@ public class OrderServicesImpl implements OrderServices {
   try {
    UUID id_outfits = UUID.randomUUID();
    UUID dtoId = UUID.randomUUID();
-   this.checkTime(dto.getDateStartOutfit(), dto.getDateEntOutfit(), dto.getIdMasterOutfit());
+   this.checkTime(dto.getDateStartOutfit(), dto.getDateEndOutfit(), dto.getIdMasterOutfit());
    if (orderRepository.insertOrder(id_outfits, dtoId, new Date(), State.CREATED.getCode(), new Date(),
     dto.getCarClient(), login, dto.getCarClient(), UUID.randomUUID(),
-    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEntOutfit(),
+    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), dto.getDateEndOutfit(),
     dto.getDateStartOutfit(), dto.getIdMasterOutfit(), dto.getDescription(), dto.getNameOutfit(),
     com.netcracker.outfit.State.NO_STATE.getCode(), id_outfits, dto.getPriceBreakdown(), dto.getRun()) == 1)
     return dtoId;
@@ -153,12 +153,21 @@ public class OrderServicesImpl implements OrderServices {
   }
  }
 
+ @Override
+ public List<OrderDto> getAllOrderById(String name, UUID uuid) throws SaveSearchErrorException {
+  try {
+   return orderRepository.getById(uuid).stream().map(orderMapperDto::toDto).collect(Collectors.toList());
+  } catch (Exception e) {
+   throw new SaveSearchErrorException("Unknown error:", " e.getMessage()");
+  }
+ }
+
 
  @Override
  public UUID updateRequestFromClient(OrderForm orderDto, String login) throws SaveSearchErrorException {
   try {
    UUID id_outfits = UUID.randomUUID();
-   if (outfitsRepository.getAllOutfit(orderDto.getDateStartOutfit(), orderDto.getDateEntOutfit(),
+   if (outfitsRepository.getAllOutfit(orderDto.getDateStartOutfit(), orderDto.getDateEndOutfit(),
     orderDto.getIdMasterOutfit()).size() != 0) {
     throw new SaveSearchErrorException("The selected time is occupied by another outfit", "Time");
    }
@@ -171,7 +180,7 @@ public class OrderServicesImpl implements OrderServices {
    }
    if (orderRepository.updateOrderFromREQUEST(id_outfits, orderDto.getIdOrder(), new Date(),
     State.CREATED.getCode(), new Date(), login, UUID.randomUUID(),
-    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), orderDto.getDateEntOutfit(),
+    com.netcracker.breakdown.State.IMPORTANT.getCode(), new Date(), orderDto.getDateEndOutfit(),
     orderDto.getDateStartOutfit(), orderDto.getIdMasterOutfit(), orderDto.getDescription(), orderDto.getNameOutfit(),
     com.netcracker.outfit.State.NO_STATE.getCode(), orderDto.getPriceBreakdown(), orderDto.getRun()) == 1)
     return orderDto.getIdOrder();
@@ -181,4 +190,6 @@ public class OrderServicesImpl implements OrderServices {
    throw new SaveSearchErrorException("Unknown error:", e.getMessage());
   }
  }
+
+
 }

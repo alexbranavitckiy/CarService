@@ -2,11 +2,15 @@ package com.netcracker.controllers.car;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netcracker.CarServiceApplication;
-import com.netcracker.DTO.basicValidation.CarClientValid;
 import com.netcracker.DTO.car.CarClientDto;
 import com.netcracker.DTO.car.MarkDto;
+import com.netcracker.car.Mark;
 import com.netcracker.services.CarServices;
+import org.junit.Assert;
+import com.netcracker.services.MarkServices;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,14 +19,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
+import org.springframework.test.web.servlet.MvcResult;
+import static org.junit.Assert.assertThat;
+import javax.validation.ConstraintValidatorContext;
+import java.time.Duration;
 import java.util.*;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @AutoConfigureMockMvc
 @SpringBootTest(classes = CarServiceApplication.class)
 public class CarControllerTest {
@@ -31,20 +38,36 @@ public class CarControllerTest {
  private MockMvc mockMvc;
 
  @MockBean
- private CarServices carServices;
+ private MarkServices markServices;
+ @MockBean
+ private ConstraintValidatorContext context;
+
+ @Autowired
+ private ObjectMapper objectMapper;
 
  @MockBean
- private CarClientValid carClientValid;
+ private CarServices carServices;
 
  @Autowired
  private ObjectMapper mapper;
 
  @Test
  @WithMockUser(authorities = "REGISTERED")
- void createCarTest() throws Exception {
+ void whenValidInputCreateCarTestThen201() throws Exception {
+  UUID uuid=UUID.randomUUID();
   CarClientDto car = new CarClientDto();
-  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(UUID.randomUUID());
-  Mockito.when(carClientValid.isValid(car, null)).thenReturn(true);
+  car.setYear(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(8))));
+  Mark mark = Mark.builder()
+   .id(uuid)
+   .yearEnd(Date.from(new GregorianCalendar(2026, Calendar.JUNE, 25, 5, 0)
+    .getTime().toInstant().plus(Duration.ofHours(6))))
+   .yearStart(Date.from(new GregorianCalendar(2024, Calendar.JUNE, 25, 5, 0)
+    .getTime().toInstant().plus(Duration.ofHours(9)))).build();
+  car.setMark(MarkDto.builder().id(uuid).build());
+  car.setId(uuid);
+  Mockito.when(markServices.markById(uuid)).thenReturn(Optional.of(mark));
+  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(uuid);
   String json = mapper.writeValueAsString(car);
   mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON)
    .characterEncoding("utf-8")
@@ -53,68 +76,69 @@ public class CarControllerTest {
 
  @Test
  @WithMockUser(authorities = "REGISTERED")
- void updateCarTest() throws Exception {
+ void whenNotValidValueCreateCarTestThen400() throws Exception {
+  UUID uuid=UUID.randomUUID();
   CarClientDto car = new CarClientDto();
-  car.setId(UUID.randomUUID());
-  car.setIdClient(UUID.randomUUID());
-  car.setMark(MarkDto.builder().id(UUID.fromString("cda01a34-4119-3e5e-9ab9-60b341f234fb")).build());
-  car.setYear(new Date());
-  Mockito.when(carServices.updateCarClientByLogin(car, "")).thenReturn(true);
+  car.setYear(Date.from(new GregorianCalendar(2025, Calendar.JUNE, 25, 5, 0)
+   .getTime().toInstant().plus(Duration.ofHours(8))));
+  Mark mark = Mark.builder()
+   .id(uuid)
+   .yearEnd(Date.from(new GregorianCalendar(2022, Calendar.JUNE, 25, 5, 0)
+    .getTime().toInstant().plus(Duration.ofHours(6))))
+   .yearStart(Date.from(new GregorianCalendar(2024, Calendar.JUNE, 25, 5, 0)
+    .getTime().toInstant().plus(Duration.ofHours(9)))).build();
+  car.setMark(MarkDto.builder().id(uuid).build());
+  car.setId(uuid);
+  Mockito.when(markServices.markById(uuid)).thenReturn(Optional.of(mark));
+  Mockito.when(carServices.createCarOnClient(car, "")).thenReturn(uuid);
   String json = mapper.writeValueAsString(car);
-  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON)
+  mockMvc.perform(post("/person/garage-registration").contentType(MediaType.APPLICATION_JSON)
    .characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
  }
 
- @Test
- @WithMockUser(authorities = "REGISTERED")
- void updateCarClientByIdWithMachineNumberTest() throws Exception {
-  CarClientDto car = new CarClientDto();
-  car.setId(UUID.randomUUID());
-  car.setYear(new Date());
-  Mockito.when(carServices.updateCarClientByIdWithMachineNumber(car, "")).thenReturn(true);
-  String json = mapper.writeValueAsString(car);
-  mockMvc.perform(put("/person/car-update/meta").contentType(MediaType.APPLICATION_JSON)
-   .characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
- }
 
  @Test
  @WithMockUser(authorities = "RECEPTIONIST")
- void createCarOnMasterTest() throws Exception {
-  CarClientDto car = new CarClientDto();
-  car.setId(UUID.randomUUID());
-  car.setYear(new Date());
-  Mockito.when(carServices.createCarOnMaster(car)).thenReturn(UUID.randomUUID());
-  String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/details/garage-registration")
-   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
- }
-
- @Test
- @WithMockUser(authorities = "RECEPTIONIST")
- void getAllCarTest() throws Exception {
+ void getAllCarTestThenOk() throws Exception {
   List<CarClientDto> cars = new ArrayList<>();
   CarClientDto car = new CarClientDto();
   cars.add(car);
   Mockito.when(carServices.getAllCarOnMaster()).thenReturn(cars);
-  mockMvc.perform(post("/details/garage-registration")
-   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(mapper.writeValueAsString(car)).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+  mockMvc.perform(get("/details/garage/cars")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").param("offset", "0")
+   .param("limit", "1").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+ }
+ @Test
+ @WithMockUser(authorities = "MASTER")
+ void getAllCarTestThenIsUnauthorized() throws Exception {
+  List<CarClientDto> cars = new ArrayList<>();
+  CarClientDto car = new CarClientDto();
+  cars.add(car);
+  Mockito.when(carServices.getAllCarOnMaster()).thenReturn(cars);
+  mockMvc.perform(get("/details/garage/cars")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8").param("offset", "0")
+   .param("limit", "1").accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
  }
 
  @Test
  @WithMockUser(authorities = "RECEPTIONIST")
- void searchCarTest() throws Exception {
-  List<CarClientDto> cars = new ArrayList<>();
-  CarClientDto car = new CarClientDto();
-  cars.add(car);
-  Mockito.when(carServices.getSearchCarOnMaster("", 0, 1)).thenReturn(cars);
-  String json = mapper.writeValueAsString(car);
-  mockMvc.perform(post("/details/garage-registration")
+ void searchCarTestThenOk() throws Exception {
+  mockMvc.perform(get("/details/garage-search")
    .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
-   .content(json).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+   .param("offset", "0")
+   .param("limit", "1")
+   .param("search", "a").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+ }
+
+ @Test
+ @WithMockUser(authorities = "MASTER")
+ void searchCarTestThenIsUnauthorized() throws Exception {
+  mockMvc.perform(get("/details/garage-search")
+   .contentType(MediaType.APPLICATION_JSON).characterEncoding("utf-8")
+   .param("offset", "0")
+   .param("limit", "1")
+   .param("search", "a").accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
  }
 
 }

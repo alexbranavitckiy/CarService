@@ -15,15 +15,15 @@ public interface OutfitsServices {
 
  List<OutfitDto> getAllMasterOutfitWithStateAndSort(State state, String login) throws SaveSearchErrorException;
 
- boolean outfitStartWork(String login, UUID uuid) throws SaveSearchErrorException;
+ UUID outfitStartWork(String login, UUID uuid) throws SaveSearchErrorException;
 
- boolean updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException;
+ UUID updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException;
 
  boolean outfitEndWork(String name) throws SaveSearchErrorException;
 
- UUID createOutfitOnMasterR(OutfitDto outfitDto, String login) throws SaveSearchErrorException;
-
  List<TimeDto> getAllOutfitByTime() throws SaveSearchErrorException;
 
- boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException;
+ UUID updateOutfitByMasterR(OutfitDto outfitDto, String name,UUID idOutfit) throws SaveSearchErrorException;
+
+ UUID updateOutfitMasterByMasterR(TimeDto idOutfit, String name) throws SaveSearchErrorException;
 }

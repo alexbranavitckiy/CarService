@@ -62,7 +62,8 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
     " (:id,:description,:year, :metadata_car, :run, :summary, (SELECT public .clients.id " +
     "FROM public.clients where public .clients.login=:login), :id_mark)   ",
   nativeQuery = true)
- int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
+ int createCarOnLogin(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year,
+                      @Param("metadata_car") String metadata_car, @Param("run") int run,
                       @Param("summary") String summary, @Param("login") String login, @Param("id_mark") UUID id_mark);
 
  @Transactional
@@ -72,7 +73,8 @@ public interface CarClientRepository extends PagingAndSortingRepository<CarClien
    "insert into car_client (id,description,year,metadata_car, run,summary,id_mark) values " +
     "(:id,:description,:year, :metadata_car, :run, :summary, :id_mark)   ",
   nativeQuery = true)
- int createCarOnMaster(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year, @Param("metadata_car") String metadata_car, @Param("run") int run,
+ int createCarOnMaster(@Param("id") UUID id, @Param("description") String description, @Param("year") Date year,
+                       @Param("metadata_car") String metadata_car, @Param("run") int run,
                        @Param("summary") String summary, @Param("id_mark") UUID id_mark);
 
 

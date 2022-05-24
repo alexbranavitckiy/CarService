@@ -14,23 +14,12 @@ import java.util.*;
 @Repository
 public interface ClientsRepository extends PagingAndSortingRepository<Client, UUID> {
 
- boolean existsByLogin(String login);
-
  @Transactional
  @Modifying(clearAutomatically = true)
  void deleteAllByLogin(String login);
 
- boolean existsById(String login);
-
- boolean existsByEmail(String email);
-
- boolean existsByPassword(String pas);
-
- boolean existsByPhone(String phone);
 
  Optional<Client> getAllByLogin(String name);
-
- Optional<Client> getByName(String name);
 
  List<Client> getAllBy();
 
@@ -45,11 +34,6 @@ public interface ClientsRepository extends PagingAndSortingRepository<Client, UU
  @Query(value = "SELECT  role ,login,password  FROM clients  where clients.login=?1 union SELECT" +
   "  role ,login,password  FROM master   where master .login=?2", nativeQuery = true)
  Map<String, Object> getMyUser(String login, String login2);
-
- @Transactional
- @Modifying(clearAutomatically = true)
- @Query("update clients c set c.roleUser = 'REGISTERED', c.login = ?1, c.password = ?2 where c.login = ?3")
- int updatePasswordAndLogin(String newLogin, String password, String login);
 
  @Transactional
  @Modifying(clearAutomatically = true)
@@ -75,12 +59,6 @@ public interface ClientsRepository extends PagingAndSortingRepository<Client, UU
  @Modifying(clearAutomatically = true)
  @Query("update clients c set c.roleUser = 'REGISTERED',  c.name = ?1 where c.login = ?2")
  int updateName(String name, String login);
-
- @Transactional
- @Modifying
- @Query("update clients c set c.roleUser = 'REGISTERED', c.name = ?1, c.phone = ?2 , c.email = ?3, " +
-  "c.description = ?4 where c.login = ?5")
- int updateClient(String name, String phone, String email, String description, String login);
 
  @Transactional
  @Modifying

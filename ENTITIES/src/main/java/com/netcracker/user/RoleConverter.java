@@ -17,7 +17,6 @@ public class RoleConverter implements AttributeConverter<Role, String> {
   return state.getCode();
  }
 
-
  @Override
  public Role convertToEntityAttribute(String code) {
   if (code == null) {

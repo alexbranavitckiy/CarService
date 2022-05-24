@@ -132,7 +132,7 @@ public class MasterController {
  }
 
  @JsonView({ValidateClient.Details.class})
- @GetMapping({"/details/get-masters",})
+ @GetMapping({"/details/masters",})
  @ApiOperation("Get a list of all masters")
  public ResponseEntity<List<MasterDto>> getClientsOnMaster() throws SaveSearchErrorException {
   List<MasterDto> master = masterServices.getMasterDtoOnMaster();

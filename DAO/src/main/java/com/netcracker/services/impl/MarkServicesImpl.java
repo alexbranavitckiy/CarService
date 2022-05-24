@@ -43,14 +43,7 @@ public class MarkServicesImpl implements MarkServices {
   }
  }
 
- @Override
- public Page<Mark> getPageMark(Pageable pageable) throws SaveSearchErrorException {
-  try {
-   return markRepository.getAllBy(pageable);
-  } catch (Exception e) {
-   throw new SaveSearchErrorException("An error occurred while searching:" + e.getMessage(), "search");
-  }
- }
+
  @Override
  public Paged<Mark> getPage(int pageNumber, int size) {
   Page<Mark> postPage = markRepository.getAllBy( PageRequest.of(pageNumber - 1, size));;
@@ -69,14 +62,6 @@ public class MarkServicesImpl implements MarkServices {
   return List.of(mark.get());
  }
 
-
- @Override
- public void metadataMark(UUID uuid) throws SaveSearchErrorException {
-  if (markRepository.existsById(uuid)) {
-   return;
-  }
-  throw new SaveSearchErrorException("Entered data of a non-existent mark.", "mark");
- }
 
  @Override
  public List<MarkDto> getSearchMark(String regex, Integer offset, Integer limit) throws SaveSearchErrorException {

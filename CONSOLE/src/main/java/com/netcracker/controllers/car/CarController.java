@@ -12,6 +12,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -40,7 +41,7 @@ public class CarController {
 
  @JsonView({ValidateCar.Details.class})
  @ApiOperation("Get all the car of the logged in user")
- @GetMapping("/person/garage/get-all")
+ @GetMapping("/person/garage/cars")
  public ResponseEntity<List<CarClientDto>> getAllCarByIdClients(@ApiIgnore Principal principal,
                                                                 @RequestParam("offset") Integer offset,
                                                                 @RequestParam("limit") Integer limit)
@@ -60,12 +61,12 @@ public class CarController {
  public ResponseEntity<UUID> createCar(@Validated({ValidateCar.New.class, ValidateCar.UiCrossFieldChecks.class})
                                        @JsonView(ValidateCar.New.class) @RequestBody CarClientDto carClient,
                                        @ApiIgnore Principal principal) throws SaveSearchErrorException {
-  return ResponseEntity.ok(carServices.createCarOnClient(carClient, principal.getName()));
+  return ResponseEntity.status(HttpStatus.OK).body(carServices.createCarOnClient(carClient, principal.getName()));
  }
 
  @JsonView({ValidateCar.Details.class})
  @ApiOperation("Get machine of user logged in by id")
- @GetMapping("/person/get-car")
+ @GetMapping("/person/car")
  public ResponseEntity<List<CarClientDto>> getCarByIdCar(@RequestParam UUID CarUUID, @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   Optional<CarClientDto> carClient = carServices.getCarByIdCarOnClient(CarUUID, principal.getName());
@@ -115,7 +116,7 @@ public class CarController {
 
  @ApiOperation("Car registration")
  @ApiResponses(value = {
-  @io.swagger.annotations.ApiResponse(code = 200, message = "The machine is successfully created",
+  @io.swagger.annotations.ApiResponse(code = 201, message = "The machine is successfully created",
    response = ValidationErrorResponse.class, responseContainer = "List"),
   @ApiResponse(code = 400, message = "Invalid input", response = ValidationErrorResponse.class,
    responseContainer = "List")})
@@ -123,19 +124,18 @@ public class CarController {
   MediaType.APPLICATION_JSON_VALUE)
  public ResponseEntity<UUID> createCarOnMaster(@Validated({ValidateCar.UiCrossFieldChecks.class})
                                                @JsonView(ValidateCar.NewAdmin.class)
-                                               @RequestBody CarClientDto carClient,
-                                               @ApiIgnore Principal principal)
+                                               @RequestBody CarClientDto carClient)
   throws SaveSearchErrorException {
-  return ResponseEntity.ok(carServices.createCarOnMaster(carClient));
+  return ResponseEntity.status(HttpStatus.CREATED).body(carServices.createCarOnMaster(carClient));
  }
 
  @JsonView({ValidateCar.Details.class})
  @ApiOperation("Show all cars")
- @GetMapping("/details/garage/get-all")
+ @GetMapping("/details/garage/cars")
  public ResponseEntity<List<CarClientDto>> getAllCar(@RequestParam("offset") Integer offset,
                                                      @RequestParam("limit") Integer limit)
   throws SaveSearchErrorException {
-  return ResponseEntity.ok(carServices.getAllCarOnMaster());
+  return ResponseEntity.status(HttpStatus.OK).body(carServices.getAllCarOnMaster());
  }
 
  @JsonView({ValidateCar.Details.class})

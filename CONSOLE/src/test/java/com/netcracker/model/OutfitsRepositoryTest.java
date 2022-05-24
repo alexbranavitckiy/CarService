@@ -45,7 +45,7 @@ public class OutfitsRepositoryTest {
 
  @Test
  void endWorkMaster() {
-  outfitsRepository.endWorkMaster("", "");
+  outfitsRepository.endWorkMaster("", new Date(), "");
  }
 
  @Test

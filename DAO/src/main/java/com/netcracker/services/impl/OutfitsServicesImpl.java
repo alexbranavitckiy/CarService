@@ -8,12 +8,15 @@ import com.netcracker.DTO.time.TimeDto;
 import com.netcracker.outfit.Outfit;
 import com.netcracker.outfit.State;
 import com.netcracker.repository.OutfitsRepository;
+import com.netcracker.services.OrderServices;
 import com.netcracker.services.OutfitsServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,10 +27,10 @@ public class OutfitsServicesImpl implements OutfitsServices {
  private final OutfitsRepository outfitsRepository;
  private final MapperDto<OutfitDto, Outfit> outfitMapperDto;
  private final MapperDto<TimeDto, Outfit> timeMapper;
- private final OrderServicesImpl orderServices;
+ private final OrderServices orderServices;
 
  @Autowired
- private OutfitsServicesImpl(OrderServicesImpl orderServices, MapperDto<TimeDto, Outfit> timeMapper,
+ private OutfitsServicesImpl(OrderServices orderServices, MapperDto<TimeDto, Outfit> timeMapper,
                              MapperDto<OutfitDto, Outfit> outfitMapperDto, OutfitsRepository outfitsRepository) {
   this.outfitMapperDto = outfitMapperDto;
   this.orderServices = orderServices;
@@ -48,12 +51,18 @@ public class OutfitsServicesImpl implements OutfitsServices {
  }
 
  @Override
- public boolean outfitStartWork(String login, UUID uuid) throws SaveSearchErrorException {
+ public UUID outfitStartWork(String login, UUID uuid) throws SaveSearchErrorException {
   try {
-   if (outfitsRepository.startWorkMaster(State.WORK.getCode(), uuid, login) == 1) {
-    return true;
+   Optional<Outfit> outfit = outfitsRepository.findById(uuid);
+   if (outfit.isEmpty()) throw new SaveSearchErrorException("Invalid id entered.", "Id");
+   if (outfit.get().getDateStart().before(new Date()) && outfit.get().getDateEnd().after(new Date())) {
+    outfit.get().setStateOutfit(State.WORK);
+    if (outfitsRepository.startWorkMaster(State.WORK.getCode(), uuid, login) == 1) {
+     return UUID.randomUUID();
+    }
    }
   } catch (Exception e) {
+   log.warn("{}", e);
    throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
   }
   throw new SaveSearchErrorException("The outfit you entered does not belong to you.", "search");
@@ -62,42 +71,24 @@ public class OutfitsServicesImpl implements OutfitsServices {
  @Override
  public boolean outfitEndWork(String name) throws SaveSearchErrorException {
   try {
-   if (outfitsRepository.checkingOutfit(name) == 0) {
-    if (outfitsRepository.endWorkMaster(State.END.getCode(), name) == 1) {
-     return true;
-    }
-   } else throw new SaveSearchErrorException("There are non-closed outfits.", "Outfit");
+   if (outfitsRepository.checkingOutfit(name) == 0 &&
+    outfitsRepository.endWorkMaster(State.END.getCode(), new Date(), name) == 1)
+    return true;
   } catch (Exception e) {
-   log.warn("{}", e.getMessage());
+   log.error("{}", e.getMessage());
    throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
   }
-  throw new SaveSearchErrorException("The outfit you entered does not belong to you.", "search");
- }
-
-
- @Override
- public UUID createOutfitOnMasterR(OutfitDto outfitDto, String login) throws SaveSearchErrorException {
-  try {
-   outfitDto.setStateOutfit(State.NO_STATE);
-   outfitDto.setId(UUID.randomUUID());
-   if (outfitsRepository.createOutfit(outfitDto.getId(), outfitDto.getDateEnd(), outfitDto.getDateStart(),
-    outfitDto.getIdMaster(), outfitDto.getDescription(), outfitDto.getName(),
-    outfitDto.getStateOutfit().getCode(), outfitDto.getId(), outfitDto.getOrder()) == 1)
-    return outfitDto.getId();
-   throw new SaveSearchErrorException("Active outfit master ane not found", "err");
-  } catch (Exception e) {
-   throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
-  }
+  throw new SaveSearchErrorException("There are non-closed outfits.", "Outfit");
  }
 
  @Override
- public boolean updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException {
+ public UUID updateOutfitByMaster(OutfitDto outfitDto, String login) throws SaveSearchErrorException {
   try {
    orderServices.checkTime(outfitDto.getDateStart(), outfitDto.getDateEnd(), outfitDto.getIdMaster());
    outfitDto.setStateOutfit(State.WORK);
    if (outfitsRepository.updateWorkMaster(outfitDto.getDateEnd(), outfitDto.getDateStart(), outfitDto.getDescription(),
     outfitDto.getName(), State.WORK.getCode(), login) == 1)
-    return true;
+    return outfitDto.getId();
    throw new SaveSearchErrorException("Active outfit master ane not found", "save");
   } catch (Exception e) {
    throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
@@ -109,25 +100,40 @@ public class OutfitsServicesImpl implements OutfitsServices {
   try {
    return outfitsRepository.getAllByOutfitByDateStartDesc().stream().map(timeMapper::toDto).collect(Collectors.toList());
   } catch (Exception e) {
-   log.warn("{}", e.getMessage());
+   log.error("{}", e.getMessage());
    throw new SaveSearchErrorException("The result did not return any results. ", "err");
   }
  }
 
-
  @Override
- public boolean updateOutfitByMasterR(OutfitDto outfitDto, String name) throws SaveSearchErrorException {
+ public UUID updateOutfitByMasterR(OutfitDto outfitDto, String name, UUID idOutfit) throws SaveSearchErrorException {
   try {
-   outfitDto.setStateOutfit(State.WORK);
-   if (outfitsRepository.updateWorkMasterR(outfitDto.getDateEnd(), outfitDto.getDateStart(),
-    outfitDto.getDescription(), outfitDto.getName(), State.WORK.getCode(), outfitDto.getIdMaster(),
-    outfitDto.getId()) == 1)
-    return true;
-   throw new SaveSearchErrorException("Active outfit master ane not found", "save");
+   Optional<Outfit> outfit = outfitsRepository.findById(idOutfit);
+   if (outfit.isEmpty()) throw new SaveSearchErrorException("Entered not valid id", "Id");
+   if (outfitDto.getStateOutfit() != null) outfit.get().setStateOutfit(outfitDto.getStateOutfit());
+   if (outfitDto.getName() != null) outfit.get().setName(outfitDto.getName());
+   if (outfitDto.getDateEnd() != null) outfit.get().setDateEnd(outfitDto.getDateEnd());
+   if (outfitDto.getDateStart() != null) outfit.get().setDateStart(outfitDto.getDateStart());
+   if (outfitDto.getDescription() != null) outfit.get().setDescription(outfitDto.getDescription());
+   outfitsRepository.save(outfit.get());
+   return idOutfit;
   } catch (Exception e) {
+   log.error("{}", e.getMessage());
    throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
   }
  }
 
+ @Override
+ public UUID updateOutfitMasterByMasterR(TimeDto idOutfit, String name) throws SaveSearchErrorException {
+  try {
+   orderServices.checkTime(idOutfit.getDateStart(), idOutfit.getDateEnd(), idOutfit.getMasterId());
+   if (outfitsRepository.updateMasterOnMasterR(idOutfit.getMasterId(), idOutfit.getMasterId()) == 1) {
+    return idOutfit.getId();
+   } else throw new SaveSearchErrorException("Entered not valid Id.", "Id");
+  } catch (Exception e) {
+   log.error("{}", e.getMessage());
+   throw new SaveSearchErrorException("Unknown error." + e.getMessage(), "err");
+  }
+ }
 
 }

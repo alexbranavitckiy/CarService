@@ -28,7 +28,7 @@ public class Outfit {
  private UUID id;
 
  @Length(min = 1, max = 100)
- @Column(name = "name", columnDefinition = "VARCHAR(100) not null ")
+ @Column(name = "name", columnDefinition = "VARCHAR(100) not null")
  private String name;
 
  private String description;

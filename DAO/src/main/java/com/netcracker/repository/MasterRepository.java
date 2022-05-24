@@ -20,32 +20,12 @@ public interface MasterRepository extends PagingAndSortingRepository<Master, UUI
 
  Optional<Master> getAllByLogin(String name);
 
- @Transactional
- @Modifying(clearAutomatically = true)
- @Query("update master c set c.login = ?1, c.password = ?2 where c.login = ?3")
- int updatePassword(String newLogin, String password, String login);
-
  List<Master> getAllByRole(Role role);
-
- @Transactional
- @Modifying
- @Query("update master c set c.name = ?1, c.phone = ?2 , c.mail = ?3, c.description = ?4, c.homeAddress =" +
-  " ?4 ,c.qualification=?5 ,c.education=?6 where c.login = ?7")
- int updateMaster(String name, String phone, String email, String description, String homeAddress,
-                  String education, String login);
 
  @Transactional
  @Modifying
  @Query("update master c set c.name = ?1, c.description = ?2, c.homeAddress = ?3  ,c.education=?4 where c.login = ?5")
  int updateDate(String name, String description, String homeAddress, String education, String login);
-
- boolean existsByMail(String email);
-
- boolean existsByPhone(String phone);
-
- boolean existsByLogin(String login);
-
- boolean existsByPassword(String password);
 
  @Transactional
  @Modifying(clearAutomatically = true)

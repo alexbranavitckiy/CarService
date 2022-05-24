@@ -8,6 +8,7 @@ import com.netcracker.DTO.ord.ValidateOrd;
 import com.netcracker.DTO.response.ValidationErrorResponse;
 import com.netcracker.DTO.response.Violation;
 import com.netcracker.DTO.time.TimeDto;
+import com.netcracker.DTO.time.ValidateTime;
 import com.netcracker.outfit.State;
 import com.netcracker.services.OutfitsServices;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +39,7 @@ public class OutfitController {
 
  @JsonView({ValidateOrd.Details.class})
  @ApiOperation("Get breakdowns for this car")
- @GetMapping(value = "/aut/outfit-get/all")
+ @GetMapping(value = "/aut/outfits")
  public ResponseEntity<List<OutfitDto>> getAllMasterOutfitWithStateAndSort(@RequestParam State state,
                                                                            @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
@@ -46,18 +47,15 @@ public class OutfitController {
  }
 
  @ApiOperation("Start working with the outfit")
- @PutMapping(value = "/aut/outfit-start")
- public ResponseEntity<ValidationErrorResponse> outfitStartMaster(@RequestParam UUID uuidOutfit,
-                                                                  @ApiIgnore Principal principal)
+ @PatchMapping(value = "/aut/outfit-start")
+ public ResponseEntity<UUID> outfitStartMaster(@RequestParam UUID uuidOutfit,
+                                               @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  outfitsServices.outfitStartWork(principal.getName(), uuidOutfit);
-  validationResponse.setViolations(List.of(new Violation("true", "Request passed successfully")));
-  return ResponseEntity.ok(validationResponse);
+  return ResponseEntity.ok(outfitsServices.outfitStartWork(principal.getName(), uuidOutfit));
  }
 
  @ApiOperation("End working with the outfit")
- @PutMapping(value = "/aut/outfit-end")
+ @PatchMapping(value = "/aut/outfit-end")
  public ResponseEntity<ValidationErrorResponse> outfitEndMaster(@ApiIgnore Principal principal)
   throws SaveSearchErrorException {
   ValidationErrorResponse validationResponse = new ValidationErrorResponse();
@@ -69,37 +67,43 @@ public class OutfitController {
  @Operation(summary = "Outfit Update", description = "")
  @PostMapping(value = "/aut/outfit-update", consumes = MediaType.APPLICATION_JSON_VALUE,
   produces = MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateOutfitByMaster(@JsonView({ValidateCar.Edit.class})
+ public ResponseEntity<UUID> updateOutfitByMaster(@JsonView({ValidateCar.Edit.class})
                                                                      @Validated(ValidateCar.Edit.class)
                                                                      @RequestBody OutfitDto outfitDto,
                                                                      @ApiIgnore Principal principal)
   throws SaveSearchErrorException {
-  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  outfitsServices.updateOutfitByMaster(outfitDto, principal.getName());
-  validationResponse.setViolations(List.of(new Violation("true", "Request passed successfully")));
-  return ResponseEntity.ok(validationResponse);
+  return ResponseEntity.ok(outfitsServices.updateOutfitByMaster(outfitDto, principal.getName()));
  }
 
 
  @ApiOperation(value = "Get all")
- @GetMapping(value = "details/time/get-all")
+ @GetMapping(value = "details/outfits")
  public ResponseEntity<List<TimeDto>> getAllClient() throws SaveSearchErrorException {
   return ResponseEntity.ok(outfitsServices.getAllOutfitByTime());
  }
 
 
  @Operation(summary = "Outfit Update", description = "")
- @PostMapping(value = "/details/outfit-update", consumes = MediaType.APPLICATION_JSON_VALUE,
+ @PatchMapping(value = "/details/outfit-update", consumes = MediaType.APPLICATION_JSON_VALUE,
   produces = MediaType.APPLICATION_JSON_VALUE)
- public ResponseEntity<ValidationErrorResponse> updateOutfit(@JsonView({ValidateOrd.Details.class})
-                                                             @Validated(ValidateOrd.Details.class)
-                                                             @RequestBody OutfitDto outfitDto,
-                                                             @ApiIgnore Principal principal)
+ public ResponseEntity<UUID> updateOutfit(@JsonView({ValidateCar.Edit.class})
+                                          @Validated(ValidateCar.Edit.class)
+                                          @RequestBody OutfitDto outfitDto,
+                                          @ApiIgnore Principal principal,
+                                          @RequestParam UUID idOutfit)
   throws SaveSearchErrorException {
-  ValidationErrorResponse validationResponse = new ValidationErrorResponse();
-  outfitsServices.updateOutfitByMasterR(outfitDto, principal.getName());
-  validationResponse.setViolations(List.of(new Violation("true", "Request passed successfully")));
-  return ResponseEntity.ok(validationResponse);
+  return ResponseEntity.ok(outfitsServices.updateOutfitByMasterR(outfitDto, principal.getName(), idOutfit));
+ }
+
+ @Operation(summary = "Change master in outfit", description = "")
+ @PutMapping(value = "/details/outfit/update-master", consumes = MediaType.APPLICATION_JSON_VALUE,
+  produces = MediaType.APPLICATION_JSON_VALUE)
+ public ResponseEntity<UUID> updateOutfitMaster(@JsonView({ValidateTime.Edit.class})
+                                                @Validated(ValidateTime.Edit.class)
+                                                @RequestBody TimeDto timeDto,
+                                                @ApiIgnore Principal principal)
+  throws SaveSearchErrorException {
+  return ResponseEntity.ok(outfitsServices.updateOutfitMasterByMasterR(timeDto, principal.getName()));
  }
 
 

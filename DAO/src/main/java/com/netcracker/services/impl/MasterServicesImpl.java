@@ -94,38 +94,6 @@ public class MasterServicesImpl implements MasterServices {
  }
 
  @Override
- public boolean passwordChek(String password) throws SaveSearchErrorException {
-  if (!masterRepository.existsByPassword(password)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("Invalid password entered.", "password");
- }
-
- @Override
- public boolean loginChek(String login) throws SaveSearchErrorException {
-  if (!masterRepository.existsByLogin(login)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The login you entered is in use by another user.", "login");
- }
-
- @Override
- public boolean emailChek(String email) throws SaveSearchErrorException {
-  if (!masterRepository.existsByMail(email)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The entered mail is busy by another user.", "email");
- }
-
- @Override
- public boolean phoneChek(String phone) throws SaveSearchErrorException {
-  if (!masterRepository.existsByPhone(phone)) {
-   return false;
-  }
-  throw new SaveSearchErrorException("The entered phone number is already registered.", "phone");
- }
-
- @Override
  public UUID createMasterOnMasterReceiver(MasterDto masterDto, String name) throws SaveSearchErrorException {
   try {
    masterDto.setId(UUID.randomUUID());
@@ -170,21 +138,7 @@ public class MasterServicesImpl implements MasterServices {
 
  //--Master--//
 
- @Override
- public Optional<Master> getMasterByLogin(String login) {
-  return masterRepository.getAllByLogin(login);
- }
 
- @Override
- public boolean addMaster(Master master) {
-  try {
-   masterRepository.save(master);
-   return true;
-  } catch (Exception e) {
-   log.warn(e.getMessage());
-  }
-  return false;
- }
 
 
 }

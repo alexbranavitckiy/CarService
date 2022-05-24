@@ -1,8 +1,5 @@
 package com.netcracker.user;
 
-
-
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.stream.Stream;

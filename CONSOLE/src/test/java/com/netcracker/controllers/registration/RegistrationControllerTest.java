@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,7 +42,7 @@ public class RegistrationControllerTest {
  }
 
  @Test
- void createUserTest() throws Exception {
+ void createUserTestIsOk() throws Exception {
   ClientDto client = ClientDto.builder()
    .name("AlexA")
    .description("AlexA")
@@ -58,5 +59,22 @@ public class RegistrationControllerTest {
    .andExpect(status().isOk());
  }
 
+ @Test
+ void createUserTestIs400() throws Exception {
+  ClientDto client = ClientDto.builder()
+   .name("AlexA")
+   .description("AlexA")
+   .password("AlexA")
+   .email("@hotmail.com")
+   .roleUser(RoleUser.UNREGISTERED)
+   .login("LoginLAlexA")
+   .phone("+375308979").build();
+  mockMvc.perform(
+    post("/registration")
+     .content(objectMapper.writeValueAsString(client))
+     .contentType(MediaType.APPLICATION_JSON)
+   )
+   .andExpect(status().isBadRequest());
+ }
 
 }
